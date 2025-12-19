@@ -9,6 +9,7 @@ deathless.lua
 core\init.lua
 core\config.lua
 core\events.lua
+core\commands.lua
 
 utils\table.lua
 utils\string.lua

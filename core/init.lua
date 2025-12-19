@@ -7,8 +7,6 @@ local function Initialize()
     
     -- Initialize event system
     -- Modules will be initialized via their RegisterModule calls
-    
-    Deathless:Print("Initialized")
 end
 
 -- Event frame for addon loading

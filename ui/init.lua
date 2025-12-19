@@ -3,8 +3,10 @@ local Deathless = Deathless
 Deathless.UI = Deathless.UI or {}
 
 function Deathless.UI:Initialize()
-    -- Initialize UI components
-    Deathless:Print("UI initialized")
+    -- Create the main frame
+    if Deathless.UI.Frame then
+        Deathless.UI.Frame:Create()
+    end
 end
 
 -- Initialize UI after core is ready

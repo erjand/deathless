@@ -11,8 +11,7 @@ $ExcludeItems = @(
     ".gitignore",
     "README.md",
     "deploy.ps1",
-    "*.ps1",
-    "*.md"
+    "deploy.bat"
 )
 
 Write-Host "Deploying Deathless addon..." -ForegroundColor Green
@@ -26,16 +25,19 @@ if (-not (Test-Path $SourceDir)) {
     exit 1
 }
 
-# Create target directory if it doesn't exist
-if (-not (Test-Path $TargetDir)) {
-    Write-Host "Creating target directory..." -ForegroundColor Yellow
-    New-Item -ItemType Directory -Path $TargetDir -Force | Out-Null
+# Remove existing addon folder if it exists
+if (Test-Path $TargetDir) {
+    Write-Host "Removing existing addon folder..." -ForegroundColor Yellow
+    Remove-Item -Path $TargetDir -Recurse -Force -ErrorAction Stop
 }
 
-# Copy files, excluding development files
-Write-Host "Copying addon files..." -ForegroundColor Yellow
+# Create target directory
+Write-Host "Creating target directory..." -ForegroundColor Yellow
+New-Item -ItemType Directory -Path $TargetDir -Force | Out-Null
 
 # Copy .toc and .lua files from root
+Write-Host "Copying addon files..." -ForegroundColor Yellow
+
 Get-ChildItem -Path $SourceDir -Filter "*.toc" | ForEach-Object {
     Copy-Item -Path $_.FullName -Destination $TargetDir -Force
     Write-Host "  Copied: $($_.Name)" -ForegroundColor Gray
@@ -55,13 +57,34 @@ foreach ($Dir in $DirectoriesToCopy) {
     
     if (Test-Path $SourcePath) {
         Write-Host "  Copying directory: $Dir" -ForegroundColor Gray
-        Copy-Item -Path $SourcePath -Destination $TargetPath -Recurse -Force
+        
+        # Create the target directory
+        New-Item -ItemType Directory -Path $TargetPath -Force | Out-Null
+        
+        # Copy all files recursively
+        Get-ChildItem -Path $SourcePath -Recurse | ForEach-Object {
+            $relativePath = $_.FullName.Substring($SourcePath.Length + 1)
+            $destPath = Join-Path $TargetPath $relativePath
+            
+            if ($_.PSIsContainer) {
+                New-Item -ItemType Directory -Path $destPath -Force | Out-Null
+            } else {
+                $destDir = Split-Path $destPath -Parent
+                if (-not (Test-Path $destDir)) {
+                    New-Item -ItemType Directory -Path $destDir -Force | Out-Null
+                }
+                Copy-Item -Path $_.FullName -Destination $destPath -Force
+            }
+        }
     }
 }
 
 Write-Host ""
 Write-Host "Deployment complete!" -ForegroundColor Green
+
+# Verify deployment
+$fileCount = (Get-ChildItem -Path $TargetDir -Recurse -File).Count
+Write-Host "Files deployed: $fileCount" -ForegroundColor Cyan
 Write-Host "Addon installed to: $TargetDir" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "You can now test the addon in WoW Classic Era." -ForegroundColor Yellow
-
+Write-Host "Reload your UI in WoW (/reload) to test." -ForegroundColor Yellow

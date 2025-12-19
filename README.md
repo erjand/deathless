@@ -1,1 +1,19 @@
 # deathless
+
+## Overview
+
+A Hardcore Classic WoW addon.
+
+deathless is a multi-purpose / AIO addon intended to serve as the companion to a player on their journey 1-60. It is intended to minimize the number of times a player has to consult sources outside the game, such as Wowhead, as well as provide them the information they need to increase their overall odds of making it to level 60.
+
+- Class guides and talent builds
+- Zone overview, hot spots, and important quests
+- Dungeon guides
+- Profession guides
+- Upcoming skills and what level at which they are trainable
+- Self found information / guides
+
+## UI
+
+- Like an almanac
+- UI similar to Details with clean left-hand nav and simple dark / pixel theme.

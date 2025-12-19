@@ -1,0 +1,36 @@
+## Interface: 11405
+## Title: Deathless
+## Notes: A Hardcore Classic WoW companion addon
+## Author: YourName
+## Version: 1.0.0
+
+deathless.lua
+
+core\init.lua
+core\config.lua
+core\events.lua
+
+utils\table.lua
+utils\string.lua
+utils\ui.lua
+
+modules\classes\init.lua
+modules\zones\init.lua
+modules\dungeons\init.lua
+modules\professions\init.lua
+modules\skills\init.lua
+modules\selffound\init.lua
+
+ui\init.lua
+ui\frame.lua
+ui\navigation.lua
+ui\content.lua
+ui\components\button.lua
+ui\components\panel.lua
+ui\components\text.lua
+
+data\classes.lua
+data\zones.lua
+data\dungeons.lua
+data\professions.lua
+

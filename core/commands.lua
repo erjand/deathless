@@ -16,7 +16,7 @@ local function SlashCommandHandler(msg)
                 Deathless.UI.Frame:Show()
             end
         else
-            Deathless:Print("UI not initialized.")
+            Deathless.Utils.Chat.Print("UI not initialized.")
         end
     elseif msg == "show" or msg == "open" then
         if Deathless.UI and Deathless.UI.Frame then
@@ -27,7 +27,7 @@ local function SlashCommandHandler(msg)
             Deathless.UI.Frame:Hide()
         end
     else
-        Deathless:Print("Usage: /deathless [show|hide|toggle]")
+        Deathless.Utils.Chat.Print("Usage: /deathless [show|hide|toggle]")
     end
 end
 

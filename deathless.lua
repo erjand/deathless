@@ -1,6 +1,6 @@
 -- Deathless: A Hardcore Classic WoW companion addon
 Deathless = Deathless or {}
-Deathless.version = "1.0.0"
+Deathless.version = "0.1.0"
 Deathless.modules = {}
 Deathless.config = {}
 
@@ -16,9 +16,3 @@ end
 function Deathless:GetModule(name)
     return self.modules[name]
 end
-
--- Print helper
-function Deathless:Print(msg)
-    DEFAULT_CHAT_FRAME:AddMessage("|cFF00FF00Deathless:|r " .. tostring(msg))
-end
-

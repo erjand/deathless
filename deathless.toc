@@ -12,7 +12,6 @@ core\events.lua
 core\commands.lua
 
 utils\table.lua
-utils\string.lua
 utils\ui.lua
 utils\chat.lua
 

@@ -15,5 +15,5 @@ deathless is a multi-purpose / AIO addon intended to serve as the companion to a
 
 ## UI
 
-- Like an almanac
-- UI similar to Details with clean left-hand nav and simple dark / pixel theme.
+- Like an almanac / reference
+- Clean pixel UIs such as Details, or Cell.

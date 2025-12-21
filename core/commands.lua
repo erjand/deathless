@@ -1,33 +1,15 @@
 local Deathless = Deathless
 
--- Slash command handler
+-- Slash command handler - toggles UI visibility
 local function SlashCommandHandler(msg)
-    msg = msg or ""
-    msg = string.lower(msg)
-    msg = string.gsub(msg, "^%s+", "")
-    msg = string.gsub(msg, "%s+$", "")
-    
-    if msg == "" or msg == "toggle" then
-        -- Toggle UI visibility
-        if Deathless.UI and Deathless.UI.Frame then
-            if Deathless.UI.Frame.mainFrame and Deathless.UI.Frame.mainFrame:IsShown() then
-                Deathless.UI.Frame:Hide()
-            else
-                Deathless.UI.Frame:Show()
-            end
+    if Deathless.UI and Deathless.UI.Frame then
+        if Deathless.UI.Frame.mainFrame and Deathless.UI.Frame.mainFrame:IsShown() then
+            Deathless.UI.Frame:Hide()
         else
-            Deathless.Utils.Chat.Print("UI not initialized.")
-        end
-    elseif msg == "show" or msg == "open" then
-        if Deathless.UI and Deathless.UI.Frame then
             Deathless.UI.Frame:Show()
         end
-    elseif msg == "hide" or msg == "close" then
-        if Deathless.UI and Deathless.UI.Frame then
-            Deathless.UI.Frame:Hide()
-        end
     else
-        Deathless.Utils.Chat.Print("Usage: /deathless [show|hide|toggle]")
+        Deathless.Utils.Chat.Print("UI not initialized.")
     end
 end
 

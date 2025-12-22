@@ -142,13 +142,17 @@ function Deathless.UI.Frame:Create()
         self:Hide()
     end)
     
-    -- Content area placeholder
-    local contentText = frame:CreateFontString(nil, "OVERLAY")
-    contentText:SetFont("Fonts\\ARIALN.TTF", 12, "")
-    contentText:SetPoint("CENTER", frame, "CENTER", 0, -14)
-    contentText:SetText("Hardcore Classic WoW Companion")
-    contentText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], Colors.textDim[4])
-    contentText:SetJustifyH("CENTER")
+    -- Create navigation sidebar
+    local navigation = Deathless.UI.Navigation:Create(frame)
+    
+    -- Create content panel (positioned to the right of nav)
+    local navWidth = Deathless.UI.Navigation:GetWidth()
+    local content = Deathless.UI.Content:Create(frame, navWidth)
+    
+    -- Select home by default
+    C_Timer.After(0, function()
+        Deathless.UI.Navigation:Select("home")
+    end)
     
     -- Resize grip (bottom-right corner)
     local resizeGrip = CreateFrame("Button", nil, frame)
@@ -192,6 +196,8 @@ function Deathless.UI.Frame:Create()
     frame.titleBar = titleBar
     frame.title = title
     frame.resizeGrip = resizeGrip
+    frame.navigation = navigation
+    frame.content = content
     
     -- Hide by default
     frame:Hide()

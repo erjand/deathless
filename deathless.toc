@@ -23,9 +23,9 @@ modules\skills\init.lua
 modules\selffound\init.lua
 
 ui\init.lua
-ui\frame.lua
 ui\navigation.lua
 ui\content.lua
+ui\frame.lua
 ui\components\button.lua
 ui\components\panel.lua
 ui\components\text.lua

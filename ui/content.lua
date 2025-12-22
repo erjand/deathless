@@ -91,6 +91,65 @@ ViewCreators.zones = function(container)
     return { title = title, subtitle = subtitle, content = content }
 end
 
+-- Class color definitions (matching WoW class colors)
+local CLASS_COLORS = {
+    druid = { 1.00, 0.49, 0.04 },    -- Orange
+    hunter = { 0.67, 0.83, 0.45 },   -- Green
+    mage = { 0.25, 0.78, 0.92 },     -- Light Blue
+    paladin = { 0.96, 0.55, 0.73 },  -- Pink
+    priest = { 1.00, 1.00, 1.00 },   -- White
+    rogue = { 1.00, 0.96, 0.41 },    -- Yellow
+    shaman = { 0.00, 0.44, 0.87 },   -- Blue
+    warlock = { 0.53, 0.53, 0.93 },  -- Purple
+    warrior = { 0.78, 0.61, 0.43 },  -- Tan
+}
+
+--- Factory function to create class view content
+---@param className string The class name (lowercase)
+---@param displayName string The display name for the class
+---@return function View creator function
+local function CreateClassViewCreator(className, displayName)
+    return function(container)
+        local classColor = CLASS_COLORS[className] or Colors.accent
+        
+        -- Title with class color
+        local title = container:CreateFontString(nil, "OVERLAY")
+        title:SetFont("Fonts\\FRIZQT__.TTF", 20, "")
+        title:SetPoint("TOPLEFT", container, "TOPLEFT", 20, -20)
+        title:SetText(displayName)
+        title:SetTextColor(classColor[1], classColor[2], classColor[3], 1)
+        
+        -- Subtitle
+        local subtitle = container:CreateFontString(nil, "OVERLAY")
+        subtitle:SetFont("Fonts\\ARIALN.TTF", 12, "")
+        subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -4)
+        subtitle:SetText("Hardcore " .. displayName .. " Guide")
+        subtitle:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        
+        -- Placeholder content
+        local content = container:CreateFontString(nil, "OVERLAY")
+        content:SetFont("Fonts\\ARIALN.TTF", 12, "")
+        content:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -20)
+        content:SetWidth(container:GetWidth() - 40)
+        content:SetJustifyH("LEFT")
+        content:SetText("Talent builds, leveling strategies, and survival tips for " .. displayName .. " in Hardcore Classic WoW.")
+        content:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        
+        return { title = title, subtitle = subtitle, content = content }
+    end
+end
+
+-- Register class view creators
+ViewCreators.class_druid = CreateClassViewCreator("druid", "Druid")
+ViewCreators.class_hunter = CreateClassViewCreator("hunter", "Hunter")
+ViewCreators.class_mage = CreateClassViewCreator("mage", "Mage")
+ViewCreators.class_paladin = CreateClassViewCreator("paladin", "Paladin")
+ViewCreators.class_priest = CreateClassViewCreator("priest", "Priest")
+ViewCreators.class_rogue = CreateClassViewCreator("rogue", "Rogue")
+ViewCreators.class_shaman = CreateClassViewCreator("shaman", "Shaman")
+ViewCreators.class_warlock = CreateClassViewCreator("warlock", "Warlock")
+ViewCreators.class_warrior = CreateClassViewCreator("warrior", "Warrior")
+
 --- Create the main content panel
 ---@param parent Frame The main frame to attach to
 ---@param navWidth number Width of the navigation sidebar

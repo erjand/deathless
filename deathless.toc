@@ -34,4 +34,13 @@ data\classes.lua
 data\zones.lua
 data\dungeons.lua
 data\professions.lua
+data\abilities\warrior.lua
+data\abilities\paladin.lua
+data\abilities\hunter.lua
+data\abilities\rogue.lua
+data\abilities\priest.lua
+data\abilities\shaman.lua
+data\abilities\mage.lua
+data\abilities\warlock.lua
+data\abilities\druid.lua
 

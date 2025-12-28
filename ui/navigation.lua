@@ -26,8 +26,11 @@ local CLASS_ITEMS = {
 -- Navigation items configuration (with optional children)
 local NAV_ITEMS = {
     { id = "home", label = "Home" },
+    { divider = true },
     { id = "classes", label = "Classes", children = CLASS_ITEMS },
     { id = "zones", label = "Zones" },
+    { divider = true },
+    { id = "options", label = "Options" },
 }
 
 -- Width of the navigation sidebar
@@ -38,6 +41,7 @@ local BUTTON_HEIGHT = 28
 local SUB_BUTTON_HEIGHT = 24
 local SUB_SUB_BUTTON_HEIGHT = 22
 local BUTTON_SPACING = 2
+local DIVIDER_HEIGHT = 12
 
 --- Create a single navigation button
 ---@param parent Frame Parent frame for the button
@@ -146,6 +150,9 @@ end
 ---@param item table The navigation item
 ---@param depth number Current nesting depth
 local function CreateButtonsRecursive(nav, item, depth)
+    -- Skip dividers (they're created on-demand in positioning)
+    if item.divider then return end
+    
     local btn = CreateNavButton(nav, item, depth)
     nav.buttons[item.id] = btn
     btn:Hide() -- Will be shown by RepositionButtons if visible
@@ -171,6 +178,20 @@ local function CreateButtonsRecursive(nav, item, depth)
     end
 end
 
+--- Create a horizontal divider
+---@param parent Frame Parent frame
+---@return Frame The divider frame
+local function CreateDivider(parent)
+    local divider = CreateFrame("Frame", nil, parent)
+    divider:SetSize(NAV_WIDTH - 24, 1)
+    
+    local line = divider:CreateTexture(nil, "ARTWORK")
+    line:SetAllPoints()
+    line:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
+    
+    return divider
+end
+
 --- Recursively position buttons and their children
 ---@param nav Frame The navigation frame
 ---@param items table Array of nav items
@@ -182,23 +203,38 @@ local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpand
     local height = depth == 0 and BUTTON_HEIGHT or (depth == 1 and SUB_BUTTON_HEIGHT or SUB_SUB_BUTTON_HEIGHT)
     local indent = depth * 16
     
-    for _, item in ipairs(items) do
-        local btn = nav.buttons[item.id]
-        if btn then
+    for i, item in ipairs(items) do
+        -- Handle dividers
+        if item.divider then
             if parentExpanded then
-                btn:ClearAllPoints()
-                btn:SetPoint("TOPLEFT", nav, "TOPLEFT", 4 + indent, yOffset)
-                btn:Show()
-                yOffset = yOffset - height - BUTTON_SPACING
-                
-                -- Position children if this item is expanded
-                if item.children then
-                    local isExpanded = nav.expandedSections[item.id]
-                    SetButtonExpanded(btn, isExpanded)
-                    yOffset = PositionButtonsRecursive(nav, item.children, yOffset, depth + 1, isExpanded)
+                local divider = nav.dividers[i]
+                if not divider then
+                    divider = CreateDivider(nav)
+                    nav.dividers[i] = divider
                 end
-            else
-                btn:Hide()
+                divider:ClearAllPoints()
+                divider:SetPoint("TOPLEFT", nav, "TOPLEFT", 12, yOffset - (DIVIDER_HEIGHT / 2) + 1)
+                divider:Show()
+                yOffset = yOffset - DIVIDER_HEIGHT
+            end
+        else
+            local btn = nav.buttons[item.id]
+            if btn then
+                if parentExpanded then
+                    btn:ClearAllPoints()
+                    btn:SetPoint("TOPLEFT", nav, "TOPLEFT", 4 + indent, yOffset)
+                    btn:Show()
+                    yOffset = yOffset - height - BUTTON_SPACING
+                    
+                    -- Position children if this item is expanded
+                    if item.children then
+                        local isExpanded = nav.expandedSections[item.id]
+                        SetButtonExpanded(btn, isExpanded)
+                        yOffset = PositionButtonsRecursive(nav, item.children, yOffset, depth + 1, isExpanded)
+                    end
+                else
+                    btn:Hide()
+                end
             end
         end
     end
@@ -240,6 +276,7 @@ function Deathless.UI.Navigation:Create(parent)
     -- Track expanded sections
     nav.expandedSections = {}
     nav.buttons = {}
+    nav.dividers = {}
     
     -- Create all nav buttons recursively
     for _, item in ipairs(NAV_ITEMS) do

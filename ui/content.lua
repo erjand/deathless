@@ -91,6 +91,34 @@ ViewCreators.zones = function(container)
     return { title = title, subtitle = subtitle, content = content }
 end
 
+--- Options view content
+ViewCreators.options = function(container)
+    -- Title
+    local title = container:CreateFontString(nil, "OVERLAY")
+    title:SetFont("Fonts\\FRIZQT__.TTF", 20, "")
+    title:SetPoint("TOPLEFT", container, "TOPLEFT", 20, -20)
+    title:SetText("Options")
+    title:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+    
+    -- Subtitle
+    local subtitle = container:CreateFontString(nil, "OVERLAY")
+    subtitle:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -4)
+    subtitle:SetText("Addon settings and preferences")
+    subtitle:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    
+    -- Placeholder content
+    local content = container:CreateFontString(nil, "OVERLAY")
+    content:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    content:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -20)
+    content:SetWidth(container:GetWidth() - 40)
+    content:SetJustifyH("LEFT")
+    content:SetText("Configure Deathless addon settings here.")
+    content:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+    
+    return { title = title, subtitle = subtitle, content = content }
+end
+
 -- Class color definitions (matching WoW class colors)
 local CLASS_COLORS = {
     druid = { 1.00, 0.49, 0.04 },    -- Orange

@@ -4,6 +4,6 @@ alwaysApply: true
 
 # system-design
 
-- Use modern lua best practices for WoW addon design in 2025
+- Use modern lua best practices for WoW addon design in 2026
 - Code should be clean, modular, re-usable, and simple
 - Non-trivial code should be documented

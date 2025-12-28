@@ -193,6 +193,24 @@ local function CreateDivider(parent)
     return divider
 end
 
+--- Check if a class item should be shown based on config
+---@param item table The navigation item
+---@return boolean Whether the item should be shown
+local function IsClassIncluded(item)
+    -- Only filter items that start with "class_"
+    if not item.id or not item.id:match("^class_") then
+        return true
+    end
+    
+    -- Check config
+    local config = Deathless.config
+    if not config or not config.includedClasses then
+        return true
+    end
+    
+    return config.includedClasses[item.label] == true
+end
+
 --- Recursively position buttons and their children
 ---@param nav Frame The navigation frame
 ---@param items table Array of nav items
@@ -220,8 +238,11 @@ local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpand
             end
         else
             local btn = nav.buttons[item.id]
+            -- Check if class items should be filtered
+            local shouldShow = IsClassIncluded(item)
+            
             if btn then
-                if parentExpanded then
+                if parentExpanded and shouldShow then
                     btn:ClearAllPoints()
                     btn:SetPoint("TOPLEFT", nav, "TOPLEFT", 4 + indent, yOffset)
                     btn:Show()
@@ -235,7 +256,7 @@ local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpand
                     end
                 else
                     btn:Hide()
-                    -- Recursively hide children when parent is collapsed
+                    -- Recursively hide children when parent is collapsed or filtered
                     if item.children then
                         PositionButtonsRecursive(nav, item.children, yOffset, depth + 1, false)
                     end

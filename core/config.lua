@@ -14,7 +14,14 @@ Deathless.config = Deathless.config or {
         professions = { enabled = true },
         skills = { enabled = true },
         selffound = { enabled = true },
-    }
+    },
+    -- Included classes (nil = use player class only on first load)
+    includedClasses = nil,
+}
+
+-- Class list in alphabetical order
+Deathless.CLASS_LIST = {
+    "Druid", "Hunter", "Mage", "Paladin", "Priest", "Rogue", "Shaman", "Warlock", "Warrior"
 }
 
 -- Load saved variables

@@ -120,7 +120,7 @@ Deathless.Data.Abilities["Warrior"] = {
     { name = "Overpower", level = 60, rank = 4, base_cost = 62000, icon = "Ability_MeleeDamage", source = "trainer" },
 
     -- Parry
-    { name = "Parry", level = 6, rank = 1, base_cost = 0, icon = "Ability_Warrior_Parry", source = "quest" },
+    { name = "Parry", level = 6, rank = 1, base_cost = 0, icon = "Ability_Parry", source = "quest" },
 
     -- Pummel
     { name = "Pummel", level = 38, rank = 1, base_cost = 20000, icon = "INV_Gauntlets_04", source = "trainer" },

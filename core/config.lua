@@ -24,6 +24,20 @@ Deathless.CLASS_LIST = {
     "Druid", "Hunter", "Mage", "Paladin", "Priest", "Rogue", "Shaman", "Warlock", "Warrior"
 }
 
+-- Initialize included classes based on player class
+local function InitIncludedClasses()
+    if Deathless.config.includedClasses == nil then
+        Deathless.config.includedClasses = {}
+        -- Get player class
+        local _, playerClass = UnitClass("player")
+        if playerClass then
+            -- Format: WARRIOR -> Warrior
+            local formatted = playerClass:sub(1, 1) .. playerClass:sub(2):lower()
+            Deathless.config.includedClasses[formatted] = true
+        end
+    end
+end
+
 -- Load saved variables
 local function LoadConfig()
     if DeathlessDB then
@@ -32,6 +46,8 @@ local function LoadConfig()
             Deathless.config[key] = value
         end
     end
+    -- Initialize class filter if needed
+    InitIncludedClasses()
 end
 
 -- Save configuration

@@ -31,6 +31,9 @@ ui\views\zones.lua
 ui\views\options.lua
 ui\views\support.lua
 ui\views\warrior_abilities.lua
+ui\views\mage_abilities.lua
+ui\views\priest_abilities.lua
+ui\views\rogue_abilities.lua
 ui\content.lua
 ui\frame.lua
 ui\components\button.lua

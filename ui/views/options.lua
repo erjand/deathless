@@ -113,31 +113,14 @@ local function CreateSectionHeader(parent, text, anchor, yOffset)
     return header
 end
 
---- Initialize included classes config based on player class
-local function InitIncludedClasses()
-    if Deathless.config.includedClasses == nil then
-        Deathless.config.includedClasses = {}
-        -- Get player class
-        local _, playerClass = UnitClass("player")
-        if playerClass then
-            -- Format: WARRIOR -> Warrior
-            local formatted = playerClass:sub(1, 1) .. playerClass:sub(2):lower()
-            Deathless.config.includedClasses[formatted] = true
-        end
-    end
-end
-
 --- Options view content
 Deathless.UI.Views:Register("options", function(container)
     local Colors = Utils:GetColors()
     
     local title, subtitle, separator = Utils:CreateHeader(container, "Options", "Addon settings and preferences")
     
-    -- Initialize included classes if needed
-    InitIncludedClasses()
-    
     -- === Include Classes Section ===
-    local classHeader = CreateSectionHeader(container, "Include Classes", separator, -16)
+    local classHeader = CreateSectionHeader(container, "Classes", separator, -16)
     
     -- Class icons lookup
     local CLASS_ICONS = {

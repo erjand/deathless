@@ -10,14 +10,29 @@ local WARRIOR_ITEMS = {
     { id = "warrior_abilities", label = "Abilities", icon = "Interface\\Icons\\Ability_Warrior_BattleShout" },
 }
 
+-- Sub-items for Mage class
+local MAGE_ITEMS = {
+    { id = "mage_abilities", label = "Abilities", icon = "Interface\\Icons\\Spell_Frost_IceStorm" },
+}
+
+-- Sub-items for Priest class
+local PRIEST_ITEMS = {
+    { id = "priest_abilities", label = "Abilities", icon = "Interface\\Icons\\Spell_Holy_PowerWordShield" },
+}
+
+-- Sub-items for Rogue class
+local ROGUE_ITEMS = {
+    { id = "rogue_abilities", label = "Abilities", icon = "Interface\\Icons\\Ability_BackStab" },
+}
+
 -- Classic WoW classes in alphabetical order (with icons and optional children)
 local CLASS_ITEMS = {
     { id = "class_druid", label = "Druid", icon = "Interface\\Icons\\ClassIcon_Druid" },
     { id = "class_hunter", label = "Hunter", icon = "Interface\\Icons\\ClassIcon_Hunter" },
-    { id = "class_mage", label = "Mage", icon = "Interface\\Icons\\ClassIcon_Mage" },
+    { id = "class_mage", label = "Mage", icon = "Interface\\Icons\\ClassIcon_Mage", children = MAGE_ITEMS },
     { id = "class_paladin", label = "Paladin", icon = "Interface\\Icons\\ClassIcon_Paladin" },
-    { id = "class_priest", label = "Priest", icon = "Interface\\Icons\\ClassIcon_Priest" },
-    { id = "class_rogue", label = "Rogue", icon = "Interface\\Icons\\ClassIcon_Rogue" },
+    { id = "class_priest", label = "Priest", icon = "Interface\\Icons\\ClassIcon_Priest", children = PRIEST_ITEMS },
+    { id = "class_rogue", label = "Rogue", icon = "Interface\\Icons\\ClassIcon_Rogue", children = ROGUE_ITEMS },
     { id = "class_shaman", label = "Shaman", icon = "Interface\\Icons\\ClassIcon_Shaman" },
     { id = "class_warlock", label = "Warlock", icon = "Interface\\Icons\\ClassIcon_Warlock" },
     { id = "class_warrior", label = "Warrior", icon = "Interface\\Icons\\ClassIcon_Warrior", children = WARRIOR_ITEMS },

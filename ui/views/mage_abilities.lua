@@ -1,7 +1,7 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 
-local CLASS_COLOR = { 0.78, 0.61, 0.43 } -- Warrior tan
+local CLASS_COLOR = { 0.41, 0.80, 0.94 } -- Mage blue
 
 --- Format copper amount as gold/silver/copper string
 ---@param copper number Amount in copper
@@ -104,11 +104,11 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
     return btn
 end
 
---- Warrior Abilities view
-Deathless.UI.Views:Register("warrior_abilities", function(container)
+--- Mage Abilities view
+Deathless.UI.Views:Register("mage_abilities", function(container)
     local Colors = Utils:GetColors()
     
-    local title, subtitle = Utils:CreateHeader(container, "Warrior Abilities", "All trainable abilities with costs and levels", CLASS_COLOR)
+    local title, subtitle = Utils:CreateHeader(container, "Mage Abilities", "All trainable abilities with costs and levels", CLASS_COLOR)
     
     -- Scroll frame for abilities list
     local scrollFrame = CreateFrame("ScrollFrame", nil, container, "UIPanelScrollFrameTemplate")
@@ -161,7 +161,7 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
     local sectionState = { learned = false, available = true, unavailable = true }
     
     -- Get raw abilities data
-    local rawAbilities = Deathless.Data.Abilities and Deathless.Data.Abilities["Warrior"] or {}
+    local rawAbilities = Deathless.Data.Abilities and Deathless.Data.Abilities["Mage"] or {}
     
     -- Element pools
     local rowPool = {}
@@ -401,7 +401,7 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
         
         local playerLevel = UnitLevel("player") or 60
         local _, playerClass = UnitClass("player")
-        local isCorrectClass = (playerClass == "WARRIOR")
+        local isCorrectClass = (playerClass == "MAGE")
         
         local learned = {}
         local available = {}

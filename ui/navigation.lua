@@ -18,16 +18,19 @@ local WARRIOR_ITEMS = {
 -- Sub-items for Mage class
 local MAGE_ITEMS = {
     { id = "mage_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "mage_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Priest class
 local PRIEST_ITEMS = {
     { id = "priest_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "priest_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Rogue class
 local ROGUE_ITEMS = {
     { id = "rogue_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "rogue_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Classic WoW classes in alphabetical order (with icons and optional children)

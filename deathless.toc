@@ -33,8 +33,11 @@ ui\views\support.lua
 ui\views\warrior_abilities.lua
 ui\views\warrior_talents.lua
 ui\views\mage_abilities.lua
+ui\views\mage_talents.lua
 ui\views\priest_abilities.lua
+ui\views\priest_talents.lua
 ui\views\rogue_abilities.lua
+ui\views\rogue_talents.lua
 ui\content.lua
 ui\frame.lua
 ui\components\button.lua
@@ -46,6 +49,9 @@ data\zones.lua
 data\dungeons.lua
 data\professions.lua
 data\talents\warrior.lua
+data\talents\mage.lua
+data\talents\priest.lua
+data\talents\rogue.lua
 data\abilities\warrior.lua
 data\abilities\paladin.lua
 data\abilities\hunter.lua

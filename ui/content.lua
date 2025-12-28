@@ -303,6 +303,31 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
     return btn
 end
 
+--- Check if a spell is known by searching the spellbook
+---@param spellName string The spell name to check
+---@param spellRank number|nil Optional rank to match
+---@return boolean Whether the spell is known
+local function IsSpellKnown(spellName, spellRank)
+    local i = 1
+    while true do
+        local name, rank = GetSpellBookItemName(i, BOOKTYPE_SPELL)
+        if not name then break end
+        
+        if name == spellName then
+            if not spellRank or spellRank == 1 then
+                return true
+            end
+            -- Check rank from subtext
+            local rankNum = rank and tonumber(rank:match("%d+"))
+            if rankNum and rankNum >= spellRank then
+                return true
+            end
+        end
+        i = i + 1
+    end
+    return false
+end
+
 --- Warrior Abilities view
 ViewCreators.warrior_abilities = function(container)
     local classColor = CLASS_COLORS.warrior
@@ -340,7 +365,7 @@ ViewCreators.warrior_abilities = function(container)
     
     -- Smooth scrolling state
     local targetScroll = 0
-    local SCROLL_SPEED = 0.5
+    local SCROLL_SPEED = 1.2
     local SCROLL_STEP = 40
     
     scrollFrame:EnableMouseWheel(true)
@@ -369,42 +394,110 @@ ViewCreators.warrior_abilities = function(container)
     
     -- Sort state
     local sortState = {
-        sortKey = "level", -- Default sort by level
+        sortKey = "level",
         sortAsc = true
+    }
+    
+    -- Section collapse state (learned collapsed by default)
+    local sectionState = {
+        learned = false,    -- collapsed
+        available = true,   -- expanded
+        unavailable = true  -- expanded
     }
     
     -- Get raw abilities data
     local rawAbilities = Deathless.Data.Abilities and Deathless.Data.Abilities["Warrior"] or {}
     
-    -- Row pool for recycling
+    -- Element pools for recycling
     local rowPool = {}
+    local sectionPool = {}
+    local poolIndex = 0
+    local sectionIndex = 0
     
-    --- Clear all rows from scroll child
-    local function ClearRows()
+    --- Clear all elements from scroll child
+    local function ClearElements()
         for _, row in ipairs(rowPool) do
             row:Hide()
             row:ClearAllPoints()
         end
+        for _, section in ipairs(sectionPool) do
+            section:Hide()
+            section:ClearAllPoints()
+        end
+        poolIndex = 0
+        sectionIndex = 0
     end
     
-    --- Populate rows with sorted data
-    local function PopulateRows()
-        ClearRows()
+    --- Get or create a section header
+    local function GetSectionHeader()
+        sectionIndex = sectionIndex + 1
+        local section = sectionPool[sectionIndex]
+        if not section then
+            section = CreateFrame("Button", nil, scrollChild)
+            section:SetHeight(28)
+            
+            section.bg = section:CreateTexture(nil, "BACKGROUND")
+            section.bg:SetAllPoints()
+            section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.6)
+            
+            section.icon = section:CreateFontString(nil, "OVERLAY")
+            section.icon:SetFont("Fonts\\ARIALN.TTF", 12, "")
+            section.icon:SetPoint("LEFT", section, "LEFT", 8, 0)
+            
+            section.label = section:CreateFontString(nil, "OVERLAY")
+            section.label:SetFont("Fonts\\ARIALN.TTF", 12, "")
+            section.label:SetPoint("LEFT", section.icon, "RIGHT", 6, 0)
+            
+            section.count = section:CreateFontString(nil, "OVERLAY")
+            section.count:SetFont("Fonts\\ARIALN.TTF", 11, "")
+            section.count:SetPoint("LEFT", section.label, "RIGHT", 8, 0)
+            section.count:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            
+            section:SetScript("OnEnter", function(self)
+                self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 0.8)
+            end)
+            section:SetScript("OnLeave", function(self)
+                self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.6)
+            end)
+            
+            sectionPool[sectionIndex] = section
+        end
+        return section
+    end
+    
+    --- Get or create an ability row
+    local function GetAbilityRow()
+        poolIndex = poolIndex + 1
+        local row = rowPool[poolIndex]
+        if not row then
+            row = CreateFrame("Frame", nil, scrollChild)
+            rowPool[poolIndex] = row
+        end
         
-        -- Copy and sort abilities
-        local sortedAbilities = {}
-        for _, ability in ipairs(rawAbilities) do
-            table.insert(sortedAbilities, ability)
+        -- Clear existing content
+        if row.elements then
+            for _, element in pairs(row.elements) do
+                if element.Hide then element:Hide() end
+            end
+        end
+        row.elements = {}
+        return row
+    end
+    
+    --- Sort abilities list
+    local function SortAbilities(abilities)
+        local sorted = {}
+        for _, ability in ipairs(abilities) do
+            table.insert(sorted, ability)
         end
         
         local key = sortState.sortKey
         local asc = sortState.sortAsc
         
-        table.sort(sortedAbilities, function(a, b)
+        table.sort(sorted, function(a, b)
             local valA, valB
             
             if key == "name" then
-                -- Sort by name, then by rank
                 if a.name == b.name then
                     valA, valB = a.rank or 1, b.rank or 1
                 else
@@ -427,122 +520,242 @@ ViewCreators.warrior_abilities = function(container)
             end
         end)
         
-        -- Create/reuse rows
-        local yOffset = 0
-        for i, ability in ipairs(sortedAbilities) do
-            local row = rowPool[i]
-            if not row then
-                row = CreateFrame("Frame", nil, scrollChild)
-                rowPool[i] = row
-            end
-            
-            -- Clear existing content
-            if row.elements then
-                for _, element in pairs(row.elements) do
-                    if element.Hide then element:Hide() end
-                end
-            end
-            row.elements = {}
-            
-            local ROW_HEIGHT = 28
-            row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-            row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
-            row:SetHeight(ROW_HEIGHT)
-            row:Show()
-            
-            -- Alternating background
-            if not row.bg then
-                row.bg = row:CreateTexture(nil, "BACKGROUND")
-                row.bg:SetAllPoints()
-            end
-            if i % 2 == 0 then
-                row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.3)
-                row.bg:Show()
-            else
-                row.bg:Hide()
-            end
-            
-            -- Icon
-            local icon = row:CreateTexture(nil, "ARTWORK")
-            icon:SetSize(20, 20)
-            icon:SetPoint("LEFT", row, "LEFT", 8, 0)
-            icon:SetTexture("Interface\\Icons\\" .. (ability.icon or "INV_Misc_QuestionMark"))
-            icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-            row.elements.icon = icon
-            
-            -- Name and Rank
-            local nameText = ability.name
-            if ability.rank and ability.rank > 1 then
-                nameText = nameText .. " (Rank " .. ability.rank .. ")"
-            end
-            
-            local name = row:CreateFontString(nil, "OVERLAY")
-            name:SetFont("Fonts\\ARIALN.TTF", 11, "")
-            name:SetPoint("LEFT", icon, "RIGHT", 8, 0)
-            name:SetWidth(200)
-            name:SetJustifyH("LEFT")
-            name:SetText(nameText)
-            name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-            row.elements.name = name
-            
-            -- Level
-            local level = row:CreateFontString(nil, "OVERLAY")
-            level:SetFont("Fonts\\ARIALN.TTF", 11, "")
-            level:SetPoint("LEFT", row, "LEFT", 250, 0)
-            level:SetWidth(50)
-            level:SetJustifyH("CENTER")
-            level:SetText("Lv " .. ability.level)
-            level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-            row.elements.level = level
-            
-            -- Cost
-            local cost = row:CreateFontString(nil, "OVERLAY")
-            cost:SetFont("Fonts\\ARIALN.TTF", 11, "")
-            cost:SetPoint("LEFT", row, "LEFT", 310, 0)
-            cost:SetWidth(80)
-            cost:SetJustifyH("RIGHT")
-            cost:SetText(FormatMoney(ability.base_cost))
-            if ability.base_cost == 0 then
-                cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
-            else
-                cost:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-            end
-            row.elements.cost = cost
-            
-            -- Source
-            local source = row:CreateFontString(nil, "OVERLAY")
-            source:SetFont("Fonts\\ARIALN.TTF", 11, "")
-            source:SetPoint("LEFT", row, "LEFT", 400, 0)
-            source:SetWidth(60)
-            source:SetJustifyH("LEFT")
-            local sourceText = ability.source:sub(1, 1):upper() .. ability.source:sub(2)
-            source:SetText(sourceText)
-            source:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-            row.elements.source = source
-            
-            yOffset = yOffset - ROW_HEIGHT
+        return sorted
+    end
+    
+    --- Create an ability row at the given offset
+    local function CreateAbilityRowAt(ability, yOffset, rowNum, dimmed)
+        local row = GetAbilityRow()
+        local ROW_HEIGHT = 26
+        
+        row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
+        row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+        row:SetHeight(ROW_HEIGHT)
+        row:Show()
+        
+        -- Alternating background
+        if not row.bg then
+            row.bg = row:CreateTexture(nil, "BACKGROUND")
+            row.bg:SetAllPoints()
+        end
+        if rowNum % 2 == 0 then
+            row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.2)
+            row.bg:Show()
+        else
+            row.bg:Hide()
         end
         
-        -- Hide unused rows
-        for i = #sortedAbilities + 1, #rowPool do
-            rowPool[i]:Hide()
+        -- Icon
+        local icon = row:CreateTexture(nil, "ARTWORK")
+        icon:SetSize(18, 18)
+        icon:SetPoint("LEFT", row, "LEFT", 16, 0)
+        icon:SetTexture("Interface\\Icons\\" .. (ability.icon or "INV_Misc_QuestionMark"))
+        icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        if dimmed then
+            icon:SetDesaturated(true)
+            icon:SetAlpha(0.5)
+        else
+            icon:SetDesaturated(false)
+            icon:SetAlpha(1)
+        end
+        row.elements.icon = icon
+        
+        -- Name and Rank
+        local nameText = ability.name
+        if ability.rank and ability.rank > 1 then
+            nameText = nameText .. " (Rank " .. ability.rank .. ")"
+        end
+        
+        local name = row:CreateFontString(nil, "OVERLAY")
+        name:SetFont("Fonts\\ARIALN.TTF", 11, "")
+        name:SetPoint("LEFT", icon, "RIGHT", 8, 0)
+        name:SetWidth(190)
+        name:SetJustifyH("LEFT")
+        name:SetText(nameText)
+        if dimmed then
+            name:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.6)
+        else
+            name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        end
+        row.elements.name = name
+        
+        -- Level
+        local level = row:CreateFontString(nil, "OVERLAY")
+        level:SetFont("Fonts\\ARIALN.TTF", 11, "")
+        level:SetPoint("LEFT", row, "LEFT", 250, 0)
+        level:SetWidth(50)
+        level:SetJustifyH("CENTER")
+        level:SetText("Lv " .. ability.level)
+        if dimmed then
+            level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.6)
+        else
+            level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        end
+        row.elements.level = level
+        
+        -- Cost
+        local cost = row:CreateFontString(nil, "OVERLAY")
+        cost:SetFont("Fonts\\ARIALN.TTF", 11, "")
+        cost:SetPoint("LEFT", row, "LEFT", 310, 0)
+        cost:SetWidth(80)
+        cost:SetJustifyH("RIGHT")
+        cost:SetText(FormatMoney(ability.base_cost))
+        if ability.base_cost == 0 then
+            cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], dimmed and 0.6 or 1)
+        else
+            cost:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], dimmed and 0.6 or 1)
+        end
+        row.elements.cost = cost
+        
+        -- Source
+        local source = row:CreateFontString(nil, "OVERLAY")
+        source:SetFont("Fonts\\ARIALN.TTF", 11, "")
+        source:SetPoint("LEFT", row, "LEFT", 400, 0)
+        source:SetWidth(60)
+        source:SetJustifyH("LEFT")
+        local sourceText = ability.source:sub(1, 1):upper() .. ability.source:sub(2)
+        source:SetText(sourceText)
+        source:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], dimmed and 0.6 or 1)
+        row.elements.source = source
+        
+        return yOffset - ROW_HEIGHT
+    end
+    
+    -- Forward declaration for PopulateRows
+    local PopulateRows
+    
+    --- Create a section header at the given offset
+    local function CreateSectionHeaderAt(sectionKey, label, count, yOffset, color)
+        local section = GetSectionHeader()
+        local SECTION_HEIGHT = 28
+        
+        section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
+        section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+        section:Show()
+        
+        local isExpanded = sectionState[sectionKey]
+        section.icon:SetText(isExpanded and "▼" or "▶")
+        section.icon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        
+        section.label:SetText(label)
+        section.label:SetTextColor(color[1], color[2], color[3], 1)
+        
+        section.count:SetText("(" .. count .. ")")
+        
+        section.sectionKey = sectionKey
+        section:SetScript("OnClick", function(self)
+            sectionState[self.sectionKey] = not sectionState[self.sectionKey]
+            PopulateRows()
+        end)
+        
+        return yOffset - SECTION_HEIGHT
+    end
+    
+    --- Check if base talent is known (checks if rank 1 of the spell exists in spellbook)
+    ---@param spellName string The talent spell name
+    ---@return boolean Whether the base talent is known
+    local function IsTalentKnown(spellName)
+        return IsSpellKnown(spellName, 1)
+    end
+    
+    --- Populate rows with categorized, sorted data
+    PopulateRows = function()
+        ClearElements()
+        
+        -- Get player level
+        local playerLevel = UnitLevel("player") or 60
+        
+        -- Categorize abilities
+        local learned = {}
+        local available = {}
+        local unavailable = {}
+        
+        for _, ability in ipairs(rawAbilities) do
+            -- For talent abilities, skip entirely if base talent not known
+            if ability.source == "talent" then
+                local hasTalent = IsTalentKnown(ability.name)
+                if not hasTalent then
+                    -- Skip this ability - talent not learned
+                else
+                    -- Talent is known, categorize normally
+                    local isKnown = IsSpellKnown(ability.name, ability.rank)
+                    if isKnown then
+                        table.insert(learned, ability)
+                    elseif ability.level <= playerLevel then
+                        table.insert(available, ability)
+                    else
+                        table.insert(unavailable, ability)
+                    end
+                end
+            else
+                -- Normal ability
+                local isKnown = IsSpellKnown(ability.name, ability.rank)
+                
+                if isKnown then
+                    table.insert(learned, ability)
+                elseif ability.level <= playerLevel then
+                    table.insert(available, ability)
+                else
+                    table.insert(unavailable, ability)
+                end
+            end
+        end
+        
+        -- Sort each category
+        learned = SortAbilities(learned)
+        available = SortAbilities(available)
+        unavailable = SortAbilities(unavailable)
+        
+        local yOffset = 0
+        local rowNum = 0
+        
+        -- Section colors
+        local learnedColor = { 0.5, 0.5, 0.5 }      -- Gray for learned
+        local availableColor = Colors.accent        -- Green for available
+        local unavailableColor = { 0.6, 0.4, 0.4 }  -- Muted red for unavailable
+        
+        -- Learned section
+        if #learned > 0 then
+            yOffset = CreateSectionHeaderAt("learned", "Learned", #learned, yOffset, learnedColor)
+            if sectionState.learned then
+                for _, ability in ipairs(learned) do
+                    rowNum = rowNum + 1
+                    yOffset = CreateAbilityRowAt(ability, yOffset, rowNum, true)
+                end
+            end
+        end
+        
+        -- Available section
+        if #available > 0 then
+            yOffset = CreateSectionHeaderAt("available", "Available", #available, yOffset, availableColor)
+            if sectionState.available then
+                for _, ability in ipairs(available) do
+                    rowNum = rowNum + 1
+                    yOffset = CreateAbilityRowAt(ability, yOffset, rowNum, false)
+                end
+            end
+        end
+        
+        -- Unavailable section
+        if #unavailable > 0 then
+            yOffset = CreateSectionHeaderAt("unavailable", "Unavailable", #unavailable, yOffset, unavailableColor)
+            if sectionState.unavailable then
+                for _, ability in ipairs(unavailable) do
+                    rowNum = rowNum + 1
+                    yOffset = CreateAbilityRowAt(ability, yOffset, rowNum, true)
+                end
+            end
         end
         
         -- Update scroll child height
         scrollChild:SetHeight(math.abs(yOffset) + 10)
-        
-        -- Reset scroll position
-        targetScroll = 0
-        scrollFrame:SetVerticalScroll(0)
     end
     
     -- Create sortable headers
     local headers = {}
     
     local function OnSort()
-        -- Update all header labels
         for _, header in pairs(headers) do
-            -- Reset color
             if sortState.sortKey == header.sortKey then
                 header.label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
             else
@@ -558,7 +771,7 @@ ViewCreators.warrior_abilities = function(container)
     headers.cost = CreateSortableHeader(container, "COST", 310, 80, "cost", sortState, OnSort)
     headers.source = CreateSortableHeader(container, "SOURCE", 400, 60, "source", sortState, OnSort)
     
-    -- Initial population and header highlight
+    -- Initial population
     OnSort()
     
     return { 
@@ -566,7 +779,8 @@ ViewCreators.warrior_abilities = function(container)
         subtitle = subtitle, 
         scrollFrame = scrollFrame, 
         scrollChild = scrollChild,
-        headers = headers
+        headers = headers,
+        Refresh = PopulateRows  -- Expose refresh for external updates
     }
 end
 

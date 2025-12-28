@@ -17,3 +17,7 @@ deathless is a multi-purpose / AIO addon intended to serve as the companion to a
 
 - Like an almanac / reference
 - Clean pixel UIs such as Details, or Cell.
+
+## TODO
+
+- [ ] Top-right corner `X` is slightly not pixel centered between top, right, and bottom edges of the UI

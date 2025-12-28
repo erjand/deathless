@@ -375,7 +375,7 @@ Deathless.UI.Views:Register("priest_abilities", function(container)
         section:Show()
         
         local isExpanded = sectionState[sectionKey]
-        section.icon:SetText(isExpanded and "▼" or "▶")
+        section.icon:SetText(isExpanded and "▼" or "►")
         section.icon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         
         section.label:SetText(label)

@@ -24,6 +24,12 @@ modules\selffound\init.lua
 
 ui\init.lua
 ui\navigation.lua
+ui\views\init.lua
+ui\views\home.lua
+ui\views\classes.lua
+ui\views\zones.lua
+ui\views\options.lua
+ui\views\warrior_abilities.lua
 ui\content.lua
 ui\frame.lua
 ui\components\button.lua

@@ -234,6 +234,10 @@ local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpand
                     end
                 else
                     btn:Hide()
+                    -- Recursively hide children when parent is collapsed
+                    if item.children then
+                        PositionButtonsRecursive(nav, item.children, yOffset, depth + 1, false)
+                    end
                 end
             end
         end

@@ -12,12 +12,12 @@ function Deathless.UI.Views.Utils:GetColors()
     return Deathless.UI.Colors
 end
 
---- Create a standard view header with title and subtitle
+--- Create a standard view header with title, subtitle, and separator
 ---@param container Frame The container frame
 ---@param title string The title text
 ---@param subtitle string The subtitle text
 ---@param titleColor table|nil Optional color override for title {r, g, b}
----@return FontString, FontString The title and subtitle font strings
+---@return FontString, FontString, Texture The title, subtitle, and separator
 function Deathless.UI.Views.Utils:CreateHeader(container, title, subtitle, titleColor)
     local Colors = self:GetColors()
     local color = titleColor or Colors.accent
@@ -34,7 +34,14 @@ function Deathless.UI.Views.Utils:CreateHeader(container, title, subtitle, title
     subtitleText:SetText(subtitle)
     subtitleText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
     
-    return titleText, subtitleText
+    -- Horizontal separator below subtitle
+    local separator = container:CreateTexture(nil, "ARTWORK")
+    separator:SetHeight(1)
+    separator:SetPoint("TOPLEFT", subtitleText, "BOTTOMLEFT", 0, -10)
+    separator:SetPoint("RIGHT", container, "RIGHT", -20, 0)
+    separator:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
+    
+    return titleText, subtitleText, separator
 end
 
 --- Create a centered header (for home-style views)

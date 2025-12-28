@@ -18,11 +18,11 @@ local CLASS_COLORS = {
 Deathless.UI.Views:Register("classes", function(container)
     local Colors = Utils:GetColors()
     
-    local title, subtitle = Utils:CreateHeader(container, "Classes", "Hardcore class guides and tips")
+    local title, subtitle, separator = Utils:CreateHeader(container, "Classes", "Class guides and tips")
     
     local content = container:CreateFontString(nil, "OVERLAY")
     content:SetFont("Fonts\\ARIALN.TTF", 12, "")
-    content:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -20)
+    content:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, -12)
     content:SetWidth(container:GetWidth() - 40)
     content:SetJustifyH("LEFT")
     content:SetText("Select a class from the sub-menu to view guides, talent builds, and hardcore survival strategies.")
@@ -40,11 +40,11 @@ local function CreateClassViewCreator(className, displayName)
         local Colors = Utils:GetColors()
         local classColor = CLASS_COLORS[className] or Colors.accent
         
-        local title, subtitle = Utils:CreateHeader(container, displayName, "Hardcore " .. displayName .. " Guide", classColor)
+        local title, subtitle, separator = Utils:CreateHeader(container, displayName, "Hardcore " .. displayName .. " Guide", classColor)
         
         local content = container:CreateFontString(nil, "OVERLAY")
         content:SetFont("Fonts\\ARIALN.TTF", 12, "")
-        content:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", 0, -20)
+        content:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, -12)
         content:SetWidth(container:GetWidth() - 40)
         content:SetJustifyH("LEFT")
         content:SetText("Talent builds, leveling strategies, and survival tips for " .. displayName .. " in Hardcore Classic WoW.")

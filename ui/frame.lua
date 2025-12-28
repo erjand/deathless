@@ -115,7 +115,7 @@ function Deathless.UI.Frame:Create()
     local titleBar = CreateFrame("Frame", nil, frame)
     titleBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, -2)
     titleBar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -2, -2)
-    titleBar:SetHeight(28)
+    titleBar:SetHeight(30)
     
     titleBar.bg = titleBar:CreateTexture(nil, "BACKGROUND")
     titleBar.bg:SetAllPoints()

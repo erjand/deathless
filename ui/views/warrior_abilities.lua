@@ -59,7 +59,7 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
     
     local btn = CreateFrame("Button", nil, parent)
     btn:SetSize(width, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -70)
+    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -75)
     
     btn.label = btn:CreateFontString(nil, "OVERLAY")
     btn.label:SetFont("Fonts\\ARIALN.TTF", 10, "")
@@ -112,7 +112,7 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
     
     -- Scroll frame for abilities list
     local scrollFrame = CreateFrame("ScrollFrame", nil, container, "UIPanelScrollFrameTemplate")
-    scrollFrame:SetPoint("TOPLEFT", container, "TOPLEFT", 8, -90)
+    scrollFrame:SetPoint("TOPLEFT", container, "TOPLEFT", 8, -95)
     scrollFrame:SetPoint("BOTTOMRIGHT", container, "BOTTOMRIGHT", -28, 24)
     
     local scrollBar = scrollFrame.ScrollBar

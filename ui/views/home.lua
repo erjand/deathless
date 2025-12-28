@@ -13,7 +13,7 @@ Deathless.UI.Views:Register("home", function(container)
     desc:SetPoint("TOP", subtitle, "BOTTOM", 0, -24)
     desc:SetWidth(container:GetWidth() - 60)
     desc:SetJustifyH("CENTER")
-    desc:SetText("Track your hardcore journey with class guides, zone information, and survival tips. Stay deathless!")
+    desc:SetText("Select a content area from the left to get started.")
     desc:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
     
     return { title = title, subtitle = subtitle, desc = desc }

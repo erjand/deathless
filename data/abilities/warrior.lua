@@ -13,6 +13,7 @@ Deathless.Data.Abilities = Deathless.Data.Abilities or {}
 --   quest   - Learned from completing a quest
 --   racial  - Racial ability
 -- Sorted alphabetically by name, then by rank
+-- See https://www.wowhead.com/classic/spells/abilities/warrior for source data
 Deathless.Data.Abilities["Warrior"] = {
     -- Battle Shout
     { name = "Battle Shout", level = 1, rank = 1, base_cost = 10, icon = "Ability_Warrior_BattleShout", source = "trainer" },

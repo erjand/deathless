@@ -29,6 +29,7 @@ ui\views\home.lua
 ui\views\classes.lua
 ui\views\zones.lua
 ui\views\options.lua
+ui\views\support.lua
 ui\views\warrior_abilities.lua
 ui\content.lua
 ui\frame.lua

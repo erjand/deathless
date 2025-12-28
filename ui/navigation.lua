@@ -31,6 +31,7 @@ local NAV_ITEMS = {
     { id = "zones", label = "Zones" },
     { divider = true },
     { id = "options", label = "Options" },
+    { id = "support", label = "Support" },
 }
 
 -- Width of the navigation sidebar

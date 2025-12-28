@@ -259,6 +259,11 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
                 valA, valB = a.base_cost, b.base_cost
             elseif key == "source" then
                 valA, valB = a.source, b.source
+            elseif key == "train" then
+                -- Sort order: yes < maybe < no (priority order)
+                local trainOrder = { yes = 1, maybe = 2, no = 3 }
+                valA = trainOrder[a.train or "yes"] or 2
+                valB = trainOrder[b.train or "yes"] or 2
             else
                 valA, valB = a.level, b.level
             end
@@ -360,6 +365,25 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
         source:SetText(sourceText)
         source:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], dimmed and 0.6 or 1)
         row.elements.source = source
+        
+        -- Train column
+        local train = row:CreateFontString(nil, "OVERLAY")
+        train:SetFont("Fonts\\ARIALN.TTF", 11, "")
+        train:SetPoint("LEFT", row, "LEFT", 470, 0)
+        train:SetWidth(50)
+        train:SetJustifyH("CENTER")
+        local trainValue = ability.train or "yes"
+        local trainText = trainValue:sub(1, 1):upper() .. trainValue:sub(2)
+        train:SetText(trainText)
+        local alpha = dimmed and 0.6 or 1
+        if trainValue == "yes" then
+            train:SetTextColor(0.4, 0.8, 0.4, alpha)  -- Green
+        elseif trainValue == "no" then
+            train:SetTextColor(0.8, 0.4, 0.4, alpha)  -- Red
+        else  -- maybe
+            train:SetTextColor(0.9, 0.8, 0.3, alpha)  -- Yellow
+        end
+        row.elements.train = train
         
         return yOffset - ROW_HEIGHT
     end
@@ -495,6 +519,7 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
     headers.level = CreateSortableHeader(container, "LEVEL", 250, 50, "level", sortState, OnSort)
     headers.cost = CreateSortableHeader(container, "COST", 310, 80, "cost", sortState, OnSort)
     headers.source = CreateSortableHeader(container, "SOURCE", 400, 60, "source", sortState, OnSort)
+    headers.train = CreateSortableHeader(container, "TRAIN", 470, 50, "train", sortState, OnSort)
     
     OnSort()
     

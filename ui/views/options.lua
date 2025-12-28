@@ -15,7 +15,7 @@ local function CreateCheckbox(parent, label, icon, onClick)
     
     -- Checkbox button
     local btn = CreateFrame("Button", nil, frame)
-    btn:SetSize(16, 16)
+    btn:SetSize(14, 14)
     btn:SetPoint("LEFT", frame, "LEFT", 0, 0)
     
     -- Checkbox background
@@ -31,8 +31,8 @@ local function CreateCheckbox(parent, label, icon, onClick)
     
     -- Filled check indicator (green rectangle)
     btn.check = btn:CreateTexture(nil, "ARTWORK")
-    btn.check:SetPoint("TOPLEFT", btn, "TOPLEFT", 2, -2)
-    btn.check:SetPoint("BOTTOMRIGHT", btn, "BOTTOMRIGHT", -2, 2)
+    btn.check:SetPoint("TOPLEFT", btn, "TOPLEFT", 1, -1)
+    btn.check:SetPoint("BOTTOMRIGHT", btn, "BOTTOMRIGHT", -1, 1)
     btn.check:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
     btn.check:Hide()
     

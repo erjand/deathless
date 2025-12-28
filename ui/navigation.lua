@@ -5,24 +5,29 @@ Deathless.UI.Navigation = Deathless.UI.Navigation or {}
 local Colors = nil -- Set after frame.lua loads
 local CreatePixelBorder = nil
 
+-- Generic icons for sub-items
+local ICON_ABILITIES = "Interface\\Icons\\INV_Misc_Book_07"
+local ICON_TALENTS = "Interface\\Icons\\Ability_Marksmanship"
+
 -- Sub-items for Warrior class
 local WARRIOR_ITEMS = {
-    { id = "warrior_abilities", label = "Abilities", icon = "Interface\\Icons\\Ability_Warrior_BattleShout" },
+    { id = "warrior_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "warrior_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Mage class
 local MAGE_ITEMS = {
-    { id = "mage_abilities", label = "Abilities", icon = "Interface\\Icons\\Spell_Frost_IceStorm" },
+    { id = "mage_abilities", label = "Abilities", icon = ICON_ABILITIES },
 }
 
 -- Sub-items for Priest class
 local PRIEST_ITEMS = {
-    { id = "priest_abilities", label = "Abilities", icon = "Interface\\Icons\\Spell_Holy_PowerWordShield" },
+    { id = "priest_abilities", label = "Abilities", icon = ICON_ABILITIES },
 }
 
 -- Sub-items for Rogue class
 local ROGUE_ITEMS = {
-    { id = "rogue_abilities", label = "Abilities", icon = "Interface\\Icons\\Ability_BackStab" },
+    { id = "rogue_abilities", label = "Abilities", icon = ICON_ABILITIES },
 }
 
 -- Classic WoW classes in alphabetical order (with icons and optional children)

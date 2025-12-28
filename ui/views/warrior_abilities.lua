@@ -287,6 +287,19 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
         row:SetHeight(ROW_HEIGHT)
         row:Show()
         
+        -- Tooltip on hover
+        row:EnableMouse(true)
+        row:SetScript("OnEnter", function(self)
+            if ability.spellId then
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetSpellByID(ability.spellId)
+                GameTooltip:Show()
+            end
+        end)
+        row:SetScript("OnLeave", function(self)
+            GameTooltip:Hide()
+        end)
+        
         if not row.bg then
             row.bg = row:CreateTexture(nil, "BACKGROUND")
             row.bg:SetAllPoints()

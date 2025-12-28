@@ -176,6 +176,10 @@ function Deathless.UI.Frame:Create()
     
     resizeGrip:SetScript("OnMouseDown", function(self, button)
         if button == "LeftButton" then
+            -- Re-anchor to TOPLEFT before resizing to prevent jump
+            local left, top = frame:GetLeft(), frame:GetTop()
+            frame:ClearAllPoints()
+            frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
             frame:StartSizing("BOTTOMRIGHT")
         end
     end)

@@ -23,3 +23,9 @@ deathless is a multi-purpose / AIO addon intended to serve as the companion to a
 - [x] Top-right corner `X` is slightly not pixel centered between top, right, and bottom edges of the UI
 - [ ] Add variables like scroll speed to globals somewhere for use everywhere across the app and easy place to update
 - [ ] Make addon settings persist across reloads
+- [ ] Rotating quotes on Home 
+- [ ] Option: Lock window
+- [ ] Feature: Favorites / Pinned
+- [ ] Feature: Open from Abilities screen
+- [ ] Feature: Open from Talents screen
+- [ ] Feature: Open from Map

@@ -5,7 +5,12 @@ Deathless.UI.Navigation = Deathless.UI.Navigation or {}
 local Colors = nil -- Set after frame.lua loads
 local CreatePixelBorder = nil
 
--- Classic WoW classes in alphabetical order (with icons)
+-- Sub-items for Warrior class
+local WARRIOR_ITEMS = {
+    { id = "warrior_abilities", label = "Abilities", icon = "Interface\\Icons\\Ability_Warrior_BattleShout" },
+}
+
+-- Classic WoW classes in alphabetical order (with icons and optional children)
 local CLASS_ITEMS = {
     { id = "class_druid", label = "Druid", icon = "Interface\\Icons\\ClassIcon_Druid" },
     { id = "class_hunter", label = "Hunter", icon = "Interface\\Icons\\ClassIcon_Hunter" },
@@ -15,7 +20,7 @@ local CLASS_ITEMS = {
     { id = "class_rogue", label = "Rogue", icon = "Interface\\Icons\\ClassIcon_Rogue" },
     { id = "class_shaman", label = "Shaman", icon = "Interface\\Icons\\ClassIcon_Shaman" },
     { id = "class_warlock", label = "Warlock", icon = "Interface\\Icons\\ClassIcon_Warlock" },
-    { id = "class_warrior", label = "Warrior", icon = "Interface\\Icons\\ClassIcon_Warrior" },
+    { id = "class_warrior", label = "Warrior", icon = "Interface\\Icons\\ClassIcon_Warrior", children = WARRIOR_ITEMS },
 }
 
 -- Navigation items configuration (with optional children)
@@ -26,22 +31,23 @@ local NAV_ITEMS = {
 }
 
 -- Width of the navigation sidebar
-local NAV_WIDTH = 140
+local NAV_WIDTH = 160
 
 -- Height of buttons
 local BUTTON_HEIGHT = 28
 local SUB_BUTTON_HEIGHT = 24
+local SUB_SUB_BUTTON_HEIGHT = 22
 local BUTTON_SPACING = 2
 
 --- Create a single navigation button
 ---@param parent Frame Parent frame for the button
----@param item table Navigation item config { id, label }
----@param isSubItem boolean Whether this is a sub-menu item
+---@param item table Navigation item config { id, label, icon }
+---@param depth number Nesting depth (0 = top level, 1 = sub, 2 = sub-sub)
 ---@return Button The created nav button
-local function CreateNavButton(parent, item, isSubItem)
+local function CreateNavButton(parent, item, depth)
     local btn = CreateFrame("Button", nil, parent)
-    local height = isSubItem and SUB_BUTTON_HEIGHT or BUTTON_HEIGHT
-    local indent = isSubItem and 16 or 0
+    local height = depth == 0 and BUTTON_HEIGHT or (depth == 1 and SUB_BUTTON_HEIGHT or SUB_SUB_BUTTON_HEIGHT)
+    local indent = depth * 16
     
     btn:SetSize(NAV_WIDTH - 8 - indent, height)
     
@@ -60,7 +66,7 @@ local function CreateNavButton(parent, item, isSubItem)
     -- Icon (if provided)
     local labelOffset = 12
     if item.icon then
-        local iconSize = isSubItem and 16 or 18
+        local iconSize = depth == 0 and 18 or (depth == 1 and 16 or 14)
         btn.icon = btn:CreateTexture(nil, "ARTWORK")
         btn.icon:SetSize(iconSize, iconSize)
         btn.icon:SetPoint("LEFT", btn, "LEFT", 8, 0)
@@ -70,8 +76,9 @@ local function CreateNavButton(parent, item, isSubItem)
     end
     
     -- Label text
+    local fontSize = depth == 0 and 12 or (depth == 1 and 11 or 10)
     btn.label = btn:CreateFontString(nil, "OVERLAY")
-    btn.label:SetFont("Fonts\\ARIALN.TTF", isSubItem and 11 or 12, "")
+    btn.label:SetFont("Fonts\\ARIALN.TTF", fontSize, "")
     btn.label:SetPoint("LEFT", btn, "LEFT", labelOffset, 0)
     btn.label:SetText(item.label)
     btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
@@ -79,7 +86,7 @@ local function CreateNavButton(parent, item, isSubItem)
     -- Store the nav item data
     btn.navId = item.id
     btn.isSelected = false
-    btn.isSubItem = isSubItem
+    btn.depth = depth
     
     -- Hover effects
     btn:SetScript("OnEnter", function(self)
@@ -124,61 +131,85 @@ local function SetButtonExpanded(btn, expanded)
     end
 end
 
---- Calculate total visible height of nav items
----@param nav Frame The navigation frame
----@return number Total height needed
-local function CalculateNavHeight(nav)
-    local height = 4 -- Initial padding
-    for _, item in ipairs(NAV_ITEMS) do
-        height = height + BUTTON_HEIGHT + BUTTON_SPACING
-        if item.children and nav.expandedSections[item.id] then
-            height = height + (#item.children * (SUB_BUTTON_HEIGHT + BUTTON_SPACING))
-        end
-    end
-    return height
+--- Add expand/collapse indicator to a button
+---@param btn Button The nav button
+local function AddExpandIcon(btn)
+    btn.expandIcon = btn:CreateFontString(nil, "OVERLAY")
+    btn.expandIcon:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    btn.expandIcon:SetPoint("RIGHT", btn, "RIGHT", -4, 0)
+    btn.expandIcon:SetText("+")
+    btn.expandIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
 end
 
---- Reposition all buttons based on current expand state
+--- Recursively create buttons for an item and its children
 ---@param nav Frame The navigation frame
-local function RepositionButtons(nav)
-    local yOffset = -4
+---@param item table The navigation item
+---@param depth number Current nesting depth
+local function CreateButtonsRecursive(nav, item, depth)
+    local btn = CreateNavButton(nav, item, depth)
+    nav.buttons[item.id] = btn
+    btn:Hide() -- Will be shown by RepositionButtons if visible
     
-    for _, item in ipairs(NAV_ITEMS) do
+    if item.children then
+        AddExpandIcon(btn)
+        
+        -- Click toggles expand and selects
+        btn:SetScript("OnClick", function(self)
+            nav.expandedSections[self.navId] = not nav.expandedSections[self.navId]
+            Deathless.UI.Navigation:RepositionButtons()
+            Deathless.UI.Navigation:Select(self.navId)
+        end)
+        
+        -- Create children recursively
+        for _, child in ipairs(item.children) do
+            CreateButtonsRecursive(nav, child, depth + 1)
+        end
+    else
+        btn:SetScript("OnClick", function(self)
+            Deathless.UI.Navigation:Select(self.navId)
+        end)
+    end
+end
+
+--- Recursively position buttons and their children
+---@param nav Frame The navigation frame
+---@param items table Array of nav items
+---@param yOffset number Current Y offset
+---@param depth number Current depth
+---@param parentExpanded boolean Whether parent is expanded
+---@return number New Y offset after positioning
+local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpanded)
+    local height = depth == 0 and BUTTON_HEIGHT or (depth == 1 and SUB_BUTTON_HEIGHT or SUB_SUB_BUTTON_HEIGHT)
+    local indent = depth * 16
+    
+    for _, item in ipairs(items) do
         local btn = nav.buttons[item.id]
         if btn then
-            btn:ClearAllPoints()
-            btn:SetPoint("TOPLEFT", nav, "TOPLEFT", 4, yOffset)
-            yOffset = yOffset - BUTTON_HEIGHT - BUTTON_SPACING
-            
-            -- Position children if expanded
-            if item.children then
-                local isExpanded = nav.expandedSections[item.id]
-                SetButtonExpanded(btn, isExpanded)
+            if parentExpanded then
+                btn:ClearAllPoints()
+                btn:SetPoint("TOPLEFT", nav, "TOPLEFT", 4 + indent, yOffset)
+                btn:Show()
+                yOffset = yOffset - height - BUTTON_SPACING
                 
-                for _, child in ipairs(item.children) do
-                    local childBtn = nav.buttons[child.id]
-                    if childBtn then
-                        if isExpanded then
-                            childBtn:ClearAllPoints()
-                            childBtn:SetPoint("TOPLEFT", nav, "TOPLEFT", 4 + 16, yOffset)
-                            childBtn:Show()
-                            yOffset = yOffset - SUB_BUTTON_HEIGHT - BUTTON_SPACING
-                        else
-                            childBtn:Hide()
-                        end
-                    end
+                -- Position children if this item is expanded
+                if item.children then
+                    local isExpanded = nav.expandedSections[item.id]
+                    SetButtonExpanded(btn, isExpanded)
+                    yOffset = PositionButtonsRecursive(nav, item.children, yOffset, depth + 1, isExpanded)
                 end
+            else
+                btn:Hide()
             end
         end
     end
+    
+    return yOffset
 end
 
---- Toggle a section's expanded state
----@param nav Frame The navigation frame
----@param sectionId string The section to toggle
-local function ToggleSection(nav, sectionId)
-    nav.expandedSections[sectionId] = not nav.expandedSections[sectionId]
-    RepositionButtons(nav)
+--- Reposition all buttons based on current expand state
+function Deathless.UI.Navigation:RepositionButtons()
+    if not self.frame then return end
+    PositionButtonsRecursive(self.frame, NAV_ITEMS, -4, 0, true)
 end
 
 --- Create the navigation sidebar
@@ -210,49 +241,19 @@ function Deathless.UI.Navigation:Create(parent)
     nav.expandedSections = {}
     nav.buttons = {}
     
-    -- Create all nav buttons
+    -- Create all nav buttons recursively
     for _, item in ipairs(NAV_ITEMS) do
-        local btn = CreateNavButton(nav, item, false)
-        nav.buttons[item.id] = btn
-        
-        -- Add expand/collapse indicator for items with children
-        if item.children then
-            btn.expandIcon = btn:CreateFontString(nil, "OVERLAY")
-            btn.expandIcon:SetFont("Fonts\\ARIALN.TTF", 14, "")
-            btn.expandIcon:SetPoint("RIGHT", btn, "RIGHT", -4, 0)
-            btn.expandIcon:SetText("+")
-            btn.expandIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-            
-            -- Click toggles expand and selects
-            btn:SetScript("OnClick", function(self)
-                ToggleSection(nav, self.navId)
-                Deathless.UI.Navigation:Select(self.navId)
-            end)
-            
-            -- Create child buttons
-            for _, child in ipairs(item.children) do
-                local childBtn = CreateNavButton(nav, child, true)
-                nav.buttons[child.id] = childBtn
-                childBtn:Hide() -- Hidden by default
-                
-                childBtn:SetScript("OnClick", function(self)
-                    Deathless.UI.Navigation:Select(self.navId)
-                end)
-            end
-        else
-            btn:SetScript("OnClick", function(self)
-                Deathless.UI.Navigation:Select(self.navId)
-            end)
-        end
+        CreateButtonsRecursive(nav, item, 0)
     end
-    
-    -- Initial positioning
-    RepositionButtons(nav)
     
     -- Track current selection
     nav.currentSelection = nil
     
     self.frame = nav
+    
+    -- Initial positioning
+    self:RepositionButtons()
+    
     return nav
 end
 

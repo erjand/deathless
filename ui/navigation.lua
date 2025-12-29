@@ -51,9 +51,10 @@ local CLASS_ITEMS = {
 -- Navigation items configuration (with optional children)
 local NAV_ITEMS = {
     { id = "home", label = "Home" },
+    { id = "summary", label = "Summary" },
     { divider = true },
     { id = "classes", label = "Classes", children = CLASS_ITEMS },
-    { id = "zones", label = "Zones" },
+    { id = "zones", label = "Zones (WIP)" },
     { divider = true },
     { id = "options", label = "Options" },
     { id = "support", label = "Support" },

@@ -26,6 +26,7 @@ ui\init.lua
 ui\navigation.lua
 ui\views\init.lua
 ui\views\home.lua
+ui\views\summary.lua
 ui\views\classes.lua
 ui\views\zones.lua
 ui\views\options.lua

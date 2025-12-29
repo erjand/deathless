@@ -95,10 +95,10 @@ Deathless.Data.Abilities["Mage"] = {
     { name = "Conjure Food", level = 60, rank = 7, base_cost = 0, icon = "INV_Misc_Food_73cinnamonroll", source = "book", train = "yes", spellId = 28612 },
 
     -- Conjure Mana Gems
-    { name = "Conjure Mana Gems", level = 28, rank = 1, base_cost = 7000, icon = "INV_Misc_Gem_Emerald_01", source = "trainer", train = "yes", spellId = 759 },
-    { name = "Conjure Mana Gems", level = 38, rank = 1, base_cost = 14000, icon = "INV_Misc_Gem_Emerald_02", source = "trainer", train = "yes", spellId = 3552 },
-    { name = "Conjure Mana Gems", level = 48, rank = 1, base_cost = 28000, icon = "INV_Misc_Gem_Opal_01", source = "trainer", train = "yes", spellId = 10053 },
-    { name = "Conjure Mana Gems", level = 58, rank = 1, base_cost = 40000, icon = "INV_Misc_Gem_Ruby_01", source = "trainer", train = "yes", spellId = 10054 },
+    { name = "Conjure Mana Agate", level = 28, rank = 1, base_cost = 7000, icon = "INV_Misc_Gem_Emerald_01", source = "trainer", train = "yes", spellId = 759 },
+    { name = "Conjure Mana Jade", level = 38, rank = 1, base_cost = 14000, icon = "INV_Misc_Gem_Emerald_02", source = "trainer", train = "yes", spellId = 3552 },
+    { name = "Conjure Mana Citrine", level = 48, rank = 1, base_cost = 28000, icon = "INV_Misc_Gem_Opal_01", source = "trainer", train = "yes", spellId = 10053 },
+    { name = "Conjure Mana Ruby", level = 58, rank = 1, base_cost = 40000, icon = "INV_Misc_Gem_Ruby_01", source = "trainer", train = "yes", spellId = 10054 },
 
     -- Conjure Water
     { name = "Conjure Water", level = 4, rank = 1, base_cost = 100, icon = "INV_Drink_06", source = "trainer", train = "yes", spellId = 5504 },

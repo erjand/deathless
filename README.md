@@ -19,3 +19,12 @@ deathless is a multi-purpose / AIO addon intended to serve as the companion to a
 2. Run `deploy.bat` if your WoW installation is in the standard location.
 3. Run the addon in game with the command `/deathless`.
 4. When making changes, run the script again, then `/reload` in game.
+
+## Features
+
+### Abilities
+
+> Currently 100% implemented for Warrior, Priest, and Mage. Other classes are WIP / stubs
+
+- Shows Abilities for each class: Learned, Available, Next Available, and Unavailable.
+- Includes level available, price, source, and a recommendation as to train, wait to train, or not train each ability.

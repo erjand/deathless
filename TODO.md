@@ -12,18 +12,24 @@
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
 
+## Summary
+
+- [ ] Add recommended Dungeon(s)
+- [ ] Add recommended Zone(s)
+- [ ] Add key quests not completed
+- [ ] Add key consumables missing / not in inventory
+
 ## Abilities
 
 - [ ] Feature: Search / filter bar?
 
 - [x] Priest: Audit
-- [ ] Mage: Audit
+- [x] Mage: Audit
 - [ ] Rogue: Audit
 - [ ] Druid: Audit
 - [ ] Hunter: Audit
 - [ ] Paladin: Audit
 - [ ] Shaman: Audit
-
 
 ## Gear
 

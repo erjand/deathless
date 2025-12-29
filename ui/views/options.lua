@@ -120,7 +120,7 @@ Deathless.UI.Views:Register("options", function(container)
     local title, subtitle, separator = Utils:CreateHeader(container, "Options", "Addon settings and preferences")
     
     -- === Include Classes Section ===
-    local classHeader = CreateSectionHeader(container, "Classes", separator, -16)
+    local classHeader = CreateSectionHeader(container, "Classes to Display", separator, -16)
     
     -- Class icons lookup
     local CLASS_ICONS = {

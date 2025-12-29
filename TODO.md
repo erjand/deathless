@@ -11,6 +11,8 @@
 - [ ] Split between Reference and Features on left nav-bar
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
+- [ ] Feature: Max level mode to disable leveling stuff?
+- [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
 
 ## Summary
 
@@ -18,6 +20,14 @@
 - [ ] Add recommended Zone(s)
 - [ ] Add key quests not completed
 - [ ] Add key consumables missing / not in inventory
+    - [x] Swiftness Potion
+    - [x] Appropriate level healing potion
+    - [ ] Appropriate level mana potion (if mana user)
+    - [ ] Appropriate level bandaids
+    - [ ] LIP, if appropriate level
+    - [ ] Petri, if appropriate level
+    - [ ] Appropriate level grenades (if engi)
+    - [ ] Appropriate level training dummies (if engi)
 
 ## Abilities
 

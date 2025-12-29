@@ -41,7 +41,7 @@ end
 Deathless.UI.Views:Register("summary", function(container)
     local Colors = Utils:GetColors()
     
-    local title, subtitle = Utils:CreateHeader(container, "Summary", "Your adventure at a glance")
+    local title, subtitle = Utils:CreateHeader(container, "Summary", "")
     
     -- Scroll frame
     local scrollFrame = CreateFrame("ScrollFrame", nil, container, "UIPanelScrollFrameTemplate")
@@ -82,12 +82,24 @@ Deathless.UI.Views:Register("summary", function(container)
     end)
     
     -- Element pooling
-    local frames = {}
-    local frameIndex = 0
+    local pools = {
+        header = {},
+        subheader = {},
+        row = {},
+        text = {}
+    }
+    local poolIndexes = {
+        header = 0,
+        subheader = 0,
+        row = 0,
+        text = 0
+    }
     
     local function GetFrame(frameType)
-        frameIndex = frameIndex + 1
-        local frame = frames[frameIndex]
+        poolIndexes[frameType] = (poolIndexes[frameType] or 0) + 1
+        local index = poolIndexes[frameType]
+        local pool = pools[frameType]
+        local frame = pool[index]
         
         if not frame then
             if frameType == "header" then
@@ -98,11 +110,9 @@ Deathless.UI.Views:Register("summary", function(container)
                 frame.line:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 0, -4)
                 frame.line:SetPoint("RIGHT", scrollChild, "RIGHT", -12, 0)
                 frame.line:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.3)
-                frame.type = "header"
             elseif frameType == "subheader" then
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
                 frame:SetFont("Fonts\\ARIALN.TTF", 12, "BOLD")
-                frame.type = "subheader"
             elseif frameType == "row" then
                 frame = CreateFrame("Frame", nil, scrollChild)
                 frame:SetHeight(24)
@@ -124,33 +134,35 @@ Deathless.UI.Views:Register("summary", function(container)
                 frame.cost:SetFont("Fonts\\ARIALN.TTF", 11, "")
                 frame.cost:SetPoint("RIGHT", frame, "RIGHT", 0, 0)
                 
-                frame.type = "row"
                 frame:EnableMouse(true)
                 frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
             elseif frameType == "text" then
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
                 frame:SetFont("Fonts\\ARIALN.TTF", 12, "")
                 frame:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                frame.type = "text"
             end
-            frames[frameIndex] = frame
+            pool[index] = frame
         end
         
         -- Reset common properties
         frame:ClearAllPoints()
         frame:Show()
-        if frame.type == "header" then frame.line:Show() end
+        if frameType == "header" then frame.line:Show() end
         
         return frame
     end
     
     local function ClearFrames()
-        for i = 1, #frames do
-            frames[i]:Hide()
-            frames[i]:ClearAllPoints()
-            if frames[i].type == "header" then frames[i].line:Hide() end
+        for type, pool in pairs(pools) do
+            for _, frame in ipairs(pool) do
+                frame:Hide()
+                if type == "header" and frame.line then
+                    frame.line:Hide()
+                end
+                frame:ClearAllPoints()
+            end
+            poolIndexes[type] = 0
         end
-        frameIndex = 0
     end
     
     local function Refresh()
@@ -210,6 +222,76 @@ Deathless.UI.Views:Register("summary", function(container)
         Sort(nextAvailable)
         
         local yOffset = -10
+        
+        -- Warnings Section
+        local hasWarnings = false
+        local function AddWarning(text, itemId, checkCount)
+            -- Only create header for first warning
+            if not hasWarnings then
+                local header = GetFrame("header")
+                header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                header:SetText("Warnings")
+                header:SetTextColor(1, 0.8, 0.2, 1) -- Yellow
+                yOffset = yOffset - 24
+                hasWarnings = true
+            end
+            
+            local count = GetItemCount(itemId)
+            if count < (checkCount or 1) then
+                local row = GetFrame("row")
+                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
+                
+                -- Item icon
+                local _, _, _, _, _, _, _, _, _, itemIcon = GetItemInfo(itemId)
+                row.icon:SetTexture(itemIcon or "Interface\\Icons\\INV_Misc_QuestionMark")
+                row.icon:SetDesaturated(false)
+                row.icon:SetAlpha(1)
+                
+                row.name:SetText(text)
+                row.name:SetTextColor(1, 0.8, 0.2, 1)
+                
+                row.level:SetText("")
+                row.cost:SetText("")
+                
+                -- Tooltip
+                row:SetScript("OnEnter", function(self)
+                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                    GameTooltip:SetItemByID(itemId)
+                    GameTooltip:Show()
+                end)
+                
+                yOffset = yOffset - 34
+                return true
+            end
+            return false
+        end
+        
+        -- Check 1: Swiftness Potion (Item 2459)
+        AddWarning("Recommend carrying Swiftness Potions", 2459, 1)
+        
+        -- Check 2: Health Potion (Appropriate for level)
+        -- Data from: https://www.wowhead.com/classic/items/consumables/potions/name:healing
+        local healthPotions = {
+            { level = 45, id = 13446 }, -- Major Healing Potion
+            { level = 35, id = 3928 },  -- Superior Healing Potion
+            { level = 21, id = 1710 },  -- Greater Healing Potion
+            { level = 12, id = 929 },   -- Healing Potion
+            { level = 3, id = 858 },   -- Lesser Healing Potion
+            { level = 1,  id = 118 },   -- Minor Healing Potion
+        }
+        
+        local bestPotionId = nil
+        for _, pot in ipairs(healthPotions) do
+            if playerLevel >= pot.level then
+                bestPotionId = pot.id
+                break
+            end
+        end
+        
+        if bestPotionId then
+            AddWarning("Recommend carrying best Healing Potions for your level", bestPotionId, 1)
+        end
         
         -- Abilities Section
         local header = GetFrame("header")

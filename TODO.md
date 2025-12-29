@@ -13,6 +13,8 @@
 - [ ] Feature: Max level mode to disable leveling stuff?
 - [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
 
+- [ ] Feature: When clicking on the addon tab from the Spellbook, if the addon window is already open, it should stay open and go to the Abilities page rather than closing
+
 ## Summary
 
 - [ ] Add recommended Dungeon(s)
@@ -22,9 +24,9 @@
     - [x] Swiftness Potion
     - [x] Appropriate level healing potion
     - [x] Appropriate level mana potion (if mana user)
-    - [ ] Appropriate level bandaids
+    - [x] Appropriate level bandaids
     - [ ] LIP, if appropriate level
-    - [ ] Petri, if appropriate level
+    - [ ] 2x Petri, if appropriate level
     - [ ] Appropriate level grenades (if engi)
     - [ ] Appropriate level training dummies (if engi)
 

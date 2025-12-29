@@ -88,7 +88,7 @@ Deathless.Data.Abilities["Warrior"] = {
     { name = "Hamstring", level = 54, rank = 3, base_cost = 56000, icon = "Ability_ShockWave", source = "trainer", train = "yes", spellId = 7373 },
 
     -- Heroic Strike
-    { name = "Heroic Strike", level = 1, rank = 1, base_cost = 10, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 78 },
+    { name = "Heroic Strike", level = 1, rank = 1, base_cost = 0, icon = "Ability_Rogue_Ambush", source = "class", train = "yes", spellId = 78 },
     { name = "Heroic Strike", level = 8, rank = 2, base_cost = 200, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 284 },
     { name = "Heroic Strike", level = 16, rank = 3, base_cost = 2000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 285 },
     { name = "Heroic Strike", level = 24, rank = 4, base_cost = 8000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 1608 },

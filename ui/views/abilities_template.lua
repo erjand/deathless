@@ -444,7 +444,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         
         local PopulateRows
         
-        local function CreateSectionHeaderAt(sectionKey, label, count, yOffset, color, costCopper)
+        local function CreateSectionHeaderAt(sectionKey, label, count, yOffset, color, costCopper, costLabel)
             local section = GetSectionHeader()
             local SECTION_HEIGHT = 28
             
@@ -463,7 +463,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             
             -- Cost display
             if costCopper then
-                section.cost:SetText("Total: " .. FormatMoneyColored(costCopper))
+                local prefix = costLabel or "Total"
+                section.cost:SetText(prefix .. ": " .. FormatMoneyColored(costCopper))
                 section.cost:Show()
             else
                 section.cost:SetText("")
@@ -568,7 +569,11 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local unavailableColor = { 0.6, 0.4, 0.4 }
             
             if #learned > 0 then
-                yOffset = CreateSectionHeaderAt("learned", "Learned", #learned, yOffset, learnedColor)
+                local learnedCost = 0
+                for _, ability in ipairs(learned) do
+                    learnedCost = learnedCost + (ability.base_cost or 0)
+                end
+                yOffset = CreateSectionHeaderAt("learned", "Learned", #learned, yOffset, learnedColor, learnedCost, "Spent")
                 if sectionState.learned then
                     for _, ability in ipairs(learned) do
                         rowNum = rowNum + 1

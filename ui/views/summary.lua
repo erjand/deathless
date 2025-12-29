@@ -272,8 +272,46 @@ Deathless.UI.Views:Register("summary", function(container)
             return false
         end
         
-        -- Check 1: Swiftness Potion (Item 2459)
-        AddWarning("Recommend carrying Swiftness Potions", 2459, 1, "Interface\\Icons\\INV_Potion_95")
+        -- Check 1: Bandages (Appropriate for First Aid skill level)
+        -- Get First Aid skill level
+        local firstAidSkill = 0
+        for i = 1, GetNumSkillLines() do
+            local skillName, _, _, skillRank = GetSkillLineInfo(i)
+            if skillName == "First Aid" then
+                firstAidSkill = skillRank or 0
+                break
+            end
+        end
+        
+        -- Only check bandages if player has First Aid
+        if firstAidSkill > 0 then
+            local bandages = {
+                { skill = 225, id = 14530, icon = "Interface\\Icons\\INV_Misc_Bandage_12" }, -- Heavy Runecloth Bandage
+                { skill = 200, id = 14529, icon = "Interface\\Icons\\INV_Misc_Bandage_11" }, -- Runecloth Bandage
+                { skill = 175, id = 8545,  icon = "Interface\\Icons\\INV_Misc_Bandage_20" }, -- Heavy Mageweave Bandage
+                { skill = 150, id = 8544,  icon = "Interface\\Icons\\INV_Misc_Bandage_19" }, -- Mageweave Bandage
+                { skill = 125, id = 6451,  icon = "Interface\\Icons\\INV_Misc_Bandage_02" }, -- Heavy Silk Bandage
+                { skill = 100, id = 6450,  icon = "Interface\\Icons\\INV_Misc_Bandage_01" }, -- Silk Bandage
+                { skill = 75,  id = 3531,  icon = "Interface\\Icons\\INV_Misc_Bandage_17" }, -- Heavy Wool Bandage
+                { skill = 50,  id = 3530,  icon = "Interface\\Icons\\INV_Misc_Bandage_14" }, -- Wool Bandage
+                { skill = 20,  id = 2581,  icon = "Interface\\Icons\\INV_Misc_Bandage_18" }, -- Heavy Linen Bandage
+                { skill = 1,   id = 1251,  icon = "Interface\\Icons\\INV_Misc_Bandage_15" }, -- Linen Bandage
+            }
+            
+            local bestBandageId = nil
+            local bestBandageIcon = nil
+            for _, bandage in ipairs(bandages) do
+                if firstAidSkill >= bandage.skill then
+                    bestBandageId = bandage.id
+                    bestBandageIcon = bandage.icon
+                    break
+                end
+            end
+            
+            if bestBandageId then
+                AddWarning("Not carrying best Bandages for your First Aid skill level", bestBandageId, 1, bestBandageIcon)
+            end
+        end
         
         -- Check 2: Health Potion (Appropriate for level)
         -- Data from: https://www.wowhead.com/classic/items/consumables/potions/name:healing
@@ -297,7 +335,7 @@ Deathless.UI.Views:Register("summary", function(container)
         end
         
         if bestPotionId then
-            AddWarning("Recommend carrying best Healing Potions for your level", bestPotionId, 1, bestPotionIcon)
+            AddWarning("Not carrying best Healing Potions for your level", bestPotionId, 1, bestPotionIcon)
         end
         
         -- Check 3: Mana Potion (Appropriate for level, if mana user)
@@ -323,8 +361,13 @@ Deathless.UI.Views:Register("summary", function(container)
             end
             
             if bestManaPotionId then
-                AddWarning("Recommend carrying best Mana Potions for your level", bestManaPotionId, 1, bestManaPotionIcon)
+                AddWarning("Not carrying best Mana Potions for your level", bestManaPotionId, 1, bestManaPotionIcon)
             end
+        end
+        
+        -- Check 4: Swiftness Potion (Item 2459, requires level 5)
+        if playerLevel >= 5 then
+            AddWarning("Not carrying Swiftness Potions", 2459, 1, "Interface\\Icons\\INV_Potion_95")
         end
         
         if not hasWarnings then
@@ -356,10 +399,20 @@ Deathless.UI.Views:Register("summary", function(container)
         end
         
         if #available > 0 then
+            local availableCost = 0
+            for _, ability in ipairs(available) do
+                availableCost = availableCost + (ability.base_cost or 0)
+            end
+            
             local sub = GetFrame("subheader")
             sub:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
             sub:SetText("Available Now")
             sub:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+            
+            local costText = GetFrame("text")
+            costText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 120, yOffset)
+            costText:SetText("Total: " .. FormatMoneyColored(availableCost))
+            costText:SetTextColor(1, 1, 1, 1)
             yOffset = yOffset - 20
             
             for _, ability in ipairs(available) do
@@ -404,10 +457,20 @@ Deathless.UI.Views:Register("summary", function(container)
         end
         
         if #nextAvailable > 0 then
+            local nextCost = 0
+            for _, ability in ipairs(nextAvailable) do
+                nextCost = nextCost + (ability.base_cost or 0)
+            end
+            
             local sub = GetFrame("subheader")
             sub:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
             sub:SetText("Next Available")
             sub:SetTextColor(0.5, 0.7, 0.9, 1)
+            
+            local costText = GetFrame("text")
+            costText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 120, yOffset)
+            costText:SetText("Total: " .. FormatMoneyColored(nextCost))
+            costText:SetTextColor(1, 1, 1, 1)
             yOffset = yOffset - 20
             
             for _, ability in ipairs(nextAvailable) do

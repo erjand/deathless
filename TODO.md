@@ -5,15 +5,27 @@
 - [ ] Make Talents page a template also
 - [ ] Make addon settings persist across reloads
 - [ ] Option: Lock window
-- [ ] Feature: Favorites / Pinned
-- [ ] Feature: Open from Abilities screen
-- [ ] Feature: Open from Talents screen
-- [ ] Feature: Open from Map
-- [ ] Split between Reference and Features
-- [ ] Feature: UnitScan Hardcore replacement (because it's bad)
-- [ ] Feature: SafeGuard replacement
+- [ ] Feature: Favorites / Pinned (or maybe Summary for Home showing all the relevant stuff for your current class and level)
+- [ ] Feature: Open Abilities from Abilities screen
+- [ ] Feature: Open Talents from Talents screen
+- [ ] Feature: Open Zones from Map
+- [ ] Split between Reference and Features on left nav-bar
+- [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
+- [ ] Feature: SafeGuard replacement things
 
-- [ ] Warrior: Audit Talent
+## Abilities
+
+- [x] Priest: Audit Abilities
+
+- [ ] Search / filter bar?
+- [ ] Mage: Audit
+- [ ] All the other classes: Add / Audit
+
+## Gear
+
 - [ ] Warrior: Audit Gear
 
-- [ ] Priest: Audit Abilities
+## Talents
+
+- [ ] Warrior: Audit Talents
+- [ ] Priest: Audit Talents

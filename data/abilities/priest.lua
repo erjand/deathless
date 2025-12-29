@@ -14,82 +14,81 @@ Deathless.Data.Abilities = Deathless.Data.Abilities or {}
 --   book    - Learned from a drop/item (codex)
 --   quest   - Learned from completing a quest (includes racial abilities)
 -- Train values:
---   yes   - Important ability, train all ranks
---   no    - Skip training (save gold)
---   wait  - Situational, depends on spec/playstyle
--- Sorted alphabetically by name, then by rank
+--   yes   - Train when available
+--   wait  - Marginal upgrade
+--   no    - Not useful for Hardcore
 -- Racial priest abilities are obtained via quests at level 10 and 20
--- See https://www.wowhead.com/classic/spells/abilities/priest for source data
+-- See https://www.wowhead.com/classic/spells/abilities/priest for abilities
+-- See https://www.wowhead.com/classic/npc=4606/aelthalyste for training costs (Undead)
+-- See https://www.wowhead.com/classic/npc=4090/astarii-starseeker for training costs (NE)
+
 Deathless.Data.Abilities["Priest"] = {
     -- Abolish Disease
-    { name = "Abolish Disease", level = 32, rank = 1, base_cost = 10000, icon = "Spell_Nature_NullifyDisease", source = "trainer", train = "yes", spellId = 552 },
+    { name = "Abolish Disease", level = 32, rank = 1, base_cost = 11000, icon = "Spell_Nature_NullifyDisease", source = "trainer", train = "yes", spellId = 552 },
 
     -- Cure Disease
-    { name = "Cure Disease", level = 14, rank = 1, base_cost = 900, icon = "Spell_Holy_NullifyDisease", source = "trainer", train = "yes", spellId = 528 },
+    { name = "Cure Disease", level = 14, rank = 1, base_cost = 1200, icon = "Spell_Holy_NullifyDisease", source = "trainer", train = "yes", spellId = 528 },
 
     -- Desperate Prayer (Dwarf/Human racial - quest)
-    { name = "Desperate Prayer", level = 10, rank = 1, base_cost = 0, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 13908 },
-    { name = "Desperate Prayer", level = 18, rank = 2, base_cost = 0, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19236 },
-    { name = "Desperate Prayer", level = 26, rank = 3, base_cost = 0, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19238 },
-    { name = "Desperate Prayer", level = 34, rank = 4, base_cost = 0, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19240 },
-    { name = "Desperate Prayer", level = 42, rank = 5, base_cost = 0, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19241 },
-    { name = "Desperate Prayer", level = 50, rank = 6, base_cost = 0, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19242 },
-    { name = "Desperate Prayer", level = 58, rank = 7, base_cost = 0, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19243 },
+    { name = "Desperate Prayer", level = 10, rank = 1, base_cost = 0, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 13908, race = { "Dwarf", "Human" } },
+    { name = "Desperate Prayer", level = 18, rank = 2, base_cost = 100, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19236, race = { "Dwarf", "Human" } },
+    { name = "Desperate Prayer", level = 26, rank = 3, base_cost = 300, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19238, race = { "Dwarf", "Human" } },
+    { name = "Desperate Prayer", level = 34, rank = 4, base_cost = 600, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19240, race = { "Dwarf", "Human" } },
+    { name = "Desperate Prayer", level = 42, rank = 5, base_cost = 1100, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19241, race = { "Dwarf", "Human" } },
+    { name = "Desperate Prayer", level = 50, rank = 6, base_cost = 1500, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19242, race = { "Dwarf", "Human" } },
+    { name = "Desperate Prayer", level = 58, rank = 7, base_cost = 2200, icon = "Spell_Holy_Restoration", source = "quest", train = "yes", spellId = 19243, race = { "Dwarf", "Human" } },
 
     -- Devouring Plague (Undead racial - quest)
-    { name = "Devouring Plague", level = 20, rank = 1, base_cost = 0, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 2944 },
-    { name = "Devouring Plague", level = 28, rank = 2, base_cost = 0, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19276 },
-    { name = "Devouring Plague", level = 36, rank = 3, base_cost = 0, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19277 },
-    { name = "Devouring Plague", level = 44, rank = 4, base_cost = 0, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19278 },
-    { name = "Devouring Plague", level = 52, rank = 5, base_cost = 0, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19279 },
-    { name = "Devouring Plague", level = 60, rank = 6, base_cost = 0, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19280 },
+    { name = "Devouring Plague", level = 20, rank = 1, base_cost = 0, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 2944, race = { "Undead" } },
+    { name = "Devouring Plague", level = 28, rank = 2, base_cost = 400, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19276, race = { "Undead" } },
+    { name = "Devouring Plague", level = 36, rank = 3, base_cost = 700, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19277, race = { "Undead" } },
+    { name = "Devouring Plague", level = 44, rank = 4, base_cost = 1200, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19278, race = { "Undead" } },
+    { name = "Devouring Plague", level = 52, rank = 5, base_cost = 1900, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19279, race = { "Undead" } },
+    { name = "Devouring Plague", level = 60, rank = 6, base_cost = 2300, icon = "Spell_Shadow_DevouringPlague", source = "quest", train = "yes", spellId = 19280, race = { "Undead" } },
+
+    -- Dispel Magic
+    { name = "Dispel Magic", level = 18, rank = 1, base_cost = 2000, icon = "Spell_Holy_DispelMagic", source = "trainer", train = "yes", spellId = 527 },
+    { name = "Dispel Magic", level = 36, rank = 2, base_cost = 14000, icon = "Spell_Holy_DispelMagic", source = "trainer", train = "yes", spellId = 988 },
 
     -- Divine Spirit (Discipline talent)
     { name = "Divine Spirit", level = 30, rank = 1, base_cost = 0, icon = "Spell_Holy_DivineSpirit", source = "talent", train = "yes", spellId = 14752 },
-    { name = "Divine Spirit", level = 40, rank = 2, base_cost = 15000, icon = "Spell_Holy_DivineSpirit", source = "talent", train = "yes", spellId = 14818 },
-    { name = "Divine Spirit", level = 50, rank = 3, base_cost = 32000, icon = "Spell_Holy_DivineSpirit", source = "talent", train = "yes", spellId = 14819 },
-    { name = "Divine Spirit", level = 60, rank = 4, base_cost = 42000, icon = "Spell_Holy_DivineSpirit", source = "talent", train = "yes", spellId = 27841 },
-
-    -- Dispel Magic
-    { name = "Dispel Magic", level = 18, rank = 1, base_cost = 1800, icon = "Spell_Holy_DispelMagic", source = "trainer", train = "yes", spellId = 527 },
-    { name = "Dispel Magic", level = 36, rank = 2, base_cost = 13000, icon = "Spell_Holy_DispelMagic", source = "trainer", train = "yes", spellId = 988 },
+    { name = "Divine Spirit", level = 40, rank = 2, base_cost = 900, icon = "Spell_Holy_DivineSpirit", source = "talent", train = "yes", spellId = 14818 },
+    { name = "Divine Spirit", level = 50, rank = 3, base_cost = 1500, icon = "Spell_Holy_DivineSpirit", source = "talent", train = "yes", spellId = 14819 },
+    { name = "Divine Spirit", level = 60, rank = 4, base_cost = 2300, icon = "Spell_Holy_DivineSpirit", source = "talent", train = "yes", spellId = 27841 },
 
     -- Elune's Grace (Night Elf racial - quest)
-    { name = "Elune's Grace", level = 20, rank = 1, base_cost = 0, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "yes", spellId = 2651 },
-    { name = "Elune's Grace", level = 28, rank = 2, base_cost = 0, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "wait", spellId = 19289 },
-    { name = "Elune's Grace", level = 36, rank = 3, base_cost = 0, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "wait", spellId = 19291 },
-    { name = "Elune's Grace", level = 44, rank = 4, base_cost = 0, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "wait", spellId = 19292 },
-    { name = "Elune's Grace", level = 52, rank = 5, base_cost = 0, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "wait", spellId = 19293 },
-    { name = "Elune's Grace", level = 60, rank = 6, base_cost = 0, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "wait", spellId = 19294 },
+    { name = "Elune's Grace", level = 20, rank = 1, base_cost = 0, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "yes", spellId = 2651, race = { "Night Elf" } },
+    { name = "Elune's Grace", level = 30, rank = 2, base_cost = 500, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "yes", spellId = 19289, race = { "Night Elf" } },
+    { name = "Elune's Grace", level = 40, rank = 3, base_cost = 900, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "yes", spellId = 19291, race = { "Night Elf" } },
+    { name = "Elune's Grace", level = 50, rank = 4, base_cost = 1500, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "yes", spellId = 19292, race = { "Night Elf" } },
+    { name = "Elune's Grace", level = 60, rank = 5, base_cost = 2300, icon = "Spell_Holy_ElunesGrace", source = "quest", train = "yes", spellId = 19293, race = { "Night Elf" } },
 
     -- Fade
     { name = "Fade", level = 8, rank = 1, base_cost = 200, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "yes", spellId = 586 },
-    { name = "Fade", level = 16, rank = 2, base_cost = 1500, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 9578 },
-    { name = "Fade", level = 24, rank = 3, base_cost = 4000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 9579 },
-    { name = "Fade", level = 32, rank = 4, base_cost = 10000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 9592 },
-    { name = "Fade", level = 40, rank = 5, base_cost = 15000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 10941 },
-    { name = "Fade", level = 48, rank = 6, base_cost = 28000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 10942 },
-    { name = "Fade", level = 56, rank = 7, base_cost = 38000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 10943 },
+    { name = "Fade", level = 20, rank = 2, base_cost = 3000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 9578 },
+    { name = "Fade", level = 30, rank = 3, base_cost = 10000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 9579 },
+    { name = "Fade", level = 40, rank = 4, base_cost = 18000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 9592 },
+    { name = "Fade", level = 50, rank = 5, base_cost = 30000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 10941 },
+    { name = "Fade", level = 60, rank = 6, base_cost = 46000, icon = "Spell_Magic_LesserInvisibilty", source = "trainer", train = "wait", spellId = 10942 },
 
     -- Fear Ward (Dwarf racial - quest)
-    { name = "Fear Ward", level = 20, rank = 1, base_cost = 0, icon = "Spell_Holy_Excorcism", source = "quest", train = "yes", spellId = 6346 },
+    { name = "Fear Ward", level = 20, rank = 1, base_cost = 0, icon = "Spell_Holy_Excorcism", source = "quest", train = "yes", spellId = 6346, race = { "Dwarf" } },
 
     -- Feedback (Human racial - quest)
-    { name = "Feedback", level = 20, rank = 1, base_cost = 0, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 13896 },
-    { name = "Feedback", level = 28, rank = 2, base_cost = 0, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 19271 },
-    { name = "Feedback", level = 36, rank = 3, base_cost = 0, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 19273 },
-    { name = "Feedback", level = 44, rank = 4, base_cost = 0, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 19274 },
-    { name = "Feedback", level = 52, rank = 5, base_cost = 0, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 19275 },
-    { name = "Feedback", level = 60, rank = 6, base_cost = 0, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 25441 },
+    { name = "Feedback", level = 20, rank = 1, base_cost = 0, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "yes", spellId = 13896, race = { "Human" } },
+    { name = "Feedback", level = 30, rank = 2, base_cost = 500, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 19271, race = { "Human" } },
+    { name = "Feedback", level = 40, rank = 3, base_cost = 900, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 19273, race = { "Human" } },
+    { name = "Feedback", level = 50, rank = 4, base_cost = 1500, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 19274, race = { "Human" } },
+    { name = "Feedback", level = 60, rank = 5, base_cost = 2300, icon = "Spell_Shadow_RitualOfSacrifice", source = "quest", train = "wait", spellId = 19275, race = { "Human" } },
 
     -- Flash Heal
-    { name = "Flash Heal", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 2061 },
-    { name = "Flash Heal", level = 26, rank = 2, base_cost = 5000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 9472 },
-    { name = "Flash Heal", level = 32, rank = 3, base_cost = 10000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 9473 },
-    { name = "Flash Heal", level = 38, rank = 4, base_cost = 14000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 9474 },
-    { name = "Flash Heal", level = 44, rank = 5, base_cost = 23000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 10915 },
-    { name = "Flash Heal", level = 50, rank = 6, base_cost = 32000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 10916 },
-    { name = "Flash Heal", level = 56, rank = 7, base_cost = 38000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 10917 },
+    { name = "Flash Heal", level = 20, rank = 1, base_cost = 3000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 2061 },
+    { name = "Flash Heal", level = 26, rank = 2, base_cost = 6000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 9472 },
+    { name = "Flash Heal", level = 32, rank = 3, base_cost = 11000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 9473 },
+    { name = "Flash Heal", level = 38, rank = 4, base_cost = 16000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 9474 },
+    { name = "Flash Heal", level = 44, rank = 5, base_cost = 24000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 10915 },
+    { name = "Flash Heal", level = 50, rank = 6, base_cost = 30000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 10916 },
+    { name = "Flash Heal", level = 56, rank = 7, base_cost = 42000, icon = "Spell_Holy_FlashHeal", source = "trainer", train = "yes", spellId = 10917 },
 
     -- Greater Heal
     { name = "Greater Heal", level = 40, rank = 1, base_cost = 15000, icon = "Spell_Holy_GreaterHeal", source = "trainer", train = "yes", spellId = 2060 },
@@ -99,228 +98,226 @@ Deathless.Data.Abilities["Priest"] = {
     { name = "Greater Heal", level = 60, rank = 5, base_cost = 0, icon = "Spell_Holy_GreaterHeal", source = "book", train = "yes", spellId = 25314 },
 
     -- Heal
-    { name = "Heal", level = 16, rank = 1, base_cost = 1500, icon = "Spell_Holy_Heal", source = "trainer", train = "yes", spellId = 2054 },
-    { name = "Heal", level = 22, rank = 2, base_cost = 3000, icon = "Spell_Holy_Heal", source = "trainer", train = "yes", spellId = 2055 },
-    { name = "Heal", level = 28, rank = 3, base_cost = 7000, icon = "Spell_Holy_Heal", source = "trainer", train = "yes", spellId = 6063 },
+    { name = "Heal", level = 16, rank = 1, base_cost = 1600, icon = "Spell_Holy_Heal", source = "trainer", train = "yes", spellId = 2054 },
+    { name = "Heal", level = 22, rank = 2, base_cost = 4000, icon = "Spell_Holy_Heal", source = "trainer", train = "yes", spellId = 2055 },
+    { name = "Heal", level = 28, rank = 3, base_cost = 8000, icon = "Spell_Holy_Heal", source = "trainer", train = "yes", spellId = 6063 },
     { name = "Heal", level = 34, rank = 4, base_cost = 12000, icon = "Spell_Holy_Heal", source = "trainer", train = "yes", spellId = 6064 },
 
     -- Hex of Weakness (Troll racial - quest)
-    { name = "Hex of Weakness", level = 10, rank = 1, base_cost = 0, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "yes", spellId = 9035 },
-    { name = "Hex of Weakness", level = 18, rank = 2, base_cost = 0, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "wait", spellId = 19281 },
-    { name = "Hex of Weakness", level = 26, rank = 3, base_cost = 0, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "wait", spellId = 19282 },
-    { name = "Hex of Weakness", level = 34, rank = 4, base_cost = 0, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "wait", spellId = 19283 },
-    { name = "Hex of Weakness", level = 42, rank = 5, base_cost = 0, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "wait", spellId = 19284 },
-    { name = "Hex of Weakness", level = 50, rank = 6, base_cost = 0, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "wait", spellId = 19285 },
-    { name = "Hex of Weakness", level = 58, rank = 7, base_cost = 0, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "wait", spellId = 25470 },
+    { name = "Hex of Weakness", level = 10, rank = 1, base_cost = 0, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "yes", spellId = 9035, race = { "Troll" } },
+    { name = "Hex of Weakness", level = 20, rank = 2, base_cost = 150, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "yes", spellId = 19281, race = { "Troll" } },
+    { name = "Hex of Weakness", level = 30, rank = 3, base_cost = 500, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "yes", spellId = 19282, race = { "Troll" } },
+    { name = "Hex of Weakness", level = 40, rank = 4, base_cost = 900, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "yes", spellId = 19283, race = { "Troll" } },
+    { name = "Hex of Weakness", level = 50, rank = 5, base_cost = 1500, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "yes", spellId = 19284, race = { "Troll" } },
+    { name = "Hex of Weakness", level = 60, rank = 6, base_cost = 2300, icon = "Spell_Shadow_FingerOfDeath", source = "quest", train = "yes", spellId = 19285, race = { "Troll" } },
 
     -- Holy Fire
-    { name = "Holy Fire", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 14914 },
-    { name = "Holy Fire", level = 24, rank = 2, base_cost = 4000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15262 },
-    { name = "Holy Fire", level = 30, rank = 3, base_cost = 8000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15263 },
-    { name = "Holy Fire", level = 36, rank = 4, base_cost = 13000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15264 },
-    { name = "Holy Fire", level = 42, rank = 5, base_cost = 18000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15265 },
+    { name = "Holy Fire", level = 20, rank = 1, base_cost = 3000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 14914 },
+    { name = "Holy Fire", level = 24, rank = 2, base_cost = 5000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15262 },
+    { name = "Holy Fire", level = 30, rank = 3, base_cost = 10000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15263 },
+    { name = "Holy Fire", level = 36, rank = 4, base_cost = 14000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15264 },
+    { name = "Holy Fire", level = 42, rank = 5, base_cost = 22000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15265 },
     { name = "Holy Fire", level = 48, rank = 6, base_cost = 28000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15266 },
-    { name = "Holy Fire", level = 54, rank = 7, base_cost = 36000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15267 },
-    { name = "Holy Fire", level = 60, rank = 8, base_cost = 42000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15261 },
+    { name = "Holy Fire", level = 54, rank = 7, base_cost = 40000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15267 },
+    { name = "Holy Fire", level = 60, rank = 8, base_cost = 46000, icon = "Spell_Holy_SearingLight", source = "trainer", train = "yes", spellId = 15261 },
 
-    -- Holy Nova (trainer in Classic, was talent earlier)
-    { name = "Holy Nova", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Holy_HolyNova", source = "trainer", train = "wait", spellId = 15237 },
-    { name = "Holy Nova", level = 28, rank = 2, base_cost = 7000, icon = "Spell_Holy_HolyNova", source = "trainer", train = "wait", spellId = 15430 },
-    { name = "Holy Nova", level = 36, rank = 3, base_cost = 13000, icon = "Spell_Holy_HolyNova", source = "trainer", train = "wait", spellId = 15431 },
-    { name = "Holy Nova", level = 44, rank = 4, base_cost = 23000, icon = "Spell_Holy_HolyNova", source = "trainer", train = "wait", spellId = 27799 },
-    { name = "Holy Nova", level = 52, rank = 5, base_cost = 35000, icon = "Spell_Holy_HolyNova", source = "trainer", train = "wait", spellId = 27800 },
-    { name = "Holy Nova", level = 60, rank = 6, base_cost = 42000, icon = "Spell_Holy_HolyNova", source = "trainer", train = "wait", spellId = 27801 },
+    -- Holy Nova
+    { name = "Holy Nova", level = 20, rank = 1, base_cost = 0, icon = "Spell_Holy_HolyNova", source = "talent", train = "yes", spellId = 15237 },
+    { name = "Holy Nova", level = 28, rank = 2, base_cost = 4000, icon = "Spell_Holy_HolyNova", source = "talent", train = "yes", spellId = 15430 },
+    { name = "Holy Nova", level = 36, rank = 3, base_cost = 7000, icon = "Spell_Holy_HolyNova", source = "talent", train = "yes", spellId = 15431 },
+    { name = "Holy Nova", level = 44, rank = 4, base_cost = 12000, icon = "Spell_Holy_HolyNova", source = "talent", train = "yes", spellId = 27799 },
+    { name = "Holy Nova", level = 52, rank = 5, base_cost = 19000, icon = "Spell_Holy_HolyNova", source = "talent", train = "yes", spellId = 27800 },
+    { name = "Holy Nova", level = 60, rank = 6, base_cost = 23000, icon = "Spell_Holy_HolyNova", source = "talent", train = "yes", spellId = 27801 },
 
     -- Inner Fire
-    { name = "Inner Fire", level = 12, rank = 1, base_cost = 600, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 588 },
-    { name = "Inner Fire", level = 20, rank = 2, base_cost = 2000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 7128 },
-    { name = "Inner Fire", level = 30, rank = 3, base_cost = 8000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 602 },
-    { name = "Inner Fire", level = 40, rank = 4, base_cost = 15000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 1006 },
-    { name = "Inner Fire", level = 50, rank = 5, base_cost = 32000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 10951 },
-    { name = "Inner Fire", level = 60, rank = 6, base_cost = 42000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 10952 },
+    { name = "Inner Fire", level = 12, rank = 1, base_cost = 800, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 588 },
+    { name = "Inner Fire", level = 20, rank = 2, base_cost = 3000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 7128 },
+    { name = "Inner Fire", level = 30, rank = 3, base_cost = 10000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 602 },
+    { name = "Inner Fire", level = 40, rank = 4, base_cost = 18000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 1006 },
+    { name = "Inner Fire", level = 50, rank = 5, base_cost = 30000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 10951 },
+    { name = "Inner Fire", level = 60, rank = 6, base_cost = 46000, icon = "Spell_Holy_InnerFire", source = "trainer", train = "yes", spellId = 10952 },
 
-    -- Inner Focus (Discipline talent)
+    -- Inner Focus (10 point Discipline talent)
     { name = "Inner Focus", level = 20, rank = 1, base_cost = 0, icon = "Spell_Frost_WindWalkOn", source = "talent", train = "yes", spellId = 14751 },
 
-    -- Lesser Heal (innate)
+    -- Lesser Heal
     { name = "Lesser Heal", level = 1, rank = 1, base_cost = 0, icon = "Spell_Holy_LesserHeal", source = "class", train = "yes", spellId = 2050 },
     { name = "Lesser Heal", level = 4, rank = 2, base_cost = 100, icon = "Spell_Holy_LesserHeal", source = "trainer", train = "yes", spellId = 2052 },
-    { name = "Lesser Heal", level = 10, rank = 3, base_cost = 400, icon = "Spell_Holy_LesserHeal", source = "trainer", train = "yes", spellId = 2053 },
+    { name = "Lesser Heal", level = 10, rank = 3, base_cost = 300, icon = "Spell_Holy_LesserHeal", source = "trainer", train = "yes", spellId = 2053 },
 
     -- Levitate
     { name = "Levitate", level = 34, rank = 1, base_cost = 12000, icon = "Spell_Holy_LayOnHands", source = "trainer", train = "yes", spellId = 1706 },
 
-    -- Lightwell (Holy talent)
+    -- Lightwell (30 point Holy talent)
     { name = "Lightwell", level = 40, rank = 1, base_cost = 0, icon = "Spell_Holy_SummonLightwell", source = "talent", train = "yes", spellId = 724 },
-    { name = "Lightwell", level = 50, rank = 2, base_cost = 16000, icon = "Spell_Holy_SummonLightwell", source = "talent", train = "yes", spellId = 27870 },
-    { name = "Lightwell", level = 60, rank = 3, base_cost = 21000, icon = "Spell_Holy_SummonLightwell", source = "talent", train = "yes", spellId = 27871 },
+    { name = "Lightwell", level = 50, rank = 2, base_cost = 1200, icon = "Spell_Holy_SummonLightwell", source = "talent", train = "yes", spellId = 27870 },
+    { name = "Lightwell", level = 60, rank = 3, base_cost = 1500, icon = "Spell_Holy_SummonLightwell", source = "talent", train = "yes", spellId = 27871 },
 
     -- Mana Burn
-    { name = "Mana Burn", level = 24, rank = 1, base_cost = 4000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "wait", spellId = 8129 },
-    { name = "Mana Burn", level = 32, rank = 2, base_cost = 10000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "wait", spellId = 8131 },
-    { name = "Mana Burn", level = 40, rank = 3, base_cost = 15000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "wait", spellId = 10874 },
-    { name = "Mana Burn", level = 48, rank = 4, base_cost = 28000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "wait", spellId = 10875 },
-    { name = "Mana Burn", level = 56, rank = 5, base_cost = 38000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "wait", spellId = 10876 },
+    { name = "Mana Burn", level = 24, rank = 1, base_cost = 5000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "yes", spellId = 8129 },
+    { name = "Mana Burn", level = 32, rank = 2, base_cost = 11000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "yes", spellId = 8131 },
+    { name = "Mana Burn", level = 40, rank = 3, base_cost = 18000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "yes", spellId = 10874 },
+    { name = "Mana Burn", level = 48, rank = 4, base_cost = 28000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "yes", spellId = 10875 },
+    { name = "Mana Burn", level = 56, rank = 5, base_cost = 42000, icon = "Spell_Shadow_ManaBurn", source = "trainer", train = "yes", spellId = 10876 },
 
     -- Mind Blast
-    { name = "Mind Blast", level = 10, rank = 1, base_cost = 400, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8092 },
-    { name = "Mind Blast", level = 16, rank = 2, base_cost = 1500, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8102 },
-    { name = "Mind Blast", level = 22, rank = 3, base_cost = 3000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8103 },
-    { name = "Mind Blast", level = 28, rank = 4, base_cost = 7000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8104 },
+    { name = "Mind Blast", level = 10, rank = 1, base_cost = 300, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8092 },
+    { name = "Mind Blast", level = 16, rank = 2, base_cost = 1600, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8102 },
+    { name = "Mind Blast", level = 22, rank = 3, base_cost = 4000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8103 },
+    { name = "Mind Blast", level = 28, rank = 4, base_cost = 8000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8104 },
     { name = "Mind Blast", level = 34, rank = 5, base_cost = 12000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8105 },
-    { name = "Mind Blast", level = 40, rank = 6, base_cost = 15000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8106 },
+    { name = "Mind Blast", level = 40, rank = 6, base_cost = 18000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 8106 },
     { name = "Mind Blast", level = 46, rank = 7, base_cost = 26000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 10945 },
-    { name = "Mind Blast", level = 52, rank = 8, base_cost = 35000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 10946 },
-    { name = "Mind Blast", level = 58, rank = 9, base_cost = 40000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 10947 },
+    { name = "Mind Blast", level = 52, rank = 8, base_cost = 38000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 10946 },
+    { name = "Mind Blast", level = 58, rank = 9, base_cost = 44000, icon = "Spell_Shadow_UnholyFrenzy", source = "trainer", train = "yes", spellId = 10947 },
 
     -- Mind Control
-    { name = "Mind Control", level = 30, rank = 1, base_cost = 8000, icon = "Spell_Shadow_ShadowWordDominate", source = "trainer", train = "yes", spellId = 605 },
-    { name = "Mind Control", level = 44, rank = 2, base_cost = 23000, icon = "Spell_Shadow_ShadowWordDominate", source = "trainer", train = "wait", spellId = 10911 },
-    { name = "Mind Control", level = 58, rank = 3, base_cost = 40000, icon = "Spell_Shadow_ShadowWordDominate", source = "trainer", train = "wait", spellId = 10912 },
+    { name = "Mind Control", level = 30, rank = 1, base_cost = 10000, icon = "Spell_Shadow_ShadowWordDominate", source = "trainer", train = "yes", spellId = 605 },
+    { name = "Mind Control", level = 44, rank = 2, base_cost = 24000, icon = "Spell_Shadow_ShadowWordDominate", source = "trainer", train = "yes", spellId = 10911 },
+    { name = "Mind Control", level = 58, rank = 3, base_cost = 44000, icon = "Spell_Shadow_ShadowWordDominate", source = "trainer", train = "yes", spellId = 10912 },
 
-    -- Mind Flay (Shadow talent)
+    -- Mind Flay (10 point Shadow talent)
     { name = "Mind Flay", level = 20, rank = 1, base_cost = 0, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 15407 },
-    { name = "Mind Flay", level = 28, rank = 2, base_cost = 3500, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 17311 },
-    { name = "Mind Flay", level = 36, rank = 3, base_cost = 6500, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 17312 },
-    { name = "Mind Flay", level = 44, rank = 4, base_cost = 11500, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 17313 },
-    { name = "Mind Flay", level = 52, rank = 5, base_cost = 17500, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 17314 },
-    { name = "Mind Flay", level = 60, rank = 6, base_cost = 21000, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 18807 },
+    { name = "Mind Flay", level = 28, rank = 2, base_cost = 4000, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 17311 },
+    { name = "Mind Flay", level = 36, rank = 3, base_cost = 7000, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 17312 },
+    { name = "Mind Flay", level = 44, rank = 4, base_cost = 1200, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 17313 },
+    { name = "Mind Flay", level = 52, rank = 5, base_cost = 1900, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 17314 },
+    { name = "Mind Flay", level = 60, rank = 6, base_cost = 2300, icon = "Spell_Shadow_SiphonMana", source = "talent", train = "yes", spellId = 18807 },
 
     -- Mind Soothe
-    { name = "Mind Soothe", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Holy_MindSooth", source = "trainer", train = "wait", spellId = 453 },
-    { name = "Mind Soothe", level = 28, rank = 2, base_cost = 7000, icon = "Spell_Holy_MindSooth", source = "trainer", train = "wait", spellId = 8192 },
-    { name = "Mind Soothe", level = 36, rank = 3, base_cost = 13000, icon = "Spell_Holy_MindSooth", source = "trainer", train = "wait", spellId = 10953 },
-    { name = "Mind Soothe", level = 44, rank = 4, base_cost = 23000, icon = "Spell_Holy_MindSooth", source = "trainer", train = "wait", spellId = 25596 },
+    { name = "Mind Soothe", level = 20, rank = 1, base_cost = 3000, icon = "Spell_Holy_MindSooth", source = "trainer", train = "yes", spellId = 453 },
+    { name = "Mind Soothe", level = 36, rank = 2, base_cost = 14000, icon = "Spell_Holy_MindSooth", source = "trainer", train = "yes", spellId = 8192 },
+    { name = "Mind Soothe", level = 52, rank = 3, base_cost = 38000, icon = "Spell_Holy_MindSooth", source = "trainer", train = "yes", spellId = 10953 },
 
     -- Mind Vision
-    { name = "Mind Vision", level = 22, rank = 1, base_cost = 3000, icon = "Spell_Holy_MindVision", source = "trainer", train = "wait", spellId = 2096 },
-    { name = "Mind Vision", level = 52, rank = 2, base_cost = 35000, icon = "Spell_Holy_MindVision", source = "trainer", train = "wait", spellId = 10909 },
+    { name = "Mind Vision", level = 22, rank = 1, base_cost = 4000, icon = "Spell_Holy_MindVision", source = "trainer", train = "wait", spellId = 2096 },
+    { name = "Mind Vision", level = 44, rank = 2, base_cost = 24000, icon = "Spell_Holy_MindVision", source = "trainer", train = "wait", spellId = 10909 },
 
     -- Power Infusion (Discipline 31-point talent)
     { name = "Power Infusion", level = 40, rank = 1, base_cost = 0, icon = "Spell_Holy_PowerInfusion", source = "talent", train = "yes", spellId = 10060 },
 
-    -- Power Word: Fortitude (innate)
-    { name = "Power Word: Fortitude", level = 1, rank = 1, base_cost = 0, icon = "Spell_Holy_WordFortitude", source = "class", train = "yes", spellId = 1243 },
-    { name = "Power Word: Fortitude", level = 12, rank = 2, base_cost = 600, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 1244 },
-    { name = "Power Word: Fortitude", level = 24, rank = 3, base_cost = 4000, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 1245 },
-    { name = "Power Word: Fortitude", level = 36, rank = 4, base_cost = 13000, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 2791 },
+    -- Power Word: Fortitude
+    { name = "Power Word: Fortitude", level = 1, rank = 1, base_cost = 10, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 1243 },
+    { name = "Power Word: Fortitude", level = 12, rank = 2, base_cost = 800, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 1244 },
+    { name = "Power Word: Fortitude", level = 24, rank = 3, base_cost = 5000, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 1245 },
+    { name = "Power Word: Fortitude", level = 36, rank = 4, base_cost = 14000, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 2791 },
     { name = "Power Word: Fortitude", level = 48, rank = 5, base_cost = 28000, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 10937 },
-    { name = "Power Word: Fortitude", level = 60, rank = 6, base_cost = 42000, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 10938 },
+    { name = "Power Word: Fortitude", level = 60, rank = 6, base_cost = 46000, icon = "Spell_Holy_WordFortitude", source = "trainer", train = "yes", spellId = 10938 },
 
     -- Power Word: Shield
     { name = "Power Word: Shield", level = 6, rank = 1, base_cost = 100, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 17 },
-    { name = "Power Word: Shield", level = 12, rank = 2, base_cost = 600, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 592 },
-    { name = "Power Word: Shield", level = 18, rank = 3, base_cost = 1800, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 600 },
-    { name = "Power Word: Shield", level = 24, rank = 4, base_cost = 4000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 3747 },
-    { name = "Power Word: Shield", level = 30, rank = 5, base_cost = 8000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 6065 },
-    { name = "Power Word: Shield", level = 36, rank = 6, base_cost = 13000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 6066 },
-    { name = "Power Word: Shield", level = 42, rank = 7, base_cost = 18000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 10898 },
+    { name = "Power Word: Shield", level = 12, rank = 2, base_cost = 800, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 592 },
+    { name = "Power Word: Shield", level = 18, rank = 3, base_cost = 2000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 600 },
+    { name = "Power Word: Shield", level = 24, rank = 4, base_cost = 5000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 3747 },
+    { name = "Power Word: Shield", level = 30, rank = 5, base_cost = 10000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 6065 },
+    { name = "Power Word: Shield", level = 36, rank = 6, base_cost = 14000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 6066 },
+    { name = "Power Word: Shield", level = 42, rank = 7, base_cost = 22000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 10898 },
     { name = "Power Word: Shield", level = 48, rank = 8, base_cost = 28000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 10899 },
-    { name = "Power Word: Shield", level = 54, rank = 9, base_cost = 36000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 10900 },
-    { name = "Power Word: Shield", level = 60, rank = 10, base_cost = 42000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 10901 },
+    { name = "Power Word: Shield", level = 54, rank = 9, base_cost = 40000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 10900 },
+    { name = "Power Word: Shield", level = 60, rank = 10, base_cost = 46000, icon = "Spell_Holy_PowerWordShield", source = "trainer", train = "yes", spellId = 10901 },
 
     -- Prayer of Fortitude (book for R1)
     { name = "Prayer of Fortitude", level = 48, rank = 1, base_cost = 0, icon = "Spell_Holy_PrayerOfFortitude", source = "book", train = "yes", spellId = 21562 },
     { name = "Prayer of Fortitude", level = 60, rank = 2, base_cost = 0, icon = "Spell_Holy_PrayerOfFortitude", source = "book", train = "yes", spellId = 21564 },
 
     -- Prayer of Healing
-    { name = "Prayer of Healing", level = 30, rank = 1, base_cost = 8000, icon = "Spell_Holy_PrayerOfHealing02", source = "trainer", train = "yes", spellId = 596 },
-    { name = "Prayer of Healing", level = 40, rank = 2, base_cost = 15000, icon = "Spell_Holy_PrayerOfHealing02", source = "trainer", train = "yes", spellId = 996 },
-    { name = "Prayer of Healing", level = 50, rank = 3, base_cost = 32000, icon = "Spell_Holy_PrayerOfHealing02", source = "trainer", train = "yes", spellId = 10960 },
-    { name = "Prayer of Healing", level = 60, rank = 4, base_cost = 42000, icon = "Spell_Holy_PrayerOfHealing02", source = "trainer", train = "yes", spellId = 10961 },
+    { name = "Prayer of Healing", level = 30, rank = 1, base_cost = 10000, icon = "Spell_Holy_PrayerOfHealing02", source = "trainer", train = "yes", spellId = 596 },
+    { name = "Prayer of Healing", level = 40, rank = 2, base_cost = 18000, icon = "Spell_Holy_PrayerOfHealing02", source = "trainer", train = "yes", spellId = 996 },
+    { name = "Prayer of Healing", level = 50, rank = 3, base_cost = 30000, icon = "Spell_Holy_PrayerOfHealing02", source = "trainer", train = "yes", spellId = 10960 },
+    { name = "Prayer of Healing", level = 60, rank = 4, base_cost = 46000, icon = "Spell_Holy_PrayerOfHealing02", source = "trainer", train = "yes", spellId = 10961 },
     { name = "Prayer of Healing", level = 60, rank = 5, base_cost = 0, icon = "Spell_Holy_PrayerOfHealing02", source = "book", train = "yes", spellId = 25316 },
 
     -- Prayer of Shadow Protection (book)
     { name = "Prayer of Shadow Protection", level = 56, rank = 1, base_cost = 0, icon = "Spell_Holy_PrayerOfShadowProtection", source = "book", train = "yes", spellId = 27683 },
 
     -- Prayer of Spirit (book)
-    { name = "Prayer of Spirit", level = 60, rank = 1, base_cost = 0, icon = "Spell_Holy_PrayerOfSpirit", source = "book", train = "yes", spellId = 27681 },
+    { name = "Prayer of Spirit", level = 60, rank = 1, base_cost = 2300, icon = "Spell_Holy_PrayerOfSpirit", source = "trainer", train = "yes", spellId = 27681 },
 
     -- Psychic Scream
-    { name = "Psychic Scream", level = 14, rank = 1, base_cost = 900, icon = "Spell_Shadow_PsychicScream", source = "trainer", train = "yes", spellId = 8122 },
-    { name = "Psychic Scream", level = 28, rank = 2, base_cost = 7000, icon = "Spell_Shadow_PsychicScream", source = "trainer", train = "yes", spellId = 8124 },
-    { name = "Psychic Scream", level = 42, rank = 3, base_cost = 18000, icon = "Spell_Shadow_PsychicScream", source = "trainer", train = "yes", spellId = 10888 },
-    { name = "Psychic Scream", level = 56, rank = 4, base_cost = 38000, icon = "Spell_Shadow_PsychicScream", source = "trainer", train = "yes", spellId = 10890 },
+    { name = "Psychic Scream", level = 14, rank = 1, base_cost = 1200, icon = "Spell_Shadow_PsychicScream", source = "trainer", train = "yes", spellId = 8122 },
+    { name = "Psychic Scream", level = 28, rank = 2, base_cost = 8000, icon = "Spell_Shadow_PsychicScream", source = "trainer", train = "yes", spellId = 8124 },
+    { name = "Psychic Scream", level = 42, rank = 3, base_cost = 22000, icon = "Spell_Shadow_PsychicScream", source = "trainer", train = "yes", spellId = 10888 },
+    { name = "Psychic Scream", level = 56, rank = 4, base_cost = 42000, icon = "Spell_Shadow_PsychicScream", source = "trainer", train = "yes", spellId = 10890 },
 
     -- Renew
     { name = "Renew", level = 8, rank = 1, base_cost = 200, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 139 },
-    { name = "Renew", level = 14, rank = 2, base_cost = 900, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6074 },
-    { name = "Renew", level = 20, rank = 3, base_cost = 2000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6075 },
-    { name = "Renew", level = 26, rank = 4, base_cost = 5000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6076 },
-    { name = "Renew", level = 32, rank = 5, base_cost = 10000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6077 },
-    { name = "Renew", level = 38, rank = 6, base_cost = 14000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6078 },
-    { name = "Renew", level = 44, rank = 7, base_cost = 23000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 10927 },
-    { name = "Renew", level = 50, rank = 8, base_cost = 32000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 10928 },
-    { name = "Renew", level = 56, rank = 9, base_cost = 38000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 10929 },
+    { name = "Renew", level = 14, rank = 2, base_cost = 1200, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6074 },
+    { name = "Renew", level = 20, rank = 3, base_cost = 3000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6075 },
+    { name = "Renew", level = 26, rank = 4, base_cost = 6000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6076 },
+    { name = "Renew", level = 32, rank = 5, base_cost = 11000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6077 },
+    { name = "Renew", level = 38, rank = 6, base_cost = 16000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 6078 },
+    { name = "Renew", level = 44, rank = 7, base_cost = 24000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 10927 },
+    { name = "Renew", level = 50, rank = 8, base_cost = 30000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 10928 },
+    { name = "Renew", level = 56, rank = 9, base_cost = 42000, icon = "Spell_Holy_Renew", source = "trainer", train = "yes", spellId = 10929 },
     { name = "Renew", level = 60, rank = 10, base_cost = 0, icon = "Spell_Holy_Renew", source = "book", train = "yes", spellId = 25315 },
 
     -- Resurrection
-    { name = "Resurrection", level = 10, rank = 1, base_cost = 400, icon = "Spell_Holy_Resurrection", source = "trainer", train = "yes", spellId = 2006 },
-    { name = "Resurrection", level = 22, rank = 2, base_cost = 3000, icon = "Spell_Holy_Resurrection", source = "trainer", train = "wait", spellId = 2010 },
-    { name = "Resurrection", level = 34, rank = 3, base_cost = 12000, icon = "Spell_Holy_Resurrection", source = "trainer", train = "wait", spellId = 10880 },
-    { name = "Resurrection", level = 46, rank = 4, base_cost = 26000, icon = "Spell_Holy_Resurrection", source = "trainer", train = "wait", spellId = 10881 },
-    { name = "Resurrection", level = 58, rank = 5, base_cost = 40000, icon = "Spell_Holy_Resurrection", source = "trainer", train = "wait", spellId = 20770 },
+    { name = "Resurrection", level = 10, rank = 1, base_cost = 300, icon = "Spell_Holy_Resurrection", source = "trainer", train = "no", spellId = 2006 },
+    { name = "Resurrection", level = 22, rank = 2, base_cost = 4000, icon = "Spell_Holy_Resurrection", source = "trainer", train = "no", spellId = 2010 },
+    { name = "Resurrection", level = 34, rank = 3, base_cost = 12000, icon = "Spell_Holy_Resurrection", source = "trainer", train = "no", spellId = 10880 },
+    { name = "Resurrection", level = 46, rank = 4, base_cost = 26000, icon = "Spell_Holy_Resurrection", source = "trainer", train = "no", spellId = 10881 },
+    { name = "Resurrection", level = 58, rank = 5, base_cost = 44000, icon = "Spell_Holy_Resurrection", source = "trainer", train = "no", spellId = 20770 },
 
     -- Shackle Undead
-    { name = "Shackle Undead", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Nature_Slow", source = "trainer", train = "yes", spellId = 9484 },
-    { name = "Shackle Undead", level = 40, rank = 2, base_cost = 15000, icon = "Spell_Nature_Slow", source = "trainer", train = "wait", spellId = 9485 },
-    { name = "Shackle Undead", level = 60, rank = 3, base_cost = 42000, icon = "Spell_Nature_Slow", source = "trainer", train = "wait", spellId = 10955 },
+    { name = "Shackle Undead", level = 20, rank = 1, base_cost = 3000, icon = "Spell_Nature_Slow", source = "trainer", train = "yes", spellId = 9484 },
+    { name = "Shackle Undead", level = 40, rank = 2, base_cost = 18000, icon = "Spell_Nature_Slow", source = "trainer", train = "yes", spellId = 9485 },
+    { name = "Shackle Undead", level = 60, rank = 3, base_cost = 46000, icon = "Spell_Nature_Slow", source = "trainer", train = "yes", spellId = 10955 },
 
     -- Shadow Protection
-    { name = "Shadow Protection", level = 30, rank = 1, base_cost = 8000, icon = "Spell_Shadow_AntiShadow", source = "trainer", train = "yes", spellId = 976 },
-    { name = "Shadow Protection", level = 42, rank = 2, base_cost = 18000, icon = "Spell_Shadow_AntiShadow", source = "trainer", train = "wait", spellId = 10957 },
-    { name = "Shadow Protection", level = 56, rank = 3, base_cost = 38000, icon = "Spell_Shadow_AntiShadow", source = "trainer", train = "wait", spellId = 10958 },
+    { name = "Shadow Protection", level = 30, rank = 1, base_cost = 10000, icon = "Spell_Shadow_AntiShadow", source = "trainer", train = "yes", spellId = 976 },
+    { name = "Shadow Protection", level = 42, rank = 2, base_cost = 22000, icon = "Spell_Shadow_AntiShadow", source = "trainer", train = "yes", spellId = 10957 },
+    { name = "Shadow Protection", level = 56, rank = 3, base_cost = 42000, icon = "Spell_Shadow_AntiShadow", source = "trainer", train = "yes", spellId = 10958 },
 
     -- Shadow Word: Pain
     { name = "Shadow Word: Pain", level = 4, rank = 1, base_cost = 100, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 589 },
-    { name = "Shadow Word: Pain", level = 10, rank = 2, base_cost = 400, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 594 },
-    { name = "Shadow Word: Pain", level = 18, rank = 3, base_cost = 1800, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 970 },
-    { name = "Shadow Word: Pain", level = 26, rank = 4, base_cost = 5000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 992 },
+    { name = "Shadow Word: Pain", level = 10, rank = 2, base_cost = 300, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 594 },
+    { name = "Shadow Word: Pain", level = 18, rank = 3, base_cost = 2000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 970 },
+    { name = "Shadow Word: Pain", level = 26, rank = 4, base_cost = 6000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 992 },
     { name = "Shadow Word: Pain", level = 34, rank = 5, base_cost = 12000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 2767 },
-    { name = "Shadow Word: Pain", level = 42, rank = 6, base_cost = 18000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 10892 },
-    { name = "Shadow Word: Pain", level = 50, rank = 7, base_cost = 32000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 10893 },
-    { name = "Shadow Word: Pain", level = 58, rank = 8, base_cost = 40000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 10894 },
+    { name = "Shadow Word: Pain", level = 42, rank = 6, base_cost = 22000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 10892 },
+    { name = "Shadow Word: Pain", level = 50, rank = 7, base_cost = 30000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 10893 },
+    { name = "Shadow Word: Pain", level = 58, rank = 8, base_cost = 44000, icon = "Spell_Shadow_ShadowWordPain", source = "trainer", train = "yes", spellId = 10894 },
 
-    -- Shadowform (Shadow 31-point talent)
+    -- Shadowform (31 point Shadow talent)
     { name = "Shadowform", level = 40, rank = 1, base_cost = 0, icon = "Spell_Shadow_Shadowform", source = "talent", train = "yes", spellId = 15473 },
 
     -- Shadowguard (Troll racial - quest)
-    { name = "Shadowguard", level = 20, rank = 1, base_cost = 0, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 18137 },
-    { name = "Shadowguard", level = 28, rank = 2, base_cost = 0, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19308 },
-    { name = "Shadowguard", level = 36, rank = 3, base_cost = 0, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19309 },
-    { name = "Shadowguard", level = 44, rank = 4, base_cost = 0, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19310 },
-    { name = "Shadowguard", level = 52, rank = 5, base_cost = 0, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19311 },
-    { name = "Shadowguard", level = 60, rank = 6, base_cost = 0, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19312 },
+    { name = "Shadowguard", level = 20, rank = 1, base_cost = 0, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 18137, race = { "Troll" } },
+    { name = "Shadowguard", level = 28, rank = 2, base_cost = 400, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19308, race = { "Troll" } },
+    { name = "Shadowguard", level = 36, rank = 3, base_cost = 700, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19309, race = { "Troll" } },
+    { name = "Shadowguard", level = 44, rank = 4, base_cost = 1200, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19310, race = { "Troll" } },
+    { name = "Shadowguard", level = 52, rank = 5, base_cost = 1900, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19311, race = { "Troll" } },
+    { name = "Shadowguard", level = 60, rank = 6, base_cost = 2300, icon = "Spell_Nature_LightningShield", source = "quest", train = "yes", spellId = 19312, race = { "Troll" } },
 
-    -- Silence (Shadow talent)
+    -- Silence (20 point Shadow talent)
     { name = "Silence", level = 30, rank = 1, base_cost = 0, icon = "Spell_Shadow_ImpPhaseShift", source = "talent", train = "yes", spellId = 15487 },
 
-    -- Smite (innate)
+    -- Smite
     { name = "Smite", level = 1, rank = 1, base_cost = 0, icon = "Spell_Holy_HolySmite", source = "class", train = "yes", spellId = 585 },
     { name = "Smite", level = 6, rank = 2, base_cost = 100, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 591 },
-    { name = "Smite", level = 14, rank = 3, base_cost = 900, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 598 },
-    { name = "Smite", level = 22, rank = 4, base_cost = 3000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 984 },
-    { name = "Smite", level = 30, rank = 5, base_cost = 8000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 1004 },
-    { name = "Smite", level = 38, rank = 6, base_cost = 14000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 6060 },
+    { name = "Smite", level = 14, rank = 3, base_cost = 1200, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 598 },
+    { name = "Smite", level = 22, rank = 4, base_cost = 4000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 984 },
+    { name = "Smite", level = 30, rank = 5, base_cost = 10000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 1004 },
+    { name = "Smite", level = 38, rank = 6, base_cost = 16000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 6060 },
     { name = "Smite", level = 46, rank = 7, base_cost = 26000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 10933 },
-    { name = "Smite", level = 54, rank = 8, base_cost = 36000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 10934 },
+    { name = "Smite", level = 54, rank = 8, base_cost = 40000, icon = "Spell_Holy_HolySmite", source = "trainer", train = "yes", spellId = 10934 },
 
     -- Starshards (Night Elf racial - quest)
-    { name = "Starshards", level = 10, rank = 1, base_cost = 0, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 10797 },
-    { name = "Starshards", level = 18, rank = 2, base_cost = 0, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19296 },
-    { name = "Starshards", level = 26, rank = 3, base_cost = 0, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19299 },
-    { name = "Starshards", level = 34, rank = 4, base_cost = 0, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19300 },
-    { name = "Starshards", level = 42, rank = 5, base_cost = 0, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19301 },
-    { name = "Starshards", level = 50, rank = 6, base_cost = 0, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19302 },
-    { name = "Starshards", level = 58, rank = 7, base_cost = 0, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19303 },
+    { name = "Starshards", level = 10, rank = 1, base_cost = 0, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 10797, race = { "Night Elf" } },
+    { name = "Starshards", level = 18, rank = 2, base_cost = 100, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19296, race = { "Night Elf" } },
+    { name = "Starshards", level = 26, rank = 3, base_cost = 300, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19299, race = { "Night Elf" } },
+    { name = "Starshards", level = 34, rank = 4, base_cost = 600, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19300, race = { "Night Elf" } },
+    { name = "Starshards", level = 42, rank = 5, base_cost = 1100, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19301, race = { "Night Elf" } },
+    { name = "Starshards", level = 50, rank = 6, base_cost = 1500, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19302, race = { "Night Elf" } },
+    { name = "Starshards", level = 58, rank = 7, base_cost = 2200, icon = "Spell_Arcane_Starfire", source = "quest", train = "yes", spellId = 19303, race = { "Night Elf" } },
 
     -- Touch of Weakness (Undead racial - quest)
-    { name = "Touch of Weakness", level = 10, rank = 1, base_cost = 0, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 2652 },
-    { name = "Touch of Weakness", level = 20, rank = 2, base_cost = 0, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19261 },
-    { name = "Touch of Weakness", level = 30, rank = 3, base_cost = 0, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19262 },
-    { name = "Touch of Weakness", level = 40, rank = 4, base_cost = 0, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19264 },
-    { name = "Touch of Weakness", level = 50, rank = 5, base_cost = 0, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19265 },
-    { name = "Touch of Weakness", level = 60, rank = 6, base_cost = 0, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19266 },
+    { name = "Touch of Weakness", level = 10, rank = 1, base_cost = 0, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 2652, race = { "Undead" } },
+    { name = "Touch of Weakness", level = 20, rank = 2, base_cost = 150, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19261, race = { "Undead" } },
+    { name = "Touch of Weakness", level = 30, rank = 3, base_cost = 500, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19262, race = { "Undead" } },
+    { name = "Touch of Weakness", level = 40, rank = 4, base_cost = 900, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19264, race = { "Undead" } },
+    { name = "Touch of Weakness", level = 50, rank = 5, base_cost = 1500, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19265, race = { "Undead" } },
+    { name = "Touch of Weakness", level = 60, rank = 6, base_cost = 2300, icon = "Spell_Shadow_DeadofNight", source = "quest", train = "yes", spellId = 19266, race = { "Undead" } },
 
     -- Vampiric Embrace (Shadow talent)
     { name = "Vampiric Embrace", level = 30, rank = 1, base_cost = 0, icon = "Spell_Shadow_UnsummonBuilding", source = "talent", train = "yes", spellId = 15286 },

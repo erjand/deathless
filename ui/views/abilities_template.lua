@@ -26,7 +26,7 @@ end
 ---@param copper number Amount in copper
 ---@return string Formatted string with color codes
 local function FormatMoneyColored(copper)
-    if copper == 0 then return "" end
+    if copper == 0 then return "0|cffb87333c|r" end
     
     local gold = math.floor(copper / 10000)
     local silver = math.floor((copper % 10000) / 100)
@@ -461,8 +461,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             
             section.count:SetText("(" .. count .. ")")
             
-            -- Optional cost display
-            if costCopper and costCopper > 0 then
+            -- Cost display
+            if costCopper then
                 section.cost:SetText("Total: " .. FormatMoneyColored(costCopper))
                 section.cost:Show()
             else
@@ -483,11 +483,24 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             return IsSpellKnown(spellName, 1)
         end
         
+        --- Check if player's race matches ability's race requirement
+        ---@param ability table The ability to check
+        ---@param playerRace string The player's race
+        ---@return boolean Whether ability is available for this race
+        local function IsRaceMatch(ability, playerRace)
+            if not ability.race then return true end  -- No race restriction
+            for _, race in ipairs(ability.race) do
+                if race == playerRace then return true end
+            end
+            return false
+        end
+        
         PopulateRows = function()
             ClearElements()
             
             local playerLevel = UnitLevel("player") or 60
             local _, playerClass = UnitClass("player")
+            local playerRace = UnitRace("player") or ""
             local isCorrectClass = (playerClass == classId)
             
             -- "Next available" includes abilities within next 2 levels
@@ -500,7 +513,10 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local unavailable = {}
             
             for _, ability in ipairs(rawAbilities) do
-                if ability.source == "talent" then
+                -- Skip abilities for other races
+                if not IsRaceMatch(ability, playerRace) then
+                    -- Skip this ability entirely
+                elseif ability.source == "talent" then
                     local hasTalent = IsTalentKnown(ability.name)
                     if hasTalent then
                         local isKnown = IsSpellKnown(ability.name, ability.rank)
@@ -552,7 +568,11 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             end
             
             if #available > 0 then
-                yOffset = CreateSectionHeaderAt("available", "Available", #available, yOffset, availableColor)
+                local availableCost = 0
+                for _, ability in ipairs(available) do
+                    availableCost = availableCost + (ability.base_cost or 0)
+                end
+                yOffset = CreateSectionHeaderAt("available", "Available", #available, yOffset, availableColor, availableCost)
                 if sectionState.available then
                     for _, ability in ipairs(available) do
                         rowNum = rowNum + 1

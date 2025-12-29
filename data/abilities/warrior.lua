@@ -56,7 +56,7 @@ Deathless.Data.Abilities["Warrior"] = {
     { name = "Charge", level = 46, rank = 3, base_cost = 36000, icon = "Ability_Warrior_Charge", source = "trainer", train = "wait", spellId = 11578 },
 
     -- Cleave
-    { name = "Cleave", level = 20, rank = 1, base_cost = 4600, icon = "Ability_Warrior_Cleave", source = "trainer", train = "yes", spellId = 845 },
+    { name = "Cleave", level = 20, rank = 1, base_cost = 4000, icon = "Ability_Warrior_Cleave", source = "trainer", train = "yes", spellId = 845 },
     { name = "Cleave", level = 30, rank = 2, base_cost = 12000, icon = "Ability_Warrior_Cleave", source = "trainer", train = "yes", spellId = 7369 },
     { name = "Cleave", level = 40, rank = 3, base_cost = 22000, icon = "Ability_Warrior_Cleave", source = "trainer", train = "yes", spellId = 11608 },
     { name = "Cleave", level = 50, rank = 4, base_cost = 42000, icon = "Ability_Warrior_Cleave", source = "trainer", train = "yes", spellId = 11609 },
@@ -83,19 +83,20 @@ Deathless.Data.Abilities["Warrior"] = {
     { name = "Execute", level = 56, rank = 5, base_cost = 58000, icon = "INV_Sword_48", source = "trainer", train = "yes", spellId = 20662 },
 
     -- Hamstring
-    { name = "Hamstring", level = 8, rank = 1, base_cost = 2000, icon = "Ability_ShockWave", source = "trainer", train = "yes", spellId = 1715 },
+    { name = "Hamstring", level = 8, rank = 1, base_cost = 200, icon = "Ability_ShockWave", source = "trainer", train = "yes", spellId = 1715 },
     { name = "Hamstring", level = 32, rank = 2, base_cost = 14000, icon = "Ability_ShockWave", source = "trainer", train = "yes", spellId = 7372 },
     { name = "Hamstring", level = 54, rank = 3, base_cost = 56000, icon = "Ability_ShockWave", source = "trainer", train = "yes", spellId = 7373 },
 
     -- Heroic Strike
     { name = "Heroic Strike", level = 1, rank = 1, base_cost = 10, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 78 },
     { name = "Heroic Strike", level = 8, rank = 2, base_cost = 200, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 284 },
-    { name = "Heroic Strike", level = 16, rank = 3, base_cost = 1200, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 285 },
-    { name = "Heroic Strike", level = 24, rank = 4, base_cost = 2400, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 1608 },
-    { name = "Heroic Strike", level = 32, rank = 5, base_cost = 6000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 11564 },
-    { name = "Heroic Strike", level = 40, rank = 6, base_cost = 12000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 11565 },
-    { name = "Heroic Strike", level = 48, rank = 7, base_cost = 22000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 11566 },
-    { name = "Heroic Strike", level = 56, rank = 8, base_cost = 32000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 11567 },
+    { name = "Heroic Strike", level = 16, rank = 3, base_cost = 2000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 285 },
+    { name = "Heroic Strike", level = 24, rank = 4, base_cost = 8000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 1608 },
+    { name = "Heroic Strike", level = 32, rank = 5, base_cost = 14000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 11564 },
+    { name = "Heroic Strike", level = 40, rank = 6, base_cost = 22000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 11565 },
+    { name = "Heroic Strike", level = 48, rank = 7, base_cost = 40000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 11566 },
+    { name = "Heroic Strike", level = 56, rank = 8, base_cost = 58000, icon = "Ability_Rogue_Ambush", source = "trainer", train = "yes", spellId = 11567 },
+    { name = "Heroic Strike", level = 60, rank = 9, base_cost = 0, icon = "Ability_Rogue_Ambush", source = "book", train = "yes", spellId = 25286 },
 
     -- Intercept
     { name = "Intercept", level = 30, rank = 1, base_cost = 0, icon = "Ability_Rogue_Sprint", source = "quest", train = "yes", spellId = 20252 },
@@ -152,6 +153,7 @@ Deathless.Data.Abilities["Warrior"] = {
     { name = "Revenge", level = 34, rank = 3, base_cost = 16000, icon = "Ability_Warrior_Revenge", source = "trainer", train = "yes", spellId = 7379 },
     { name = "Revenge", level = 44, rank = 4, base_cost = 34000, icon = "Ability_Warrior_Revenge", source = "trainer", train = "yes", spellId = 11600 },
     { name = "Revenge", level = 54, rank = 5, base_cost = 56000, icon = "Ability_Warrior_Revenge", source = "trainer", train = "yes", spellId = 11601 },
+    { name = "Revenge", level = 60, rank = 6, base_cost = 0, icon = "Ability_Warrior_Revenge", source = "book", train = "yes", spellId = 25288 },
 
     -- Shield Bash
     { name = "Shield Bash", level = 12, rank = 1, base_cost = 1000, icon = "Ability_Warrior_ShieldBash", source = "trainer", train = "yes", spellId = 72 },

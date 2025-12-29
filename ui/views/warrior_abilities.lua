@@ -21,6 +21,24 @@ local function FormatMoney(copper)
     return table.concat(parts, " ")
 end
 
+--- Format copper amount with colored g/s/c letters
+---@param copper number Amount in copper
+---@return string Formatted string with color codes
+local function FormatMoneyColored(copper)
+    if copper == 0 then return "" end
+    
+    local gold = math.floor(copper / 10000)
+    local silver = math.floor((copper % 10000) / 100)
+    local cop = copper % 100
+    
+    local parts = {}
+    if gold > 0 then table.insert(parts, gold .. "|cffffd700g|r") end
+    if silver > 0 then table.insert(parts, silver .. "|cffc0c0c0s|r") end
+    if cop > 0 then table.insert(parts, cop .. "|cffb87333c|r") end
+    
+    return table.concat(parts, " ")
+end
+
 --- Check if a spell is known by searching the spellbook
 ---@param spellName string The spell name to check
 ---@param spellRank number|nil Optional rank to match
@@ -53,8 +71,9 @@ end
 ---@param sortKey string The key to sort by
 ---@param state table Shared sort state
 ---@param onSort function Callback when sort changes
+---@param tooltip table|nil Optional tooltip lines {title, line1, line2, ...}
 ---@return Button The header button
-local function CreateSortableHeader(parent, label, xOffset, width, sortKey, state, onSort)
+local function CreateSortableHeader(parent, label, xOffset, width, sortKey, state, onSort, tooltip)
     local Colors = Utils:GetColors()
     
     local btn = CreateFrame("Button", nil, parent)
@@ -81,6 +100,14 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
     
     btn:SetScript("OnEnter", function(self)
         self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        if tooltip then
+            GameTooltip:SetOwner(self, "ANCHOR_TOP")
+            GameTooltip:AddLine(tooltip.title or label, 1, 1, 1)
+            for _, line in ipairs(tooltip) do
+                GameTooltip:AddLine(line, 0.8, 0.8, 0.8, true)
+            end
+            GameTooltip:Show()
+        end
     end)
     
     btn:SetScript("OnLeave", function(self)
@@ -89,6 +116,7 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
         else
             self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         end
+        GameTooltip:Hide()
     end)
     
     btn:SetScript("OnClick", function(self)
@@ -108,7 +136,7 @@ end
 Deathless.UI.Views:Register("warrior_abilities", function(container)
     local Colors = Utils:GetColors()
     
-    local title, subtitle = Utils:CreateHeader(container, "Warrior Abilities", "All trainable abilities with costs and levels", CLASS_COLOR)
+    local title, subtitle = Utils:CreateHeader(container, "Warrior Abilities", "", CLASS_COLOR)
     
     -- Scroll frame for abilities list
     local scrollFrame = CreateFrame("ScrollFrame", nil, container, "UIPanelScrollFrameTemplate")
@@ -158,7 +186,7 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
     local sortState = { sortKey = "level", sortAsc = true }
     
     -- Section collapse state
-    local sectionState = { learned = false, available = true, unavailable = true }
+    local sectionState = { learned = false, available = true, nextAvailable = true, unavailable = false }
     
     -- Get raw abilities data
     local rawAbilities = Deathless.Data.Abilities and Deathless.Data.Abilities["Warrior"] or {}
@@ -205,6 +233,10 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
             section.count:SetFont("Fonts\\ARIALN.TTF", 11, "")
             section.count:SetPoint("LEFT", section.label, "RIGHT", 8, 0)
             section.count:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            
+            section.cost = section:CreateFontString(nil, "OVERLAY")
+            section.cost:SetFont("Fonts\\ARIALN.TTF", 11, "")
+            section.cost:SetPoint("LEFT", section.count, "RIGHT", 8, 0)
             
             section:SetScript("OnEnter", function(self)
                 self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 0.8)
@@ -361,11 +393,12 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
         cost:SetPoint("LEFT", row, "LEFT", 310, 0)
         cost:SetWidth(80)
         cost:SetJustifyH("RIGHT")
-        cost:SetText(FormatMoney(ability.base_cost))
         if ability.base_cost == 0 then
+            cost:SetText("Free")
             cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], dimmed and 0.6 or 1)
         else
-            cost:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], dimmed and 0.6 or 1)
+            cost:SetText(FormatMoneyColored(ability.base_cost))
+            cost:SetTextColor(1, 1, 1, dimmed and 0.6 or 1)  -- White base for color codes
         end
         row.elements.cost = cost
         
@@ -403,7 +436,7 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
     
     local PopulateRows
     
-    local function CreateSectionHeaderAt(sectionKey, label, count, yOffset, color)
+    local function CreateSectionHeaderAt(sectionKey, label, count, yOffset, color, costCopper)
         local section = GetSectionHeader()
         local SECTION_HEIGHT = 28
         
@@ -419,6 +452,15 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
         section.label:SetTextColor(color[1], color[2], color[3], 1)
         
         section.count:SetText("(" .. count .. ")")
+        
+        -- Optional cost display
+        if costCopper and costCopper > 0 then
+            section.cost:SetText("Total: " .. FormatMoneyColored(costCopper))
+            section.cost:Show()
+        else
+            section.cost:SetText("")
+            section.cost:Hide()
+        end
         
         section.sectionKey = sectionKey
         section:SetScript("OnClick", function(self)
@@ -440,8 +482,13 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
         local _, playerClass = UnitClass("player")
         local isCorrectClass = (playerClass == "WARRIOR")
         
+        -- "Next available" includes abilities within next 2 levels
+        local NEXT_LEVEL_RANGE = 2
+        local nextLevelCap = playerLevel + NEXT_LEVEL_RANGE
+        
         local learned = {}
         local available = {}
+        local nextAvailable = {}
         local unavailable = {}
         
         for _, ability in ipairs(rawAbilities) do
@@ -453,6 +500,8 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
                         table.insert(learned, ability)
                     elseif isCorrectClass and ability.level <= playerLevel then
                         table.insert(available, ability)
+                    elseif isCorrectClass and ability.level <= nextLevelCap then
+                        table.insert(nextAvailable, ability)
                     else
                         table.insert(unavailable, ability)
                     end
@@ -463,6 +512,8 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
                     table.insert(learned, ability)
                 elseif isCorrectClass and ability.level <= playerLevel then
                     table.insert(available, ability)
+                elseif isCorrectClass and ability.level <= nextLevelCap then
+                    table.insert(nextAvailable, ability)
                 else
                     table.insert(unavailable, ability)
                 end
@@ -471,6 +522,7 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
         
         learned = SortAbilities(learned)
         available = SortAbilities(available)
+        nextAvailable = SortAbilities(nextAvailable)
         unavailable = SortAbilities(unavailable)
         
         local yOffset = 0
@@ -478,6 +530,7 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
         
         local learnedColor = { 0.5, 0.5, 0.5 }
         local availableColor = Colors.accent
+        local nextAvailableColor = { 0.5, 0.7, 0.9 }  -- Light blue
         local unavailableColor = { 0.6, 0.4, 0.4 }
         
         if #learned > 0 then
@@ -500,8 +553,28 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
             end
         end
         
+        if #nextAvailable > 0 then
+            -- Calculate total cost for next available abilities
+            local totalCost = 0
+            for _, ability in ipairs(nextAvailable) do
+                totalCost = totalCost + (ability.base_cost or 0)
+            end
+            yOffset = CreateSectionHeaderAt("nextAvailable", "Next Available", #nextAvailable, yOffset, nextAvailableColor, totalCost)
+            if sectionState.nextAvailable then
+                for _, ability in ipairs(nextAvailable) do
+                    rowNum = rowNum + 1
+                    yOffset = CreateAbilityRowAt(ability, yOffset, rowNum, false)
+                end
+            end
+        end
+        
         if #unavailable > 0 then
-            yOffset = CreateSectionHeaderAt("unavailable", "Unavailable", #unavailable, yOffset, unavailableColor)
+            -- Calculate total cost for unavailable abilities
+            local unavailableCost = 0
+            for _, ability in ipairs(unavailable) do
+                unavailableCost = unavailableCost + (ability.base_cost or 0)
+            end
+            yOffset = CreateSectionHeaderAt("unavailable", "Unavailable", #unavailable, yOffset, unavailableColor, unavailableCost)
             if sectionState.unavailable then
                 for _, ability in ipairs(unavailable) do
                     rowNum = rowNum + 1
@@ -532,7 +605,12 @@ Deathless.UI.Views:Register("warrior_abilities", function(container)
     headers.level = CreateSortableHeader(container, "LEVEL", 250, 50, "level", sortState, OnSort)
     headers.cost = CreateSortableHeader(container, "COST", 310, 80, "cost", sortState, OnSort)
     headers.source = CreateSortableHeader(container, "SOURCE", 400, 60, "source", sortState, OnSort)
-    headers.train = CreateSortableHeader(container, "TRAIN", 470, 50, "train", sortState, OnSort)
+    headers.train = CreateSortableHeader(container, "TRAIN (?)", 470, 50, "train", sortState, OnSort, {
+        title = "Training Priority",
+        "|cff66cc66Yes|r - Train when available",
+        "|cffcccc55Wait|r - Marginal upgrade",
+        "|cffcc6666No|r - Not useful for Hardcore",
+    })
     
     OnSort()
     

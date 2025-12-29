@@ -108,7 +108,7 @@ end
 Deathless.UI.Views:Register("mage_abilities", function(container)
     local Colors = Utils:GetColors()
     
-    local title, subtitle = Utils:CreateHeader(container, "Mage Abilities", "All trainable abilities with costs and levels", CLASS_COLOR)
+    local title, subtitle = Utils:CreateHeader(container, "Mage Abilities", "", CLASS_COLOR)
     
     -- Scroll frame for abilities list
     local scrollFrame = CreateFrame("ScrollFrame", nil, container, "UIPanelScrollFrameTemplate")

@@ -19,10 +19,3 @@ deathless is a multi-purpose / AIO addon intended to serve as the companion to a
 2. Run `deploy.bat` if your WoW installation is in the standard location.
 3. Run the addon in game with the command `/deathless`.
 4. When making changes, run the script again, then `/reload` in game.
-
-## UI
-
-- Like an almanac / reference
-- Clean pixel UIs such as Details, or Cell.
-
-

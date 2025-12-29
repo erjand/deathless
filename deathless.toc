@@ -31,8 +31,10 @@ ui\views\zones.lua
 ui\views\options.lua
 ui\views\support.lua
 ui\views\abilities_template.lua
+ui\views\gear_template.lua
 ui\views\warrior_abilities.lua
 ui\views\warrior_talents.lua
+ui\views\warrior_gear.lua
 ui\views\mage_abilities.lua
 ui\views\mage_talents.lua
 ui\views\priest_abilities.lua
@@ -62,4 +64,5 @@ data\abilities\shaman.lua
 data\abilities\mage.lua
 data\abilities\warlock.lua
 data\abilities\druid.lua
+data\gear\warrior.lua
 

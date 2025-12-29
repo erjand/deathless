@@ -8,10 +8,12 @@ local CreatePixelBorder = nil
 -- Generic icons for sub-items
 local ICON_ABILITIES = "Interface\\Icons\\INV_Misc_Book_07"
 local ICON_TALENTS = "Interface\\Icons\\Ability_Marksmanship"
+local ICON_GEAR = "Interface\\Icons\\INV_Gauntlets_04"
 
 -- Sub-items for Warrior class
 local WARRIOR_ITEMS = {
     { id = "warrior_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "warrior_gear", label = "Gear", icon = ICON_GEAR },
     { id = "warrior_talents", label = "Talents", icon = ICON_TALENTS },
 }
 

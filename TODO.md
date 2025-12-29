@@ -2,11 +2,10 @@
 
 - [x] Top-right corner `X` is slightly not pixel centered between top, right, and bottom edges of the UI
 - [x] Make Abilities page a template that is re-usable to populate with data vs having to update them all each time
+- [x] Feature: Open Abilities from Abilities screen
 - [ ] Make Talents page a template also
 - [ ] Make addon settings persist across reloads
-- [ ] Option: Lock window
 - [ ] Feature: Favorites / Pinned (or maybe Summary for Home showing all the relevant stuff for your current class and level)
-- [ ] Feature: Open Abilities from Abilities screen
 - [ ] Feature: Open Talents from Talents screen
 - [ ] Feature: Open Zones from Map
 - [ ] Split between Reference and Features on left nav-bar
@@ -29,3 +28,9 @@
 
 - [ ] Warrior: Audit Talents
 - [ ] Priest: Audit Talents
+
+## Options
+
+- [ ] Lock window
+- [ ] Window scale
+- [ ] Accent color

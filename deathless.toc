@@ -43,6 +43,7 @@ ui\views\rogue_abilities.lua
 ui\views\rogue_talents.lua
 ui\content.lua
 ui\frame.lua
+ui\spellbook.lua
 ui\components\button.lua
 ui\components\panel.lua
 ui\components\text.lua

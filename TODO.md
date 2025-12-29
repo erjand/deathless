@@ -14,11 +14,16 @@
 
 ## Abilities
 
-- [x] Priest: Audit Abilities
+- [ ] Feature: Search / filter bar?
 
-- [ ] Search / filter bar?
+- [x] Priest: Audit
 - [ ] Mage: Audit
-- [ ] All the other classes: Add / Audit
+- [ ] Rogue: Audit
+- [ ] Druid: Audit
+- [ ] Hunter: Audit
+- [ ] Paladin: Audit
+- [ ] Shaman: Audit
+
 
 ## Gear
 

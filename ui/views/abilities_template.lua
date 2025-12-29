@@ -495,12 +495,22 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             return false
         end
         
+        --- Check if player's faction matches ability's faction requirement
+        ---@param ability table The ability to check
+        ---@param playerFaction string The player's faction ("Alliance" or "Horde")
+        ---@return boolean Whether ability is available for this faction
+        local function IsFactionMatch(ability, playerFaction)
+            if not ability.faction then return true end  -- No faction restriction
+            return ability.faction == playerFaction
+        end
+        
         PopulateRows = function()
             ClearElements()
             
             local playerLevel = UnitLevel("player") or 60
             local _, playerClass = UnitClass("player")
             local playerRace = UnitRace("player") or ""
+            local playerFaction = UnitFactionGroup("player") or ""
             local isCorrectClass = (playerClass == classId)
             
             -- "Next available" includes abilities within next 2 levels
@@ -513,8 +523,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local unavailable = {}
             
             for _, ability in ipairs(rawAbilities) do
-                -- Skip abilities for other races
-                if not IsRaceMatch(ability, playerRace) then
+                -- Skip abilities for other races/factions
+                if not IsRaceMatch(ability, playerRace) or not IsFactionMatch(ability, playerFaction) then
                     -- Skip this ability entirely
                 elseif ability.source == "talent" then
                     local hasTalent = IsTalentKnown(ability.name)

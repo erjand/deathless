@@ -13,6 +13,8 @@ Deathless.Data.Abilities = Deathless.Data.Abilities or {}
 --   class   - Innate class ability (learned automatically)
 --   book    - Learned from a drop/item
 --   quest   - Learned from completing a quest
+-- Optional fields:
+--   faction - "Alliance" or "Horde" (for faction-specific spells like teleports/portals)
 -- Sorted alphabetically by name, then by rank
 -- See https://www.wowhead.com/classic/spells/abilities/mage for source data
 Deathless.Data.Abilities["Mage"] = {
@@ -237,23 +239,23 @@ Deathless.Data.Abilities["Mage"] = {
     -- Polymorph: Turtle (book)
     { name = "Polymorph: Turtle", level = 60, rank = 1, base_cost = 0, icon = "Ability_Hunter_Pet_Turtle", source = "book" },
 
-    -- Portal: Darnassus
-    { name = "Portal: Darnassus", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalDarnassus", source = "trainer" },
+    -- Portal: Darnassus (Alliance)
+    { name = "Portal: Darnassus", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalDarnassus", source = "trainer", faction = "Alliance" },
 
-    -- Portal: Ironforge
-    { name = "Portal: Ironforge", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalIronforge", source = "trainer" },
+    -- Portal: Ironforge (Alliance)
+    { name = "Portal: Ironforge", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalIronforge", source = "trainer", faction = "Alliance" },
 
-    -- Portal: Orgrimmar
-    { name = "Portal: Orgrimmar", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalOrgrimmar", source = "trainer" },
+    -- Portal: Orgrimmar (Horde)
+    { name = "Portal: Orgrimmar", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalOrgrimmar", source = "trainer", faction = "Horde" },
 
-    -- Portal: Stormwind
-    { name = "Portal: Stormwind", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalStormWind", source = "trainer" },
+    -- Portal: Stormwind (Alliance)
+    { name = "Portal: Stormwind", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalStormWind", source = "trainer", faction = "Alliance" },
 
-    -- Portal: Thunder Bluff
-    { name = "Portal: Thunder Bluff", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalThunderBluff", source = "trainer" },
+    -- Portal: Thunder Bluff (Horde)
+    { name = "Portal: Thunder Bluff", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalThunderBluff", source = "trainer", faction = "Horde" },
 
-    -- Portal: Undercity
-    { name = "Portal: Undercity", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalUnderCity", source = "trainer" },
+    -- Portal: Undercity (Horde)
+    { name = "Portal: Undercity", level = 50, rank = 1, base_cost = 32000, icon = "Spell_Arcane_PortalUnderCity", source = "trainer", faction = "Horde" },
 
     -- Presence of Mind (Arcane 21-point talent)
     { name = "Presence of Mind", level = 30, rank = 1, base_cost = 0, icon = "Spell_Nature_EnchantArmor", source = "talent" },
@@ -283,21 +285,21 @@ Deathless.Data.Abilities["Mage"] = {
     -- Slow Fall
     { name = "Slow Fall", level = 12, rank = 1, base_cost = 600, icon = "Spell_Magic_FeatherFall", source = "trainer" },
 
-    -- Teleport: Darnassus
-    { name = "Teleport: Darnassus", level = 30, rank = 1, base_cost = 8000, icon = "Spell_Arcane_TeleportDarnassus", source = "trainer" },
+    -- Teleport: Darnassus (Alliance)
+    { name = "Teleport: Darnassus", level = 30, rank = 1, base_cost = 8000, icon = "Spell_Arcane_TeleportDarnassus", source = "trainer", faction = "Alliance" },
 
-    -- Teleport: Ironforge
-    { name = "Teleport: Ironforge", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Arcane_TeleportIronforge", source = "trainer" },
+    -- Teleport: Ironforge (Alliance)
+    { name = "Teleport: Ironforge", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Arcane_TeleportIronforge", source = "trainer", faction = "Alliance" },
 
-    -- Teleport: Orgrimmar
-    { name = "Teleport: Orgrimmar", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Arcane_TeleportOrgrimmar", source = "trainer" },
+    -- Teleport: Orgrimmar (Horde)
+    { name = "Teleport: Orgrimmar", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Arcane_TeleportOrgrimmar", source = "trainer", faction = "Horde" },
 
-    -- Teleport: Stormwind
-    { name = "Teleport: Stormwind", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Arcane_TeleportStormWind", source = "trainer" },
+    -- Teleport: Stormwind (Alliance)
+    { name = "Teleport: Stormwind", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Arcane_TeleportStormWind", source = "trainer", faction = "Alliance" },
 
-    -- Teleport: Thunder Bluff
-    { name = "Teleport: Thunder Bluff", level = 30, rank = 1, base_cost = 8000, icon = "Spell_Arcane_TeleportThunderBluff", source = "trainer" },
+    -- Teleport: Thunder Bluff (Horde)
+    { name = "Teleport: Thunder Bluff", level = 30, rank = 1, base_cost = 8000, icon = "Spell_Arcane_TeleportThunderBluff", source = "trainer", faction = "Horde" },
 
-    -- Teleport: Undercity
-    { name = "Teleport: Undercity", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Arcane_TeleportUnderCity", source = "trainer" },
+    -- Teleport: Undercity (Horde)
+    { name = "Teleport: Undercity", level = 20, rank = 1, base_cost = 2000, icon = "Spell_Arcane_TeleportUnderCity", source = "trainer", faction = "Horde" },
 }

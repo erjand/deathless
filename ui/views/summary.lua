@@ -171,6 +171,7 @@ Deathless.UI.Views:Register("summary", function(container)
         local _, classId = UnitClass("player")
         local className = classId:sub(1,1):upper() .. classId:sub(2):lower()
         local playerLevel = UnitLevel("player") or 1
+        local powerType = UnitPowerType("player")
         
         local rawAbilities = Deathless.Data.Abilities and Deathless.Data.Abilities[className] or {}
         
@@ -225,28 +226,32 @@ Deathless.UI.Views:Register("summary", function(container)
         
         -- Warnings Section
         local hasWarnings = false
-        local function AddWarning(text, itemId, checkCount)
-            -- Only create header for first warning
-            if not hasWarnings then
-                local header = GetFrame("header")
-                header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                header:SetText("Warnings")
-                header:SetTextColor(1, 0.8, 0.2, 1) -- Yellow
-                yOffset = yOffset - 24
-                hasWarnings = true
-            end
-            
+        local function AddWarning(text, itemId, checkCount, forcedIcon)
             local count = GetItemCount(itemId)
             if count < (checkCount or 1) then
+                -- Only create header for first warning
+                if not hasWarnings then
+                    local header = GetFrame("header")
+                    header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                    header:SetText("Warnings")
+                    header:SetTextColor(1, 0.8, 0.2, 1) -- Yellow
+                    yOffset = yOffset - 24
+                    hasWarnings = true
+                end
+                
                 local row = GetFrame("row")
                 row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
                 row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
                 
                 -- Item icon
                 local _, _, _, _, _, _, _, _, _, itemIcon = GetItemInfo(itemId)
-                row.icon:SetTexture(itemIcon or "Interface\\Icons\\INV_Misc_QuestionMark")
-                row.icon:SetDesaturated(false)
-                row.icon:SetAlpha(1)
+                local texture = forcedIcon or itemIcon or "Interface\\Icons\\INV_Misc_QuestionMark"
+                
+                if row.icon then
+                    row.icon:SetTexture(texture)
+                    row.icon:SetDesaturated(false)
+                    row.icon:SetAlpha(1)
+                end
                 
                 row.name:SetText(text)
                 row.name:SetTextColor(1, 0.8, 0.2, 1)
@@ -268,29 +273,72 @@ Deathless.UI.Views:Register("summary", function(container)
         end
         
         -- Check 1: Swiftness Potion (Item 2459)
-        AddWarning("Recommend carrying Swiftness Potions", 2459, 1)
+        AddWarning("Recommend carrying Swiftness Potions", 2459, 1, "Interface\\Icons\\INV_Potion_95")
         
         -- Check 2: Health Potion (Appropriate for level)
         -- Data from: https://www.wowhead.com/classic/items/consumables/potions/name:healing
         local healthPotions = {
-            { level = 45, id = 13446 }, -- Major Healing Potion
-            { level = 35, id = 3928 },  -- Superior Healing Potion
-            { level = 21, id = 1710 },  -- Greater Healing Potion
-            { level = 12, id = 929 },   -- Healing Potion
-            { level = 3, id = 858 },   -- Lesser Healing Potion
-            { level = 1,  id = 118 },   -- Minor Healing Potion
+            { level = 45, id = 13446, icon = "Interface\\Icons\\INV_Potion_54" }, -- Major Healing Potion
+            { level = 35, id = 3928,  icon = "Interface\\Icons\\INV_Potion_53" }, -- Superior Healing Potion
+            { level = 21, id = 1710,  icon = "Interface\\Icons\\INV_Potion_52" }, -- Greater Healing Potion
+            { level = 12, id = 929,   icon = "Interface\\Icons\\INV_Potion_51" }, -- Healing Potion
+            { level = 3, id = 858,    icon = "Interface\\Icons\\INV_Potion_50" }, -- Lesser Healing Potion
+            { level = 1,  id = 118,   icon = "Interface\\Icons\\INV_Potion_49" }, -- Minor Healing Potion
         }
         
         local bestPotionId = nil
+        local bestPotionIcon = nil
         for _, pot in ipairs(healthPotions) do
             if playerLevel >= pot.level then
                 bestPotionId = pot.id
+                bestPotionIcon = pot.icon
                 break
             end
         end
         
         if bestPotionId then
-            AddWarning("Recommend carrying best Healing Potions for your level", bestPotionId, 1)
+            AddWarning("Recommend carrying best Healing Potions for your level", bestPotionId, 1, bestPotionIcon)
+        end
+        
+        -- Check 3: Mana Potion (Appropriate for level, if mana user)
+        -- Power type 0 is Mana
+        if powerType == 0 then
+            local manaPotions = {
+                { level = 49, id = 13444, icon = "Interface\\Icons\\INV_Potion_76" }, -- Major Mana Potion
+                { level = 41, id = 13443, icon = "Interface\\Icons\\INV_Potion_74" }, -- Superior Mana Potion
+                { level = 31, id = 6149,  icon = "Interface\\Icons\\INV_Potion_73" }, -- Greater Mana Potion
+                { level = 22, id = 3827,  icon = "Interface\\Icons\\INV_Potion_72" }, -- Mana Potion
+                { level = 14, id = 3385,  icon = "Interface\\Icons\\INV_Potion_71" }, -- Lesser Mana Potion
+                { level = 1,  id = 2455,  icon = "Interface\\Icons\\INV_Potion_70" }, -- Minor Mana Potion
+            }
+            
+            local bestManaPotionId = nil
+            local bestManaPotionIcon = nil
+            for _, pot in ipairs(manaPotions) do
+                if playerLevel >= pot.level then
+                    bestManaPotionId = pot.id
+                    bestManaPotionIcon = pot.icon
+                    break
+                end
+            end
+            
+            if bestManaPotionId then
+                AddWarning("Recommend carrying best Mana Potions for your level", bestManaPotionId, 1, bestManaPotionIcon)
+            end
+        end
+        
+        if not hasWarnings then
+            local header = GetFrame("header")
+            header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+            header:SetText("Warnings")
+            header:SetTextColor(0.2, 1, 0.2, 1) -- Green
+            yOffset = yOffset - 24
+            
+            local msg = GetFrame("text")
+            msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+            msg:SetText("No warnings - go adventure!")
+            msg:SetTextColor(0.5, 1, 0.5, 1)
+            yOffset = yOffset - 30
         end
         
         -- Abilities Section

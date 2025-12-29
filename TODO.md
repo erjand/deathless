@@ -5,7 +5,6 @@
 - [x] Feature: Open Abilities from Abilities screen
 - [ ] Make Talents page a template also
 - [ ] Make addon settings persist across reloads
-- [ ] Feature: Favorites / Pinned (or maybe Summary for Home showing all the relevant stuff for your current class and level)
 - [ ] Feature: Open Talents from Talents screen
 - [ ] Feature: Open Zones from Map
 - [ ] Split between Reference and Features on left nav-bar
@@ -22,7 +21,7 @@
 - [ ] Add key consumables missing / not in inventory
     - [x] Swiftness Potion
     - [x] Appropriate level healing potion
-    - [ ] Appropriate level mana potion (if mana user)
+    - [x] Appropriate level mana potion (if mana user)
     - [ ] Appropriate level bandaids
     - [ ] LIP, if appropriate level
     - [ ] Petri, if appropriate level

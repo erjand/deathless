@@ -30,6 +30,7 @@ ui\views\classes.lua
 ui\views\zones.lua
 ui\views\options.lua
 ui\views\support.lua
+ui\views\abilities_template.lua
 ui\views\warrior_abilities.lua
 ui\views\warrior_talents.lua
 ui\views\mage_abilities.lua

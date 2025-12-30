@@ -279,13 +279,15 @@ Deathless.UI.Views:Register("summary", function(container)
         
         -- Warnings Section
         
-        -- Get First Aid skill level for bandage check
+        -- Get skill levels for checks
         local firstAidSkill = 0
+        local engineeringSkill = 0
         for i = 1, GetNumSkillLines() do
             local skillName, _, _, skillRank = GetSkillLineInfo(i)
             if skillName == "First Aid" then
                 firstAidSkill = skillRank or 0
-                break
+            elseif skillName == "Engineering" then
+                engineeringSkill = skillRank or 0
             end
         end
         
@@ -361,6 +363,36 @@ Deathless.UI.Views:Register("summary", function(container)
                 minCount = 2,
                 icon = "Interface\\Icons\\INV_Potion_26",
                 condition = playerLevel >= 50
+            },
+            {
+                text = "Not carrying Iron Grenades",
+                itemId = 4390,
+                icon = "Interface\\Icons\\INV_Misc_Bomb_08",
+                condition = engineeringSkill >= 175 and engineeringSkill < 260
+            },
+            {
+                text = "Not carrying Thorium Grenades",
+                itemId = 15993,
+                icon = "Interface\\Icons\\INV_Misc_Bomb_08",
+                condition = engineeringSkill >= 260
+            },
+            {
+                text = "Not carrying Target Dummy",
+                itemId = 4366,
+                icon = "Interface\\Icons\\INV_Crate_06",
+                condition = engineeringSkill >= 85 and engineeringSkill < 185
+            },
+            {
+                text = "Not carrying Advanced Target Dummy",
+                itemId = 4392,
+                icon = "Interface\\Icons\\INV_Crate_05",
+                condition = engineeringSkill >= 185 and engineeringSkill < 275
+            },
+            {
+                text = "Not carrying Masterwork Target Dummy",
+                itemId = 16023,
+                icon = "Interface\\Icons\\INV_Crate_02",
+                condition = engineeringSkill >= 275
             },
             {
                 text = "Not carrying Healing Potions for your level",

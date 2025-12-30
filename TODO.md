@@ -29,8 +29,8 @@
     - [x] Appropriate level bandaids
     - [x] LIP, if appropriate level
     - [x] 2x Petri, if appropriate level
-    - [ ] Appropriate level grenades (if engi)
-    - [ ] Appropriate level training dummies (if engi)
+    - [x] Appropriate level grenades (if engi)
+    - [x] Appropriate level training dummies (if engi)
     - [x] Light Feathers if mage (12) / priest (lvl 34)
     - [x] Teleport / Portal reagents if mage
     - [x] Flash powder

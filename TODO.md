@@ -30,7 +30,7 @@
     - [x] 2x Petri, if appropriate level
     - [ ] Appropriate level grenades (if engi)
     - [ ] Appropriate level training dummies (if engi)
-    - [ ] Light Feathers if mage
+    - [x] Light Feathers if mage (12) / priest (lvl 34)
 - [ ] Add small UI tracker component 
 
 ## Classes

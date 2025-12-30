@@ -348,7 +348,17 @@ Deathless.UI.Views:Register("summary", function(container)
             AddWarning("Not carrying Limited Invulnerability Potions", 3387, 1, "Interface\\Icons\\INV_Potion_62")
         end
         
-        -- Check 5: Mana Potion (Appropriate for level, if mana user)
+        -- Check 5: Light Feather (Mage 12+ for Slow Fall)
+        if classId == "MAGE" and playerLevel >= 12 then
+            AddWarning("Not carrying Light Feathers for Slow Fall", 17056, 1, "Interface\\Icons\\INV_Feather_02")
+        end
+        
+        -- Check 6: Light Feather (Priest 34+ for Levitate)
+        if classId == "PRIEST" and playerLevel >= 34 then
+            AddWarning("Not carrying Light Feathers for Levitate", 17056, 1, "Interface\\Icons\\INV_Feather_02")
+        end
+        
+        -- Check 7: Mana Potion (Appropriate for level, if mana user)
         -- Power type 0 is Mana
         if powerType == 0 then
             local manaPotions = {
@@ -375,7 +385,7 @@ Deathless.UI.Views:Register("summary", function(container)
             end
         end
         
-        -- Check 6: Swiftness Potion
+        -- Check 8: Swiftness Potion
         if playerLevel >= 5 then
             AddWarning("Not carrying Swiftness Potions", 2459, 1, "Interface\\Icons\\INV_Potion_95")
         end

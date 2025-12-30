@@ -338,7 +338,12 @@ Deathless.UI.Views:Register("summary", function(container)
             AddWarning("Not carrying best Healing Potions for your level", bestPotionId, 1, bestPotionIcon)
         end
         
-        -- Check 3: Mana Potion (Appropriate for level, if mana user)
+        -- Check 3: Limited Invulnerability Potion
+        if playerLevel >= 45 then
+            AddWarning("Not carrying Limited Invulnerability Potions", 3387, 1, "Interface\\Icons\\INV_Potion_62")
+        end
+        
+        -- Check 4: Mana Potion (Appropriate for level, if mana user)
         -- Power type 0 is Mana
         if powerType == 0 then
             local manaPotions = {
@@ -365,7 +370,7 @@ Deathless.UI.Views:Register("summary", function(container)
             end
         end
         
-        -- Check 4: Swiftness Potion (Item 2459, requires level 5)
+        -- Check 5: Swiftness Potion
         if playerLevel >= 5 then
             AddWarning("Not carrying Swiftness Potions", 2459, 1, "Interface\\Icons\\INV_Potion_95")
         end

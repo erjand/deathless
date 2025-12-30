@@ -26,10 +26,11 @@
     - [x] Appropriate level healing potion
     - [x] Appropriate level mana potion (if mana user)
     - [x] Appropriate level bandaids
-    - [ ] LIP, if appropriate level
+    - [x] LIP, if appropriate level
     - [ ] 2x Petri, if appropriate level
     - [ ] Appropriate level grenades (if engi)
     - [ ] Appropriate level training dummies (if engi)
+    - [ ] Light Feathers if mage
 - [ ] Add small UI tracker component 
 
 ## Classes

@@ -13,31 +13,37 @@ local ICON_GEAR = "Interface\\Icons\\INV_Gauntlets_04"
 -- Sub-items for Warrior class
 local WARRIOR_ITEMS = {
     { id = "warrior_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "warrior_gear", label = "Gear", icon = ICON_GEAR },
-    { id = "warrior_talents", label = "Talents", icon = ICON_TALENTS },
+    { id = "warrior_gear", label = "Gear (WIP)", icon = ICON_GEAR },
+    { id = "warrior_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Mage class
 local MAGE_ITEMS = {
     { id = "mage_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "mage_talents", label = "Talents", icon = ICON_TALENTS },
+    { id = "mage_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Priest class
 local PRIEST_ITEMS = {
     { id = "priest_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "priest_talents", label = "Talents", icon = ICON_TALENTS },
+    { id = "priest_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Rogue class
 local ROGUE_ITEMS = {
-    { id = "rogue_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "rogue_talents", label = "Talents", icon = ICON_TALENTS },
+    { id = "rogue_abilities", label = "Abilities (WIP)", icon = ICON_ABILITIES },
+    { id = "rogue_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+}
+
+-- Sub-items for Druid class
+local DRUID_ITEMS = {
+    { id = "druid_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "druid_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
 }
 
 -- Classic WoW classes in alphabetical order (with icons and optional children)
 local CLASS_ITEMS = {
-    { id = "class_druid", label = "Druid", icon = "Interface\\Icons\\ClassIcon_Druid" },
+    { id = "class_druid", label = "Druid", icon = "Interface\\Icons\\ClassIcon_Druid", children = DRUID_ITEMS },
     { id = "class_hunter", label = "Hunter", icon = "Interface\\Icons\\ClassIcon_Hunter" },
     { id = "class_mage", label = "Mage", icon = "Interface\\Icons\\ClassIcon_Mage", children = MAGE_ITEMS },
     { id = "class_paladin", label = "Paladin", icon = "Interface\\Icons\\ClassIcon_Paladin" },

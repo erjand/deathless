@@ -11,6 +11,7 @@
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
 - [ ] Feature: Max level mode to disable leveling stuff?
+- [ ] Feature: SSF mode?
 - [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
 
 - [ ] Feature: When clicking on the addon tab from the Spellbook, if the addon window is already open, it should stay open and go to the Abilities page rather than closing
@@ -29,27 +30,37 @@
     - [ ] 2x Petri, if appropriate level
     - [ ] Appropriate level grenades (if engi)
     - [ ] Appropriate level training dummies (if engi)
+- [ ] Add small UI tracker component 
 
-## Abilities
+## Classes
+
+### Abilities
 
 - [ ] Feature: Search / filter bar?
 
 - [x] Priest: Audit
 - [x] Mage: Audit
 - [ ] Rogue: Audit
-- [ ] Druid: Audit
+- [x] Druid: Audit
 - [ ] Hunter: Audit
 - [ ] Paladin: Audit
 - [ ] Shaman: Audit
+- [ ] Warlock: Audit
 
-## Gear
+### Gear
 
 - [ ] Warrior: Audit Gear
 
-## Talents
+### Talents
 
 - [ ] Warrior: Audit Talents
 - [ ] Priest: Audit Talents
+
+## Dungeons
+
+## Professions
+
+## Zones
 
 ## Options
 

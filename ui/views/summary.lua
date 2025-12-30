@@ -313,7 +313,12 @@ Deathless.UI.Views:Register("summary", function(container)
             end
         end
         
-        -- Check 2: Health Potion (Appropriate for level)
+        -- Check 2: Flask of Petrification
+        if playerLevel >= 50 then
+            AddWarning("Not carrying 2 Flasks of Petrification", 13506, 2, "Interface\\Icons\\INV_Potion_26")
+        end
+        
+        -- Check 3: Health Potion (Appropriate for level)
         -- Data from: https://www.wowhead.com/classic/items/consumables/potions/name:healing
         local healthPotions = {
             { level = 45, id = 13446, icon = "Interface\\Icons\\INV_Potion_54" }, -- Major Healing Potion
@@ -338,12 +343,12 @@ Deathless.UI.Views:Register("summary", function(container)
             AddWarning("Not carrying best Healing Potions for your level", bestPotionId, 1, bestPotionIcon)
         end
         
-        -- Check 3: Limited Invulnerability Potion
+        -- Check 4: Limited Invulnerability Potion
         if playerLevel >= 45 then
             AddWarning("Not carrying Limited Invulnerability Potions", 3387, 1, "Interface\\Icons\\INV_Potion_62")
         end
         
-        -- Check 4: Mana Potion (Appropriate for level, if mana user)
+        -- Check 5: Mana Potion (Appropriate for level, if mana user)
         -- Power type 0 is Mana
         if powerType == 0 then
             local manaPotions = {
@@ -370,7 +375,7 @@ Deathless.UI.Views:Register("summary", function(container)
             end
         end
         
-        -- Check 5: Swiftness Potion
+        -- Check 6: Swiftness Potion
         if playerLevel >= 5 then
             AddWarning("Not carrying Swiftness Potions", 2459, 1, "Interface\\Icons\\INV_Potion_95")
         end

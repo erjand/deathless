@@ -27,7 +27,7 @@
     - [x] Appropriate level mana potion (if mana user)
     - [x] Appropriate level bandaids
     - [x] LIP, if appropriate level
-    - [ ] 2x Petri, if appropriate level
+    - [x] 2x Petri, if appropriate level
     - [ ] Appropriate level grenades (if engi)
     - [ ] Appropriate level training dummies (if engi)
     - [ ] Light Feathers if mage

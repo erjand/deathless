@@ -313,12 +313,22 @@ Deathless.UI.Views:Register("summary", function(container)
             end
         end
         
-        -- Check 2: Flask of Petrification
-        if playerLevel >= 50 then
-            AddWarning("Not carrying 2 Flasks of Petrification", 13506, 2, "Interface\\Icons\\INV_Potion_26")
+        -- Check 2: Blinding Powder (Rogue 34+)
+        if classId == "ROGUE" and playerLevel >= 34 then
+            AddWarning("Not carrying any Blinding Powder for Blind", 5530, 1, "Interface\\Icons\\INV_Misc_Dust_01")
         end
         
-        -- Check 3: Health Potion (Appropriate for level)
+        -- Check 3: Flask of Petrification
+        if playerLevel >= 50 then
+            AddWarning("Not carrying 2 or more Flasks of Petrification", 13506, 2, "Interface\\Icons\\INV_Potion_26")
+        end
+        
+        -- Check 4: Flash Powder (Rogue 22+)
+        if classId == "ROGUE" and playerLevel >= 22 then
+            AddWarning("Not carrying any Flash Powder for Vanish", 5140, 1, "Interface\\Icons\\INV_Misc_Powder_Black")
+        end
+        
+        -- Check 5: Health Potion (Appropriate for level)
         -- Data from: https://www.wowhead.com/classic/items/consumables/potions/name:healing
         local healthPotions = {
             { level = 45, id = 13446, icon = "Interface\\Icons\\INV_Potion_54" }, -- Major Healing Potion
@@ -343,22 +353,30 @@ Deathless.UI.Views:Register("summary", function(container)
             AddWarning("Not carrying best Healing Potions for your level", bestPotionId, 1, bestPotionIcon)
         end
         
-        -- Check 4: Limited Invulnerability Potion
-        if playerLevel >= 45 then
-            AddWarning("Not carrying Limited Invulnerability Potions", 3387, 1, "Interface\\Icons\\INV_Potion_62")
+        -- Check 6: Hearthstone
+        AddWarning("Not carrying a Hearthstone", 6948, 1, "Interface\\Icons\\INV_Misc_Rune_01")
+        
+        -- Check 7: Holy Candle (Priest 48-59)
+        if classId == "PRIEST" and playerLevel >= 48 and playerLevel < 60 then
+            AddWarning("Not carrying any Holy Candles", 17028, 1, "Interface\\Icons\\INV_Misc_Candle_01")
         end
         
-        -- Check 5: Light Feather (Mage 12+ for Slow Fall)
+        -- Check 8: Light Feather (Mage 12+ for Slow Fall)
         if classId == "MAGE" and playerLevel >= 12 then
             AddWarning("Not carrying Light Feathers for Slow Fall", 17056, 1, "Interface\\Icons\\INV_Feather_02")
         end
         
-        -- Check 6: Light Feather (Priest 34+ for Levitate)
+        -- Check 9: Light Feather (Priest 34+ for Levitate)
         if classId == "PRIEST" and playerLevel >= 34 then
             AddWarning("Not carrying Light Feathers for Levitate", 17056, 1, "Interface\\Icons\\INV_Feather_02")
         end
         
-        -- Check 7: Mana Potion (Appropriate for level, if mana user)
+        -- Check 10: Limited Invulnerability Potion
+        if playerLevel >= 45 then
+            AddWarning("Not carrying any Limited Invulnerability Potions", 3387, 1, "Interface\\Icons\\INV_Potion_62")
+        end
+        
+        -- Check 11: Mana Potion (Appropriate for level, if mana user)
         -- Power type 0 is Mana
         if powerType == 0 then
             local manaPotions = {
@@ -385,9 +403,34 @@ Deathless.UI.Views:Register("summary", function(container)
             end
         end
         
-        -- Check 8: Swiftness Potion
+        -- Check 12: Rune of Portals (Mage 40+)
+        if classId == "MAGE" and playerLevel >= 40 then
+            AddWarning("Not carrying any Rune of Portals", 17032, 1, "Interface\\Icons\\INV_Misc_Rune_06")
+        end
+        
+        -- Check 13: Rune of Teleportation (Mage 20+)
+        if classId == "MAGE" and playerLevel >= 20 then
+            AddWarning("Not carrying any Rune of Teleportation", 17031, 1, "Interface\\Icons\\INV_Misc_Rune_07")
+        end
+        
+        -- Check 14: Sacred Candle (Priest 56+)
+        if classId == "PRIEST" and playerLevel >= 56 then
+            AddWarning("Not carrying any Sacred Candles", 17029, 1, "Interface\\Icons\\INV_Misc_Candle_02")
+        end
+        
+        -- Check 15: Soul Shard (Warlock 10+)
+        if classId == "WARLOCK" and playerLevel >= 10 then
+            AddWarning("Not carrying any Soul Shards", 6265, 1, "Interface\\Icons\\INV_Misc_Gem_Amethyst_02")
+        end
+        
+        -- Check 16: Swiftness Potion
         if playerLevel >= 5 then
             AddWarning("Not carrying Swiftness Potions", 2459, 1, "Interface\\Icons\\INV_Potion_95")
+        end
+        
+        -- Check 17: Symbol of Kings (Paladin 52+)
+        if classId == "PALADIN" and playerLevel >= 52 then
+            AddWarning("Not carrying any Symbol of Kings", 21177, 1, "Interface\\Icons\\INV_Jewelry_TrinketPVP_01")
         end
         
         if not hasWarnings then

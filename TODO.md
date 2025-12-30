@@ -31,6 +31,13 @@
     - [ ] Appropriate level grenades (if engi)
     - [ ] Appropriate level training dummies (if engi)
     - [x] Light Feathers if mage (12) / priest (lvl 34)
+    - [x] Teleport / Portal reagents if mage
+    - [x] Flash powder
+    - [x] Blinding powder
+    - [x] Soul shards
+    - [x] Symbol of Kings
+    - [x] Holy Candle / Sacred Candle
+    - [x] Hearthstone
 - [ ] Add small UI tracker component 
 
 ## Classes

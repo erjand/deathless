@@ -225,55 +225,8 @@ Deathless.UI.Views:Register("summary", function(container)
         local yOffset = -10
         
         -- Warnings Section
-        local hasWarnings = false
-        local function AddWarning(text, itemId, checkCount, forcedIcon)
-            local count = GetItemCount(itemId)
-            if count < (checkCount or 1) then
-                -- Only create header for first warning
-                if not hasWarnings then
-                    local header = GetFrame("header")
-                    header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                    header:SetText("Warnings")
-                    header:SetTextColor(1, 0.8, 0.2, 1) -- Yellow
-                    yOffset = yOffset - 24
-                    hasWarnings = true
-                end
-                
-                local row = GetFrame("row")
-                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
-                
-                -- Item icon
-                local _, _, _, _, _, _, _, _, _, itemIcon = GetItemInfo(itemId)
-                local texture = forcedIcon or itemIcon or "Interface\\Icons\\INV_Misc_QuestionMark"
-                
-                if row.icon then
-                    row.icon:SetTexture(texture)
-                    row.icon:SetDesaturated(false)
-                    row.icon:SetAlpha(1)
-                end
-                
-                row.name:SetText(text)
-                row.name:SetTextColor(1, 0.8, 0.2, 1)
-                
-                row.level:SetText("")
-                row.cost:SetText("")
-                
-                -- Tooltip
-                row:SetScript("OnEnter", function(self)
-                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                    GameTooltip:SetItemByID(itemId)
-                    GameTooltip:Show()
-                end)
-                
-                yOffset = yOffset - 34
-                return true
-            end
-            return false
-        end
         
-        -- Check 1: Bandages (Appropriate for First Aid skill level)
-        -- Get First Aid skill level
+        -- Get First Aid skill level for bandage check
         local firstAidSkill = 0
         for i = 1, GetNumSkillLines() do
             local skillName, _, _, skillRank = GetSkillLineInfo(i)
@@ -283,154 +236,210 @@ Deathless.UI.Views:Register("summary", function(container)
             end
         end
         
-        -- Only check bandages if player has First Aid
-        if firstAidSkill > 0 then
-            local bandages = {
-                { skill = 225, id = 14530, icon = "Interface\\Icons\\INV_Misc_Bandage_12" }, -- Heavy Runecloth Bandage
-                { skill = 200, id = 14529, icon = "Interface\\Icons\\INV_Misc_Bandage_11" }, -- Runecloth Bandage
-                { skill = 175, id = 8545,  icon = "Interface\\Icons\\INV_Misc_Bandage_20" }, -- Heavy Mageweave Bandage
-                { skill = 150, id = 8544,  icon = "Interface\\Icons\\INV_Misc_Bandage_19" }, -- Mageweave Bandage
-                { skill = 125, id = 6451,  icon = "Interface\\Icons\\INV_Misc_Bandage_02" }, -- Heavy Silk Bandage
-                { skill = 100, id = 6450,  icon = "Interface\\Icons\\INV_Misc_Bandage_01" }, -- Silk Bandage
-                { skill = 75,  id = 3531,  icon = "Interface\\Icons\\INV_Misc_Bandage_17" }, -- Heavy Wool Bandage
-                { skill = 50,  id = 3530,  icon = "Interface\\Icons\\INV_Misc_Bandage_14" }, -- Wool Bandage
-                { skill = 20,  id = 2581,  icon = "Interface\\Icons\\INV_Misc_Bandage_18" }, -- Heavy Linen Bandage
-                { skill = 1,   id = 1251,  icon = "Interface\\Icons\\INV_Misc_Bandage_15" }, -- Linen Bandage
-            }
-            
-            local bestBandageId = nil
-            local bestBandageIcon = nil
-            for _, bandage in ipairs(bandages) do
-                if firstAidSkill >= bandage.skill then
-                    bestBandageId = bandage.id
-                    bestBandageIcon = bandage.icon
-                    break
-                end
-            end
-            
-            if bestBandageId then
-                AddWarning("Not carrying best Bandages for your First Aid skill level", bestBandageId, 1, bestBandageIcon)
-            end
-        end
-        
-        -- Check 2: Blinding Powder (Rogue 34+)
-        if classId == "ROGUE" and playerLevel >= 34 then
-            AddWarning("Not carrying any Blinding Powder for Blind", 5530, 1, "Interface\\Icons\\INV_Misc_Dust_01")
-        end
-        
-        -- Check 3: Flask of Petrification
-        if playerLevel >= 50 then
-            AddWarning("Not carrying 2 or more Flasks of Petrification", 13506, 2, "Interface\\Icons\\INV_Potion_26")
-        end
-        
-        -- Check 4: Flash Powder (Rogue 22+)
-        if classId == "ROGUE" and playerLevel >= 22 then
-            AddWarning("Not carrying any Flash Powder for Vanish", 5140, 1, "Interface\\Icons\\INV_Misc_Powder_Black")
-        end
-        
-        -- Check 5: Health Potion (Appropriate for level)
-        -- Data from: https://www.wowhead.com/classic/items/consumables/potions/name:healing
-        local healthPotions = {
-            { level = 45, id = 13446, icon = "Interface\\Icons\\INV_Potion_54" }, -- Major Healing Potion
-            { level = 35, id = 3928,  icon = "Interface\\Icons\\INV_Potion_53" }, -- Superior Healing Potion
-            { level = 21, id = 1710,  icon = "Interface\\Icons\\INV_Potion_52" }, -- Greater Healing Potion
-            { level = 12, id = 929,   icon = "Interface\\Icons\\INV_Potion_51" }, -- Healing Potion
-            { level = 3, id = 858,    icon = "Interface\\Icons\\INV_Potion_50" }, -- Lesser Healing Potion
-            { level = 1,  id = 118,   icon = "Interface\\Icons\\INV_Potion_49" }, -- Minor Healing Potion
+        -- Tiered item tables (highest tier first)
+        local bandages = {
+            { req = 225, id = 14530, icon = "Interface\\Icons\\INV_Misc_Bandage_12" }, -- Heavy Runecloth Bandage
+            { req = 200, id = 14529, icon = "Interface\\Icons\\INV_Misc_Bandage_11" }, -- Runecloth Bandage
+            { req = 175, id = 8545,  icon = "Interface\\Icons\\INV_Misc_Bandage_20" }, -- Heavy Mageweave Bandage
+            { req = 150, id = 8544,  icon = "Interface\\Icons\\INV_Misc_Bandage_19" }, -- Mageweave Bandage
+            { req = 125, id = 6451,  icon = "Interface\\Icons\\INV_Misc_Bandage_02" }, -- Heavy Silk Bandage
+            { req = 100, id = 6450,  icon = "Interface\\Icons\\INV_Misc_Bandage_01" }, -- Silk Bandage
+            { req = 75,  id = 3531,  icon = "Interface\\Icons\\INV_Misc_Bandage_17" }, -- Heavy Wool Bandage
+            { req = 50,  id = 3530,  icon = "Interface\\Icons\\INV_Misc_Bandage_14" }, -- Wool Bandage
+            { req = 20,  id = 2581,  icon = "Interface\\Icons\\INV_Misc_Bandage_18" }, -- Heavy Linen Bandage
+            { req = 1,   id = 1251,  icon = "Interface\\Icons\\INV_Misc_Bandage_15" }, -- Linen Bandage
         }
         
-        local bestPotionId = nil
-        local bestPotionIcon = nil
-        for _, pot in ipairs(healthPotions) do
-            if playerLevel >= pot.level then
-                bestPotionId = pot.id
-                bestPotionIcon = pot.icon
-                break
-            end
-        end
+        local healthPotions = {
+            { req = 45, id = 13446, icon = "Interface\\Icons\\INV_Potion_54" }, -- Major Healing Potion
+            { req = 35, id = 3928,  icon = "Interface\\Icons\\INV_Potion_53" }, -- Superior Healing Potion
+            { req = 21, id = 1710,  icon = "Interface\\Icons\\INV_Potion_52" }, -- Greater Healing Potion
+            { req = 12, id = 929,   icon = "Interface\\Icons\\INV_Potion_51" }, -- Healing Potion
+            { req = 3,  id = 858,   icon = "Interface\\Icons\\INV_Potion_50" }, -- Lesser Healing Potion
+            { req = 1,  id = 118,   icon = "Interface\\Icons\\INV_Potion_49" }, -- Minor Healing Potion
+        }
         
-        if bestPotionId then
-            AddWarning("Not carrying best Healing Potions for your level", bestPotionId, 1, bestPotionIcon)
-        end
+        local manaPotions = {
+            { req = 49, id = 13444, icon = "Interface\\Icons\\INV_Potion_76" }, -- Major Mana Potion
+            { req = 41, id = 13443, icon = "Interface\\Icons\\INV_Potion_74" }, -- Superior Mana Potion
+            { req = 31, id = 6149,  icon = "Interface\\Icons\\INV_Potion_73" }, -- Greater Mana Potion
+            { req = 22, id = 3827,  icon = "Interface\\Icons\\INV_Potion_72" }, -- Mana Potion
+            { req = 14, id = 3385,  icon = "Interface\\Icons\\INV_Potion_71" }, -- Lesser Mana Potion
+            { req = 1,  id = 2455,  icon = "Interface\\Icons\\INV_Potion_70" }, -- Minor Mana Potion
+        }
         
-        -- Check 6: Hearthstone
-        AddWarning("Not carrying a Hearthstone", 6948, 1, "Interface\\Icons\\INV_Misc_Rune_01")
-        
-        -- Check 7: Holy Candle (Priest 48-59)
-        if classId == "PRIEST" and playerLevel >= 48 and playerLevel < 60 then
-            AddWarning("Not carrying any Holy Candles", 17028, 1, "Interface\\Icons\\INV_Misc_Candle_01")
-        end
-        
-        -- Check 8: Light Feather (Mage 12+ for Slow Fall)
-        if classId == "MAGE" and playerLevel >= 12 then
-            AddWarning("Not carrying Light Feathers for Slow Fall", 17056, 1, "Interface\\Icons\\INV_Feather_02")
-        end
-        
-        -- Check 9: Light Feather (Priest 34+ for Levitate)
-        if classId == "PRIEST" and playerLevel >= 34 then
-            AddWarning("Not carrying Light Feathers for Levitate", 17056, 1, "Interface\\Icons\\INV_Feather_02")
-        end
-        
-        -- Check 10: Limited Invulnerability Potion
-        if playerLevel >= 45 then
-            AddWarning("Not carrying any Limited Invulnerability Potions", 3387, 1, "Interface\\Icons\\INV_Potion_62")
-        end
-        
-        -- Check 11: Mana Potion (Appropriate for level, if mana user)
-        -- Power type 0 is Mana
-        if powerType == 0 then
-            local manaPotions = {
-                { level = 49, id = 13444, icon = "Interface\\Icons\\INV_Potion_76" }, -- Major Mana Potion
-                { level = 41, id = 13443, icon = "Interface\\Icons\\INV_Potion_74" }, -- Superior Mana Potion
-                { level = 31, id = 6149,  icon = "Interface\\Icons\\INV_Potion_73" }, -- Greater Mana Potion
-                { level = 22, id = 3827,  icon = "Interface\\Icons\\INV_Potion_72" }, -- Mana Potion
-                { level = 14, id = 3385,  icon = "Interface\\Icons\\INV_Potion_71" }, -- Lesser Mana Potion
-                { level = 1,  id = 2455,  icon = "Interface\\Icons\\INV_Potion_70" }, -- Minor Mana Potion
-            }
-            
-            local bestManaPotionId = nil
-            local bestManaPotionIcon = nil
-            for _, pot in ipairs(manaPotions) do
-                if playerLevel >= pot.level then
-                    bestManaPotionId = pot.id
-                    bestManaPotionIcon = pot.icon
-                    break
+        -- Helper to find best tiered item
+        local function GetBestTiered(tiers, value)
+            for _, tier in ipairs(tiers) do
+                if value >= tier.req then
+                    return tier.id, tier.icon
                 end
             end
-            
-            if bestManaPotionId then
-                AddWarning("Not carrying best Mana Potions for your level", bestManaPotionId, 1, bestManaPotionIcon)
+            return nil, nil
+        end
+        
+        local bestBandageId, bestBandageIcon = GetBestTiered(bandages, firstAidSkill)
+        local bestHealthId, bestHealthIcon = GetBestTiered(healthPotions, playerLevel)
+        local bestManaId, bestManaIcon = GetBestTiered(manaPotions, playerLevel)
+        
+        -- Warning check definitions: { text, itemId, minCount, icon, condition }
+        local warningChecks = {
+            {
+                text = "Not carrying Bandages for your First Aid skill level",
+                itemId = bestBandageId,
+                icon = bestBandageIcon,
+                condition = firstAidSkill > 0 and bestBandageId
+            },
+            {
+                text = "Not carrying Blinding Powder for Blind",
+                itemId = 5530,
+                icon = "Interface\\Icons\\INV_Misc_Dust_01",
+                condition = classId == "ROGUE" and playerLevel >= 34
+            },
+            {
+                text = "Not carrying Flash Powder for Vanish",
+                itemId = 5140,
+                icon = "Interface\\Icons\\INV_Misc_Powder_Black",
+                condition = classId == "ROGUE" and playerLevel >= 22
+            },
+            {
+                text = "Not carrying Flasks of Petrification (2 or more)",
+                itemId = 13506,
+                minCount = 2,
+                icon = "Interface\\Icons\\INV_Potion_26",
+                condition = playerLevel >= 50
+            },
+            {
+                text = "Not carrying Healing Potions for your level",
+                itemId = bestHealthId,
+                icon = bestHealthIcon,
+                condition = bestHealthId ~= nil
+            },
+            {
+                text = "Not carrying Hearthstone",
+                itemId = 6948,
+                icon = "Interface\\Icons\\INV_Misc_Rune_01",
+                condition = true
+            },
+            {
+                text = "Not carrying Holy Candles",
+                itemId = 17028,
+                icon = "Interface\\Icons\\INV_Misc_Candle_01",
+                condition = classId == "PRIEST" and playerLevel >= 48 and playerLevel < 60
+            },
+            {
+                text = "Not carrying Light Feathers for Levitate",
+                itemId = 17056,
+                icon = "Interface\\Icons\\INV_Feather_02",
+                condition = classId == "PRIEST" and playerLevel >= 34
+            },
+            {
+                text = "Not carrying Light Feathers for Slow Fall",
+                itemId = 17056,
+                icon = "Interface\\Icons\\INV_Feather_02",
+                condition = classId == "MAGE" and playerLevel >= 12
+            },
+            {
+                text = "Not carrying Limited Invulnerability Potions",
+                itemId = 3387,
+                icon = "Interface\\Icons\\INV_Potion_62",
+                condition = playerLevel >= 45
+            },
+            {
+                text = "Not carrying Mana Potions for your level",
+                itemId = bestManaId,
+                icon = bestManaIcon,
+                condition = powerType == 0 and bestManaId ~= nil
+            },
+            {
+                text = "Not carrying Rune of Portals",
+                itemId = 17032,
+                icon = "Interface\\Icons\\INV_Misc_Rune_06",
+                condition = classId == "MAGE" and playerLevel >= 40
+            },
+            {
+                text = "Not carrying Rune of Teleportation",
+                itemId = 17031,
+                icon = "Interface\\Icons\\INV_Misc_Rune_07",
+                condition = classId == "MAGE" and playerLevel >= 20
+            },
+            {
+                text = "Not carrying Sacred Candles",
+                itemId = 17029,
+                icon = "Interface\\Icons\\INV_Misc_Candle_02",
+                condition = classId == "PRIEST" and playerLevel >= 56
+            },
+            {
+                text = "Not carrying Soul Shards",
+                itemId = 6265,
+                icon = "Interface\\Icons\\INV_Misc_Gem_Amethyst_02",
+                condition = classId == "WARLOCK" and playerLevel >= 10
+            },
+            {
+                text = "Not carrying Swiftness Potions",
+                itemId = 2459,
+                icon = "Interface\\Icons\\INV_Potion_95",
+                condition = playerLevel >= 5
+            },
+            {
+                text = "Not carrying Symbol of Kings",
+                itemId = 21177,
+                icon = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01",
+                condition = classId == "PALADIN" and playerLevel >= 52
+            },
+        }
+        
+        -- Collect applicable warnings
+        local activeWarnings = {}
+        for _, check in ipairs(warningChecks) do
+            if check.condition and check.itemId then
+                local count = GetItemCount(check.itemId)
+                local minCount = check.minCount or 1
+                if count < minCount then
+                    table.insert(activeWarnings, check)
+                end
             end
         end
         
-        -- Check 12: Rune of Portals (Mage 40+)
-        if classId == "MAGE" and playerLevel >= 40 then
-            AddWarning("Not carrying any Rune of Portals", 17032, 1, "Interface\\Icons\\INV_Misc_Rune_06")
-        end
+        -- Sort alphabetically by text (case-insensitive)
+        table.sort(activeWarnings, function(a, b)
+            return a.text:lower() < b.text:lower()
+        end)
         
-        -- Check 13: Rune of Teleportation (Mage 20+)
-        if classId == "MAGE" and playerLevel >= 20 then
-            AddWarning("Not carrying any Rune of Teleportation", 17031, 1, "Interface\\Icons\\INV_Misc_Rune_07")
-        end
-        
-        -- Check 14: Sacred Candle (Priest 56+)
-        if classId == "PRIEST" and playerLevel >= 56 then
-            AddWarning("Not carrying any Sacred Candles", 17029, 1, "Interface\\Icons\\INV_Misc_Candle_02")
-        end
-        
-        -- Check 15: Soul Shard (Warlock 10+)
-        if classId == "WARLOCK" and playerLevel >= 10 then
-            AddWarning("Not carrying any Soul Shards", 6265, 1, "Interface\\Icons\\INV_Misc_Gem_Amethyst_02")
-        end
-        
-        -- Check 16: Swiftness Potion
-        if playerLevel >= 5 then
-            AddWarning("Not carrying Swiftness Potions", 2459, 1, "Interface\\Icons\\INV_Potion_95")
-        end
-        
-        -- Check 17: Symbol of Kings (Paladin 52+)
-        if classId == "PALADIN" and playerLevel >= 52 then
-            AddWarning("Not carrying any Symbol of Kings", 21177, 1, "Interface\\Icons\\INV_Jewelry_TrinketPVP_01")
+        -- Display warnings
+        local hasWarnings = #activeWarnings > 0
+        if hasWarnings then
+            local header = GetFrame("header")
+            header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+            header:SetText("Warnings")
+            header:SetTextColor(1, 0.8, 0.2, 1) -- Yellow
+            yOffset = yOffset - 24
+            
+            for _, warning in ipairs(activeWarnings) do
+                local row = GetFrame("row")
+                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
+                
+                if row.icon then
+                    row.icon:SetTexture(warning.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+                    row.icon:SetDesaturated(false)
+                    row.icon:SetAlpha(1)
+                end
+                
+                row.name:SetText(warning.text)
+                row.name:SetTextColor(1, 0.8, 0.2, 1)
+                row.level:SetText("")
+                row.cost:SetText("")
+                
+                local itemId = warning.itemId
+                row:SetScript("OnEnter", function(self)
+                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                    GameTooltip:SetItemByID(itemId)
+                    GameTooltip:Show()
+                end)
+                
+                yOffset = yOffset - 34
+            end
         end
         
         if not hasWarnings then

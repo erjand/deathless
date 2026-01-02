@@ -384,87 +384,9 @@ function Deathless.UI.MiniSummary:SetupContent()
             return a.level < b.level
         end)
         
-        -- Build warnings
-        local firstAidSkill, engineeringSkill = 0, 0
-        for i = 1, GetNumSkillLines() do
-            local skillName, _, _, skillRank = GetSkillLineInfo(i)
-            if skillName == "First Aid" then firstAidSkill = skillRank or 0
-            elseif skillName == "Engineering" then engineeringSkill = skillRank or 0 end
-        end
-        
-        local bandages = {
-            { req = 225, id = 14530, icon = "Interface\\Icons\\INV_Misc_Bandage_12" },
-            { req = 200, id = 14529, icon = "Interface\\Icons\\INV_Misc_Bandage_11" },
-            { req = 175, id = 8545, icon = "Interface\\Icons\\INV_Misc_Bandage_20" },
-            { req = 150, id = 8544, icon = "Interface\\Icons\\INV_Misc_Bandage_19" },
-            { req = 125, id = 6451, icon = "Interface\\Icons\\INV_Misc_Bandage_02" },
-            { req = 100, id = 6450, icon = "Interface\\Icons\\INV_Misc_Bandage_01" },
-            { req = 75, id = 3531, icon = "Interface\\Icons\\INV_Misc_Bandage_17" },
-            { req = 50, id = 3530, icon = "Interface\\Icons\\INV_Misc_Bandage_14" },
-            { req = 20, id = 2581, icon = "Interface\\Icons\\INV_Misc_Bandage_18" },
-            { req = 1, id = 1251, icon = "Interface\\Icons\\INV_Misc_Bandage_15" },
-        }
-        local healthPotions = {
-            { req = 45, id = 13446, icon = "Interface\\Icons\\INV_Potion_54" },
-            { req = 35, id = 3928, icon = "Interface\\Icons\\INV_Potion_53" },
-            { req = 21, id = 1710, icon = "Interface\\Icons\\INV_Potion_52" },
-            { req = 12, id = 929, icon = "Interface\\Icons\\INV_Potion_51" },
-            { req = 3, id = 858, icon = "Interface\\Icons\\INV_Potion_50" },
-            { req = 1, id = 118, icon = "Interface\\Icons\\INV_Potion_49" },
-        }
-        local manaPotions = {
-            { req = 49, id = 13444, icon = "Interface\\Icons\\INV_Potion_76" },
-            { req = 41, id = 13443, icon = "Interface\\Icons\\INV_Potion_74" },
-            { req = 31, id = 6149, icon = "Interface\\Icons\\INV_Potion_73" },
-            { req = 22, id = 3827, icon = "Interface\\Icons\\INV_Potion_72" },
-            { req = 14, id = 3385, icon = "Interface\\Icons\\INV_Potion_71" },
-            { req = 1, id = 2455, icon = "Interface\\Icons\\INV_Potion_70" },
-        }
-        
-        local function GetBestTiered(tiers, value)
-            for _, tier in ipairs(tiers) do
-                if value >= tier.req then return tier.id, tier.icon end
-            end
-        end
-        
-        local bestBandageId, bestBandageIcon = GetBestTiered(bandages, firstAidSkill)
-        local bestHealthId, bestHealthIcon = GetBestTiered(healthPotions, playerLevel)
-        local bestManaId, bestManaIcon = GetBestTiered(manaPotions, playerLevel)
-        
-        local warningChecks = {
-            { text = "Not carrying best Bandages", itemId = bestBandageId, icon = bestBandageIcon, condition = firstAidSkill > 0 and bestBandageId },
-            { text = "Not carrying Blinding Powder", itemId = 5530, icon = "Interface\\Icons\\INV_Misc_Dust_01", condition = classId == "ROGUE" and playerLevel >= 34 },
-            { text = "Not carrying Flash Powder", itemId = 5140, icon = "Interface\\Icons\\INV_Misc_Powder_Black", condition = classId == "ROGUE" and playerLevel >= 22 },
-            { text = "Not carrying Flasks of Petrification", itemId = 13506, minCount = 2, icon = "Interface\\Icons\\INV_Potion_26", condition = playerLevel >= 50 },
-            { text = "Not carrying Iron Grenades", itemId = 4390, icon = "Interface\\Icons\\INV_Misc_Bomb_08", condition = engineeringSkill >= 175 and engineeringSkill < 260 },
-            { text = "Not carrying Thorium Grenades", itemId = 15993, icon = "Interface\\Icons\\INV_Misc_Bomb_08", condition = engineeringSkill >= 260 },
-            { text = "Not carrying Target Dummy", itemId = 4366, icon = "Interface\\Icons\\INV_Crate_06", condition = engineeringSkill >= 85 and engineeringSkill < 185 },
-            { text = "Not carrying Advanced Target Dummy", itemId = 4392, icon = "Interface\\Icons\\INV_Crate_05", condition = engineeringSkill >= 185 and engineeringSkill < 275 },
-            { text = "Not carrying Masterwork Target Dummy", itemId = 16023, icon = "Interface\\Icons\\INV_Crate_02", condition = engineeringSkill >= 275 },
-            { text = "Not carrying best Healing Potions", itemId = bestHealthId, icon = bestHealthIcon, condition = bestHealthId ~= nil },
-            { text = "Not carrying Hearthstone", itemId = 6948, icon = "Interface\\Icons\\INV_Misc_Rune_01", condition = true },
-            { text = "Not carrying Holy Candles", itemId = 17028, icon = "Interface\\Icons\\INV_Misc_Candle_01", condition = classId == "PRIEST" and playerLevel >= 48 and playerLevel < 60 },
-            { text = "Not carrying Light Feathers (Levitate)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "PRIEST" and playerLevel >= 34 },
-            { text = "Not carrying Light Feathers (Slow Fall)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "MAGE" and playerLevel >= 12 },
-            { text = "Not carrying LIP", itemId = 3387, icon = "Interface\\Icons\\INV_Potion_62", condition = playerLevel >= 45 },
-            { text = "Not carrying best Mana Potions", itemId = bestManaId, icon = bestManaIcon, condition = powerType == 0 and bestManaId ~= nil },
-            { text = "Not carrying Rune of Portals", itemId = 17032, icon = "Interface\\Icons\\INV_Misc_Rune_06", condition = classId == "MAGE" and playerLevel >= 40 },
-            { text = "Not carrying Rune of Teleportation", itemId = 17031, icon = "Interface\\Icons\\INV_Misc_Rune_07", condition = classId == "MAGE" and playerLevel >= 20 },
-            { text = "Not carrying Sacred Candles", itemId = 17029, icon = "Interface\\Icons\\INV_Misc_Candle_02", condition = classId == "PRIEST" and playerLevel >= 56 },
-            { text = "Not carrying Soul Shards", itemId = 6265, icon = "Interface\\Icons\\INV_Misc_Gem_Amethyst_02", condition = classId == "WARLOCK" and playerLevel >= 10 },
-            { text = "Not carrying Swiftness Potions", itemId = 2459, icon = "Interface\\Icons\\INV_Potion_95", condition = playerLevel >= 5 },
-            { text = "Not carrying Symbol of Kings", itemId = 21177, icon = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01", condition = classId == "PALADIN" and playerLevel >= 52 },
-        }
-        
-        local warningCount = 0
-        for _, check in ipairs(warningChecks) do
-            if check.condition and check.itemId then
-                local count = GetItemCount(check.itemId)
-                if count < (check.minCount or 1) then
-                    warningCount = warningCount + 1
-                end
-            end
-        end
+        -- Get warnings from shared module
+        local activeWarnings = Deathless.Utils.Warnings:GetActive()
+        local warningCount = #activeWarnings
         
         local yOffset = -4
         
@@ -504,40 +426,35 @@ function Deathless.UI.MiniSummary:SetupContent()
             
             -- Show warning items if expanded
             if isExpanded then
-                for _, check in ipairs(warningChecks) do
-                    if check.condition and check.itemId then
-                        local count = GetItemCount(check.itemId)
-                        if count < (check.minCount or 1) then
-                            local row = CreateFrame("Frame", nil, scrollChild)
-                            row:SetSize(scrollChild:GetWidth() - 16, 18)
-                            row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
-                            
-                            local rowIcon = row:CreateTexture(nil, "ARTWORK")
-                            rowIcon:SetSize(14, 14)
-                            rowIcon:SetPoint("LEFT", row, "LEFT", 0, 0)
-                            rowIcon:SetTexture(check.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
-                            rowIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-                            
-                            local rowText = row:CreateFontString(nil, "OVERLAY")
-                            rowText:SetFont("Fonts\\ARIALN.TTF", 10, "")
-                            rowText:SetPoint("LEFT", rowIcon, "RIGHT", 4, 0)
-                            rowText:SetPoint("RIGHT", row, "RIGHT", 0, 0)
-                            rowText:SetText(check.text)
-                            rowText:SetTextColor(1, 0.8, 0.2, 1)
-                            rowText:SetJustifyH("LEFT")
-                            
-                            row:EnableMouse(true)
-                            local itemId = check.itemId
-                            row:SetScript("OnEnter", function(self)
-                                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                                GameTooltip:SetItemByID(itemId)
-                                GameTooltip:Show()
-                            end)
-                            row:SetScript("OnLeave", function() GameTooltip:Hide() end)
-                            
-                            yOffset = yOffset - 18
-                        end
-                    end
+                for _, warning in ipairs(activeWarnings) do
+                    local row = CreateFrame("Frame", nil, scrollChild)
+                    row:SetSize(scrollChild:GetWidth() - 16, 18)
+                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
+                    
+                    local rowIcon = row:CreateTexture(nil, "ARTWORK")
+                    rowIcon:SetSize(14, 14)
+                    rowIcon:SetPoint("LEFT", row, "LEFT", 0, 0)
+                    rowIcon:SetTexture(warning.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+                    rowIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+                    
+                    local rowText = row:CreateFontString(nil, "OVERLAY")
+                    rowText:SetFont("Fonts\\ARIALN.TTF", 10, "")
+                    rowText:SetPoint("LEFT", rowIcon, "RIGHT", 4, 0)
+                    rowText:SetPoint("RIGHT", row, "RIGHT", 0, 0)
+                    rowText:SetText(warning.text)
+                    rowText:SetTextColor(1, 0.8, 0.2, 1)
+                    rowText:SetJustifyH("LEFT")
+                    
+                    row:EnableMouse(true)
+                    local itemId = warning.itemId
+                    row:SetScript("OnEnter", function(self)
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                        GameTooltip:SetItemByID(itemId)
+                        GameTooltip:Show()
+                    end)
+                    row:SetScript("OnLeave", function() GameTooltip:Hide() end)
+                    
+                    yOffset = yOffset - 18
                 end
             end
             

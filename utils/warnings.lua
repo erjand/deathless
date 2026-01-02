@@ -107,12 +107,30 @@ local function IsCategoryEnabled(category)
     return warnings[category] ~= false
 end
 
---- Get active warnings (items the player is missing)
+--- Get non-item warnings (talent points, etc.)
+--- @return table[] Array of special warning definitions
+function Deathless.Utils.Warnings:GetSpecialChecks()
+    local playerLevel = UnitLevel("player") or 1
+    local unspentTalents = UnitCharacterPoints("player") or 0
+    
+    return {
+        {
+            text = "Unspent Talent Points (" .. unspentTalents .. ")",
+            icon = "Interface\\Icons\\INV_Misc_Book_11",
+            condition = playerLevel >= 10 and unspentTalents > 0,
+            category = "talents",
+            isActive = unspentTalents > 0,
+        },
+    }
+end
+
+--- Get active warnings (items the player is missing + special checks)
 --- @return table[] Array of active warnings with text, itemId, icon
 function Deathless.Utils.Warnings:GetActive()
     local checks = self:GetChecks()
     local active = {}
     
+    -- Check item-based warnings
     for _, check in ipairs(checks) do
         if check.condition and check.itemId and IsCategoryEnabled(check.category) then
             local count = GetItemCount(check.itemId)
@@ -120,6 +138,14 @@ function Deathless.Utils.Warnings:GetActive()
             if count < minCount then
                 table.insert(active, check)
             end
+        end
+    end
+    
+    -- Check special (non-item) warnings
+    local specialChecks = self:GetSpecialChecks()
+    for _, check in ipairs(specialChecks) do
+        if check.condition and check.isActive and IsCategoryEnabled(check.category) then
+            table.insert(active, check)
         end
     end
     
@@ -136,4 +162,51 @@ end
 function Deathless.Utils.Warnings:GetCount()
     return #self:GetActive()
 end
+
+-- ========================================
+-- EVENT-BASED REFRESH SYSTEM
+-- ========================================
+
+-- Registered callbacks for when warnings/state changes
+local refreshCallbacks = {}
+local pendingRefresh = false
+local DEBOUNCE_DELAY = 0.3
+
+--- Register a callback to be called when warnings might have changed
+--- @param key string Unique key for this callback
+--- @param callback function Function to call on refresh
+function Deathless.Utils.Warnings:RegisterRefresh(key, callback)
+    refreshCallbacks[key] = callback
+end
+
+--- Unregister a refresh callback
+--- @param key string The key used when registering
+function Deathless.Utils.Warnings:UnregisterRefresh(key)
+    refreshCallbacks[key] = nil
+end
+
+--- Trigger a debounced refresh of all registered callbacks
+local function TriggerRefresh()
+    if pendingRefresh then return end
+    pendingRefresh = true
+    
+    C_Timer.After(DEBOUNCE_DELAY, function()
+        pendingRefresh = false
+        for _, callback in pairs(refreshCallbacks) do
+            callback()
+        end
+    end)
+end
+
+-- Create event frame for watching state changes
+local eventFrame = CreateFrame("Frame")
+eventFrame:RegisterEvent("BAG_UPDATE")
+eventFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
+eventFrame:RegisterEvent("SKILL_LINES_CHANGED")
+eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
+eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
+
+eventFrame:SetScript("OnEvent", function(self, event)
+    TriggerRefresh()
+end)
 

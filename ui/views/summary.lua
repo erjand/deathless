@@ -231,11 +231,15 @@ Deathless.UI.Views:Register("summary", function(container)
                     row.cost:SetText("")
                     
                     local itemId = warning.itemId
-                    row:SetScript("OnEnter", function(self)
-                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                        GameTooltip:SetItemByID(itemId)
-                        GameTooltip:Show()
-                    end)
+                    if itemId then
+                        row:SetScript("OnEnter", function(self)
+                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                            GameTooltip:SetItemByID(itemId)
+                            GameTooltip:Show()
+                        end)
+                    else
+                        row:SetScript("OnEnter", nil)
+                    end
                     
                     yOffset = yOffset - 34
                 end
@@ -394,6 +398,13 @@ Deathless.UI.Views:Register("summary", function(container)
             scrollFrame.ResetScroll()
         end
         Refresh()
+    end)
+    
+    -- Register for automatic refresh when warnings/state changes
+    Deathless.Utils.Warnings:RegisterRefresh("summary", function()
+        if container:IsVisible() then
+            Refresh()
+        end
     end)
     
     -- Initial render

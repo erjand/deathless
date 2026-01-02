@@ -447,12 +447,14 @@ function Deathless.UI.MiniSummary:SetupContent()
                     
                     row:EnableMouse(true)
                     local itemId = warning.itemId
-                    row:SetScript("OnEnter", function(self)
-                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                        GameTooltip:SetItemByID(itemId)
-                        GameTooltip:Show()
-                    end)
-                    row:SetScript("OnLeave", function() GameTooltip:Hide() end)
+                    if itemId then
+                        row:SetScript("OnEnter", function(self)
+                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                            GameTooltip:SetItemByID(itemId)
+                            GameTooltip:Show()
+                        end)
+                        row:SetScript("OnLeave", function() GameTooltip:Hide() end)
+                    end
                     
                     yOffset = yOffset - 18
                 end
@@ -658,6 +660,13 @@ function Deathless.UI.MiniSummary:SetupContent()
     self.Refresh = Refresh
     
     frame:SetScript("OnShow", Refresh)
+    
+    -- Register for automatic refresh when warnings/state changes
+    Deathless.Utils.Warnings:RegisterRefresh("mini", function()
+        if frame:IsVisible() then
+            Refresh()
+        end
+    end)
 end
 
 function Deathless.UI.MiniSummary:Show()

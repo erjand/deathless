@@ -12,7 +12,7 @@ Deathless.UI.Views:Register("options", function(container)
     local ROW_HEIGHT = 24
     local SECTION_HEIGHT = 28
     local SUBSECTION_HEIGHT = 22
-    local WARNING_ROWS = 3
+    local WARNING_ROWS = 4
     local CLASS_ROWS = 3
     
     -- Section collapse state
@@ -200,6 +200,7 @@ Deathless.UI.Views:Register("options", function(container)
         { key = "classReagents", label = "Class Reagents", icon = "Interface\\Icons\\INV_Misc_Rune_06" },
         { key = "engineering", label = "Engineering Items", icon = "Interface\\Icons\\INV_Misc_Bomb_08" },
         { key = "hearthstone", label = "Hearthstone", icon = "Interface\\Icons\\INV_Misc_Rune_01" },
+        { key = "talents", label = "Unspent Talents", icon = "Interface\\Icons\\INV_Misc_Book_11" },
     }
     
     Refresh = function()

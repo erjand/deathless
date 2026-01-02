@@ -28,6 +28,7 @@ Deathless.config = Deathless.config or {
         classReagents = true,
         engineering = true,
         hearthstone = true,
+        talents = true,
     },
 }
 

@@ -181,37 +181,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             sectionIndex = sectionIndex + 1
             local section = sectionPool[sectionIndex]
             if not section then
-                section = CreateFrame("Button", nil, scrollChild)
-                section:SetHeight(28)
-                
-                section.bg = section:CreateTexture(nil, "BACKGROUND")
-                section.bg:SetAllPoints()
-                section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.6)
-                
-                section.icon = section:CreateFontString(nil, "OVERLAY")
-                section.icon:SetFont("Fonts\\ARIALN.TTF", 12, "")
-                section.icon:SetPoint("LEFT", section, "LEFT", 8, 0)
-                
-                section.label = section:CreateFontString(nil, "OVERLAY")
-                section.label:SetFont("Fonts\\ARIALN.TTF", 12, "")
-                section.label:SetPoint("LEFT", section.icon, "RIGHT", 6, 0)
-                
-                section.count = section:CreateFontString(nil, "OVERLAY")
-                section.count:SetFont("Fonts\\ARIALN.TTF", 11, "")
-                section.count:SetPoint("LEFT", section.label, "RIGHT", 8, 0)
-                section.count:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                
-                section.cost = section:CreateFontString(nil, "OVERLAY")
-                section.cost:SetFont("Fonts\\ARIALN.TTF", 11, "")
-                section.cost:SetPoint("LEFT", section.count, "RIGHT", 8, 0)
-                
-                section:SetScript("OnEnter", function(self)
-                    self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 0.8)
-                end)
-                section:SetScript("OnLeave", function(self)
-                    self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.6)
-                end)
-                
+                section = Utils:CreateCollapsibleSection(scrollChild)
                 sectionPool[sectionIndex] = section
             end
             return section
@@ -411,24 +381,14 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
             section:Show()
             
-            local isExpanded = sectionState[sectionKey]
-            section.icon:SetText(isExpanded and "▼" or "►")
-            section.icon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-            
-            section.label:SetText(label)
-            section.label:SetTextColor(color[1], color[2], color[3], 1)
-            
-            section.count:SetText("(" .. count .. ")")
-            
-            -- Cost display
+            -- Format cost text if provided
+            local costText = nil
             if costCopper then
                 local prefix = costLabel or "Total"
-                section.cost:SetText(prefix .. ": " .. FormatMoneyColored(costCopper))
-                section.cost:Show()
-            else
-                section.cost:SetText("")
-                section.cost:Hide()
+                costText = prefix .. ": " .. FormatMoneyColored(costCopper)
             end
+            
+            Utils:ConfigureSection(section, sectionState[sectionKey], label, color, count, costText)
             
             section.sectionKey = sectionKey
             section:SetScript("OnClick", function(self)

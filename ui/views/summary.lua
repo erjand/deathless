@@ -74,32 +74,7 @@ Deathless.UI.Views:Register("summary", function(container)
         
         if not frame then
             if frameType == "section" then
-                frame = CreateFrame("Button", nil, scrollChild)
-                frame:SetHeight(28)
-                
-                frame.bg = frame:CreateTexture(nil, "BACKGROUND")
-                frame.bg:SetAllPoints()
-                frame.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.4)
-                
-                frame.icon = frame:CreateFontString(nil, "OVERLAY")
-                frame.icon:SetFont("Fonts\\ARIALN.TTF", 12, "")
-                frame.icon:SetPoint("LEFT", frame, "LEFT", 8, 0)
-                
-                frame.label = frame:CreateFontString(nil, "OVERLAY")
-                frame.label:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
-                frame.label:SetPoint("LEFT", frame.icon, "RIGHT", 6, 0)
-                
-                frame.count = frame:CreateFontString(nil, "OVERLAY")
-                frame.count:SetFont("Fonts\\ARIALN.TTF", 11, "")
-                frame.count:SetPoint("LEFT", frame.label, "RIGHT", 8, 0)
-                frame.count:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                
-                frame:SetScript("OnEnter", function(self)
-                    self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 0.6)
-                end)
-                frame:SetScript("OnLeave", function(self)
-                    self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.4)
-                end)
+                frame = Utils:CreateCollapsibleSection(scrollChild)
             elseif frameType == "subheader" then
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
                 frame:SetFont("Fonts\\ARIALN.TTF", 12, "BOLD")
@@ -149,20 +124,7 @@ Deathless.UI.Views:Register("summary", function(container)
         section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
         section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
         
-        local isExpanded = sectionState[sectionKey]
-        section.icon:SetText(isExpanded and "▼" or "►")
-        section.icon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        
-        section.label:SetText(label)
-        section.label:SetTextColor(color[1], color[2], color[3], 1)
-        
-        if count then
-            section.count:SetText("(" .. count .. ")")
-            section.count:Show()
-        else
-            section.count:SetText("")
-            section.count:Hide()
-        end
+        Utils:ConfigureSection(section, sectionState[sectionKey], label, color, count)
         
         section.sectionKey = sectionKey
         section:SetScript("OnClick", function(self)

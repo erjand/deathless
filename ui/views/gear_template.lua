@@ -29,19 +29,8 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         -- ========================================
         -- GENERAL NOTES SECTION
         -- ========================================
-        local header1 = scrollChild:CreateFontString(nil, "OVERLAY")
-        header1:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
-        header1:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
-        header1:SetText("General Notes")
-        header1:SetTextColor(classColor[1], classColor[2], classColor[3], 1)
-        
-        local line1 = scrollChild:CreateTexture(nil, "ARTWORK")
-        line1:SetHeight(1)
-        line1:SetPoint("TOPLEFT", header1, "BOTTOMLEFT", 0, -4)
-        line1:SetWidth(520)
-        line1:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
-        
-        yOffset = yOffset - 28
+        local header1, line1
+        header1, line1, yOffset = Utils:CreateContentHeader(scrollChild, "General Notes", classColor, yOffset)
         
         local notes1 = scrollChild:CreateFontString(nil, "OVERLAY")
         notes1:SetFont("Fonts\\ARIALN.TTF", 11, "")
@@ -57,19 +46,8 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         -- ========================================
         -- WEAPON PROGRESSION SECTION
         -- ========================================
-        local header2 = scrollChild:CreateFontString(nil, "OVERLAY")
-        header2:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
-        header2:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
-        header2:SetText("Weapon Progression")
-        header2:SetTextColor(classColor[1], classColor[2], classColor[3], 1)
-        
-        local line2 = scrollChild:CreateTexture(nil, "ARTWORK")
-        line2:SetHeight(1)
-        line2:SetPoint("TOPLEFT", header2, "BOTTOMLEFT", 0, -4)
-        line2:SetWidth(520)
-        line2:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
-        
-        yOffset = yOffset - 28
+        local header2, line2
+        header2, line2, yOffset = Utils:CreateContentHeader(scrollChild, "Weapon Progression", classColor, yOffset)
         
         local notes2 = scrollChild:CreateFontString(nil, "OVERLAY")
         notes2:SetFont("Fonts\\ARIALN.TTF", 11, "")
@@ -85,19 +63,8 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         -- ========================================
         -- IMPORTANT GEAR TABLE
         -- ========================================
-        local header3 = scrollChild:CreateFontString(nil, "OVERLAY")
-        header3:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
-        header3:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
-        header3:SetText("Important Gear")
-        header3:SetTextColor(classColor[1], classColor[2], classColor[3], 1)
-        
-        local line3 = scrollChild:CreateTexture(nil, "ARTWORK")
-        line3:SetHeight(1)
-        line3:SetPoint("TOPLEFT", header3, "BOTTOMLEFT", 0, -4)
-        line3:SetWidth(520)
-        line3:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
-        
-        yOffset = yOffset - 28
+        local header3, line3
+        header3, line3, yOffset = Utils:CreateContentHeader(scrollChild, "Important Gear", classColor, yOffset)
         
         -- Table headers
         local COL_ITEM, COL_LEVEL, COL_SOURCE, COL_NOTE = 200, 50, 120, 150

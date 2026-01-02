@@ -17,6 +17,18 @@ Deathless.config = Deathless.config or {
     },
     -- Included classes (nil = use player class only on first load)
     includedClasses = nil,
+    -- Warning toggles
+    warnings = {
+        bandages = true,
+        healthPotions = true,
+        manaPotions = true,
+        swiftnessPotions = true,
+        lip = true,
+        flasks = true,
+        classReagents = true,
+        engineering = true,
+        hearthstone = true,
+    },
 }
 
 -- Class list in alphabetical order

@@ -73,29 +73,38 @@ function Deathless.Utils.Warnings:GetChecks()
     local bestManaId, bestManaIcon = GetBestTiered(MANA_POTIONS, playerLevel)
     
     return {
-        { text = "Not carrying best Bandages", itemId = bestBandageId, icon = bestBandageIcon, condition = firstAidSkill > 0 and bestBandageId },
-        { text = "Not carrying Blinding Powder", itemId = 5530, icon = "Interface\\Icons\\INV_Misc_Dust_01", condition = classId == "ROGUE" and playerLevel >= 34 },
-        { text = "Not carrying Flash Powder", itemId = 5140, icon = "Interface\\Icons\\INV_Misc_Powder_Black", condition = classId == "ROGUE" and playerLevel >= 22 },
-        { text = "Not carrying Flasks of Petrification", itemId = 13506, minCount = 2, icon = "Interface\\Icons\\INV_Potion_26", condition = playerLevel >= 50 },
-        { text = "Not carrying Iron Grenades", itemId = 4390, icon = "Interface\\Icons\\INV_Misc_Bomb_08", condition = engineeringSkill >= 175 and engineeringSkill < 260 },
-        { text = "Not carrying Thorium Grenades", itemId = 15993, icon = "Interface\\Icons\\INV_Misc_Bomb_08", condition = engineeringSkill >= 260 },
-        { text = "Not carrying Target Dummy", itemId = 4366, icon = "Interface\\Icons\\INV_Crate_06", condition = engineeringSkill >= 85 and engineeringSkill < 185 },
-        { text = "Not carrying Advanced Target Dummy", itemId = 4392, icon = "Interface\\Icons\\INV_Crate_05", condition = engineeringSkill >= 185 and engineeringSkill < 275 },
-        { text = "Not carrying Masterwork Target Dummy", itemId = 16023, icon = "Interface\\Icons\\INV_Crate_02", condition = engineeringSkill >= 275 },
-        { text = "Not carrying best Healing Potions", itemId = bestHealthId, icon = bestHealthIcon, condition = bestHealthId ~= nil },
-        { text = "Not carrying Hearthstone", itemId = 6948, icon = "Interface\\Icons\\INV_Misc_Rune_01", condition = true },
-        { text = "Not carrying Holy Candles", itemId = 17028, icon = "Interface\\Icons\\INV_Misc_Candle_01", condition = classId == "PRIEST" and playerLevel >= 48 and playerLevel < 60 },
-        { text = "Not carrying Light Feathers (Levitate)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "PRIEST" and playerLevel >= 34 },
-        { text = "Not carrying Light Feathers (Slow Fall)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "MAGE" and playerLevel >= 12 },
-        { text = "Not carrying LIP", itemId = 3387, icon = "Interface\\Icons\\INV_Potion_62", condition = playerLevel >= 45 },
-        { text = "Not carrying best Mana Potions", itemId = bestManaId, icon = bestManaIcon, condition = powerType == 0 and bestManaId ~= nil },
-        { text = "Not carrying Rune of Portals", itemId = 17032, icon = "Interface\\Icons\\INV_Misc_Rune_06", condition = classId == "MAGE" and playerLevel >= 40 },
-        { text = "Not carrying Rune of Teleportation", itemId = 17031, icon = "Interface\\Icons\\INV_Misc_Rune_07", condition = classId == "MAGE" and playerLevel >= 20 },
-        { text = "Not carrying Sacred Candles", itemId = 17029, icon = "Interface\\Icons\\INV_Misc_Candle_02", condition = classId == "PRIEST" and playerLevel >= 56 },
-        { text = "Not carrying Soul Shards", itemId = 6265, icon = "Interface\\Icons\\INV_Misc_Gem_Amethyst_02", condition = classId == "WARLOCK" and playerLevel >= 10 },
-        { text = "Not carrying Swiftness Potions", itemId = 2459, icon = "Interface\\Icons\\INV_Potion_95", condition = playerLevel >= 5 },
-        { text = "Not carrying Symbol of Kings", itemId = 21177, icon = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01", condition = classId == "PALADIN" and playerLevel >= 52 },
+        { text = "Not carrying best Bandages", itemId = bestBandageId, icon = bestBandageIcon, condition = firstAidSkill > 0 and bestBandageId, category = "bandages" },
+        { text = "Not carrying Blinding Powder", itemId = 5530, icon = "Interface\\Icons\\INV_Misc_Dust_01", condition = classId == "ROGUE" and playerLevel >= 34, category = "classReagents" },
+        { text = "Not carrying Flash Powder", itemId = 5140, icon = "Interface\\Icons\\INV_Misc_Powder_Black", condition = classId == "ROGUE" and playerLevel >= 22, category = "classReagents" },
+        { text = "Not carrying Flasks of Petrification", itemId = 13506, minCount = 2, icon = "Interface\\Icons\\INV_Potion_26", condition = playerLevel >= 50, category = "flasks" },
+        { text = "Not carrying Iron Grenades", itemId = 4390, icon = "Interface\\Icons\\INV_Misc_Bomb_08", condition = engineeringSkill >= 175 and engineeringSkill < 260, category = "engineering" },
+        { text = "Not carrying Thorium Grenades", itemId = 15993, icon = "Interface\\Icons\\INV_Misc_Bomb_08", condition = engineeringSkill >= 260, category = "engineering" },
+        { text = "Not carrying Target Dummy", itemId = 4366, icon = "Interface\\Icons\\INV_Crate_06", condition = engineeringSkill >= 85 and engineeringSkill < 185, category = "engineering" },
+        { text = "Not carrying Advanced Target Dummy", itemId = 4392, icon = "Interface\\Icons\\INV_Crate_05", condition = engineeringSkill >= 185 and engineeringSkill < 275, category = "engineering" },
+        { text = "Not carrying Masterwork Target Dummy", itemId = 16023, icon = "Interface\\Icons\\INV_Crate_02", condition = engineeringSkill >= 275, category = "engineering" },
+        { text = "Not carrying best Healing Potions", itemId = bestHealthId, icon = bestHealthIcon, condition = bestHealthId ~= nil, category = "healthPotions" },
+        { text = "Not carrying Hearthstone", itemId = 6948, icon = "Interface\\Icons\\INV_Misc_Rune_01", condition = true, category = "hearthstone" },
+        { text = "Not carrying Holy Candles", itemId = 17028, icon = "Interface\\Icons\\INV_Misc_Candle_01", condition = classId == "PRIEST" and playerLevel >= 48 and playerLevel < 60, category = "classReagents" },
+        { text = "Not carrying Light Feathers (Levitate)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "PRIEST" and playerLevel >= 34, category = "classReagents" },
+        { text = "Not carrying Light Feathers (Slow Fall)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "MAGE" and playerLevel >= 12, category = "classReagents" },
+        { text = "Not carrying LIP", itemId = 3387, icon = "Interface\\Icons\\INV_Potion_62", condition = playerLevel >= 45, category = "lip" },
+        { text = "Not carrying best Mana Potions", itemId = bestManaId, icon = bestManaIcon, condition = powerType == 0 and bestManaId ~= nil, category = "manaPotions" },
+        { text = "Not carrying Rune of Portals", itemId = 17032, icon = "Interface\\Icons\\INV_Misc_Rune_06", condition = classId == "MAGE" and playerLevel >= 40, category = "classReagents" },
+        { text = "Not carrying Rune of Teleportation", itemId = 17031, icon = "Interface\\Icons\\INV_Misc_Rune_07", condition = classId == "MAGE" and playerLevel >= 20, category = "classReagents" },
+        { text = "Not carrying Sacred Candles", itemId = 17029, icon = "Interface\\Icons\\INV_Misc_Candle_02", condition = classId == "PRIEST" and playerLevel >= 56, category = "classReagents" },
+        { text = "Not carrying Soul Shards", itemId = 6265, icon = "Interface\\Icons\\INV_Misc_Gem_Amethyst_02", condition = classId == "WARLOCK" and playerLevel >= 10, category = "classReagents" },
+        { text = "Not carrying Swiftness Potions", itemId = 2459, icon = "Interface\\Icons\\INV_Potion_95", condition = playerLevel >= 5, category = "swiftnessPotions" },
+        { text = "Not carrying Symbol of Kings", itemId = 21177, icon = "Interface\\Icons\\INV_Jewelry_TrinketPVP_01", condition = classId == "PALADIN" and playerLevel >= 52, category = "classReagents" },
     }
+end
+
+--- Check if a warning category is enabled in config
+--- @param category string The category key
+--- @return boolean
+local function IsCategoryEnabled(category)
+    local warnings = Deathless.config and Deathless.config.warnings
+    if not warnings then return true end
+    return warnings[category] ~= false
 end
 
 --- Get active warnings (items the player is missing)
@@ -105,7 +114,7 @@ function Deathless.Utils.Warnings:GetActive()
     local active = {}
     
     for _, check in ipairs(checks) do
-        if check.condition and check.itemId then
+        if check.condition and check.itemId and IsCategoryEnabled(check.category) then
             local count = GetItemCount(check.itemId)
             local minCount = check.minCount or 1
             if count < minCount then

@@ -74,6 +74,154 @@ function Deathless.UI.Views:Register(viewId, creator)
     self[viewId] = creator
 end
 
+-- ========================================
+-- COLLAPSIBLE SECTION HEADERS
+-- ========================================
+
+--- Create a collapsible section header frame (for use with pooling)
+--- Returns the frame with icon, label, count, cost font strings
+--- @param parent Frame The parent frame
+--- @return Button The section header frame
+function Deathless.UI.Views.Utils:CreateCollapsibleSection(parent)
+    local Colors = self:GetColors()
+    
+    local section = CreateFrame("Button", nil, parent)
+    section:SetHeight(28)
+    
+    section.bg = section:CreateTexture(nil, "BACKGROUND")
+    section.bg:SetAllPoints()
+    section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.4)
+    
+    section.icon = section:CreateFontString(nil, "OVERLAY")
+    section.icon:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    section.icon:SetPoint("LEFT", section, "LEFT", 8, 0)
+    
+    section.label = section:CreateFontString(nil, "OVERLAY")
+    section.label:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    section.label:SetPoint("LEFT", section.icon, "RIGHT", 6, 0)
+    
+    section.count = section:CreateFontString(nil, "OVERLAY")
+    section.count:SetFont("Fonts\\ARIALN.TTF", 11, "")
+    section.count:SetPoint("LEFT", section.label, "RIGHT", 8, 0)
+    section.count:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    
+    section.cost = section:CreateFontString(nil, "OVERLAY")
+    section.cost:SetFont("Fonts\\ARIALN.TTF", 11, "")
+    section.cost:SetPoint("LEFT", section.count, "RIGHT", 8, 0)
+    
+    section:SetScript("OnEnter", function(self)
+        self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 0.6)
+    end)
+    section:SetScript("OnLeave", function(self)
+        self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.4)
+    end)
+    
+    return section
+end
+
+--- Configure a collapsible section header
+--- @param section Button The section frame
+--- @param isExpanded boolean Whether section is expanded
+--- @param label string The label text
+--- @param color table Color for label {r, g, b}
+--- @param count number|nil Optional count to display
+--- @param costText string|nil Optional cost text to display
+function Deathless.UI.Views.Utils:ConfigureSection(section, isExpanded, label, color, count, costText)
+    local Colors = self:GetColors()
+    
+    section.icon:SetText(isExpanded and "▼" or "►")
+    section.icon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    
+    section.label:SetText(label)
+    section.label:SetTextColor(color[1], color[2], color[3], 1)
+    
+    if count then
+        section.count:SetText("(" .. count .. ")")
+        section.count:Show()
+    else
+        section.count:SetText("")
+        section.count:Hide()
+    end
+    
+    if costText then
+        section.cost:SetText(costText)
+        section.cost:Show()
+    else
+        section.cost:SetText("")
+        section.cost:Hide()
+    end
+end
+
+--- Create a collapsible sub-section header (no background, smaller)
+--- @param parent Frame The parent frame
+--- @return Button The sub-section header frame
+function Deathless.UI.Views.Utils:CreateCollapsibleSubSection(parent)
+    local Colors = self:GetColors()
+    
+    local header = CreateFrame("Button", nil, parent)
+    header:SetHeight(22)
+    
+    header.icon = header:CreateFontString(nil, "OVERLAY")
+    header.icon:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    header.icon:SetPoint("LEFT", header, "LEFT", 0, 0)
+    
+    header.label = header:CreateFontString(nil, "OVERLAY")
+    header.label:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    header.label:SetPoint("LEFT", header.icon, "RIGHT", 6, 0)
+    
+    header:SetScript("OnEnter", function(self)
+        self.label:SetTextColor(1, 1, 1, 1)
+    end)
+    header:SetScript("OnLeave", function(self)
+        local c = self.color or Colors.textDim
+        self.label:SetTextColor(c[1], c[2], c[3], 1)
+    end)
+    
+    return header
+end
+
+--- Configure a collapsible sub-section header
+--- @param header Button The sub-section header frame
+--- @param isExpanded boolean Whether section is expanded
+--- @param label string The label text
+--- @param color table|nil Color for label {r, g, b}
+function Deathless.UI.Views.Utils:ConfigureSubSection(header, isExpanded, label, color)
+    local Colors = self:GetColors()
+    
+    header.icon:SetText(isExpanded and "▼" or "►")
+    header.icon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    
+    header.label:SetText(label)
+    header.color = color or Colors.textDim
+    header.label:SetTextColor(header.color[1], header.color[2], header.color[3], 1)
+end
+
+--- Create a content section header (non-collapsible, with underline)
+--- @param parent Frame The parent frame
+--- @param text string The header text
+--- @param color table Color for text {r, g, b}
+--- @param yOffset number Y offset in parent
+--- @param width number|nil Optional width for underline (default 520)
+--- @return FontString, Texture, number The header text, underline, and next yOffset
+function Deathless.UI.Views.Utils:CreateContentHeader(parent, text, color, yOffset, width)
+    local Colors = self:GetColors()
+    width = width or 520
+    
+    local header = parent:CreateFontString(nil, "OVERLAY")
+    header:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
+    header:SetPoint("TOPLEFT", parent, "TOPLEFT", 8, yOffset)
+    header:SetText(text)
+    header:SetTextColor(color[1], color[2], color[3], 1)
+    
+    local underline = parent:CreateTexture(nil, "ARTWORK")
+    underline:SetHeight(1)
+    underline:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, -4)
+    underline:SetWidth(width)
+    underline:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
+    
+    return header, underline, yOffset - 28
+end
+
 --- Create an enhanced scroll frame with auto-hiding thin scrollbar
 ---@param parent Frame The parent container
 ---@param topOffset number Offset from top (negative)

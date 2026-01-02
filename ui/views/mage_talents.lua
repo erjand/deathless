@@ -167,45 +167,8 @@ Deathless.UI.Views:Register("mage_talents", function(container)
     
     local title, subtitle, separator = Utils:CreateHeader(container, "Mage Talents", "Recommended builds for leveling and endgame", CLASS_COLOR)
     
-    local scrollFrame = CreateFrame("ScrollFrame", nil, container, "UIPanelScrollFrameTemplate")
-    scrollFrame:SetPoint("TOPLEFT", container, "TOPLEFT", 8, -70)
-    scrollFrame:SetPoint("BOTTOMRIGHT", container, "BOTTOMRIGHT", -28, 24)
-    
-    local scrollBar = scrollFrame.ScrollBar
-    if scrollBar then
-        scrollBar:SetPoint("TOPLEFT", scrollFrame, "TOPRIGHT", 4, -16)
-        scrollBar:SetPoint("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", 4, 16)
-    end
-    
-    local scrollChild = CreateFrame("Frame", nil, scrollFrame)
-    scrollChild:SetSize(scrollFrame:GetWidth(), 1)
-    scrollFrame:SetScrollChild(scrollChild)
-    
-    local targetScroll = 0
-    local SCROLL_SPEED, SCROLL_STEP = 1.2, 40
-    
-    scrollFrame:EnableMouseWheel(true)
-    scrollFrame:SetScript("OnMouseWheel", function(self, delta)
-        local maxScroll = scrollChild:GetHeight() - scrollFrame:GetHeight()
-        if maxScroll < 0 then maxScroll = 0 end
-        targetScroll = targetScroll - (delta * SCROLL_STEP)
-        targetScroll = math.max(0, math.min(targetScroll, maxScroll))
-    end)
-    
-    scrollFrame:SetScript("OnUpdate", function(self, elapsed)
-        local current = self:GetVerticalScroll()
-        if math.abs(current - targetScroll) > 0.5 then
-            self:SetVerticalScroll(current + (targetScroll - current) * SCROLL_SPEED)
-        elseif current ~= targetScroll then
-            self:SetVerticalScroll(targetScroll)
-        end
-    end)
-    
-    if scrollBar then
-        scrollBar:HookScript("OnValueChanged", function(self, value)
-            targetScroll = value
-        end)
-    end
+    -- Enhanced scroll frame with auto-hiding scrollbar
+    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -70, 24)
     
     local builds = Deathless.Data.Talents and Deathless.Data.Talents.Mage or {}
     local yOffset = 0

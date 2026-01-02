@@ -146,49 +146,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         
         local title, subtitle = Utils:CreateHeader(container, className .. " Abilities", "", classColor)
         
-        -- Scroll frame for abilities list
-        local scrollFrame = CreateFrame("ScrollFrame", nil, container, "UIPanelScrollFrameTemplate")
-        scrollFrame:SetPoint("TOPLEFT", container, "TOPLEFT", 8, -95)
-        scrollFrame:SetPoint("BOTTOMRIGHT", container, "BOTTOMRIGHT", -28, 24)
-        
-        local scrollBar = scrollFrame.ScrollBar
-        if scrollBar then
-            scrollBar:SetPoint("TOPLEFT", scrollFrame, "TOPRIGHT", 4, -16)
-            scrollBar:SetPoint("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", 4, 16)
-        end
-        
-        local scrollChild = CreateFrame("Frame", nil, scrollFrame)
-        scrollChild:SetSize(scrollFrame:GetWidth(), 1)
-        scrollFrame:SetScrollChild(scrollChild)
-        
-        -- Smooth scrolling
-        local targetScroll = 0
-        local SCROLL_SPEED = 1.2
-        local SCROLL_STEP = 40
-        
-        scrollFrame:EnableMouseWheel(true)
-        scrollFrame:SetScript("OnMouseWheel", function(self, delta)
-            local maxScroll = scrollChild:GetHeight() - scrollFrame:GetHeight()
-            if maxScroll < 0 then maxScroll = 0 end
-            targetScroll = targetScroll - (delta * SCROLL_STEP)
-            targetScroll = math.max(0, math.min(targetScroll, maxScroll))
-        end)
-        
-        scrollFrame:SetScript("OnUpdate", function(self, elapsed)
-            local current = self:GetVerticalScroll()
-            if math.abs(current - targetScroll) > 0.5 then
-                local newScroll = current + (targetScroll - current) * SCROLL_SPEED
-                self:SetVerticalScroll(newScroll)
-            elseif current ~= targetScroll then
-                self:SetVerticalScroll(targetScroll)
-            end
-        end)
-        
-        if scrollBar then
-            scrollBar:HookScript("OnValueChanged", function(self, value)
-                targetScroll = value
-            end)
-        end
+        -- Enhanced scroll frame with auto-hiding scrollbar
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -95, 24)
         
         -- Sort state
         local sortState = { sortKey = "level", sortAsc = true }
@@ -625,6 +584,13 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             end
             
             scrollChild:SetHeight(math.abs(yOffset) + 10)
+            
+            -- Update scrollbar visibility after content changes
+            C_Timer.After(0, function()
+                if scrollFrame.UpdateScrollbar then
+                    scrollFrame.UpdateScrollbar()
+                end
+            end)
         end
         
         -- Create headers

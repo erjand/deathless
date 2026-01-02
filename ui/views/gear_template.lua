@@ -16,35 +16,10 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         
         local title, subtitle = Utils:CreateHeader(container, className .. " Gear", "Equipment progression for Hardcore", classColor)
         
-        -- Scroll frame for content
-        local scrollFrame = CreateFrame("ScrollFrame", nil, container, "UIPanelScrollFrameTemplate")
-        scrollFrame:SetPoint("TOPLEFT", container, "TOPLEFT", 8, -70)
-        scrollFrame:SetPoint("BOTTOMRIGHT", container, "BOTTOMRIGHT", -28, 24)
-        
-        local scrollBar = scrollFrame.ScrollBar
-        if scrollBar then
-            scrollBar:SetPoint("TOPLEFT", scrollFrame, "TOPRIGHT", 4, -16)
-            scrollBar:SetPoint("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", 4, 16)
-        end
-        
-        local scrollChild = CreateFrame("Frame", nil, scrollFrame)
+        -- Enhanced scroll frame with auto-hiding scrollbar
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -70, 24)
         scrollChild:SetWidth(540)
         scrollChild:SetHeight(800)
-        scrollFrame:SetScrollChild(scrollChild)
-        
-        -- Smooth scrolling
-        local targetScroll = 0
-        scrollFrame:EnableMouseWheel(true)
-        scrollFrame:SetScript("OnMouseWheel", function(self, delta)
-            local maxScroll = math.max(0, scrollChild:GetHeight() - scrollFrame:GetHeight())
-            targetScroll = math.max(0, math.min(targetScroll - (delta * 40), maxScroll))
-        end)
-        scrollFrame:SetScript("OnUpdate", function(self)
-            local current = self:GetVerticalScroll()
-            if math.abs(current - targetScroll) > 0.5 then
-                self:SetVerticalScroll(current + (targetScroll - current) * 0.3)
-            end
-        end)
         
         -- Get gear data
         local gearData = Deathless.Data.Gear and Deathless.Data.Gear[className] or {}

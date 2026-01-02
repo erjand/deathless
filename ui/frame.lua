@@ -154,11 +154,13 @@ function Deathless.UI.Frame:Create()
         Deathless.UI.Navigation:Select("home")
     end)
     
-    -- Resize grip (bottom-right corner)
+    -- Resize grip (bottom-right corner, auto-hiding)
     local resizeGrip = CreateFrame("Button", nil, frame)
     resizeGrip:SetSize(16, 16)
     resizeGrip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+    resizeGrip:SetFrameLevel(frame:GetFrameLevel() + 10)
     resizeGrip:EnableMouse(true)
+    resizeGrip:SetAlpha(0)
     
     -- Grip texture (diagonal lines)
     local gripTexture = resizeGrip:CreateTexture(nil, "OVERLAY")
@@ -173,6 +175,43 @@ function Deathless.UI.Frame:Create()
         line:SetSize(2, 2)
         line:SetPoint("BOTTOMRIGHT", resizeGrip, "BOTTOMRIGHT", -2 - (i * 3), 2 + (i * 3))
     end
+    
+    -- Auto-hide logic for resize grip
+    local isFrameHovered = false
+    local isGripHovered = false
+    local gripTargetAlpha = 0
+    local gripHideTimer = nil
+    
+    local function UpdateGripAlpha()
+        if isFrameHovered or isGripHovered then
+            gripTargetAlpha = 1
+            if gripHideTimer then gripHideTimer:Cancel() gripHideTimer = nil end
+        else
+            if not gripHideTimer then
+                gripHideTimer = C_Timer.NewTimer(1.0, function()
+                    gripTargetAlpha = 0
+                    gripHideTimer = nil
+                end)
+            end
+        end
+    end
+    
+    -- Smooth fade animation via OnUpdate
+    frame:SetScript("OnUpdate", function(self, elapsed)
+        local wasHovered = isFrameHovered
+        isFrameHovered = self:IsMouseOver()
+        if isFrameHovered ~= wasHovered then
+            UpdateGripAlpha()
+        end
+        
+        local current = resizeGrip:GetAlpha()
+        if math.abs(current - gripTargetAlpha) > 0.01 then
+            local speed = 5 * elapsed
+            resizeGrip:SetAlpha(current + (gripTargetAlpha - current) * math.min(speed, 1))
+        elseif current ~= gripTargetAlpha then
+            resizeGrip:SetAlpha(gripTargetAlpha)
+        end
+    end)
     
     resizeGrip:SetScript("OnMouseDown", function(self, button)
         if button == "LeftButton" then
@@ -189,10 +228,14 @@ function Deathless.UI.Frame:Create()
     end)
     
     resizeGrip:SetScript("OnEnter", function(self)
+        isGripHovered = true
+        UpdateGripAlpha()
         gripTexture:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.6)
     end)
     
     resizeGrip:SetScript("OnLeave", function(self)
+        isGripHovered = false
+        UpdateGripAlpha()
         gripTexture:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.6)
     end)
     

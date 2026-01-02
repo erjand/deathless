@@ -13,7 +13,7 @@
 
 ## UI
 
-- [ ] Use the enhanced scroll bar and resize behavior from the Mini window
+- [x] Use the enhanced scroll bar and resize behavior from the Mini window
 
 ## Summary
 
@@ -23,6 +23,7 @@
 - [ ] Add key quests not completed
 - [x] Add key consumables missing / not in inventory
     - [ ] Best Mage food / water
+    - [ ] Unspent Talent points
 
 ## Mini Window
 
@@ -58,6 +59,11 @@
 
 ## Professions
 
+## Quests / Leveling
+
+- [ ] Light of Elune https://www.wowhead.com/classic/quest=1017/mage-summoner (Alliance)
+- [ ] Seal of Wrynn https://www.wowhead.com/classic/item=2933/seal-of-wrynn (Alliance)
+
 ## Zones
 
 ## Options
@@ -65,3 +71,4 @@
 - [ ] Lock window
 - [ ] Window scale
 - [ ] Accent color
+- [ ] Various opinions about which Warnings to show / how strict to be about them

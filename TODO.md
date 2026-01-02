@@ -26,7 +26,7 @@
 
 - [x] MVP
 - [x] Lock / pin
-- [ ] Show by default when loading UI (have to close manually if don't want)
+- [x] Show by default when loading UI (have to close manually if don't want)
 
 ## Classes
 

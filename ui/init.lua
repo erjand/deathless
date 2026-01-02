@@ -8,9 +8,10 @@ function Deathless.UI:Initialize()
         Deathless.UI.Frame:Create()
     end
     
-    -- Create the mini summary (hidden by default)
+    -- Create and show the mini summary by default
     if Deathless.UI.MiniSummary then
         Deathless.UI.MiniSummary:Create()
+        Deathless.UI.MiniSummary:Show()
     end
 end
 

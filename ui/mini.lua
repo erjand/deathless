@@ -51,7 +51,7 @@ function Deathless.UI.MiniSummary:Create()
     -- Create main frame
     local frame = CreateFrame("Frame", "DeathlessMiniSummary", UIParent, "BackdropTemplate")
     frame:SetSize(300, 200)
-    frame:SetPoint("RIGHT", UIParent, "RIGHT", -50, 0)
+    frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 20, 180)
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:SetResizable(true)

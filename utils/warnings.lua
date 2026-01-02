@@ -35,6 +35,28 @@ local MANA_POTIONS = {
     { req = 1,  id = 2455,  icon = "Interface\\Icons\\INV_Potion_70" }, -- Minor
 }
 
+-- Mage conjured water (by spell learn level, icons from data/abilities/mage.lua)
+local MAGE_WATER = {
+    { req = 60, id = 8079,  icon = "Interface\\Icons\\INV_Drink_18" },      -- Conjured Crystal Water
+    { req = 50, id = 8078,  icon = "Interface\\Icons\\INV_Drink_11" },      -- Conjured Sparkling Water
+    { req = 40, id = 8077,  icon = "Interface\\Icons\\INV_Drink_09" },      -- Conjured Mineral Water
+    { req = 30, id = 3772,  icon = "Interface\\Icons\\INV_Drink_10" },      -- Conjured Spring Water
+    { req = 20, id = 2136,  icon = "Interface\\Icons\\INV_Drink_Milk_02" }, -- Conjured Purified Water
+    { req = 10, id = 2288,  icon = "Interface\\Icons\\INV_Drink_07" },      -- Conjured Fresh Water
+    { req = 4,  id = 5350,  icon = "Interface\\Icons\\INV_Drink_06" },      -- Conjured Water
+}
+
+-- Mage conjured food (by spell learn level, icons from data/abilities/mage.lua)
+local MAGE_FOOD = {
+    { req = 60, id = 22895, icon = "Interface\\Icons\\INV_Misc_Food_73cinnamonroll" }, -- Conjured Cinnamon Roll
+    { req = 52, id = 8076,  icon = "Interface\\Icons\\INV_Misc_Food_33" }, -- Conjured Sweet Roll
+    { req = 42, id = 8075,  icon = "Interface\\Icons\\INV_Misc_Food_11" }, -- Conjured Sourdough
+    { req = 32, id = 1487,  icon = "Interface\\Icons\\INV_Misc_Food_08" }, -- Conjured Pumpernickel
+    { req = 22, id = 1114,  icon = "Interface\\Icons\\INV_Misc_Food_12" }, -- Conjured Rye
+    { req = 12, id = 1113,  icon = "Interface\\Icons\\INV_Misc_Food_09" }, -- Conjured Bread
+    { req = 6,  id = 5349,  icon = "Interface\\Icons\\INV_Misc_Food_10" }, -- Conjured Muffin
+}
+
 --- Get the best tiered item for a given value
 local function GetBestTiered(tiers, value)
     for _, tier in ipairs(tiers) do
@@ -71,6 +93,10 @@ function Deathless.Utils.Warnings:GetChecks()
     local bestBandageId, bestBandageIcon = GetBestTiered(BANDAGES, firstAidSkill)
     local bestHealthId, bestHealthIcon = GetBestTiered(HEALTH_POTIONS, playerLevel)
     local bestManaId, bestManaIcon = GetBestTiered(MANA_POTIONS, playerLevel)
+    local bestMageWaterId, bestMageWaterIcon = GetBestTiered(MAGE_WATER, playerLevel)
+    local bestMageFoodId, bestMageFoodIcon = GetBestTiered(MAGE_FOOD, playerLevel)
+    
+    local isMage = classId == "MAGE"
     
     return {
         { text = "Not carrying best Bandages", itemId = bestBandageId, icon = bestBandageIcon, condition = firstAidSkill > 0 and bestBandageId, category = "bandages" },
@@ -87,6 +113,8 @@ function Deathless.Utils.Warnings:GetChecks()
         { text = "Not carrying Holy Candles", itemId = 17028, icon = "Interface\\Icons\\INV_Misc_Candle_01", condition = classId == "PRIEST" and playerLevel >= 48 and playerLevel < 60, category = "classReagents" },
         { text = "Not carrying Light Feathers (Levitate)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "PRIEST" and playerLevel >= 34, category = "classReagents" },
         { text = "Not carrying Light Feathers (Slow Fall)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "MAGE" and playerLevel >= 12, category = "classReagents" },
+        { text = "Not carrying best Conjured Food", itemId = bestMageFoodId, icon = bestMageFoodIcon, condition = isMage and bestMageFoodId, category = "mageConjures" },
+        { text = "Not carrying best Conjured Water", itemId = bestMageWaterId, icon = bestMageWaterIcon, condition = isMage and bestMageWaterId, category = "mageConjures" },
         { text = "Not carrying LIP", itemId = 3387, icon = "Interface\\Icons\\INV_Potion_62", condition = playerLevel >= 45, category = "lip" },
         { text = "Not carrying best Mana Potions", itemId = bestManaId, icon = bestManaIcon, condition = powerType == 0 and bestManaId ~= nil, category = "manaPotions" },
         { text = "Not carrying Rune of Portals", itemId = 17032, icon = "Interface\\Icons\\INV_Misc_Rune_06", condition = classId == "MAGE" and playerLevel >= 40, category = "classReagents" },

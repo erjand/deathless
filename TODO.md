@@ -21,8 +21,6 @@
 - [ ] Add recommended Zone(s)
 - [ ] Add key quests not completed
 - [x] Add key consumables missing / not in inventory
-    - [ ] Best Mage food / water
-    - [ ] Unspent Talent points
 
 ## Mini Window
 

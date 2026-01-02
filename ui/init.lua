@@ -7,6 +7,11 @@ function Deathless.UI:Initialize()
     if Deathless.UI.Frame then
         Deathless.UI.Frame:Create()
     end
+    
+    -- Create the mini summary (hidden by default)
+    if Deathless.UI.MiniSummary then
+        Deathless.UI.MiniSummary:Create()
+    end
 end
 
 -- Initialize UI after core is ready

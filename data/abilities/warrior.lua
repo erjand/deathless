@@ -52,8 +52,8 @@ Deathless.Data.Abilities["Warrior"] = {
 
     -- Charge
     { name = "Charge", level = 4, rank = 1, base_cost = 100, icon = "Ability_Warrior_Charge", source = "trainer", train = "yes", spellId = 100 },
-    { name = "Charge", level = 26, rank = 2, base_cost = 10000, icon = "Ability_Warrior_Charge", source = "trainer", train = "wait", spellId = 6178 },
-    { name = "Charge", level = 46, rank = 3, base_cost = 36000, icon = "Ability_Warrior_Charge", source = "trainer", train = "wait", spellId = 11578 },
+    { name = "Charge", level = 26, rank = 2, base_cost = 10000, icon = "Ability_Warrior_Charge", source = "trainer", train = "yes", spellId = 6178 },
+    { name = "Charge", level = 46, rank = 3, base_cost = 36000, icon = "Ability_Warrior_Charge", source = "trainer", train = "yes", spellId = 11578 },
 
     -- Cleave
     { name = "Cleave", level = 20, rank = 1, base_cost = 4000, icon = "Ability_Warrior_Cleave", source = "trainer", train = "yes", spellId = 845 },

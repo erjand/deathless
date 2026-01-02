@@ -170,9 +170,9 @@ Deathless.Data.Abilities["Mage"] = {
 
     -- Frost Nova
     { name = "Frost Nova", level = 10, rank = 1, base_cost = 400, icon = "Spell_Frost_FrostNova", source = "trainer", train = "yes", spellId = 122 },
-    { name = "Frost Nova", level = 26, rank = 2, base_cost = 5000, icon = "Spell_Frost_FrostNova", source = "trainer", train = "wait", spellId = 865 },
-    { name = "Frost Nova", level = 40, rank = 3, base_cost = 15000, icon = "Spell_Frost_FrostNova", source = "trainer", train = "wait", spellId = 6131 },
-    { name = "Frost Nova", level = 54, rank = 4, base_cost = 36000, icon = "Spell_Frost_FrostNova", source = "trainer", train = "wait", spellId = 10230 },
+    { name = "Frost Nova", level = 26, rank = 2, base_cost = 5000, icon = "Spell_Frost_FrostNova", source = "trainer", train = "no", spellId = 865 },
+    { name = "Frost Nova", level = 40, rank = 3, base_cost = 15000, icon = "Spell_Frost_FrostNova", source = "trainer", train = "no", spellId = 6131 },
+    { name = "Frost Nova", level = 54, rank = 4, base_cost = 36000, icon = "Spell_Frost_FrostNova", source = "trainer", train = "no", spellId = 10230 },
 
     -- Frost Ward
     { name = "Frost Ward", level = 22, rank = 1, base_cost = 3000, icon = "Spell_Frost_FrostWard", source = "trainer", train = "yes", spellId = 6143 },

@@ -45,6 +45,7 @@ ui\views\rogue_talents.lua
 ui\views\druid_abilities.lua
 ui\content.lua
 ui\frame.lua
+ui\mini.lua
 ui\spellbook.lua
 ui\components\button.lua
 ui\components\panel.lua

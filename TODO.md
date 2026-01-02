@@ -1,8 +1,5 @@
 # TODO
 
-- [x] Top-right corner `X` is slightly not pixel centered between top, right, and bottom edges of the UI
-- [x] Make Abilities page a template that is re-usable to populate with data vs having to update them all each time
-- [x] Feature: Open Abilities from Abilities screen
 - [ ] Make Talents page a template also
 - [ ] Make addon settings persist across reloads
 - [ ] Feature: Open Talents from Talents screen
@@ -14,7 +11,9 @@
 - [ ] Feature: SSF mode?
 - [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
 
-- [ ] Feature: When clicking on the addon tab from the Spellbook, if the addon window is already open, it should stay open and go to the Abilities page rather than closing
+## UI
+
+- [ ] Use the enhanced scroll bar and resize behavior from the Mini window
 
 ## Summary
 
@@ -22,29 +21,19 @@
 - [ ] Add recommended Dungeon(s)
 - [ ] Add recommended Zone(s)
 - [ ] Add key quests not completed
-- [ ] Add key consumables missing / not in inventory
-    - [x] Swiftness Potion
-    - [x] Appropriate level healing potion
-    - [x] Appropriate level mana potion (if mana user)
-    - [x] Appropriate level bandaids
-    - [x] LIP, if appropriate level
-    - [x] 2x Petri, if appropriate level
-    - [x] Appropriate level grenades (if engi)
-    - [x] Appropriate level training dummies (if engi)
-    - [x] Light Feathers if mage (12) / priest (lvl 34)
-    - [x] Teleport / Portal reagents if mage
-    - [x] Flash powder
-    - [x] Blinding powder
-    - [x] Soul shards
-    - [x] Symbol of Kings
-    - [x] Holy Candle / Sacred Candle
-    - [x] Hearthstone
-- [ ] Add small UI tracker component 
+- [x] Add key consumables missing / not in inventory
+    - [ ] Best Mage food / water
+
+## Mini Window
+
+- [x] MVP
 
 ## Classes
 
 ### Abilities
 
+- [x] Make Abilities page a template that is re-usable to populate with data vs having to update them all each time
+- [x] Feature: Open Abilities from Blizzard spellbook
 - [ ] Feature: Search / filter bar?
 
 - [x] Priest: Audit

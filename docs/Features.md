@@ -6,3 +6,5 @@
 - Shows what Abilities are available to train, or will be available at the next training level
 
 ## Class Abilities
+
+- Comprehensive database of all class abilities, along with their training cost, source, and recommendation as to training / HC usefulness

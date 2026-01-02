@@ -14,6 +14,19 @@ local function SlashCommandHandler(msg)
         return
     end
     
+    -- /deathless options - open main UI to options view
+    if cmd == "options" or cmd == "o" then
+        if Deathless.UI and Deathless.UI.Frame then
+            Deathless.UI.Frame:Show()
+            if Deathless.UI.Navigation and Deathless.UI.Navigation.Select then
+                Deathless.UI.Navigation:Select("options")
+            end
+        else
+            Deathless.Utils.Chat.Print("UI not initialized.")
+        end
+        return
+    end
+    
     -- /deathless (no args) - toggle main UI
     if Deathless.UI and Deathless.UI.Frame then
         if Deathless.UI.Frame.mainFrame and Deathless.UI.Frame.mainFrame:IsShown() then

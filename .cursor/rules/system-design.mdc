@@ -7,8 +7,3 @@ alwaysApply: true
 - Use modern lua best practices for WoW addon design in 2026
 - Code should be clean, modular, re-usable, and simple
 - Non-trivial code should be documented
-
-## UI
-
-- Like an almanac / reference
-- Clean pixel UI with dark / green color scheme

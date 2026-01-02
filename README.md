@@ -4,23 +4,32 @@
 
 A Hardcore Classic WoW addon.
 
-deathless is a multi-purpose / AIO addon intended to serve as the companion to a player on their journey 1-60. It is intended to minimize the number of times a player has to consult sources outside the game, such as Wowhead, as well as provide them the information they need to increase their overall odds of making it to level 60.
+`deathless` is an opinionated multi-purpose / AIO companion addon for the HC player on their 1-60 journey. 
 
-- Class guides and talent builds
-- Zone overview, hot spots, and important quests
+### Key Capabilities
+
+- Class guides, ability lists, talent builds, and important gear
 - Dungeon guides
+- Leveling quests and suggested routes
 - Profession guides
-- Upcoming skills and what level at which they are trainable
-- Self found information / guides
+- Self-found information and guide
+- Zone overview, hot spots, and important quests
+
+### Philosophy
+
+1. Appropriately Opinionated: Try to provide recommendations and best practices to the player by being opinionated but not obnoxious or unnecessarily prescriptive. "What is the generally regarded community of the HC community about `x`" vs "What is my hot take about `x`".
+2. Reduce / eliminate the need for 3rd-party references. We we want to make it easier to stay in-game vs checking Wowhead, Discord, spreadsheets, etc.
 
 ## Getting Started
 
 1. Clone the repo
-2. Run `deploy.bat` if your WoW installation is in the standard location (`C:\Program Files (x86)\World of Warcraft\_classic_era_\Interface\AddOns`). If not, manually copy the `deathless` directory to our `\Addons\` directory.
-3. Run the addon in game with the command `/deathless`.
-4. When making changes, run `deploy.bat`` again, then `/reload` in game.
+2. If your WoW installation is in the standard location (`C:\Program Files (x86)\World of Warcraft\_classic_era_\Interface\AddOns`), and you are on Windows, run `deploy.bat`. 
+    1. If your WoW installation is not in the standard location, manually copy the `deathless` directory to our `\Addons\` directory; or update the `deploy.ps1` script for your path.
+    2. If you are not on Windows, then manually move the addon files or write your own shell script.
+3. Run the addon in game with the command `/deathless` or `/dls`. Check `core/commands.lua` for all available commands.
+4. When making changes, run `deploy.bat` again, then `/reload` in game.
 
-## Features
+## Features 
 
 ### Abilities
 

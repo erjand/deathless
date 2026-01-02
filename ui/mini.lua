@@ -46,6 +46,7 @@ function Deathless.UI.MiniSummary:Create()
     
     local Colors = Deathless.UI.Colors
     local CreatePixelBorder = Deathless.UI.CreatePixelBorder
+    local PinUtils = Deathless.Utils.UI
     
     -- Create main frame
     local frame = CreateFrame("Frame", "DeathlessMiniSummary", UIParent, "BackdropTemplate")
@@ -56,14 +57,6 @@ function Deathless.UI.MiniSummary:Create()
     frame:SetResizable(true)
     frame:SetResizeBounds(200, 120, 500, 400)
     frame:RegisterForDrag("LeftButton")
-    frame:SetScript("OnDragStart", frame.StartMoving)
-    frame:SetScript("OnDragStop", function(self)
-        self:StopMovingOrSizing()
-        -- Re-anchor to TOPLEFT after dragging to prevent resize jump
-        local left, top = self:GetLeft(), self:GetTop()
-        self:ClearAllPoints()
-        self:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
-    end)
     frame:SetFrameStrata("MEDIUM")
     frame:SetClampedToScreen(true)
     
@@ -98,6 +91,9 @@ function Deathless.UI.MiniSummary:Create()
     title:SetPoint("LEFT", titleBar, "LEFT", 6, 0)
     title:SetText("DEATHLESS")
     title:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+    
+    -- Pin button (using shared utility)
+    local pinBtn = PinUtils.CreatePinButton(frame, titleBar, "miniPinned", { Colors = Colors })
     
     -- Close button
     local closeBtn = CreateFrame("Button", nil, titleBar)
@@ -146,29 +142,16 @@ function Deathless.UI.MiniSummary:Create()
         line:SetPoint("BOTTOMRIGHT", resizeGrip, "BOTTOMRIGHT", -1 - (i * 3), 1 + (i * 3))
     end
     
-    local isGripHovered = false
-    resizeGrip:SetScript("OnMouseDown", function(self, button)
-        if button == "LeftButton" then
-            local left, top = frame:GetLeft(), frame:GetTop()
-            frame:ClearAllPoints()
-            frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
-            frame:StartSizing("BOTTOMRIGHT")
-        end
-    end)
-    resizeGrip:SetScript("OnMouseUp", function()
-        frame:StopMovingOrSizing()
-    end)
-    resizeGrip:SetScript("OnEnter", function()
-        isGripHovered = true
-        gripTexture:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.5)
-    end)
-    resizeGrip:SetScript("OnLeave", function()
-        isGripHovered = false
-        gripTexture:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
-    end)
-    
     frame.resizeGrip = resizeGrip
+    local isGripHovered = false
     frame.isGripHovered = function() return isGripHovered end
+    frame.setGripHovered = function(val) isGripHovered = val end
+    
+    -- Setup pinnable resize behavior
+    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors)
+    
+    -- Setup pinnable drag behavior
+    PinUtils.SetupPinnableDrag(frame)
     
     -- Content scroll frame (no template - we'll make our own indicator)
     local scrollFrame = CreateFrame("ScrollFrame", nil, frame)
@@ -236,23 +219,12 @@ function Deathless.UI.MiniSummary:Create()
     end
     frame.UpdateScrollbar = UpdateScrollThumb
     
-    -- Combined OnUpdate: hover detection + smooth fade + thumb position
-    local gripTargetAlpha = 0
-    local gripHideTimer = nil
-    
-    local function UpdateGripAlpha()
-        if isHovered or frame.isGripHovered() then
-            gripTargetAlpha = 1
-            if gripHideTimer then gripHideTimer:Cancel() gripHideTimer = nil end
-        else
-            if not gripHideTimer then
-                gripHideTimer = C_Timer.NewTimer(1.0, function()
-                    gripTargetAlpha = 0
-                    gripHideTimer = nil
-                end)
-            end
-        end
-    end
+    -- Setup grip alpha updater using shared utility
+    local UpdateGripAlpha, getGripTargetAlpha = PinUtils.CreateGripAlphaUpdater(
+        frame, resizeGrip,
+        function() return isHovered end,
+        frame.isGripHovered
+    )
     
     frame:SetScript("OnUpdate", function(self, elapsed)
         -- Check hover state
@@ -273,6 +245,7 @@ function Deathless.UI.MiniSummary:Create()
         end
         
         -- Smooth fade animation for resize grip
+        local gripTargetAlpha = getGripTargetAlpha()
         local gripCurrent = resizeGrip:GetAlpha()
         if math.abs(gripCurrent - gripTargetAlpha) > 0.01 then
             local speed = 5 * elapsed

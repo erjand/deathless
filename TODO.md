@@ -25,6 +25,8 @@
 ## Mini Window
 
 - [x] MVP
+- [x] Lock / pin
+- [ ] Show by default when loading UI (have to close manually if don't want)
 
 ## Classes
 
@@ -68,4 +70,3 @@
 - [ ] Lock window
 - [ ] Window scale
 - [ ] Accent color
-- [ ] Various opinions about which Warnings to show / how strict to be about them

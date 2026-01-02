@@ -90,6 +90,8 @@ function Deathless.UI.Frame:Create()
         return self.mainFrame
     end
     
+    local PinUtils = Deathless.Utils.UI
+    
     -- Create main frame
     local frame = CreateFrame("Frame", "DeathlessMainFrame", UIParent)
     frame:SetSize(800, 600)
@@ -99,8 +101,6 @@ function Deathless.UI.Frame:Create()
     frame:SetResizable(true)
     frame:SetResizeBounds(800, 400, 1200, 800)
     frame:RegisterForDrag("LeftButton")
-    frame:SetScript("OnDragStart", frame.StartMoving)
-    frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
     frame:SetFrameStrata("HIGH")
     
     -- Main background
@@ -134,6 +134,9 @@ function Deathless.UI.Frame:Create()
     title:SetPoint("LEFT", titleBar, "LEFT", 10, 0)
     title:SetText("DEATHLESS")
     title:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], Colors.accent[4])
+    
+    -- Pin button (using shared utility)
+    local pinBtn = PinUtils.CreatePinButton(frame, titleBar, "mainPinned", { offsetX = -28, Colors = Colors })
     
     -- Close button
     local closeBtn = CreatePixelButton(titleBar, 20, 20, "x")
@@ -176,25 +179,24 @@ function Deathless.UI.Frame:Create()
         line:SetPoint("BOTTOMRIGHT", resizeGrip, "BOTTOMRIGHT", -2 - (i * 3), 2 + (i * 3))
     end
     
-    -- Auto-hide logic for resize grip
+    frame.resizeGrip = resizeGrip
     local isFrameHovered = false
     local isGripHovered = false
-    local gripTargetAlpha = 0
-    local gripHideTimer = nil
+    frame.isGripHovered = function() return isGripHovered end
+    frame.setGripHovered = function(val) isGripHovered = val end
     
-    local function UpdateGripAlpha()
-        if isFrameHovered or isGripHovered then
-            gripTargetAlpha = 1
-            if gripHideTimer then gripHideTimer:Cancel() gripHideTimer = nil end
-        else
-            if not gripHideTimer then
-                gripHideTimer = C_Timer.NewTimer(1.0, function()
-                    gripTargetAlpha = 0
-                    gripHideTimer = nil
-                end)
-            end
-        end
-    end
+    -- Setup pinnable resize behavior
+    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors)
+    
+    -- Setup pinnable drag behavior
+    PinUtils.SetupPinnableDrag(frame)
+    
+    -- Setup grip alpha updater using shared utility
+    local UpdateGripAlpha, getGripTargetAlpha = PinUtils.CreateGripAlphaUpdater(
+        frame, resizeGrip,
+        function() return isFrameHovered end,
+        frame.isGripHovered
+    )
     
     -- Smooth fade animation via OnUpdate
     frame:SetScript("OnUpdate", function(self, elapsed)
@@ -204,6 +206,7 @@ function Deathless.UI.Frame:Create()
             UpdateGripAlpha()
         end
         
+        local gripTargetAlpha = getGripTargetAlpha()
         local current = resizeGrip:GetAlpha()
         if math.abs(current - gripTargetAlpha) > 0.01 then
             local speed = 5 * elapsed
@@ -213,36 +216,10 @@ function Deathless.UI.Frame:Create()
         end
     end)
     
-    resizeGrip:SetScript("OnMouseDown", function(self, button)
-        if button == "LeftButton" then
-            -- Re-anchor to TOPLEFT before resizing to prevent jump
-            local left, top = frame:GetLeft(), frame:GetTop()
-            frame:ClearAllPoints()
-            frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
-            frame:StartSizing("BOTTOMRIGHT")
-        end
-    end)
-    
-    resizeGrip:SetScript("OnMouseUp", function(self, button)
-        frame:StopMovingOrSizing()
-    end)
-    
-    resizeGrip:SetScript("OnEnter", function(self)
-        isGripHovered = true
-        UpdateGripAlpha()
-        gripTexture:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.6)
-    end)
-    
-    resizeGrip:SetScript("OnLeave", function(self)
-        isGripHovered = false
-        UpdateGripAlpha()
-        gripTexture:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.6)
-    end)
-    
     -- Store references
     frame.titleBar = titleBar
     frame.title = title
-    frame.resizeGrip = resizeGrip
+    frame.pinBtn = pinBtn
     frame.navigation = navigation
     frame.content = content
     

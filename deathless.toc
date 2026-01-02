@@ -30,6 +30,10 @@ ui\views\home.lua
 ui\views\summary.lua
 ui\views\classes.lua
 ui\views\zones.lua
+ui\views\dungeons.lua
+ui\views\leveling.lua
+ui\views\selffound.lua
+ui\views\professions.lua
 ui\views\options.lua
 ui\views\support.lua
 ui\views\abilities_template.lua

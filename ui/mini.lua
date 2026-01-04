@@ -363,6 +363,11 @@ function Deathless.UI.MiniSummary:SetupContent()
         local activeWarnings = Deathless.Utils.Warnings:GetActive()
         local warningCount = #activeWarnings
         
+        -- Check abilities config for section visibility
+        local abilitiesConfig = Deathless.config.abilities or {}
+        local showAvailable = abilitiesConfig.showAvailable ~= false
+        local showNextAvailable = abilitiesConfig.showNextAvailable ~= false
+        
         local yOffset = -4
         
         -- Collapsible warnings section (only if there are warnings)
@@ -439,7 +444,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         end
         
         -- Available abilities (collapsible)
-        if #available > 0 then
+        if showAvailable and #available > 0 then
             local totalCost = 0
             for _, ab in ipairs(available) do totalCost = totalCost + (ab.base_cost or 0) end
             
@@ -525,7 +530,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         end
         
         -- Next available abilities (collapsible)
-        if #nextAvailable > 0 then
+        if showNextAvailable and #nextAvailable > 0 then
             local nextCost = 0
             for _, ab in ipairs(nextAvailable) do nextCost = nextCost + (ab.base_cost or 0) end
             
@@ -612,8 +617,9 @@ function Deathless.UI.MiniSummary:SetupContent()
             yOffset = yOffset - 4
         end
         
-        -- No abilities message (only if class is enabled)
-        if classEnabled and #available == 0 and #nextAvailable == 0 then
+        -- No abilities message (only if class is enabled and sections are shown)
+        local showingAbilities = showAvailable or showNextAvailable
+        if classEnabled and showingAbilities and #available == 0 and #nextAvailable == 0 then
             local msg = scrollChild:CreateFontString(nil, "OVERLAY")
             msg:SetFont("Fonts\\ARIALN.TTF", 10, "")
             msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 4, yOffset)

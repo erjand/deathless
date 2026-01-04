@@ -239,6 +239,10 @@ end
 --- Public method to trigger refresh (e.g., when config changes)
 function Deathless.Utils.Warnings:TriggerRefresh()
     TriggerRefresh()
+    -- Also refresh the main content view
+    if Deathless.UI.Content and Deathless.UI.Content.RefreshCurrentView then
+        Deathless.UI.Content:RefreshCurrentView()
+    end
 end
 
 -- Create event frame for watching state changes

@@ -82,6 +82,15 @@ function Deathless.UI.Content:GetCurrentView()
     return self.frame and self.frame.currentView
 end
 
+--- Refresh the current view if it has a Refresh function
+function Deathless.UI.Content:RefreshCurrentView()
+    if not self.frame or not self.frame.currentView then return end
+    local view = self.frame.views[self.frame.currentView]
+    if view and view.elements and view.elements.Refresh then
+        view.elements.Refresh()
+    end
+end
+
 --- Register a custom view creator (convenience wrapper)
 ---@param viewId string The view identifier
 ---@param creator function Function that creates view content (receives container frame)

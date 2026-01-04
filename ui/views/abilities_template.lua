@@ -487,7 +487,14 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local nextAvailableColor = { 0.5, 0.7, 0.9 }
             local unavailableColor = { 0.6, 0.4, 0.4 }
             
-            if #learned > 0 then
+            -- Check abilities config for section visibility
+            local abilitiesConfig = Deathless.config.abilities or {}
+            local showLearned = abilitiesConfig.showLearned ~= false
+            local showAvailable = abilitiesConfig.showAvailable ~= false
+            local showNextAvailable = abilitiesConfig.showNextAvailable ~= false
+            local showUnavailable = abilitiesConfig.showUnavailable ~= false
+            
+            if showLearned and #learned > 0 then
                 local learnedCost = 0
                 for _, ability in ipairs(learned) do
                     learnedCost = learnedCost + (ability.base_cost or 0)
@@ -501,7 +508,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                 end
             end
             
-            if #available > 0 then
+            if showAvailable and #available > 0 then
                 local availableCost = 0
                 for _, ability in ipairs(available) do
                     availableCost = availableCost + (ability.base_cost or 0)
@@ -515,7 +522,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                 end
             end
             
-            if #nextAvailable > 0 then
+            if showNextAvailable and #nextAvailable > 0 then
                 local totalCost = 0
                 for _, ability in ipairs(nextAvailable) do
                     totalCost = totalCost + (ability.base_cost or 0)
@@ -529,7 +536,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                 end
             end
             
-            if #unavailable > 0 then
+            if showUnavailable and #unavailable > 0 then
                 local unavailableCost = 0
                 for _, ability in ipairs(unavailable) do
                     unavailableCost = unavailableCost + (ability.base_cost or 0)
@@ -580,6 +587,9 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         })
         
         OnSort()
+        
+        -- Register for automatic refresh when config changes
+        Deathless.Utils.Warnings:RegisterRefresh(viewName, PopulateRows)
         
         return { 
             title = title, 

@@ -16,7 +16,7 @@ Deathless.UI.Views:Register("options", function(container)
     local CLASS_ROWS = 3
     
     -- Section collapse state
-    local sectionState = { classes = true, summary = true, warnings = true }
+    local sectionState = { classes = true, summary = true, warnings = true, abilities = true }
     
     -- Element pools
     local pools = { section = {}, subheader = {}, checkbox = {} }
@@ -204,6 +204,14 @@ Deathless.UI.Views:Register("options", function(container)
         { key = "talents", label = "Unspent Talents", icon = "Interface\\Icons\\INV_Misc_Book_11" },
     }
     
+    -- Ability section definitions
+    local ABILITY_SECTIONS = {
+        { key = "showLearned", label = "Show Learned" },
+        { key = "showAvailable", label = "Show Available" },
+        { key = "showNextAvailable", label = "Show Next Available" },
+        { key = "showUnavailable", label = "Show Unavailable" },
+    }
+    
     Refresh = function()
         ClearPools()
         
@@ -211,7 +219,7 @@ Deathless.UI.Views:Register("options", function(container)
         
         -- === Classes Section ===
         local classSection
-        classSection, yOffset = GetSectionHeader("classes", "Classes to Display", yOffset)
+        classSection, yOffset = GetSectionHeader("classes", "Classes", yOffset)
         
         if sectionState.classes then
             for i, className in ipairs(Deathless.CLASS_LIST) do
@@ -259,6 +267,34 @@ Deathless.UI.Views:Register("options", function(container)
                     checkbox:SetPoint("TOPLEFT", warningsHeader, "BOTTOMLEFT", col * COL_WIDTH, -8 - (row * ROW_HEIGHT))
                     
                     local isChecked = Deathless.config.warnings[category.key]
+                    if isChecked == nil then isChecked = true end
+                    checkbox:SetChecked(isChecked)
+                end
+            end
+            
+            -- Calculate warnings section height for next anchor
+            local warningsContentHeight = sectionState.warnings and (math.ceil(#WARNING_CATEGORIES / WARNING_ROWS) * ROW_HEIGHT + 28) or 0
+            local abilitiesYOffset = -8 - SUBSECTION_HEIGHT - warningsContentHeight - 8
+            
+            -- Abilities sub-section header
+            local abilitiesHeader = GetSubSectionHeader("abilities", "Abilities", summarySection, abilitiesYOffset, { 0.5, 0.8, 1.0 })
+            
+            if sectionState.abilities then
+                -- Ensure abilities config exists
+                Deathless.config.abilities = Deathless.config.abilities or {}
+                
+                for i, section in ipairs(ABILITY_SECTIONS) do
+                    local row = i - 1
+                    
+                    local checkbox = GetCheckbox(section.label, nil, function(checked)
+                        Deathless.config.abilities[section.key] = checked
+                        Deathless:SaveConfig()
+                        Deathless.Utils.Warnings:TriggerRefresh()
+                    end)
+                    
+                    checkbox:SetPoint("TOPLEFT", abilitiesHeader, "BOTTOMLEFT", 0, -8 - (row * ROW_HEIGHT))
+                    
+                    local isChecked = Deathless.config.abilities[section.key]
                     if isChecked == nil then isChecked = true end
                     checkbox:SetChecked(isChecked)
                 end

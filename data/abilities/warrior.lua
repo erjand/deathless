@@ -113,7 +113,7 @@ Deathless.Data.Abilities["Warrior"] = {
     { name = "Mocking Blow", level = 46, rank = 4, base_cost = 36000, icon = "Ability_Warrior_PunishingBlow", source = "trainer", train = "wait", spellId = 20559 },
     { name = "Mocking Blow", level = 56, rank = 5, base_cost = 58000, icon = "Ability_Warrior_PunishingBlow", source = "trainer", train = "wait", spellId = 20560 },
 
-    -- Mortal Strike (Arms 31-point talent, requires talent to be learned)
+    -- Mortal Strike (Arms 31-point talent)
     { name = "Mortal Strike", level = 40, rank = 1, base_cost = 0, icon = "Ability_Warrior_SavageBlow", source = "talent", train = "yes", spellId = 12294 },
     { name = "Mortal Strike", level = 48, rank = 2, base_cost = 2000, icon = "Ability_Warrior_SavageBlow", source = "talent", train = "yes", spellId = 21551 },
     { name = "Mortal Strike", level = 54, rank = 3, base_cost = 2800, icon = "Ability_Warrior_SavageBlow", source = "talent", train = "yes", spellId = 21552 },

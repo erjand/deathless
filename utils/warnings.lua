@@ -57,6 +57,14 @@ local MAGE_FOOD = {
     { req = 6,  id = 5349,  icon = "Interface\\Icons\\INV_Misc_Food_10" }, -- Conjured Muffin
 }
 
+-- Mage mana gems (by spell learn level, icons from data/abilities/mage.lua)
+local MAGE_MANA_GEMS = {
+    { req = 58, id = 8008, icon = "Interface\\Icons\\INV_Misc_Gem_Ruby_01" },    -- Mana Ruby
+    { req = 48, id = 8007, icon = "Interface\\Icons\\INV_Misc_Gem_Opal_01" },    -- Mana Citrine
+    { req = 38, id = 5513, icon = "Interface\\Icons\\INV_Misc_Gem_Emerald_02" }, -- Mana Jade
+    { req = 28, id = 5514, icon = "Interface\\Icons\\INV_Misc_Gem_Emerald_01" }, -- Mana Agate
+}
+
 --- Get the best tiered item for a given value
 local function GetBestTiered(tiers, value)
     for _, tier in ipairs(tiers) do
@@ -95,6 +103,7 @@ function Deathless.Utils.Warnings:GetChecks()
     local bestManaId, bestManaIcon = GetBestTiered(MANA_POTIONS, playerLevel)
     local bestMageWaterId, bestMageWaterIcon = GetBestTiered(MAGE_WATER, playerLevel)
     local bestMageFoodId, bestMageFoodIcon = GetBestTiered(MAGE_FOOD, playerLevel)
+    local bestManaGemId, bestManaGemIcon = GetBestTiered(MAGE_MANA_GEMS, playerLevel)
     
     local isMage = classId == "MAGE"
     
@@ -115,6 +124,7 @@ function Deathless.Utils.Warnings:GetChecks()
         { text = "Not carrying Light Feathers (Slow Fall)", itemId = 17056, icon = "Interface\\Icons\\INV_Feather_02", condition = classId == "MAGE" and playerLevel >= 12, category = "classReagents" },
         { text = "Not carrying best Conjured Food", itemId = bestMageFoodId, icon = bestMageFoodIcon, condition = isMage and bestMageFoodId, category = "mageConjures" },
         { text = "Not carrying best Conjured Water", itemId = bestMageWaterId, icon = bestMageWaterIcon, condition = isMage and bestMageWaterId, category = "mageConjures" },
+        { text = "Not carrying best Mana Gem", itemId = bestManaGemId, icon = bestManaGemIcon, condition = isMage and bestManaGemId, category = "mageConjures" },
         { text = "Not carrying LIP", itemId = 3387, icon = "Interface\\Icons\\INV_Potion_62", condition = playerLevel >= 45, category = "lip" },
         { text = "Not carrying best Mana Potions", itemId = bestManaId, icon = bestManaIcon, condition = powerType == 0 and bestManaId ~= nil, category = "manaPotions" },
         { text = "Not carrying Rune of Portals", itemId = 17032, icon = "Interface\\Icons\\INV_Misc_Rune_06", condition = classId == "MAGE" and playerLevel >= 40, category = "classReagents" },

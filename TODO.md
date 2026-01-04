@@ -20,7 +20,6 @@
 - [ ] Add recommended Dungeon(s)
 - [ ] Add recommended Zone(s)
 - [ ] Add key quests not completed
-- [x] Add key consumables missing / not in inventory
 
 ## Mini Window
 
@@ -41,7 +40,7 @@
 - [ ] Rogue: Audit
 - [x] Druid: Audit
 - [ ] Hunter: Audit
-- [ ] Paladin: Audit
+- [x] Paladin: Audit
 - [ ] Shaman: Audit
 - [ ] Warlock: Audit
 

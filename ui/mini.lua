@@ -314,7 +314,9 @@ function Deathless.UI.MiniSummary:SetupContent()
         local playerLevel = UnitLevel("player") or 1
         local powerType = UnitPowerType("player")
         
-        local rawAbilities = Deathless.Data.Abilities and Deathless.Data.Abilities[className] or {}
+        -- Check if class is enabled in options
+        local classEnabled = Deathless.config.includedClasses and Deathless.config.includedClasses[className]
+        local rawAbilities = classEnabled and Deathless.Data.Abilities and Deathless.Data.Abilities[className] or {}
         
         local playerRace = UnitRace("player") or ""
         local playerFaction = UnitFactionGroup("player") or ""
@@ -610,8 +612,8 @@ function Deathless.UI.MiniSummary:SetupContent()
             yOffset = yOffset - 4
         end
         
-        -- No abilities message
-        if #available == 0 and #nextAvailable == 0 then
+        -- No abilities message (only if class is enabled)
+        if classEnabled and #available == 0 and #nextAvailable == 0 then
             local msg = scrollChild:CreateFontString(nil, "OVERLAY")
             msg:SetFont("Fonts\\ARIALN.TTF", 10, "")
             msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 4, yOffset)

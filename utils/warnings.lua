@@ -236,6 +236,11 @@ local function TriggerRefresh()
     end)
 end
 
+--- Public method to trigger refresh (e.g., when config changes)
+function Deathless.Utils.Warnings:TriggerRefresh()
+    TriggerRefresh()
+end
+
 -- Create event frame for watching state changes
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("BAG_UPDATE")

@@ -192,14 +192,15 @@ Deathless.UI.Views:Register("options", function(container)
     -- Warning category definitions
     local WARNING_CATEGORIES = {
         { key = "bandages", label = "Bandages", icon = "Interface\\Icons\\INV_Misc_Bandage_12" },
-        { key = "healthPotions", label = "Health Potions", icon = "Interface\\Icons\\INV_Potion_54" },
-        { key = "manaPotions", label = "Mana Potions", icon = "Interface\\Icons\\INV_Potion_76" },
-        { key = "swiftnessPotions", label = "Swiftness Potions", icon = "Interface\\Icons\\INV_Potion_95" },
-        { key = "lip", label = "LIP", icon = "Interface\\Icons\\INV_Potion_62" },
-        { key = "flasks", label = "Flasks of Petrification", icon = "Interface\\Icons\\INV_Potion_26" },
         { key = "classReagents", label = "Class Reagents", icon = "Interface\\Icons\\INV_Misc_Rune_06" },
         { key = "engineering", label = "Engineering Items", icon = "Interface\\Icons\\INV_Misc_Bomb_08" },
+        { key = "flasks", label = "Flasks of Petrification", icon = "Interface\\Icons\\INV_Potion_26" },
+        { key = "healthPotions", label = "Health Potions", icon = "Interface\\Icons\\INV_Potion_54" },
         { key = "hearthstone", label = "Hearthstone", icon = "Interface\\Icons\\INV_Misc_Rune_01" },
+        { key = "lip", label = "LIP", icon = "Interface\\Icons\\INV_Potion_62" },
+        { key = "mageConjures", label = "Mage Consumables", icon = "Interface\\Icons\\INV_Misc_Gem_Ruby_01" },
+        { key = "manaPotions", label = "Mana Potions", icon = "Interface\\Icons\\INV_Potion_76" },
+        { key = "swiftnessPotions", label = "Swiftness Potions", icon = "Interface\\Icons\\INV_Potion_95" },
         { key = "talents", label = "Unspent Talents", icon = "Interface\\Icons\\INV_Misc_Book_11" },
     }
     
@@ -223,6 +224,7 @@ Deathless.UI.Views:Register("options", function(container)
                     if Deathless.UI.Navigation.RepositionButtons then
                         Deathless.UI.Navigation:RepositionButtons()
                     end
+                    Deathless.Utils.Warnings:TriggerRefresh()
                 end)
                 
                 checkbox:SetPoint("TOPLEFT", classSection, "BOTTOMLEFT", 8 + (col * COL_WIDTH), -8 - (row * ROW_HEIGHT))
@@ -251,6 +253,7 @@ Deathless.UI.Views:Register("options", function(container)
                     local checkbox = GetCheckbox(category.label, category.icon, function(checked)
                         Deathless.config.warnings[category.key] = checked
                         Deathless:SaveConfig()
+                        Deathless.Utils.Warnings:TriggerRefresh()
                     end)
                     
                     checkbox:SetPoint("TOPLEFT", warningsHeader, "BOTTOMLEFT", col * COL_WIDTH, -8 - (row * ROW_HEIGHT))

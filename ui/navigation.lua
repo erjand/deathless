@@ -35,6 +35,12 @@ local ROGUE_ITEMS = {
     { id = "rogue_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
 }
 
+-- Sub-items for Paladin class
+local PALADIN_ITEMS = {
+    { id = "paladin_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "paladin_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+}
+
 -- Sub-items for Druid class
 local DRUID_ITEMS = {
     { id = "druid_abilities", label = "Abilities", icon = ICON_ABILITIES },
@@ -46,7 +52,7 @@ local CLASS_ITEMS = {
     { id = "class_druid", label = "Druid", icon = "Interface\\Icons\\ClassIcon_Druid", children = DRUID_ITEMS },
     { id = "class_hunter", label = "Hunter", icon = "Interface\\Icons\\ClassIcon_Hunter" },
     { id = "class_mage", label = "Mage", icon = "Interface\\Icons\\ClassIcon_Mage", children = MAGE_ITEMS },
-    { id = "class_paladin", label = "Paladin", icon = "Interface\\Icons\\ClassIcon_Paladin" },
+    { id = "class_paladin", label = "Paladin", icon = "Interface\\Icons\\ClassIcon_Paladin", children = PALADIN_ITEMS },
     { id = "class_priest", label = "Priest", icon = "Interface\\Icons\\ClassIcon_Priest", children = PRIEST_ITEMS },
     { id = "class_rogue", label = "Rogue", icon = "Interface\\Icons\\ClassIcon_Rogue", children = ROGUE_ITEMS },
     { id = "class_shaman", label = "Shaman", icon = "Interface\\Icons\\ClassIcon_Shaman" },

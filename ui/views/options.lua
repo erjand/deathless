@@ -96,10 +96,11 @@ Deathless.UI.Views:Register("options", function(container)
             local f = CreateFrame("Frame", nil, container)
             f:SetSize(150, 20)
             
-            -- Checkbox button
-            f.btn = CreateFrame("Button", nil, f)
+            -- Checkbox button (visual only, clicks pass to parent)
+            f.btn = CreateFrame("Frame", nil, f)
             f.btn:SetSize(14, 14)
             f.btn:SetPoint("LEFT", f, "LEFT", 0, 0)
+            f.btn:EnableMouse(false)
             
             -- Checkbox background
             f.btn.bg = f.btn:CreateTexture(nil, "BACKGROUND")
@@ -141,15 +142,19 @@ Deathless.UI.Views:Register("options", function(container)
                 end
             end
             
-            f.btn:SetScript("OnEnter", function(self)
-                if not f.checked then
-                    self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 1)
+            -- Make entire frame clickable
+            f:EnableMouse(true)
+            f:SetScript("OnEnter", function(self)
+                self.label:SetTextColor(1, 1, 1, 1)
+                if not self.checked then
+                    self.btn.bg:SetColorTexture(Colors.bgLight[1] + 0.1, Colors.bgLight[2] + 0.1, Colors.bgLight[3] + 0.1, 1)
                 end
             end)
             
-            f.btn:SetScript("OnLeave", function(self)
-                if not f.checked then
-                    self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
+            f:SetScript("OnLeave", function(self)
+                self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                if not self.checked then
+                    self.btn.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
                 end
             end)
             
@@ -168,9 +173,10 @@ Deathless.UI.Views:Register("options", function(container)
         
         frame.label:SetText(label)
         
-        frame.btn:SetScript("OnClick", function()
-            frame:SetChecked(not frame.checked)
-            if onClick then onClick(frame.checked) end
+        -- Set click handler on entire frame for larger hit area
+        frame:SetScript("OnMouseDown", function(self)
+            self:SetChecked(not self.checked)
+            if onClick then onClick(self.checked) end
         end)
         
         return frame

@@ -37,7 +37,7 @@
 
 - [x] Priest: Audit
 - [x] Mage: Audit
-- [ ] Rogue: Audit
+- [x] Rogue: Audit
 - [x] Druid: Audit
 - [ ] Hunter: Audit
 - [x] Paladin: Audit
@@ -66,6 +66,5 @@
 
 ## Options
 
-- [ ] Lock window
 - [ ] Window scale
 - [ ] Accent color

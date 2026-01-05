@@ -48,6 +48,7 @@ ui\views\priest_talents.lua
 ui\views\rogue_abilities.lua
 ui\views\rogue_talents.lua
 ui\views\paladin_abilities.lua
+ui\views\shaman_abilities.lua
 ui\views\druid_abilities.lua
 ui\content.lua
 ui\frame.lua

@@ -623,7 +623,7 @@ function Deathless.UI.MiniSummary:SetupContent()
             local msg = scrollChild:CreateFontString(nil, "OVERLAY")
             msg:SetFont("Fonts\\ARIALN.TTF", 10, "")
             msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 4, yOffset)
-            msg:SetText("All abilities learned!")
+            msg:SetText("All available abilities learned!")
             msg:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             yOffset = yOffset - 16
         end

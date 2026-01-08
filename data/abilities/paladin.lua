@@ -13,10 +13,9 @@ Deathless.Data.Abilities = Deathless.Data.Abilities or {}
 --   quest   - Learned from completing a quest
 --   racial  - Racial ability
 -- Train values:
---   yes   - Important ability, train all ranks
---   no    - Skip training (save gold)
---   wait  - Delay training, catch up later
---   maybe - Situational, depends on spec/playstyle
+--   yes   - Train when available
+--   wait  - Marginal upgrade
+--   no    - Not useful for Hardcore
 -- Sorted alphabetically by name, then by rank
 -- See https://www.wowhead.com/classic/spells/abilities/paladin for source data
 -- See https://www.wowhead.com/classic/class=2/paladin#trainers for training costs

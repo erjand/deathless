@@ -12,8 +12,8 @@ Deathless.Data.Abilities = Deathless.Data.Abilities or {}
 --   book    - Learned from a drop/item
 --   quest   - Learned from completing a quest
 -- Train values:
---   yes   - Important ability, train all ranks
---   wait  - Marginal upgrade, can delay
+--   yes   - Train when available
+--   wait  - Marginal upgrade
 --   no    - Not useful for Hardcore
 -- Sorted alphabetically by name, then by rank
 -- See https://www.wowhead.com/classic/spells/abilities/druid for source data

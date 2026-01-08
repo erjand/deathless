@@ -35,6 +35,12 @@ local ROGUE_ITEMS = {
     { id = "rogue_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
 }
 
+-- Sub-items for Hunter class
+local HUNTER_ITEMS = {
+    { id = "hunter_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "hunter_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+}
+
 -- Sub-items for Paladin class
 local PALADIN_ITEMS = {
     { id = "paladin_abilities", label = "Abilities", icon = ICON_ABILITIES },
@@ -56,7 +62,7 @@ local DRUID_ITEMS = {
 -- Classic WoW classes in alphabetical order (with icons and optional children)
 local CLASS_ITEMS = {
     { id = "class_druid", label = "Druid", icon = "Interface\\Icons\\ClassIcon_Druid", children = DRUID_ITEMS },
-    { id = "class_hunter", label = "Hunter", icon = "Interface\\Icons\\ClassIcon_Hunter" },
+    { id = "class_hunter", label = "Hunter", icon = "Interface\\Icons\\ClassIcon_Hunter", children = HUNTER_ITEMS },
     { id = "class_mage", label = "Mage", icon = "Interface\\Icons\\ClassIcon_Mage", children = MAGE_ITEMS },
     { id = "class_paladin", label = "Paladin", icon = "Interface\\Icons\\ClassIcon_Paladin", children = PALADIN_ITEMS },
     { id = "class_priest", label = "Priest", icon = "Interface\\Icons\\ClassIcon_Priest", children = PRIEST_ITEMS },

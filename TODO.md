@@ -20,6 +20,7 @@
 - [ ] Add recommended Dungeon(s)
 - [ ] Add recommended Zone(s)
 - [ ] Add key quests not completed
+- [ ] Hunter: missing ammo
 
 ## Mini Window
 
@@ -41,7 +42,7 @@
 - [x] Druid: Audit
 - [ ] Hunter: Audit
 - [x] Paladin: Audit
-- [ ] Shaman: Audit
+- [x] Shaman: Audit
 - [ ] Warlock: Audit
 
 ### Gear

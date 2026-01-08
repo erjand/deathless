@@ -11,6 +11,10 @@ Deathless.Data.Abilities = Deathless.Data.Abilities or {}
 --   class   - Innate class ability (learned automatically)
 --   book    - Learned from a drop/item
 --   quest   - Learned from completing a quest
+-- Train values:
+--   yes   - Train when available
+--   wait  - Marginal upgrade
+--   no    - Not useful for Hardcore
 -- Optional fields:
 --   faction - "Alliance" or "Horde" (for faction-specific spells like teleports/portals)
 -- Sorted alphabetically by name, then by rank

@@ -59,6 +59,12 @@ local DRUID_ITEMS = {
     { id = "druid_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
 }
 
+-- Sub-items for Warlock class
+local WARLOCK_ITEMS = {
+    { id = "warlock_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "warlock_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+}
+
 -- Classic WoW classes in alphabetical order (with icons and optional children)
 local CLASS_ITEMS = {
     { id = "class_druid", label = "Druid", icon = "Interface\\Icons\\ClassIcon_Druid", children = DRUID_ITEMS },
@@ -68,7 +74,7 @@ local CLASS_ITEMS = {
     { id = "class_priest", label = "Priest", icon = "Interface\\Icons\\ClassIcon_Priest", children = PRIEST_ITEMS },
     { id = "class_rogue", label = "Rogue", icon = "Interface\\Icons\\ClassIcon_Rogue", children = ROGUE_ITEMS },
     { id = "class_shaman", label = "Shaman", icon = "Interface\\Icons\\ClassIcon_Shaman", children = SHAMAN_ITEMS },
-    { id = "class_warlock", label = "Warlock", icon = "Interface\\Icons\\ClassIcon_Warlock" },
+    { id = "class_warlock", label = "Warlock", icon = "Interface\\Icons\\ClassIcon_Warlock", children = WARLOCK_ITEMS },
     { id = "class_warrior", label = "Warrior", icon = "Interface\\Icons\\ClassIcon_Warrior", children = WARRIOR_ITEMS },
 }
 

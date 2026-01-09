@@ -51,6 +51,7 @@ ui\views\hunter_abilities.lua
 ui\views\paladin_abilities.lua
 ui\views\shaman_abilities.lua
 ui\views\druid_abilities.lua
+ui\views\warlock_abilities.lua
 ui\content.lua
 ui\frame.lua
 ui\mini.lua

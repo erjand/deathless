@@ -4,17 +4,18 @@ Deathless.Utils = Deathless.Utils or {}
 Deathless.Utils.Warnings = {}
 
 -- Tiered item definitions (highest tier first)
+-- Bandages have skill requirements (req), level requirements (lvl), and spell names
 local BANDAGES = {
-    { req = 225, id = 14530, icon = "Interface\\Icons\\INV_Misc_Bandage_12" }, -- Heavy Runecloth
-    { req = 200, id = 14529, icon = "Interface\\Icons\\INV_Misc_Bandage_11" }, -- Runecloth
-    { req = 175, id = 8545,  icon = "Interface\\Icons\\INV_Misc_Bandage_20" }, -- Heavy Mageweave
-    { req = 150, id = 8544,  icon = "Interface\\Icons\\INV_Misc_Bandage_19" }, -- Mageweave
-    { req = 125, id = 6451,  icon = "Interface\\Icons\\INV_Misc_Bandage_02" }, -- Heavy Silk
-    { req = 100, id = 6450,  icon = "Interface\\Icons\\INV_Misc_Bandage_01" }, -- Silk
-    { req = 75,  id = 3531,  icon = "Interface\\Icons\\INV_Misc_Bandage_17" }, -- Heavy Wool
-    { req = 50,  id = 3530,  icon = "Interface\\Icons\\INV_Misc_Bandage_14" }, -- Wool
-    { req = 20,  id = 2581,  icon = "Interface\\Icons\\INV_Misc_Bandage_18" }, -- Heavy Linen
-    { req = 1,   id = 1251,  icon = "Interface\\Icons\\INV_Misc_Bandage_15" }, -- Linen
+    { req = 225, lvl = 40, spell = "Heavy Runecloth Bandage", id = 14530, icon = "Interface\\Icons\\INV_Misc_Bandage_12" },
+    { req = 200, lvl = 35, spell = "Runecloth Bandage",       id = 14529, icon = "Interface\\Icons\\INV_Misc_Bandage_11" },
+    { req = 175, lvl = 30, spell = "Heavy Mageweave Bandage", id = 8545,  icon = "Interface\\Icons\\INV_Misc_Bandage_20" },
+    { req = 150, lvl = 25, spell = "Mageweave Bandage",       id = 8544,  icon = "Interface\\Icons\\INV_Misc_Bandage_19" },
+    { req = 125, lvl = 20, spell = "Heavy Silk Bandage",      id = 6451,  icon = "Interface\\Icons\\INV_Misc_Bandage_02" },
+    { req = 100, lvl = 15, spell = "Silk Bandage",            id = 6450,  icon = "Interface\\Icons\\INV_Misc_Bandage_01" },
+    { req = 75,  lvl = 10, spell = "Heavy Wool Bandage",      id = 3531,  icon = "Interface\\Icons\\INV_Misc_Bandage_17" },
+    { req = 50,  lvl = 5,  spell = "Wool Bandage",            id = 3530,  icon = "Interface\\Icons\\INV_Misc_Bandage_14" },
+    { req = 20,  lvl = 1,  spell = "Heavy Linen Bandage",     id = 2581,  icon = "Interface\\Icons\\INV_Misc_Bandage_18" },
+    { req = 1,   lvl = 1,  spell = "Linen Bandage",           id = 1251,  icon = "Interface\\Icons\\INV_Misc_Bandage_15" },
 }
 
 local HEALTH_POTIONS = {
@@ -75,6 +76,30 @@ local function GetBestTiered(tiers, value)
     return nil, nil
 end
 
+--- Check if a spell is known by searching the spellbook
+local function IsRecipeKnown(spellName)
+    local i = 1
+    while true do
+        local name = GetSpellBookItemName(i, BOOKTYPE_SPELL)
+        if not name then break end
+        if name == spellName then
+            return true
+        end
+        i = i + 1
+    end
+    return false
+end
+
+--- Get the best bandage considering skill, level, and known recipe
+local function GetBestBandage(skillLevel, playerLevel)
+    for _, tier in ipairs(BANDAGES) do
+        if skillLevel >= tier.req and playerLevel >= tier.lvl and IsRecipeKnown(tier.spell) then
+            return tier.id, tier.icon
+        end
+    end
+    return nil, nil
+end
+
 --- Get player skill levels for First Aid and Engineering
 local function GetSkillLevels()
     local firstAid, engineering = 0, 0
@@ -98,7 +123,7 @@ function Deathless.Utils.Warnings:GetChecks()
     
     local firstAidSkill, engineeringSkill = GetSkillLevels()
     
-    local bestBandageId, bestBandageIcon = GetBestTiered(BANDAGES, firstAidSkill)
+    local bestBandageId, bestBandageIcon = GetBestBandage(firstAidSkill, playerLevel)
     local bestHealthId, bestHealthIcon = GetBestTiered(HEALTH_POTIONS, playerLevel)
     local bestManaId, bestManaIcon = GetBestTiered(MANA_POTIONS, playerLevel)
     local bestMageWaterId, bestMageWaterIcon = GetBestTiered(MAGE_WATER, playerLevel)

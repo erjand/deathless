@@ -16,7 +16,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
         
-        local title, subtitle = Utils:CreateHeader(container, className .. " Talents", "Recommended builds for Hardcore leveling", classColor)
+        local title, subtitle = Utils:CreateHeader(container, className .. " Talents", "Recommended builds for Hardcore leveling - adjust as desired.", classColor)
         
         local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -70, 24)
         

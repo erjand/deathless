@@ -8,6 +8,9 @@ Deathless.UI.Views:Register("options", function(container)
     
     local title, subtitle, separator = Utils:CreateHeader(container, "Options", "Addon settings and preferences")
     
+    -- Enhanced scroll frame with auto-hiding scrollbar
+    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
+    
     -- Layout constants
     local COL_WIDTH = 150
     local ROW_HEIGHT = 24
@@ -54,11 +57,11 @@ Deathless.UI.Views:Register("options", function(container)
     --- Get a pooled collapsible section header
     local function GetSectionHeader(sectionKey, label, yOffset)
         local section = GetPooledElement("section", function()
-            return Utils:CreateCollapsibleSection(container)
+            return Utils:CreateCollapsibleSection(scrollChild)
         end)
         
-        section:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, yOffset)
-        section:SetPoint("TOPRIGHT", separator, "BOTTOMRIGHT", 0, yOffset)
+        section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
+        section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
         
         Utils:ConfigureSection(section, sectionState[sectionKey], label, Colors.accent)
         
@@ -74,7 +77,7 @@ Deathless.UI.Views:Register("options", function(container)
     --- Get a pooled collapsible sub-section header
     local function GetSubSectionHeader(sectionKey, label, anchorFrame, yOffset, color)
         local header = GetPooledElement("subheader", function()
-            return Utils:CreateCollapsibleSubSection(container)
+            return Utils:CreateCollapsibleSubSection(scrollChild)
         end)
         
         header:SetPoint("TOPLEFT", anchorFrame, "BOTTOMLEFT", 8, yOffset)
@@ -98,7 +101,7 @@ Deathless.UI.Views:Register("options", function(container)
     ---@param tooltip string|table|nil Optional tooltip (string or table with {title, lines...})
     local function GetCheckbox(label, icon, onClick, tooltip)
         local frame = GetPooledElement("checkbox", function()
-            local f = CreateFrame("Frame", nil, container)
+            local f = CreateFrame("Frame", nil, scrollChild)
             f:SetSize(150, 20)
             
             -- Checkbox button (visual only, clicks pass to parent)
@@ -296,7 +299,8 @@ Deathless.UI.Views:Register("options", function(container)
         
         if sectionState.summary then
             -- Warnings sub-section header
-            local warningsHeader, warningsYOffset = GetSubSectionHeader("warnings", "Warnings", summarySection, -8, { 1, 0.8, 0.2 })
+            local warningsHeader, _ = GetSubSectionHeader("warnings", "Warnings", summarySection, -8, { 1, 0.8, 0.2 })
+            yOffset = yOffset - 8 - SUBSECTION_HEIGHT
             
             if sectionState.warnings then
                 -- Ensure warnings config exists
@@ -313,19 +317,25 @@ Deathless.UI.Views:Register("options", function(container)
                     end, category.tooltip)
                     
                     checkbox:SetPoint("TOPLEFT", warningsHeader, "BOTTOMLEFT", col * COL_WIDTH, -8 - (row * ROW_HEIGHT))
-                    
-                    local isChecked = Deathless.config.warnings[category.key]
-                    if isChecked == nil then isChecked = true end
-                    checkbox:SetChecked(isChecked)
                 end
+                
+                -- Update yOffset: WARNING_ROWS is the number of rows (4), not columns
+                yOffset = yOffset - 8 - (WARNING_ROWS * ROW_HEIGHT) - 8
             end
             
-            -- Calculate warnings section height for next anchor
-            local warningsContentHeight = sectionState.warnings and (math.ceil(#WARNING_CATEGORIES / WARNING_ROWS) * ROW_HEIGHT + 28) or 0
-            local abilitiesYOffset = -8 - SUBSECTION_HEIGHT - warningsContentHeight - 8
-            
-            -- Abilities sub-section header
-            local abilitiesHeader = GetSubSectionHeader("abilities", "Abilities", summarySection, abilitiesYOffset, { 0.5, 0.8, 1.0 })
+            -- Abilities sub-section header (anchor to scrollChild using absolute yOffset)
+            local abilitiesHeader = GetPooledElement("subheader", function()
+                return Utils:CreateCollapsibleSubSection(scrollChild)
+            end)
+            abilitiesHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
+            abilitiesHeader:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            Utils:ConfigureSubSection(abilitiesHeader, sectionState.abilities, "Abilities", { 0.5, 0.8, 1.0 })
+            abilitiesHeader.sectionKey = "abilities"
+            abilitiesHeader:SetScript("OnClick", function(self)
+                sectionState[self.sectionKey] = not sectionState[self.sectionKey]
+                Refresh()
+            end)
+            yOffset = yOffset - SUBSECTION_HEIGHT
             
             if sectionState.abilities then
                 -- Ensure abilities config exists
@@ -341,13 +351,22 @@ Deathless.UI.Views:Register("options", function(container)
                     end, section.tooltip)
                     
                     checkbox:SetPoint("TOPLEFT", abilitiesHeader, "BOTTOMLEFT", 0, -8 - (row * ROW_HEIGHT))
-                    
-                    local isChecked = Deathless.config.abilities[section.key]
-                    if isChecked == nil then isChecked = true end
-                    checkbox:SetChecked(isChecked)
                 end
+                
+                -- Update yOffset for abilities content
+                yOffset = yOffset - 8 - (#ABILITY_SECTIONS * ROW_HEIGHT) - 8
             end
         end
+        
+        -- Update scroll child height and scrollbar (match abilities_template behavior)
+        scrollChild:SetHeight(math.abs(yOffset) + 10)
+        
+        -- Update scrollbar visibility after content changes
+        C_Timer.After(0, function()
+            if scrollFrame.UpdateScrollbar then
+                scrollFrame.UpdateScrollbar()
+            end
+        end)
     end
     
     -- Initial render

@@ -154,9 +154,9 @@ function Deathless.UI.Frame:Create()
     local navWidth = Deathless.UI.Navigation:GetWidth()
     local content = Deathless.UI.Content:Create(frame, navWidth)
     
-    -- Select home by default
+    -- Select summary by default
     C_Timer.After(0, function()
-        Deathless.UI.Navigation:Select("home")
+        Deathless.UI.Navigation:Select("summary")
     end)
     
     -- Resize grip (bottom-right corner, auto-hiding)

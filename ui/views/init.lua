@@ -394,6 +394,13 @@ function Deathless.UI.Views.Utils:CreateScrollFrame(parent, topOffset, bottomOff
         UpdateScrollThumb()
     end
     
+    -- Update scrollbar when parent size changes (window resize)
+    parent:HookScript("OnSizeChanged", function()
+        C_Timer.After(0, function()
+            UpdateScrollThumb()
+        end)
+    end)
+    
     return scrollFrame, scrollChild
 end
 

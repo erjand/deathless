@@ -211,13 +211,14 @@ end
 
 --- Recursively create buttons for an item and its children
 ---@param nav Frame The navigation frame
+---@param scrollChild Frame The scroll child frame
 ---@param item table The navigation item
 ---@param depth number Current nesting depth
-local function CreateButtonsRecursive(nav, item, depth)
+local function CreateButtonsRecursive(nav, scrollChild, item, depth)
     -- Skip dividers (they're created on-demand in positioning)
     if item.divider then return end
     
-    local btn = CreateNavButton(nav, item, depth)
+    local btn = CreateNavButton(scrollChild, item, depth)
     nav.buttons[item.id] = btn
     btn:Hide() -- Will be shown by RepositionButtons if visible
     
@@ -233,7 +234,7 @@ local function CreateButtonsRecursive(nav, item, depth)
         
         -- Create children recursively
         for _, child in ipairs(item.children) do
-            CreateButtonsRecursive(nav, child, depth + 1)
+            CreateButtonsRecursive(nav, scrollChild, child, depth + 1)
         end
     else
         btn:SetScript("OnClick", function(self)
@@ -276,12 +277,13 @@ end
 
 --- Recursively position buttons and their children
 ---@param nav Frame The navigation frame
+---@param scrollChild Frame The scroll child frame
 ---@param items table Array of nav items
 ---@param yOffset number Current Y offset
 ---@param depth number Current depth
 ---@param parentExpanded boolean Whether parent is expanded
 ---@return number New Y offset after positioning
-local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpanded)
+local function PositionButtonsRecursive(nav, scrollChild, items, yOffset, depth, parentExpanded)
     local height = depth == 0 and BUTTON_HEIGHT or (depth == 1 and SUB_BUTTON_HEIGHT or SUB_SUB_BUTTON_HEIGHT)
     local indent = depth * 16
     
@@ -291,11 +293,11 @@ local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpand
             if parentExpanded then
                 local divider = nav.dividers[i]
                 if not divider then
-                    divider = CreateDivider(nav)
+                    divider = CreateDivider(scrollChild)
                     nav.dividers[i] = divider
                 end
                 divider:ClearAllPoints()
-                divider:SetPoint("TOPLEFT", nav, "TOPLEFT", 12, yOffset - (DIVIDER_HEIGHT / 2) + 1)
+                divider:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset - (DIVIDER_HEIGHT / 2) + 1)
                 divider:Show()
                 yOffset = yOffset - DIVIDER_HEIGHT
             end
@@ -307,7 +309,7 @@ local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpand
             if btn then
                 if parentExpanded and shouldShow then
                     btn:ClearAllPoints()
-                    btn:SetPoint("TOPLEFT", nav, "TOPLEFT", 4 + indent, yOffset)
+                    btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 4 + indent, yOffset)
                     btn:Show()
                     yOffset = yOffset - height - BUTTON_SPACING
                     
@@ -315,13 +317,13 @@ local function PositionButtonsRecursive(nav, items, yOffset, depth, parentExpand
                     if item.children then
                         local isExpanded = nav.expandedSections[item.id]
                         SetButtonExpanded(btn, isExpanded)
-                        yOffset = PositionButtonsRecursive(nav, item.children, yOffset, depth + 1, isExpanded)
+                        yOffset = PositionButtonsRecursive(nav, scrollChild, item.children, yOffset, depth + 1, isExpanded)
                     end
                 else
                     btn:Hide()
                     -- Recursively hide children when parent is collapsed or filtered
                     if item.children then
-                        PositionButtonsRecursive(nav, item.children, yOffset, depth + 1, false)
+                        PositionButtonsRecursive(nav, scrollChild, item.children, yOffset, depth + 1, false)
                     end
                 end
             end
@@ -334,7 +336,19 @@ end
 --- Reposition all buttons based on current expand state
 function Deathless.UI.Navigation:RepositionButtons()
     if not self.frame then return end
-    PositionButtonsRecursive(self.frame, NAV_ITEMS, -4, 0, true)
+    local nav = self.frame
+    local scrollChild = nav.scrollChild
+    if not scrollChild then return end
+    
+    local yOffset = PositionButtonsRecursive(nav, scrollChild, NAV_ITEMS, -4, 0, true)
+    
+    -- Update scroll child height and scrollbar
+    scrollChild:SetHeight(math.abs(yOffset) + 10)
+    C_Timer.After(0, function()
+        if nav.scrollFrame and nav.scrollFrame.UpdateScrollbar then
+            nav.scrollFrame.UpdateScrollbar()
+        end
+    end)
 end
 
 --- Create the navigation sidebar
@@ -362,14 +376,140 @@ function Deathless.UI.Navigation:Create(parent)
     nav.rightBorder:SetWidth(1)
     nav.rightBorder:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
     
+    -- Create scroll frame for navigation buttons
+    local scrollFrame = CreateFrame("ScrollFrame", nil, nav)
+    scrollFrame:SetPoint("TOPLEFT", nav, "TOPLEFT", 0, 0)
+    scrollFrame:SetPoint("BOTTOMRIGHT", nav, "BOTTOMRIGHT", 0, 0)
+    
+    local scrollChild = CreateFrame("Frame", nil, scrollFrame)
+    scrollChild:SetSize(NAV_WIDTH, 1)
+    scrollFrame:SetScrollChild(scrollChild)
+    
+    -- Custom scroll indicator (thin bar on right side)
+    local scrollIndicator = CreateFrame("Frame", nil, nav)
+    scrollIndicator:SetWidth(3)
+    scrollIndicator:SetPoint("TOPRIGHT", nav, "TOPRIGHT", -1, 0)
+    scrollIndicator:SetPoint("BOTTOMRIGHT", nav, "BOTTOMRIGHT", -1, 0)
+    scrollIndicator:SetFrameLevel(nav:GetFrameLevel() + 5)
+    scrollIndicator:SetAlpha(0)
+    
+    local scrollThumb = scrollIndicator:CreateTexture(nil, "OVERLAY")
+    scrollThumb:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.7)
+    scrollThumb:SetPoint("TOP", scrollIndicator, "TOP", 0, 0)
+    scrollThumb:SetWidth(3)
+    scrollThumb:SetHeight(20)
+    
+    -- Scrollbar auto-hide state
+    local isHovered = false
+    local isScrollable = false
+    local hideTimer = nil
+    local targetAlpha = 0
+    
+    local function UpdateScrollbarAlpha()
+        if isScrollable and isHovered then
+            targetAlpha = 1
+            if hideTimer then hideTimer:Cancel() hideTimer = nil end
+        else
+            if not hideTimer then
+                hideTimer = C_Timer.NewTimer(1.0, function()
+                    targetAlpha = 0
+                    hideTimer = nil
+                end)
+            end
+        end
+    end
+    
+    local function UpdateScrollThumb()
+        local contentHeight = scrollChild:GetHeight()
+        local viewHeight = scrollFrame:GetHeight()
+        local maxScroll = contentHeight - viewHeight
+        
+        isScrollable = maxScroll > 1
+        
+        if isScrollable then
+            local trackHeight = scrollIndicator:GetHeight()
+            local thumbRatio = viewHeight / contentHeight
+            local thumbHeight = math.max(12, trackHeight * thumbRatio)
+            scrollThumb:SetHeight(thumbHeight)
+            
+            local scrollPos = scrollFrame:GetVerticalScroll()
+            local thumbOffset = (scrollPos / maxScroll) * (trackHeight - thumbHeight)
+            scrollThumb:ClearAllPoints()
+            scrollThumb:SetPoint("TOP", scrollIndicator, "TOP", 0, -thumbOffset)
+        end
+        
+        UpdateScrollbarAlpha()
+    end
+    
+    -- Store reference for external updates
+    scrollFrame.UpdateScrollbar = UpdateScrollThumb
+    
+    -- Smooth scroll tracking
+    local targetScroll = 0
+    local SCROLL_SPEED = 0.25
+    local SCROLL_STEP = 40
+    
+    -- Combined OnUpdate: hover detection + smooth fade + scroll animation
+    scrollFrame:SetScript("OnUpdate", function(self, elapsed)
+        -- Check hover state
+        local wasHovered = isHovered
+        isHovered = nav:IsMouseOver()
+        if isHovered ~= wasHovered then
+            UpdateScrollbarAlpha()
+        end
+        
+        -- Smooth fade animation for scroll indicator
+        local current = scrollIndicator:GetAlpha()
+        if math.abs(current - targetAlpha) > 0.01 then
+            local speed = 5 * elapsed
+            scrollIndicator:SetAlpha(current + (targetAlpha - current) * math.min(speed, 1))
+        elseif current ~= targetAlpha then
+            scrollIndicator:SetAlpha(targetAlpha)
+        end
+        
+        -- Smooth scroll animation
+        local currentScroll = self:GetVerticalScroll()
+        if math.abs(currentScroll - targetScroll) > 0.5 then
+            local newScroll = currentScroll + (targetScroll - currentScroll) * SCROLL_SPEED
+            self:SetVerticalScroll(newScroll)
+            UpdateScrollThumb()
+        elseif currentScroll ~= targetScroll then
+            self:SetVerticalScroll(targetScroll)
+            UpdateScrollThumb()
+        end
+    end)
+    
+    -- Mouse wheel handling
+    scrollFrame:EnableMouseWheel(true)
+    scrollFrame:SetScript("OnMouseWheel", function(self, delta)
+        local maxScroll = scrollChild:GetHeight() - scrollFrame:GetHeight()
+        if maxScroll < 0 then maxScroll = 0 end
+        targetScroll = targetScroll - (delta * SCROLL_STEP)
+        targetScroll = math.max(0, math.min(targetScroll, maxScroll))
+        
+        -- Flash scrollbar on wheel
+        if isScrollable then
+            targetAlpha = 1
+            if hideTimer then hideTimer:Cancel() end
+            hideTimer = C_Timer.NewTimer(1.0, function()
+                if not isHovered then targetAlpha = 0 end
+                hideTimer = nil
+            end)
+        end
+    end)
+    
+    nav.scrollFrame = scrollFrame
+    nav.scrollChild = scrollChild
+    nav.scrollIndicator = scrollIndicator
+    
     -- Track expanded sections
     nav.expandedSections = {}
     nav.buttons = {}
     nav.dividers = {}
     
-    -- Create all nav buttons recursively
+    -- Create all nav buttons recursively (using scrollChild as parent)
     for _, item in ipairs(NAV_ITEMS) do
-        CreateButtonsRecursive(nav, item, 0)
+        CreateButtonsRecursive(nav, scrollChild, item, 0)
     end
     
     -- Track current selection

@@ -135,9 +135,13 @@ end
 function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors)
     resizeGrip:SetScript("OnMouseDown", function(self, button)
         if button == "LeftButton" and (not frame.IsPinned or not frame.IsPinned()) then
-            local left, top = frame:GetLeft(), frame:GetTop()
-            frame:ClearAllPoints()
-            frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
+            -- Only re-anchor if not already anchored to TOPLEFT to prevent jump
+            local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint(1)
+            if point ~= "TOPLEFT" or relativeTo ~= UIParent or relativePoint ~= "BOTTOMLEFT" then
+                local left, top = frame:GetLeft(), frame:GetTop()
+                frame:ClearAllPoints()
+                frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
+            end
             frame:StartSizing("BOTTOMRIGHT")
         end
     end)

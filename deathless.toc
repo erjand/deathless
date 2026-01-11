@@ -38,6 +38,7 @@ ui\views\options.lua
 ui\views\support.lua
 ui\views\abilities_template.lua
 ui\views\gear_template.lua
+ui\views\talents_template.lua
 ui\views\warrior_abilities.lua
 ui\views\warrior_talents.lua
 ui\views\warrior_gear.lua

@@ -87,7 +87,7 @@ function Deathless.UI.MiniSummary:Create()
     
     -- Title text
     local title = titleBar:CreateFontString(nil, "OVERLAY")
-    title:SetFont("Fonts\\ARIALN.TTF", 11, "")
+    title:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
     title:SetPoint("LEFT", titleBar, "LEFT", 6, 0)
     title:SetText("DEATHLESS")
     title:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
@@ -105,7 +105,7 @@ function Deathless.UI.MiniSummary:Create()
     closeBtn.bg:SetColorTexture(0, 0, 0, 0)
     
     closeBtn.text = closeBtn:CreateFontString(nil, "OVERLAY")
-    closeBtn.text:SetFont("Fonts\\ARIALN.TTF", 10, "")
+    closeBtn.text:SetFont("Fonts\\FRIZQT__.TTF", 9, "")
     closeBtn.text:SetPoint("CENTER", 0, 0)
     closeBtn.text:SetText("x")
     closeBtn.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
@@ -380,13 +380,13 @@ function Deathless.UI.MiniSummary:SetupContent()
             local isExpanded = sectionState.warnings
             
             local icon = warningsHeader:CreateFontString(nil, "OVERLAY")
-            icon:SetFont("Fonts\\ARIALN.TTF", 10, "")
+            icon:SetFont("Fonts\\ARIALN.TTF", 9, "")
             icon:SetPoint("LEFT", warningsHeader, "LEFT", 4, 0)
             icon:SetText(isExpanded and "▼" or "►")
             icon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             
             local label = warningsHeader:CreateFontString(nil, "OVERLAY")
-            label:SetFont("Fonts\\ARIALN.TTF", 11, "")
+            label:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
             label:SetPoint("LEFT", icon, "RIGHT", 4, 0)
             label:SetText("Warnings (" .. warningCount .. ")")
             label:SetTextColor(1, 0.8, 0.2, 1)
@@ -418,7 +418,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     rowIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
                     
                     local rowText = row:CreateFontString(nil, "OVERLAY")
-                    rowText:SetFont("Fonts\\ARIALN.TTF", 10, "")
+                    rowText:SetFont("Fonts\\FRIZQT__.TTF", 9, "")
                     rowText:SetPoint("LEFT", rowIcon, "RIGHT", 4, 0)
                     rowText:SetPoint("RIGHT", row, "RIGHT", 0, 0)
                     rowText:SetText(warning.text)
@@ -456,13 +456,13 @@ function Deathless.UI.MiniSummary:SetupContent()
             local isExpanded = sectionState.available
             
             local availIcon = availableHeader:CreateFontString(nil, "OVERLAY")
-            availIcon:SetFont("Fonts\\ARIALN.TTF", 10, "")
+            availIcon:SetFont("Fonts\\ARIALN.TTF", 9, "")
             availIcon:SetPoint("LEFT", availableHeader, "LEFT", 4, 0)
             availIcon:SetText(isExpanded and "▼" or "►")
             availIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             
             local availLabel = availableHeader:CreateFontString(nil, "OVERLAY")
-            availLabel:SetFont("Fonts\\ARIALN.TTF", 11, "")
+            availLabel:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
             availLabel:SetPoint("LEFT", availIcon, "RIGHT", 4, 0)
             availLabel:SetText("Available (" .. #available .. ") - " .. FormatMoneyColored(totalCost))
             availLabel:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
@@ -498,13 +498,13 @@ function Deathless.UI.MiniSummary:SetupContent()
                     end
                     
                     local name = row:CreateFontString(nil, "OVERLAY")
-                    name:SetFont("Fonts\\ARIALN.TTF", 10, "")
+                    name:SetFont("Fonts\\FRIZQT__.TTF", 9, "")
                     name:SetPoint("LEFT", icon, "RIGHT", 4, 0)
                     name:SetText(nameText)
                     name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
                     
                     local cost = row:CreateFontString(nil, "OVERLAY")
-                    cost:SetFont("Fonts\\ARIALN.TTF", 9, "")
+                    cost:SetFont("Fonts\\FRIZQT__.TTF", 9, "")
                     cost:SetPoint("RIGHT", row, "RIGHT", -5, 0)
                     if ability.base_cost == 0 then
                         cost:SetText("Free")
@@ -542,13 +542,13 @@ function Deathless.UI.MiniSummary:SetupContent()
             local isExpanded = sectionState.nextAvailable
             
             local nextIcon = nextHeader:CreateFontString(nil, "OVERLAY")
-            nextIcon:SetFont("Fonts\\ARIALN.TTF", 10, "")
+            nextIcon:SetFont("Fonts\\ARIALN.TTF", 9, "")
             nextIcon:SetPoint("LEFT", nextHeader, "LEFT", 4, 0)
             nextIcon:SetText(isExpanded and "▼" or "►")
             nextIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             
             local nextLabel = nextHeader:CreateFontString(nil, "OVERLAY")
-            nextLabel:SetFont("Fonts\\ARIALN.TTF", 11, "")
+            nextLabel:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
             nextLabel:SetPoint("LEFT", nextIcon, "RIGHT", 4, 0)
             nextLabel:SetText("Next Available (" .. #nextAvailable .. ") - " .. FormatMoneyColored(nextCost))
             nextLabel:SetTextColor(0.5, 0.7, 0.9, 1)
@@ -586,13 +586,13 @@ function Deathless.UI.MiniSummary:SetupContent()
                     end
                     
                     local name = row:CreateFontString(nil, "OVERLAY")
-                    name:SetFont("Fonts\\ARIALN.TTF", 10, "")
+                    name:SetFont("Fonts\\FRIZQT__.TTF", 9, "")
                     name:SetPoint("LEFT", icon, "RIGHT", 4, 0)
                     name:SetText("Lvl " .. ability.level .. " - " .. nameText)
                     name:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                     
                     local cost = row:CreateFontString(nil, "OVERLAY")
-                    cost:SetFont("Fonts\\ARIALN.TTF", 9, "")
+                    cost:SetFont("Fonts\\FRIZQT__.TTF", 9, "")
                     cost:SetPoint("RIGHT", row, "RIGHT", -5, 0)
                     if ability.base_cost == 0 then
                         cost:SetText("Free")
@@ -621,7 +621,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         local showingAbilities = showAvailable or showNextAvailable
         if classEnabled and showingAbilities and #available == 0 and #nextAvailable == 0 then
             local msg = scrollChild:CreateFontString(nil, "OVERLAY")
-            msg:SetFont("Fonts\\ARIALN.TTF", 10, "")
+            msg:SetFont("Fonts\\FRIZQT__.TTF", 9, "")
             msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 4, yOffset)
             msg:SetText("All available abilities learned!")
             msg:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)

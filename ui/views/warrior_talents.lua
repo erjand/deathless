@@ -23,7 +23,7 @@ local function CreateBuildHeader(parent, text, yOffset)
     
     -- Title text
     frame.title = frame:CreateFontString(nil, "OVERLAY")
-    frame.title:SetFont("Fonts\\FRIZQT__.TTF", 14, "")
+    frame.title:SetFont("Fonts\\FRIZQT__.TTF", 13, "")
     frame.title:SetPoint("LEFT", frame, "LEFT", 12, 0)
     frame.title:SetText(text)
     frame.title:SetTextColor(CLASS_COLOR[1], CLASS_COLOR[2], CLASS_COLOR[3], 1)
@@ -40,7 +40,7 @@ local function CreateDescription(parent, text, yOffset)
     local Colors = Utils:GetColors()
     
     local desc = parent:CreateFontString(nil, "OVERLAY")
-    desc:SetFont("Fonts\\ARIALN.TTF", 11, "")
+    desc:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
     desc:SetPoint("TOPLEFT", parent, "TOPLEFT", 12, yOffset - 8)
     desc:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -12, yOffset - 8)
     desc:SetJustifyH("LEFT")
@@ -83,7 +83,7 @@ local function CreateTalentImage(parent, imagePath, yOffset)
         frame.bg:SetColorTexture(0.1, 0.1, 0.12, 1)
         
         frame.placeholder = frame:CreateFontString(nil, "OVERLAY")
-        frame.placeholder:SetFont("Fonts\\ARIALN.TTF", 12, "")
+        frame.placeholder:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
         frame.placeholder:SetPoint("CENTER", frame, "CENTER", 0, 0)
         frame.placeholder:SetText("Talent Tree\n(Image Placeholder)")
         frame.placeholder:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.6)
@@ -109,7 +109,7 @@ local function CreateProgression(parent, progression, yOffset, xOffset)
     
     -- Header
     local header = container:CreateFontString(nil, "OVERLAY")
-    header:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+    header:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
     header:SetPoint("TOPLEFT", container, "TOPLEFT", 0, 0)
     header:SetText("Progression")
     header:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
@@ -120,7 +120,7 @@ local function CreateProgression(parent, progression, yOffset, xOffset)
     
     for i, line in ipairs(progression) do
         local text = container:CreateFontString(nil, "OVERLAY")
-        text:SetFont("Fonts\\ARIALN.TTF", 10, "")
+        text:SetFont("Fonts\\FRIZQT__.TTF", 9, "")
         text:SetPoint("TOPLEFT", container, "TOPLEFT", 0, lineY)
         text:SetPoint("TOPRIGHT", container, "TOPRIGHT", 0, lineY)
         text:SetJustifyH("LEFT")
@@ -146,14 +146,14 @@ local function CreateNotes(parent, notes, yOffset)
     
     -- Label
     local label = parent:CreateFontString(nil, "OVERLAY")
-    label:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+    label:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
     label:SetPoint("TOPLEFT", parent, "TOPLEFT", 12, yOffset)
     label:SetText("Notes")
     label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
     
     -- Notes text
     local text = parent:CreateFontString(nil, "OVERLAY")
-    text:SetFont("Fonts\\ARIALN.TTF", 11, "")
+    text:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
     text:SetPoint("TOPLEFT", label, "BOTTOMLEFT", 0, -6)
     text:SetPoint("RIGHT", parent, "RIGHT", -12, 0)
     text:SetJustifyH("LEFT")

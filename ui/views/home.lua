@@ -9,7 +9,7 @@ Deathless.UI.Views:Register("home", function(container)
     
     -- Description
     local desc = container:CreateFontString(nil, "OVERLAY")
-    desc:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    desc:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
     desc:SetPoint("TOP", subtitle, "BOTTOM", 0, -24)
     desc:SetWidth(container:GetWidth() - 60)
     desc:SetJustifyH("CENTER")

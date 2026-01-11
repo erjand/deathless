@@ -128,7 +128,7 @@ Deathless.UI.Views:Register("options", function(container)
             
             -- Label
             f.label = f:CreateFontString(nil, "OVERLAY")
-            f.label:SetFont("Fonts\\ARIALN.TTF", 11, "")
+            f.label:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
             f.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             
             f.checked = false

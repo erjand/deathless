@@ -8,7 +8,7 @@ Deathless.UI.Views:Register("professions", function(container)
     local title, subtitle, separator = Utils:CreateHeader(container, "Professions (WIP)", "Profession guides and recommendations")
     
     local content = container:CreateFontString(nil, "OVERLAY")
-    content:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    content:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
     content:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, -12)
     content:SetWidth(container:GetWidth() - 40)
     content:SetJustifyH("LEFT")

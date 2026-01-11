@@ -77,7 +77,7 @@ Deathless.UI.Views:Register("summary", function(container)
                 frame = Utils:CreateCollapsibleSection(scrollChild)
             elseif frameType == "subheader" then
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
-                frame:SetFont("Fonts\\ARIALN.TTF", 12, "BOLD")
+                frame:SetFont("Fonts\\FRIZQT__.TTF", 11, "BOLD")
             elseif frameType == "row" then
                 frame = CreateFrame("Frame", nil, scrollChild)
                 frame:SetHeight(24)
@@ -88,22 +88,22 @@ Deathless.UI.Views:Register("summary", function(container)
                 frame.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
                 
                 frame.name = frame:CreateFontString(nil, "OVERLAY")
-                frame.name:SetFont("Fonts\\ARIALN.TTF", 12, "")
+                frame.name:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
                 frame.name:SetPoint("LEFT", frame.icon, "RIGHT", 8, 0)
                 
                 frame.level = frame:CreateFontString(nil, "OVERLAY")
-                frame.level:SetFont("Fonts\\ARIALN.TTF", 11, "")
+                frame.level:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
                 frame.level:SetPoint("RIGHT", frame, "RIGHT", -100, 0)
                 
                 frame.cost = frame:CreateFontString(nil, "OVERLAY")
-                frame.cost:SetFont("Fonts\\ARIALN.TTF", 11, "")
+                frame.cost:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
                 frame.cost:SetPoint("RIGHT", frame, "RIGHT", 0, 0)
                 
                 frame:EnableMouse(true)
                 frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
             elseif frameType == "text" then
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
-                frame:SetFont("Fonts\\ARIALN.TTF", 12, "")
+                frame:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
                 frame:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             end
             pool[index] = frame

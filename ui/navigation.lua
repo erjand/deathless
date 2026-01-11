@@ -26,7 +26,7 @@ local MAGE_ITEMS = {
 -- Sub-items for Priest class
 local PRIEST_ITEMS = {
     { id = "priest_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "priest_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "priest_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Rogue class
@@ -143,7 +143,7 @@ local function CreateNavButton(parent, item, depth)
     -- Label text
     local fontSize = depth == 0 and 12 or (depth == 1 and 11 or 10)
     btn.label = btn:CreateFontString(nil, "OVERLAY")
-    btn.label:SetFont("Fonts\\ARIALN.TTF", fontSize, "")
+    btn.label:SetFont("Fonts\\FRIZQT__.TTF", fontSize, "")
     btn.label:SetPoint("LEFT", btn, "LEFT", labelOffset, 0)
     btn.label:SetText(item.label)
     btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
@@ -200,7 +200,7 @@ end
 ---@param btn Button The nav button
 local function AddExpandIcon(btn)
     btn.expandIcon = btn:CreateFontString(nil, "OVERLAY")
-    btn.expandIcon:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    btn.expandIcon:SetFont("Fonts\\ARIALN.TTF", 11, "")
     btn.expandIcon:SetPoint("RIGHT", btn, "RIGHT", -4, 0)
     btn.expandIcon:SetText("+")
     btn.expandIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)

@@ -66,7 +66,7 @@ local function CreatePixelButton(parent, width, height, text)
     
     -- Text
     btn.text = btn:CreateFontString(nil, "OVERLAY")
-    btn.text:SetFont("Fonts\\ARIALN.TTF", 12, "")
+    btn.text:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
     btn.text:SetPoint("CENTER", 0, 0)
     btn.text:SetText(text or "")
     btn.text:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], Colors.text[4])
@@ -130,7 +130,7 @@ function Deathless.UI.Frame:Create()
     
     -- Title text
     local title = titleBar:CreateFontString(nil, "OVERLAY")
-    title:SetFont("Fonts\\ARIALN.TTF", 14, "")
+    title:SetFont("Fonts\\FRIZQT__.TTF", 13, "")
     title:SetPoint("LEFT", titleBar, "LEFT", 10, 0)
     title:SetText("DEATHLESS")
     title:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], Colors.accent[4])

@@ -81,8 +81,9 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
     btn:SetSize(width, 18)
     btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -75)
     
+    local Fonts = Deathless.UI.Fonts
     btn.label = btn:CreateFontString(nil, "OVERLAY")
-    btn.label:SetFont("Fonts\\ARIALN.TTF", 9, "")  -- ARIALN for Unicode arrow support
+    btn.label:SetFont(Fonts.icons, Fonts.small, "")  -- ARIALN for Unicode arrow support
     btn.label:SetPoint("LEFT", btn, "LEFT", 0, 0)
     btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
     
@@ -143,6 +144,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
     
     Deathless.UI.Views:Register(viewName, function(container)
         local Colors = Utils:GetColors()
+        local Fonts = Deathless.UI.Fonts
         
         local title, subtitle = Utils:CreateHeader(container, className .. " Abilities", "", classColor)
         
@@ -300,7 +302,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             end
             
             local name = row:CreateFontString(nil, "OVERLAY")
-            name:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+            name:SetFont(Fonts.family, Fonts.body, "")
             name:SetPoint("LEFT", icon, "RIGHT", 8, 0)
             name:SetWidth(190)
             name:SetJustifyH("LEFT")
@@ -313,7 +315,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             row.elements.name = name
             
             local level = row:CreateFontString(nil, "OVERLAY")
-            level:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+            level:SetFont(Fonts.family, Fonts.body, "")
             level:SetPoint("LEFT", row, "LEFT", 250, 0)
             level:SetWidth(50)
             level:SetJustifyH("CENTER")
@@ -326,7 +328,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             row.elements.level = level
             
             local cost = row:CreateFontString(nil, "OVERLAY")
-            cost:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+            cost:SetFont(Fonts.family, Fonts.body, "")
             cost:SetPoint("LEFT", row, "LEFT", 310, 0)
             cost:SetWidth(80)
             cost:SetJustifyH("RIGHT")
@@ -340,7 +342,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             row.elements.cost = cost
             
             local source = row:CreateFontString(nil, "OVERLAY")
-            source:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+            source:SetFont(Fonts.family, Fonts.body, "")
             source:SetPoint("LEFT", row, "LEFT", 400, 0)
             source:SetWidth(60)
             source:SetJustifyH("LEFT")
@@ -351,7 +353,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             
             -- Train column
             local train = row:CreateFontString(nil, "OVERLAY")
-            train:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+            train:SetFont(Fonts.family, Fonts.body, "")
             train:SetPoint("LEFT", row, "LEFT", 470, 0)
             train:SetWidth(50)
             train:SetJustifyH("CENTER")

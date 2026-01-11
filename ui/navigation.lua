@@ -141,9 +141,10 @@ local function CreateNavButton(parent, item, depth)
     end
     
     -- Label text
-    local fontSize = depth == 0 and 12 or (depth == 1 and 11 or 10)
+    local Fonts = Deathless.UI.Fonts
+    local fontSize = depth == 0 and Fonts.sectionHeader or (depth == 1 and Fonts.subtitle or Fonts.body)
     btn.label = btn:CreateFontString(nil, "OVERLAY")
-    btn.label:SetFont("Fonts\\FRIZQT__.TTF", fontSize, "")
+    btn.label:SetFont(Fonts.family, fontSize, "")
     btn.label:SetPoint("LEFT", btn, "LEFT", labelOffset, 0)
     btn.label:SetText(item.label)
     btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
@@ -199,8 +200,9 @@ end
 --- Add expand/collapse indicator to a button
 ---@param btn Button The nav button
 local function AddExpandIcon(btn)
+    local Fonts = Deathless.UI.Fonts
     btn.expandIcon = btn:CreateFontString(nil, "OVERLAY")
-    btn.expandIcon:SetFont("Fonts\\ARIALN.TTF", 11, "")
+    btn.expandIcon:SetFont(Fonts.icons, Fonts.subtitle, "")
     btn.expandIcon:SetPoint("RIGHT", btn, "RIGHT", -4, 0)
     btn.expandIcon:SetText("+")
     btn.expandIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)

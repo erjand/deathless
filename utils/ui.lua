@@ -11,8 +11,9 @@ end
 
 -- Create a font string
 function Deathless.Utils.UI.CreateFontString(parent, font, size, outline)
+    local Fonts = Deathless.UI.Fonts
     local fs = parent:CreateFontString(nil, "OVERLAY")
-    fs:SetFont(font or "Fonts\\FRIZQT__.TTF", size or 12, outline or "")
+    fs:SetFont(font or Fonts.family, size or Fonts.sectionHeader, outline or "")
     return fs
 end
 
@@ -43,8 +44,9 @@ function Deathless.Utils.UI.CreatePinButton(frame, titleBar, configKey, options)
     pinBtn.bg:SetAllPoints()
     pinBtn.bg:SetColorTexture(0, 0, 0, 0)
     
+    local Fonts = Deathless.UI.Fonts
     pinBtn.text = pinBtn:CreateFontString(nil, "OVERLAY")
-    pinBtn.text:SetFont("Fonts\\ARIALN.TTF", 10, "")
+    pinBtn.text:SetFont(Fonts.icons, Fonts.body, "")
     pinBtn.text:SetPoint("CENTER", 0, 0)
     
     -- Update visual state and frame properties

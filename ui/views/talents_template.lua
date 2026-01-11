@@ -13,7 +13,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
     
     Deathless.UI.Views:Register(viewName, function(container)
         local Colors = Utils:GetColors()
-        local Fonts = Utils.Fonts
+        local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
         
         local title, subtitle = Utils:CreateHeader(container, className .. " Talents", "Recommended builds for Hardcore leveling", classColor)

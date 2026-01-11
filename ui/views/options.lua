@@ -127,8 +127,9 @@ Deathless.UI.Views:Register("options", function(container)
             f.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
             
             -- Label
+            local Fonts = Deathless.UI.Fonts
             f.label = f:CreateFontString(nil, "OVERLAY")
-            f.label:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+            f.label:SetFont(Fonts.family, Fonts.body, "")
             f.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             
             f.checked = false

@@ -38,8 +38,9 @@ local function IsSpellKnown(spellName, spellRank)
     return false
 end
 
-Deathless.UI.Views:Register("summary", function(container)
-    local Colors = Utils:GetColors()
+    Deathless.UI.Views:Register("summary", function(container)
+        local Colors = Utils:GetColors()
+        local Fonts = Deathless.UI.Fonts
     
     local title, subtitle = Utils:CreateHeader(container, "Summary", "")
     
@@ -77,7 +78,7 @@ Deathless.UI.Views:Register("summary", function(container)
                 frame = Utils:CreateCollapsibleSection(scrollChild)
             elseif frameType == "subheader" then
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
-                frame:SetFont("Fonts\\FRIZQT__.TTF", 11, "BOLD")
+                frame:SetFont(Fonts.family, Fonts.subtitle, "BOLD")
             elseif frameType == "row" then
                 frame = CreateFrame("Frame", nil, scrollChild)
                 frame:SetHeight(24)
@@ -88,22 +89,22 @@ Deathless.UI.Views:Register("summary", function(container)
                 frame.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
                 
                 frame.name = frame:CreateFontString(nil, "OVERLAY")
-                frame.name:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+                frame.name:SetFont(Fonts.family, Fonts.subtitle, "")
                 frame.name:SetPoint("LEFT", frame.icon, "RIGHT", 8, 0)
                 
                 frame.level = frame:CreateFontString(nil, "OVERLAY")
-                frame.level:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+                frame.level:SetFont(Fonts.family, Fonts.body, "")
                 frame.level:SetPoint("RIGHT", frame, "RIGHT", -100, 0)
                 
                 frame.cost = frame:CreateFontString(nil, "OVERLAY")
-                frame.cost:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+                frame.cost:SetFont(Fonts.family, Fonts.body, "")
                 frame.cost:SetPoint("RIGHT", frame, "RIGHT", 0, 0)
                 
                 frame:EnableMouse(true)
                 frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
             elseif frameType == "text" then
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
-                frame:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+                frame:SetFont(Fonts.family, Fonts.subtitle, "")
                 frame:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             end
             pool[index] = frame

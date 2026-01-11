@@ -23,6 +23,9 @@ Deathless.UI.Views.Utils.Fonts = {
     tiny = 8,
 }
 
+-- Expose Fonts globally for easier access
+Deathless.UI.Fonts = Deathless.UI.Views.Utils.Fonts
+
 Deathless.UI.Views.Utils.Layout = {
     rowHeight = 26,
     subRowHeight = 22,
@@ -47,16 +50,17 @@ end
 ---@return FontString, FontString, Texture The title, subtitle, and separator
 function Deathless.UI.Views.Utils:CreateHeader(container, title, subtitle, titleColor)
     local Colors = self:GetColors()
+    local Fonts = Deathless.UI.Fonts
     local color = titleColor or Colors.accent
     
     local titleText = container:CreateFontString(nil, "OVERLAY")
-    titleText:SetFont("Fonts\\FRIZQT__.TTF", 19, "")
+    titleText:SetFont(Fonts.family, Fonts.title, "")
     titleText:SetPoint("TOPLEFT", container, "TOPLEFT", 20, -20)
     titleText:SetText(title)
     titleText:SetTextColor(color[1], color[2], color[3], 1)
     
     local subtitleText = container:CreateFontString(nil, "OVERLAY")
-    subtitleText:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+    subtitleText:SetFont(Fonts.family, Fonts.subtitle, "")
     subtitleText:SetPoint("TOPLEFT", titleText, "BOTTOMLEFT", 0, -4)
     subtitleText:SetText(subtitle)
     subtitleText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
@@ -78,15 +82,16 @@ end
 ---@return FontString, FontString The title and subtitle font strings
 function Deathless.UI.Views.Utils:CreateCenteredHeader(container, title, subtitle)
     local Colors = self:GetColors()
+    local Fonts = Deathless.UI.Fonts
     
     local titleText = container:CreateFontString(nil, "OVERLAY")
-    titleText:SetFont("Fonts\\FRIZQT__.TTF", 23, "")
+    titleText:SetFont(Fonts.family, Fonts.titleLarge, "")
     titleText:SetPoint("TOP", container, "TOP", 0, -40)
     titleText:SetText(title)
     titleText:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
     
     local subtitleText = container:CreateFontString(nil, "OVERLAY")
-    subtitleText:SetFont("Fonts\\FRIZQT__.TTF", 13, "")
+    subtitleText:SetFont(Fonts.family, Fonts.header, "")
     subtitleText:SetPoint("TOP", titleText, "BOTTOM", 0, -8)
     subtitleText:SetText(subtitle)
     subtitleText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
@@ -111,6 +116,7 @@ end
 --- @return Button The section header frame
 function Deathless.UI.Views.Utils:CreateCollapsibleSection(parent)
     local Colors = self:GetColors()
+    local Fonts = Deathless.UI.Fonts
     
     local section = CreateFrame("Button", nil, parent)
     section:SetHeight(28)
@@ -120,20 +126,20 @@ function Deathless.UI.Views.Utils:CreateCollapsibleSection(parent)
     section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.4)
     
     section.icon = section:CreateFontString(nil, "OVERLAY")
-    section.icon:SetFont("Fonts\\ARIALN.TTF", 11, "")
+    section.icon:SetFont(Fonts.icons, Fonts.subtitle, "")
     section.icon:SetPoint("LEFT", section, "LEFT", 8, 0)
     
     section.label = section:CreateFontString(nil, "OVERLAY")
-    section.label:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+    section.label:SetFont(Fonts.family, Fonts.subtitle, "")
     section.label:SetPoint("LEFT", section.icon, "RIGHT", 6, 0)
     
     section.count = section:CreateFontString(nil, "OVERLAY")
-    section.count:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+    section.count:SetFont(Fonts.family, Fonts.body, "")
     section.count:SetPoint("LEFT", section.label, "RIGHT", 8, 0)
     section.count:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
     
     section.cost = section:CreateFontString(nil, "OVERLAY")
-    section.cost:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+    section.cost:SetFont(Fonts.family, Fonts.body, "")
     section.cost:SetPoint("LEFT", section.count, "RIGHT", 8, 0)
     
     section:SetScript("OnEnter", function(self)
@@ -184,16 +190,17 @@ end
 --- @return Button The sub-section header frame
 function Deathless.UI.Views.Utils:CreateCollapsibleSubSection(parent)
     local Colors = self:GetColors()
+    local Fonts = Deathless.UI.Fonts
     
     local header = CreateFrame("Button", nil, parent)
     header:SetHeight(22)
     
     header.icon = header:CreateFontString(nil, "OVERLAY")
-    header.icon:SetFont("Fonts\\ARIALN.TTF", 11, "")
+    header.icon:SetFont(Fonts.icons, Fonts.subtitle, "")
     header.icon:SetPoint("LEFT", header, "LEFT", 0, 0)
     
     header.label = header:CreateFontString(nil, "OVERLAY")
-    header.label:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+    header.label:SetFont(Fonts.family, Fonts.subtitle, "")
     header.label:SetPoint("LEFT", header.icon, "RIGHT", 6, 0)
     
     header:SetScript("OnEnter", function(self)
@@ -232,10 +239,11 @@ end
 --- @return FontString, Texture, number The header text, underline, and next yOffset
 function Deathless.UI.Views.Utils:CreateContentHeader(parent, text, color, yOffset, width)
     local Colors = self:GetColors()
+    local Fonts = Deathless.UI.Fonts
     width = width or 520
     
     local header = parent:CreateFontString(nil, "OVERLAY")
-    header:SetFont("Fonts\\FRIZQT__.TTF", 13, "")
+    header:SetFont(Fonts.family, Fonts.header, "")
     header:SetPoint("TOPLEFT", parent, "TOPLEFT", 8, yOffset)
     header:SetText(text)
     header:SetTextColor(color[1], color[2], color[3], 1)

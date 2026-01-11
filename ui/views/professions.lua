@@ -4,11 +4,12 @@ local Utils = Deathless.UI.Views.Utils
 --- Professions view content
 Deathless.UI.Views:Register("professions", function(container)
     local Colors = Utils:GetColors()
+    local Fonts = Deathless.UI.Fonts
     
     local title, subtitle, separator = Utils:CreateHeader(container, "Professions (WIP)", "Profession guides and recommendations")
     
     local content = container:CreateFontString(nil, "OVERLAY")
-    content:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+    content:SetFont(Fonts.family, Fonts.subtitle, "")
     content:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, -12)
     content:SetWidth(container:GetWidth() - 40)
     content:SetJustifyH("LEFT")

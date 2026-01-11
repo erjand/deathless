@@ -17,11 +17,12 @@ local CLASS_COLORS = {
 --- Classes overview view
 Deathless.UI.Views:Register("classes", function(container)
     local Colors = Utils:GetColors()
+    local Fonts = Deathless.UI.Fonts
     
     local title, subtitle, separator = Utils:CreateHeader(container, "Classes", "Class guides and tips")
     
     local content = container:CreateFontString(nil, "OVERLAY")
-    content:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+    content:SetFont(Fonts.family, Fonts.subtitle, "")
     content:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, -12)
     content:SetWidth(container:GetWidth() - 40)
     content:SetJustifyH("LEFT")
@@ -38,12 +39,13 @@ end)
 local function CreateClassViewCreator(className, displayName)
     return function(container)
         local Colors = Utils:GetColors()
+        local Fonts = Deathless.UI.Fonts
         local classColor = CLASS_COLORS[className] or Colors.accent
         
         local title, subtitle, separator = Utils:CreateHeader(container, displayName, "Hardcore " .. displayName .. " Guide", classColor)
         
         local content = container:CreateFontString(nil, "OVERLAY")
-        content:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
+        content:SetFont(Fonts.family, Fonts.subtitle, "")
         content:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, -12)
         content:SetWidth(container:GetWidth() - 40)
         content:SetJustifyH("LEFT")

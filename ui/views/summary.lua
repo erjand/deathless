@@ -272,7 +272,7 @@ end
                     local itemId = warning.itemId
                     if itemId then
                         row:SetScript("OnEnter", function(self)
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 20, 0)
                             GameTooltip:SetItemByID(itemId)
                             GameTooltip:Show()
                         end)
@@ -345,7 +345,7 @@ end
                         
                         row:SetScript("OnEnter", function(self)
                             if ability.spellId then
-                                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                                GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 20, 0)
                                 GameTooltip:SetSpellByID(ability.spellId)
                                 GameTooltip:Show()
                             end
@@ -396,7 +396,7 @@ end
                         
                         row:SetScript("OnEnter", function(self)
                             if ability.spellId then
-                                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                                GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 20, 0)
                                 GameTooltip:SetSpellByID(ability.spellId)
                                 GameTooltip:Show()
                             end

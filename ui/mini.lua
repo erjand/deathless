@@ -52,7 +52,7 @@ function Deathless.UI.MiniSummary:Create()
     -- Create main frame
     local frame = CreateFrame("Frame", "DeathlessMiniSummary", UIParent, "BackdropTemplate")
     frame:SetSize(300, 200)
-    frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 20, 180)
+    frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 32, 300)
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:SetResizable(true)
@@ -433,7 +433,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     local itemId = warning.itemId
                     if itemId then
                         row:SetScript("OnEnter", function(self)
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 2, 0)
                             GameTooltip:SetItemByID(itemId)
                             GameTooltip:Show()
                         end)
@@ -520,7 +520,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     row:EnableMouse(true)
                     row:SetScript("OnEnter", function(self)
                         if ability.spellId then
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 2, 0)
                             GameTooltip:SetSpellByID(ability.spellId)
                             GameTooltip:Show()
                         end
@@ -608,7 +608,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     row:EnableMouse(true)
                     row:SetScript("OnEnter", function(self)
                         if ability.spellId then
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 2, 0)
                             GameTooltip:SetSpellByID(ability.spellId)
                             GameTooltip:Show()
                         end

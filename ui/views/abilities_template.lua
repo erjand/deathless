@@ -104,12 +104,7 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
     btn:SetScript("OnEnter", function(self)
         self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
         if tooltip then
-            GameTooltip:SetOwner(self, "ANCHOR_TOP")
-            GameTooltip:AddLine(tooltip.title or label, 1, 1, 1)
-            for _, line in ipairs(tooltip) do
-                GameTooltip:AddLine(line, 0.8, 0.8, 0.8, true)
-            end
-            GameTooltip:Show()
+            Deathless.UI.Tooltip:Show(self, "ANCHOR_TOP", tooltip.title or label, tooltip)
         end
     end)
     
@@ -119,7 +114,7 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
         else
             self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         end
-        GameTooltip:Hide()
+        Deathless.UI.Tooltip:Hide()
     end)
     
     btn:SetScript("OnClick", function(self)

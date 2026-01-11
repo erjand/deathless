@@ -25,6 +25,7 @@ modules\skills\init.lua
 modules\selffound\init.lua
 
 ui\init.lua
+ui\tooltip.lua
 ui\navigation.lua
 ui\views\init.lua
 ui\views\home.lua

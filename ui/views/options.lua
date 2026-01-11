@@ -56,6 +56,7 @@ Deathless.UI.Views:Register("options", function(container)
     
     --- Get a pooled collapsible section header
     local function GetSectionHeader(sectionKey, label, yOffset)
+        local Fonts = Deathless.UI.Fonts
         local section = GetPooledElement("section", function()
             return Utils:CreateCollapsibleSection(scrollChild)
         end)
@@ -64,6 +65,10 @@ Deathless.UI.Views:Register("options", function(container)
         section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
         
         Utils:ConfigureSection(section, sectionState[sectionKey], label, Colors.accent)
+        
+        -- Use larger font for main section headers
+        section.label:SetFont(Fonts.family, Fonts.sectionHeader, "")
+        section.icon:SetFont(Fonts.icons, Fonts.sectionHeader, "")
         
         section.sectionKey = sectionKey
         section:SetScript("OnClick", function(self)
@@ -161,20 +166,7 @@ Deathless.UI.Views:Register("options", function(container)
                 
                 -- Show tooltip if provided
                 if self.tooltip then
-                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 8, 0)
-                    -- Add title (class name)
-                    GameTooltip:SetText(self.tooltipLabel or label, 1, 1, 1)
-                    -- Add tooltip text
-                    if type(self.tooltip) == "string" then
-                        GameTooltip:AddLine(self.tooltip, 0.8, 0.8, 0.8, true)
-                    elseif type(self.tooltip) == "table" then
-                        for _, line in ipairs(self.tooltip) do
-                            if type(line) == "string" then
-                                GameTooltip:AddLine(line, 0.8, 0.8, 0.8, true)
-                            end
-                        end
-                    end
-                    GameTooltip:Show()
+                    Deathless.UI.Tooltip:Show(self, "ANCHOR_RIGHT", self.tooltipLabel or label, self.tooltip, self.tooltipIcon)
                 end
             end)
             
@@ -183,7 +175,7 @@ Deathless.UI.Views:Register("options", function(container)
                 if not self.checked then
                     self.btn.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
                 end
-                GameTooltip:Hide()
+                Deathless.UI.Tooltip:Hide()
             end)
             
             return f
@@ -317,6 +309,7 @@ Deathless.UI.Views:Register("options", function(container)
                     end, category.tooltip)
                     
                     checkbox:SetPoint("TOPLEFT", warningsHeader, "BOTTOMLEFT", col * COL_WIDTH, -8 - (row * ROW_HEIGHT))
+                    checkbox:SetChecked(Deathless.config.warnings[category.key] ~= false)
                 end
                 
                 -- Update yOffset: WARNING_ROWS is the number of rows (4), not columns
@@ -351,6 +344,7 @@ Deathless.UI.Views:Register("options", function(container)
                     end, section.tooltip)
                     
                     checkbox:SetPoint("TOPLEFT", abilitiesHeader, "BOTTOMLEFT", 0, -8 - (row * ROW_HEIGHT))
+                    checkbox:SetChecked(Deathless.config.abilities[section.key] ~= false)
                 end
                 
                 -- Update yOffset for abilities content

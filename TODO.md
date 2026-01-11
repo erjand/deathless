@@ -40,19 +40,34 @@
 - [x] Mage: Audit
 - [x] Rogue: Audit
 - [x] Druid: Audit
-- [ ] Hunter: Audit
+- [ ] Hunter Pets
 - [x] Paladin: Audit
 - [x] Shaman: Audit
-- [ ] Warlock: Audit
+- [ ] Warlock Tomes
 
 ### Gear
 
-- [ ] Warrior: Audit Gear
+- [ ] Druid Gear 
+- [ ] Hunter Gear
+- [ ] Mage Gear
+- [ ] Paladin Gear
+- [ ] Priest Gear
+- [ ] Rogue Gear
+- [ ] Shaman Gear
+- [ ] Warlock Gear
+- [ ] Warrior Gear
 
 ### Talents
 
-- [ ] Warrior: Audit Talents
-- [ ] Priest: Audit Talents
+- [ ] Druid Talents
+- [ ] Hunter Talents
+- [ ] Mage Talents
+- [ ] Paladin Talents
+- [x] Priest Talents
+- [ ] Rogue Talents
+- [ ] Shaman Talents
+- [ ] Warlock Talents
+- [ ] Warrior Talents
 
 ## Dungeons
 

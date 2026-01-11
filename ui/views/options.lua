@@ -91,7 +91,11 @@ Deathless.UI.Views:Register("options", function(container)
     end
     
     --- Create a checkbox with label and optional icon
-    local function GetCheckbox(label, icon, onClick)
+    ---@param label string The checkbox label
+    ---@param icon string|nil Optional icon texture path
+    ---@param onClick function|nil Optional click callback
+    ---@param tooltip string|table|nil Optional tooltip (string or table with {title, lines...})
+    local function GetCheckbox(label, icon, onClick, tooltip)
         local frame = GetPooledElement("checkbox", function()
             local f = CreateFrame("Frame", nil, container)
             f:SetSize(150, 20)
@@ -150,6 +154,24 @@ Deathless.UI.Views:Register("options", function(container)
                 if not self.checked then
                     self.btn.bg:SetColorTexture(Colors.bgLight[1] + 0.1, Colors.bgLight[2] + 0.1, Colors.bgLight[3] + 0.1, 1)
                 end
+                
+                -- Show tooltip if provided
+                if self.tooltip then
+                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 8, 0)
+                    -- Add title (class name)
+                    GameTooltip:SetText(self.tooltipLabel or label, 1, 1, 1)
+                    -- Add tooltip text
+                    if type(self.tooltip) == "string" then
+                        GameTooltip:AddLine(self.tooltip, 0.8, 0.8, 0.8, true)
+                    elseif type(self.tooltip) == "table" then
+                        for _, line in ipairs(self.tooltip) do
+                            if type(line) == "string" then
+                                GameTooltip:AddLine(line, 0.8, 0.8, 0.8, true)
+                            end
+                        end
+                    end
+                    GameTooltip:Show()
+                end
             end)
             
             f:SetScript("OnLeave", function(self)
@@ -157,6 +179,7 @@ Deathless.UI.Views:Register("options", function(container)
                 if not self.checked then
                     self.btn.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
                 end
+                GameTooltip:Hide()
             end)
             
             return f
@@ -167,12 +190,16 @@ Deathless.UI.Views:Register("options", function(container)
             frame.icon:SetTexture(icon)
             frame.icon:Show()
             frame.label:SetPoint("LEFT", frame.icon, "RIGHT", 4, 0)
+            frame.tooltipIcon = icon
         else
             frame.icon:Hide()
             frame.label:SetPoint("LEFT", frame.btn, "RIGHT", 6, 0)
+            frame.tooltipIcon = nil
         end
         
         frame.label:SetText(label)
+        frame.tooltipLabel = label
+        frame.tooltip = tooltip
         
         -- Set click handler on entire frame for larger hit area
         frame:SetScript("OnMouseDown", function(self)
@@ -196,27 +223,40 @@ Deathless.UI.Views:Register("options", function(container)
         Warrior = "Interface\\Icons\\ClassIcon_Warrior",
     }
     
+    -- Class tooltips
+    local CLASS_TOOLTIPS = {
+        Druid = "Show information for the Druid",
+        Hunter = "Show information for the Hunter",
+        Mage = "Show information for the Mage",
+        Paladin = "Show information for the Paladin",
+        Priest = "Show information for the Priest",
+        Rogue = "Show information for the Rogue",
+        Shaman = "Show information for the Shaman",
+        Warlock = "Show information for the Warlock",
+        Warrior = "Show information for the Warrior",
+    }
+    
     -- Warning category definitions
     local WARNING_CATEGORIES = {
-        { key = "bandages", label = "Bandages", icon = "Interface\\Icons\\INV_Misc_Bandage_12" },
-        { key = "classReagents", label = "Class Reagents", icon = "Interface\\Icons\\INV_Misc_Rune_06" },
-        { key = "engineering", label = "Engineering Items", icon = "Interface\\Icons\\INV_Misc_Bomb_08" },
-        { key = "flasks", label = "Flasks of Petrification", icon = "Interface\\Icons\\INV_Potion_26" },
-        { key = "healthPotions", label = "Health Potions", icon = "Interface\\Icons\\INV_Potion_54" },
-        { key = "hearthstone", label = "Hearthstone", icon = "Interface\\Icons\\INV_Misc_Rune_01" },
-        { key = "lip", label = "LIP", icon = "Interface\\Icons\\INV_Potion_62" },
-        { key = "mageConjures", label = "Mage Consumables", icon = "Interface\\Icons\\INV_Misc_Gem_Ruby_01" },
-        { key = "manaPotions", label = "Mana Potions", icon = "Interface\\Icons\\INV_Potion_76" },
-        { key = "swiftnessPotions", label = "Swiftness Potions", icon = "Interface\\Icons\\INV_Potion_95" },
-        { key = "talents", label = "Unspent Talents", icon = "Interface\\Icons\\INV_Misc_Book_11" },
+        { key = "bandages", label = "Bandages", icon = "Interface\\Icons\\INV_Misc_Bandage_12", tooltip = "Show warnings for bandages" },
+        { key = "classReagents", label = "Class Reagents", icon = "Interface\\Icons\\INV_Misc_Rune_06", tooltip = "Show warnings for class reagents" },
+        { key = "engineering", label = "Engineering Items", icon = "Interface\\Icons\\INV_Misc_Bomb_08", tooltip = "Show warnings for engineering items" },
+        { key = "flasks", label = "Flasks of Petrification", icon = "Interface\\Icons\\INV_Potion_26", tooltip = "Show warnings for Flasks of Petrification" },
+        { key = "healthPotions", label = "Health Potions", icon = "Interface\\Icons\\INV_Potion_54", tooltip = "Show warnings for health potions" },
+        { key = "hearthstone", label = "Hearthstone", icon = "Interface\\Icons\\INV_Misc_Rune_01", tooltip = "Show warnings for hearthstone" },
+        { key = "lip", label = "LIP", icon = "Interface\\Icons\\INV_Potion_62", tooltip = "Show warnings for Limited Invulnerability Potions" },
+        { key = "mageConjures", label = "Mage Consumables", icon = "Interface\\Icons\\INV_Misc_Gem_Ruby_01", tooltip = "Show warnings for mage consumables" },
+        { key = "manaPotions", label = "Mana Potions", icon = "Interface\\Icons\\INV_Potion_76", tooltip = "Show warnings for mana potions" },
+        { key = "swiftnessPotions", label = "Swiftness Potions", icon = "Interface\\Icons\\INV_Potion_95", tooltip = "Show warnings for swiftness potions" },
+        { key = "talents", label = "Unspent Talents", icon = "Interface\\Icons\\INV_Misc_Book_11", tooltip = "Show warnings for unspent talent points" },
     }
     
     -- Ability section definitions
     local ABILITY_SECTIONS = {
-        { key = "showLearned", label = "Show Learned" },
-        { key = "showAvailable", label = "Show Available" },
-        { key = "showNextAvailable", label = "Show Next Available" },
-        { key = "showUnavailable", label = "Show Unavailable" },
+        { key = "showLearned", label = "Show Learned", tooltip = "Show abilities you have already learned" },
+        { key = "showAvailable", label = "Show Available", tooltip = "Show abilities available at your current level" },
+        { key = "showNextAvailable", label = "Show Next Available", tooltip = "Show abilities that will be available soon" },
+        { key = "showUnavailable", label = "Show Unavailable", tooltip = "Show abilities not yet available" },
     }
     
     Refresh = function()
@@ -240,7 +280,7 @@ Deathless.UI.Views:Register("options", function(container)
                         Deathless.UI.Navigation:RepositionButtons()
                     end
                     Deathless.Utils.Warnings:TriggerRefresh()
-                end)
+                end, CLASS_TOOLTIPS[className])
                 
                 checkbox:SetPoint("TOPLEFT", classSection, "BOTTOMLEFT", 8 + (col * COL_WIDTH), -8 - (row * ROW_HEIGHT))
                 checkbox:SetChecked(Deathless.config.includedClasses[className] == true)
@@ -269,7 +309,7 @@ Deathless.UI.Views:Register("options", function(container)
                         Deathless.config.warnings[category.key] = checked
                         Deathless:SaveConfig()
                         Deathless.Utils.Warnings:TriggerRefresh()
-                    end)
+                    end, category.tooltip)
                     
                     checkbox:SetPoint("TOPLEFT", warningsHeader, "BOTTOMLEFT", col * COL_WIDTH, -8 - (row * ROW_HEIGHT))
                     
@@ -297,7 +337,7 @@ Deathless.UI.Views:Register("options", function(container)
                         Deathless.config.abilities[section.key] = checked
                         Deathless:SaveConfig()
                         Deathless.Utils.Warnings:TriggerRefresh()
-                    end)
+                    end, section.tooltip)
                     
                     checkbox:SetPoint("TOPLEFT", abilitiesHeader, "BOTTOMLEFT", 0, -8 - (row * ROW_HEIGHT))
                     

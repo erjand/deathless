@@ -4,11 +4,12 @@ Deathless.UI.Navigation = Deathless.UI.Navigation or {}
 
 local Colors = nil -- Set after frame.lua loads
 local CreatePixelBorder = nil
+local Icons = Deathless.Utils.Icons
 
 -- Generic icons for sub-items
-local ICON_ABILITIES = "Interface\\Icons\\INV_Misc_Book_07"
-local ICON_TALENTS = "Interface\\Icons\\Ability_Marksmanship"
-local ICON_GEAR = "Interface\\Icons\\INV_Gauntlets_04"
+local ICON_ABILITIES = Icons.NAV_ABILITIES
+local ICON_TALENTS = Icons.NAV_TALENTS
+local ICON_GEAR = Icons.NAV_GEAR
 
 -- Sub-items for Warrior class
 local WARRIOR_ITEMS = {
@@ -67,15 +68,15 @@ local WARLOCK_ITEMS = {
 
 -- Classic WoW classes in alphabetical order (with icons and optional children)
 local CLASS_ITEMS = {
-    { id = "class_druid", label = "Druid", icon = "Interface\\Icons\\ClassIcon_Druid", children = DRUID_ITEMS },
-    { id = "class_hunter", label = "Hunter", icon = "Interface\\Icons\\ClassIcon_Hunter", children = HUNTER_ITEMS },
-    { id = "class_mage", label = "Mage", icon = "Interface\\Icons\\ClassIcon_Mage", children = MAGE_ITEMS },
-    { id = "class_paladin", label = "Paladin", icon = "Interface\\Icons\\ClassIcon_Paladin", children = PALADIN_ITEMS },
-    { id = "class_priest", label = "Priest", icon = "Interface\\Icons\\ClassIcon_Priest", children = PRIEST_ITEMS },
-    { id = "class_rogue", label = "Rogue", icon = "Interface\\Icons\\ClassIcon_Rogue", children = ROGUE_ITEMS },
-    { id = "class_shaman", label = "Shaman", icon = "Interface\\Icons\\ClassIcon_Shaman", children = SHAMAN_ITEMS },
-    { id = "class_warlock", label = "Warlock", icon = "Interface\\Icons\\ClassIcon_Warlock", children = WARLOCK_ITEMS },
-    { id = "class_warrior", label = "Warrior", icon = "Interface\\Icons\\ClassIcon_Warrior", children = WARRIOR_ITEMS },
+    { id = "class_druid", label = "Druid", icon = Icons.CLASS_DRUID, children = DRUID_ITEMS },
+    { id = "class_hunter", label = "Hunter", icon = Icons.CLASS_HUNTER, children = HUNTER_ITEMS },
+    { id = "class_mage", label = "Mage", icon = Icons.CLASS_MAGE, children = MAGE_ITEMS },
+    { id = "class_paladin", label = "Paladin", icon = Icons.CLASS_PALADIN, children = PALADIN_ITEMS },
+    { id = "class_priest", label = "Priest", icon = Icons.CLASS_PRIEST, children = PRIEST_ITEMS },
+    { id = "class_rogue", label = "Rogue", icon = Icons.CLASS_ROGUE, children = ROGUE_ITEMS },
+    { id = "class_shaman", label = "Shaman", icon = Icons.CLASS_SHAMAN, children = SHAMAN_ITEMS },
+    { id = "class_warlock", label = "Warlock", icon = Icons.CLASS_WARLOCK, children = WARLOCK_ITEMS },
+    { id = "class_warrior", label = "Warrior", icon = Icons.CLASS_WARRIOR, children = WARRIOR_ITEMS },
 }
 
 -- Navigation items configuration (with optional children)

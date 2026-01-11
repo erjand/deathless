@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local Icons = Deathless.Utils.Icons
 
 -- Store template for reuse
 Deathless.UI.Views.AbilitiesTemplate = {}
@@ -285,7 +286,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local icon = row:CreateTexture(nil, "ARTWORK")
             icon:SetSize(18, 18)
             icon:SetPoint("LEFT", row, "LEFT", 16, 0)
-            icon:SetTexture("Interface\\Icons\\" .. (ability.icon or "INV_Misc_QuestionMark"))
+            icon:SetTexture(Icons:GetIconPath(ability.icon))
             icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
             if dimmed then
                 icon:SetDesaturated(true)

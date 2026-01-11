@@ -14,6 +14,7 @@ core\commands.lua
 utils\table.lua
 utils\ui.lua
 utils\chat.lua
+utils\icons.lua
 utils\warnings.lua
 
 modules\classes\init.lua

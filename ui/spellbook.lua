@@ -67,7 +67,7 @@ function Deathless.UI.Spellbook:UpdateTab()
     if not tabButton then return end
     
     -- Set our icon (gray/white skull)
-    tabButton:SetNormalTexture("Interface\\Icons\\INV_Misc_Bone_Skull_01")
+    tabButton:SetNormalTexture(Deathless.Utils.Icons.SPELLBOOK_TAB)
     
     -- Set tooltip
     tabButton.tooltip = "Deathless - Ability Guide"

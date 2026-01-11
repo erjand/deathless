@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local Icons = Deathless.Utils.Icons
 
 --- Options view content
 Deathless.UI.Views:Register("options", function(container)
@@ -212,15 +213,15 @@ Deathless.UI.Views:Register("options", function(container)
     
     -- Class icons lookup
     local CLASS_ICONS = {
-        Druid = "Interface\\Icons\\ClassIcon_Druid",
-        Hunter = "Interface\\Icons\\ClassIcon_Hunter",
-        Mage = "Interface\\Icons\\ClassIcon_Mage",
-        Paladin = "Interface\\Icons\\ClassIcon_Paladin",
-        Priest = "Interface\\Icons\\ClassIcon_Priest",
-        Rogue = "Interface\\Icons\\ClassIcon_Rogue",
-        Shaman = "Interface\\Icons\\ClassIcon_Shaman",
-        Warlock = "Interface\\Icons\\ClassIcon_Warlock",
-        Warrior = "Interface\\Icons\\ClassIcon_Warrior",
+        Druid = Icons.CLASS_DRUID,
+        Hunter = Icons.CLASS_HUNTER,
+        Mage = Icons.CLASS_MAGE,
+        Paladin = Icons.CLASS_PALADIN,
+        Priest = Icons.CLASS_PRIEST,
+        Rogue = Icons.CLASS_ROGUE,
+        Shaman = Icons.CLASS_SHAMAN,
+        Warlock = Icons.CLASS_WARLOCK,
+        Warrior = Icons.CLASS_WARRIOR,
     }
     
     -- Class tooltips
@@ -238,17 +239,17 @@ Deathless.UI.Views:Register("options", function(container)
     
     -- Warning category definitions
     local WARNING_CATEGORIES = {
-        { key = "bandages", label = "Bandages", icon = "Interface\\Icons\\INV_Misc_Bandage_12", tooltip = "Show warnings for bandages" },
-        { key = "classReagents", label = "Class Reagents", icon = "Interface\\Icons\\INV_Misc_Rune_06", tooltip = "Show warnings for class reagents" },
-        { key = "engineering", label = "Engineering Items", icon = "Interface\\Icons\\INV_Misc_Bomb_08", tooltip = "Show warnings for engineering items" },
-        { key = "flasks", label = "Flasks of Petrification", icon = "Interface\\Icons\\INV_Potion_26", tooltip = "Show warnings for Flasks of Petrification" },
-        { key = "healthPotions", label = "Health Potions", icon = "Interface\\Icons\\INV_Potion_54", tooltip = "Show warnings for health potions" },
-        { key = "hearthstone", label = "Hearthstone", icon = "Interface\\Icons\\INV_Misc_Rune_01", tooltip = "Show warnings for hearthstone" },
-        { key = "lip", label = "LIP", icon = "Interface\\Icons\\INV_Potion_62", tooltip = "Show warnings for Limited Invulnerability Potions" },
-        { key = "mageConjures", label = "Mage Consumables", icon = "Interface\\Icons\\INV_Misc_Gem_Ruby_01", tooltip = "Show warnings for mage consumables" },
-        { key = "manaPotions", label = "Mana Potions", icon = "Interface\\Icons\\INV_Potion_76", tooltip = "Show warnings for mana potions" },
-        { key = "swiftnessPotions", label = "Swiftness Potions", icon = "Interface\\Icons\\INV_Potion_95", tooltip = "Show warnings for swiftness potions" },
-        { key = "talents", label = "Unspent Talents", icon = "Interface\\Icons\\INV_Misc_Book_11", tooltip = "Show warnings for unspent talent points" },
+        { key = "bandages", label = "Bandages", icon = Icons.WARNING_BANDAGES, tooltip = "Show warnings for bandages" },
+        { key = "classReagents", label = "Class Reagents", icon = Icons.WARNING_CLASS_REAGENTS, tooltip = "Show warnings for class reagents" },
+        { key = "engineering", label = "Engineering Items", icon = Icons.WARNING_ENGINEERING, tooltip = "Show warnings for engineering items" },
+        { key = "flasks", label = "Flasks of Petrification", icon = Icons.WARNING_FLASKS, tooltip = "Show warnings for Flasks of Petrification" },
+        { key = "healthPotions", label = "Health Potions", icon = Icons.WARNING_HEALTH_POTIONS, tooltip = "Show warnings for health potions" },
+        { key = "hearthstone", label = "Hearthstone", icon = Icons.WARNING_HEARTHSTONE, tooltip = "Show warnings for hearthstone" },
+        { key = "lip", label = "LIP", icon = Icons.WARNING_LIP, tooltip = "Show warnings for Limited Invulnerability Potions" },
+        { key = "mageConjures", label = "Mage Consumables", icon = Icons.WARNING_MAGE_CONJURES, tooltip = "Show warnings for mage consumables" },
+        { key = "manaPotions", label = "Mana Potions", icon = Icons.WARNING_MANA_POTIONS, tooltip = "Show warnings for mana potions" },
+        { key = "swiftnessPotions", label = "Swiftness Potions", icon = Icons.WARNING_SWIFTNESS_POTIONS, tooltip = "Show warnings for swiftness potions" },
+        { key = "talents", label = "Unspent Talents", icon = Icons.WARNING_TALENTS, tooltip = "Show warnings for unspent talent points" },
     }
     
     -- Ability section definitions

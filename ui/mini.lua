@@ -1,6 +1,7 @@
 local Deathless = Deathless
 
 Deathless.UI.MiniSummary = Deathless.UI.MiniSummary or {}
+local Icons = Deathless.Utils.Icons
 
 -- Format copper amount with colored g/s/c letters
 local function FormatMoneyColored(copper)
@@ -417,7 +418,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     local rowIcon = row:CreateTexture(nil, "ARTWORK")
                     rowIcon:SetSize(14, 14)
                     rowIcon:SetPoint("LEFT", row, "LEFT", 0, 0)
-                    rowIcon:SetTexture(warning.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+                    rowIcon:SetTexture(warning.icon or Icons.DEFAULT)
                     rowIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
                     
                     local rowText = row:CreateFontString(nil, "OVERLAY")
@@ -492,7 +493,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     local icon = row:CreateTexture(nil, "ARTWORK")
                     icon:SetSize(14, 14)
                     icon:SetPoint("LEFT", row, "LEFT", 0, 0)
-                    icon:SetTexture("Interface\\Icons\\" .. (ability.icon or "INV_Misc_QuestionMark"))
+                    icon:SetTexture(Icons:GetIconPath(ability.icon))
                     icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
                     
                     local nameText = ability.name
@@ -578,7 +579,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     local icon = row:CreateTexture(nil, "ARTWORK")
                     icon:SetSize(14, 14)
                     icon:SetPoint("LEFT", row, "LEFT", 0, 0)
-                    icon:SetTexture("Interface\\Icons\\" .. (ability.icon or "INV_Misc_QuestionMark"))
+                    icon:SetTexture(Icons:GetIconPath(ability.icon))
                     icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
                     icon:SetDesaturated(true)
                     icon:SetAlpha(0.6)

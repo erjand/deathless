@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local Icons = Deathless.Utils.Icons
 
 -- Store template for reuse
 Deathless.UI.Views.TalentsTemplate = {}
@@ -342,7 +343,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                     row.talentIcon:SetTexture(icon)
                     row.talentIcon:Show()
                 else
-                    row.talentIcon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+                    row.talentIcon:SetTexture(Icons.DEFAULT)
                     row.talentIcon:Show()
                 end
                 
@@ -408,7 +409,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                         if subIcon then
                             subRow.talentIcon:SetTexture(subIcon)
                         else
-                            subRow.talentIcon:SetTexture(icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+                            subRow.talentIcon:SetTexture(icon or Icons.DEFAULT)
                         end
                         subRow.talentIcon:Show()
                         

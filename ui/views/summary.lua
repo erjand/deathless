@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local Icons = Deathless.Utils.Icons
 
 -- Format copper amount with colored g/s/c letters
 local function FormatMoneyColored(copper)
@@ -48,17 +49,19 @@ end
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
     
     -- Section collapse state
-    local sectionState = { warnings = true, abilities = true }
+    local sectionState = { warnings = true, abilities = true, availableNow = true, nextAvailable = true }
     
     -- Element pooling
     local pools = {
         section = {},
+        subsection = {},
         subheader = {},
         row = {},
         text = {}
     }
     local poolIndexes = {
         section = 0,
+        subsection = 0,
         subheader = 0,
         row = 0,
         text = 0
@@ -76,12 +79,14 @@ end
         if not frame then
             if frameType == "section" then
                 frame = Utils:CreateCollapsibleSection(scrollChild)
+            elseif frameType == "subsection" then
+                frame = Utils:CreateCollapsibleSubSection(scrollChild)
             elseif frameType == "subheader" then
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
                 frame:SetFont(Fonts.family, Fonts.subtitle, "BOLD")
             elseif frameType == "row" then
                 frame = CreateFrame("Frame", nil, scrollChild)
-                frame:SetHeight(24)
+                frame:SetHeight(26)
                 
                 frame.icon = frame:CreateTexture(nil, "ARTWORK")
                 frame.icon:SetSize(16, 16)
@@ -89,7 +94,7 @@ end
                 frame.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
                 
                 frame.name = frame:CreateFontString(nil, "OVERLAY")
-                frame.name:SetFont(Fonts.family, Fonts.subtitle, "")
+                frame.name:SetFont(Fonts.family, Fonts.body, "")
                 frame.name:SetPoint("LEFT", frame.icon, "RIGHT", 8, 0)
                 
                 frame.level = frame:CreateFontString(nil, "OVERLAY")
@@ -134,6 +139,39 @@ end
         end)
         
         return yOffset - SECTION_HEIGHT
+    end
+    
+    --- Create a collapsible subsection header
+    local function CreateSubSectionHeader(sectionKey, label, yOffset, color, costText)
+        local subsection = GetFrame("subsection")
+        local SUBSECTION_HEIGHT = 22
+        
+        subsection:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+        subsection:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset)
+        
+        Utils:ConfigureSubSection(subsection, sectionState[sectionKey], label, color)
+        
+        -- Add cost text if provided
+        if costText then
+            if not subsection.cost then
+                subsection.cost = subsection:CreateFontString(nil, "OVERLAY")
+                subsection.cost:SetFont(Fonts.family, Fonts.body, "")
+                subsection.cost:SetPoint("LEFT", subsection.label, "RIGHT", 8, 0)
+            end
+            subsection.cost:SetText(costText)
+            subsection.cost:SetTextColor(1, 1, 1, 1)
+            subsection.cost:Show()
+        elseif subsection.cost then
+            subsection.cost:Hide()
+        end
+        
+        subsection.sectionKey = sectionKey
+        subsection:SetScript("OnClick", function(self)
+            sectionState[self.sectionKey] = not sectionState[self.sectionKey]
+            Refresh()
+        end)
+        
+        return yOffset - SUBSECTION_HEIGHT
     end
     
     local function ClearFrames()
@@ -221,7 +259,7 @@ end
                     row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
                     
                     if row.icon then
-                        row.icon:SetTexture(warning.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+                        row.icon:SetTexture(warning.icon or Icons.DEFAULT)
                         row.icon:SetDesaturated(false)
                         row.icon:SetAlpha(1)
                     end
@@ -242,7 +280,7 @@ end
                         row:SetScript("OnEnter", nil)
                     end
                     
-                    yOffset = yOffset - 34
+                    yOffset = yOffset - 26
                 end
             else
                 local msg = GetFrame("text")
@@ -273,56 +311,49 @@ end
                     availableCost = availableCost + (ability.base_cost or 0)
                 end
                 
-                local sub = GetFrame("subheader")
-                sub:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                sub:SetText("Available Now")
-                sub:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+                local costText = "Total: " .. FormatMoneyColored(availableCost)
+                yOffset = CreateSubSectionHeader("availableNow", "Available Now", yOffset, { Colors.accent[1], Colors.accent[2], Colors.accent[3] }, costText)
                 
-                local costText = GetFrame("text")
-                costText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 120, yOffset)
-                costText:SetText("Total: " .. FormatMoneyColored(availableCost))
-                costText:SetTextColor(1, 1, 1, 1)
-                yOffset = yOffset - 20
-                
-                for _, ability in ipairs(available) do
-                    local row = GetFrame("row")
-                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                    row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
-                    
-                    row.icon:SetTexture("Interface\\Icons\\" .. (ability.icon or "INV_Misc_QuestionMark"))
-                    row.icon:SetDesaturated(false)
-                    row.icon:SetAlpha(1)
-                    
-                    local nameText = ability.name
-                    if ability.rank and ability.rank > 1 then
-                        nameText = nameText .. " (Rank " .. ability.rank .. ")"
-                    end
-                    
-                    row.name:SetText(nameText)
-                    row.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-                    
-                    row.level:SetText("Lvl " .. ability.level)
-                    row.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                    
-                    if ability.base_cost == 0 then
-                        row.cost:SetText("Free")
-                        row.cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
-                    else
-                        row.cost:SetText(FormatMoneyColored(ability.base_cost))
-                        row.cost:SetTextColor(1, 1, 1, 1)
-                    end
-                    
-                    row:SetScript("OnEnter", function(self)
-                        if ability.spellId then
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                            GameTooltip:SetSpellByID(ability.spellId)
-                            GameTooltip:Show()
+                if sectionState.availableNow then
+                    for _, ability in ipairs(available) do
+                        local row = GetFrame("row")
+                        row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                        row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
+                        
+                        row.icon:SetTexture(Icons:GetIconPath(ability.icon))
+                        row.icon:SetDesaturated(false)
+                        row.icon:SetAlpha(1)
+                        
+                        local nameText = ability.name
+                        if ability.rank and ability.rank > 1 then
+                            nameText = nameText .. " (Rank " .. ability.rank .. ")"
                         end
-                    end)
-                    
-                    yOffset = yOffset - 24
+                        
+                        row.name:SetText(nameText)
+                        row.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                        
+                        row.level:SetText("Lvl " .. ability.level)
+                        row.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                        
+                        if ability.base_cost == 0 then
+                            row.cost:SetText("Free")
+                            row.cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+                        else
+                            row.cost:SetText(FormatMoneyColored(ability.base_cost))
+                            row.cost:SetTextColor(1, 1, 1, 1)
+                        end
+                        
+                        row:SetScript("OnEnter", function(self)
+                            if ability.spellId then
+                                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                                GameTooltip:SetSpellByID(ability.spellId)
+                                GameTooltip:Show()
+                            end
+                        end)
+                        
+                        yOffset = yOffset - 24
+                    end
                 end
-                yOffset = yOffset - 10
             end
             
             if #nextAvailable > 0 then
@@ -331,54 +362,48 @@ end
                     nextCost = nextCost + (ability.base_cost or 0)
                 end
                 
-                local sub = GetFrame("subheader")
-                sub:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                sub:SetText("Next Available")
-                sub:SetTextColor(0.5, 0.7, 0.9, 1)
+                local costText = "Total: " .. FormatMoneyColored(nextCost)
+                yOffset = CreateSubSectionHeader("nextAvailable", "Next Available", yOffset, { 0.5, 0.7, 0.9 }, costText)
                 
-                local costText = GetFrame("text")
-                costText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 120, yOffset)
-                costText:SetText("Total: " .. FormatMoneyColored(nextCost))
-                costText:SetTextColor(1, 1, 1, 1)
-                yOffset = yOffset - 20
-                
-                for _, ability in ipairs(nextAvailable) do
-                    local row = GetFrame("row")
-                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                    row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
-                    
-                    row.icon:SetTexture("Interface\\Icons\\" .. (ability.icon or "INV_Misc_QuestionMark"))
-                    row.icon:SetDesaturated(true)
-                    row.icon:SetAlpha(0.6)
-                    
-                    local nameText = ability.name
-                    if ability.rank and ability.rank > 1 then
-                        nameText = nameText .. " (Rank " .. ability.rank .. ")"
-                    end
-                    
-                    row.name:SetText(nameText)
-                    row.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 0.6)
-                    
-                    row.level:SetText("Lvl " .. ability.level)
-                    row.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                    
-                    if ability.base_cost == 0 then
-                        row.cost:SetText("Free")
-                        row.cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.6)
-                    else
-                        row.cost:SetText(FormatMoneyColored(ability.base_cost))
-                        row.cost:SetTextColor(1, 1, 1, 0.6)
-                    end
-                    
-                    row:SetScript("OnEnter", function(self)
-                        if ability.spellId then
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                            GameTooltip:SetSpellByID(ability.spellId)
-                            GameTooltip:Show()
+                if sectionState.nextAvailable then
+                    for _, ability in ipairs(nextAvailable) do
+                        local row = GetFrame("row")
+                        row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                        row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
+                        
+                        row.icon:SetTexture(Icons:GetIconPath(ability.icon))
+                        row.icon:SetDesaturated(true)
+                        row.icon:SetAlpha(0.6)
+                        
+                        local nameText = ability.name
+                        if ability.rank and ability.rank > 1 then
+                            nameText = nameText .. " (Rank " .. ability.rank .. ")"
                         end
-                    end)
-                    
-                    yOffset = yOffset - 24
+                        
+                        row.name:SetText(nameText)
+                        row.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 0.6)
+                        
+                        row.level:SetText("Lvl " .. ability.level)
+                        row.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                        
+                        if ability.base_cost == 0 then
+                            row.cost:SetText("Free")
+                            row.cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.6)
+                        else
+                            row.cost:SetText(FormatMoneyColored(ability.base_cost))
+                            row.cost:SetTextColor(1, 1, 1, 0.6)
+                        end
+                        
+                        row:SetScript("OnEnter", function(self)
+                            if ability.spellId then
+                                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                                GameTooltip:SetSpellByID(ability.spellId)
+                                GameTooltip:Show()
+                            end
+                        end)
+                        
+                        yOffset = yOffset - 24
+                    end
                 end
             end
         end

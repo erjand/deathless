@@ -110,30 +110,8 @@ function Deathless.UI.MiniSummary:Create()
         onClick = function() Deathless.UI.MiniSummary:Hide() end
     })
     
-    -- Resize grip (higher frame level to stay above scroll frame)
-    local resizeGrip = CreateFrame("Button", nil, frame)
-    resizeGrip:SetSize(12, 12)
-    resizeGrip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -1, 1)
-    resizeGrip:SetFrameLevel(frame:GetFrameLevel() + 10)
-    resizeGrip:EnableMouse(true)
-    resizeGrip:SetAlpha(0)
-    
-    local gripTexture = resizeGrip:CreateTexture(nil, "OVERLAY")
-    gripTexture:SetSize(8, 8)
-    gripTexture:SetPoint("CENTER", 0, 0)
-    gripTexture:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
-    
-    for i = 1, 2 do
-        local line = resizeGrip:CreateTexture(nil, "OVERLAY")
-        line:SetColorTexture(Colors.borderLight[1], Colors.borderLight[2], Colors.borderLight[3], 0.6)
-        line:SetSize(2, 2)
-        line:SetPoint("BOTTOMRIGHT", resizeGrip, "BOTTOMRIGHT", -1 - (i * 3), 1 + (i * 3))
-    end
-    
-    frame.resizeGrip = resizeGrip
-    local isGripHovered = false
-    frame.isGripHovered = function() return isGripHovered end
-    frame.setGripHovered = function(val) isGripHovered = val end
+    -- Resize grip (using shared component)
+    local resizeGrip, gripTexture = PinUtils.CreateResizeGrip(frame, Colors)
     
     -- Setup pinnable resize behavior (with layout saving)
     PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "mini")

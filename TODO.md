@@ -12,7 +12,7 @@
 
 ## UI
 
-- [ ] 
+- [ ] Only show the top-level "Classes" section if more than one Class is selected, otherwise just use the class (e.g. "Warrior")
 
 ## Summary
 
@@ -24,10 +24,7 @@
 
 ## Mini Window
 
-- [x] MVP
-- [x] Lock / pin
-- [x] Show by default when loading UI (have to close manually if don't want)
-- [ ] Have "X" match visual style of the main window
+- [ ] 
 
 ## Classes
 
@@ -78,6 +75,7 @@
 
 - [ ] Light of Elune https://www.wowhead.com/classic/quest=1017/mage-summoner (Alliance)
 - [ ] Seal of Wrynn https://www.wowhead.com/classic/item=2933/seal-of-wrynn (Alliance)
+- [ ] That good Horde ring quest in Dustwallow
 
 ## Zones
 

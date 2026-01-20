@@ -225,6 +225,43 @@ function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, 
     end)
 end
 
+--- Create a resize grip for a frame
+-- @param frame The parent frame
+-- @param Colors Color palette
+-- @return resizeGrip button, gripTexture texture
+function Deathless.Utils.UI.CreateResizeGrip(frame, Colors)
+    local resizeGrip = CreateFrame("Button", nil, frame)
+    resizeGrip:SetSize(16, 16)
+    resizeGrip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+    resizeGrip:SetFrameLevel(frame:GetFrameLevel() + 10)
+    resizeGrip:EnableMouse(true)
+    resizeGrip:SetAlpha(0)
+    
+    -- Grip texture
+    local gripTexture = resizeGrip:CreateTexture(nil, "OVERLAY")
+    gripTexture:SetSize(12, 12)
+    gripTexture:SetPoint("CENTER", 0, 0)
+    gripTexture:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.6)
+    
+    -- Create diagonal grip lines
+    for i = 1, 3 do
+        local line = resizeGrip:CreateTexture(nil, "OVERLAY")
+        line:SetColorTexture(Colors.borderLight[1], Colors.borderLight[2], Colors.borderLight[3], 0.8)
+        line:SetSize(2, 2)
+        line:SetPoint("BOTTOMRIGHT", resizeGrip, "BOTTOMRIGHT", -2 - (i * 3), 2 + (i * 3))
+    end
+    
+    -- Store on frame for easy access
+    frame.resizeGrip = resizeGrip
+    
+    -- Setup grip hover state tracking
+    local isGripHovered = false
+    frame.isGripHovered = function() return isGripHovered end
+    frame.setGripHovered = function(val) isGripHovered = val end
+    
+    return resizeGrip, gripTexture
+end
+
 --- Create UpdateGripAlpha function that respects pinned state
 -- @param frame The frame
 -- @param resizeGrip The resize grip

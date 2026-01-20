@@ -205,33 +205,9 @@ function Deathless.UI.Frame:Create()
         Deathless.UI.Navigation:Select("summary")
     end)
     
-    -- Resize grip (bottom-right corner, auto-hiding)
-    local resizeGrip = CreateFrame("Button", nil, frame)
-    resizeGrip:SetSize(16, 16)
-    resizeGrip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
-    resizeGrip:SetFrameLevel(frame:GetFrameLevel() + 10)
-    resizeGrip:EnableMouse(true)
-    resizeGrip:SetAlpha(0)
-    
-    -- Grip texture (diagonal lines)
-    local gripTexture = resizeGrip:CreateTexture(nil, "OVERLAY")
-    gripTexture:SetSize(12, 12)
-    gripTexture:SetPoint("CENTER", 0, 0)
-    gripTexture:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.6)
-    
-    -- Create diagonal grip lines
-    for i = 1, 3 do
-        local line = resizeGrip:CreateTexture(nil, "OVERLAY")
-        line:SetColorTexture(Colors.borderLight[1], Colors.borderLight[2], Colors.borderLight[3], 0.8)
-        line:SetSize(2, 2)
-        line:SetPoint("BOTTOMRIGHT", resizeGrip, "BOTTOMRIGHT", -2 - (i * 3), 2 + (i * 3))
-    end
-    
-    frame.resizeGrip = resizeGrip
+    -- Resize grip (using shared component)
+    local resizeGrip, gripTexture = PinUtils.CreateResizeGrip(frame, Colors)
     local isFrameHovered = false
-    local isGripHovered = false
-    frame.isGripHovered = function() return isGripHovered end
-    frame.setGripHovered = function(val) isGripHovered = val end
     
     -- Setup pinnable resize behavior (with layout saving)
     PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "main")

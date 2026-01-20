@@ -209,6 +209,9 @@ function Deathless.UI.Frame:Create()
     
     -- Smooth fade animation via OnUpdate
     frame:SetScript("OnUpdate", function(self, elapsed)
+        -- Custom drag handling (instant, no dead zone)
+        if self.UpdateDrag then self:UpdateDrag() end
+        
         local wasHovered = isFrameHovered
         isFrameHovered = self:IsMouseOver()
         if isFrameHovered ~= wasHovered then

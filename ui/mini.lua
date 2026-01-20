@@ -237,6 +237,9 @@ function Deathless.UI.MiniSummary:Create()
     )
     
     frame:SetScript("OnUpdate", function(self, elapsed)
+        -- Custom drag handling (instant, no dead zone)
+        if self.UpdateDrag then self:UpdateDrag() end
+        
         -- Check hover state
         local wasHovered = isHovered
         isHovered = self:IsMouseOver()

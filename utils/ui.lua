@@ -109,24 +109,33 @@ function Deathless.Utils.UI.CreatePinButton(frame, titleBar, configKey, options)
 end
 
 --- Setup drag handlers that respect pinned state
+--- Uses custom drag handling for instant response (no dead zone lag)
 -- @param frame The frame to setup drag handlers for
 -- @param layoutKey Optional key in config.layout to save position (e.g. "mini" or "main")
 function Deathless.Utils.UI.SetupPinnableDrag(frame, layoutKey)
-    frame:SetScript("OnDragStart", function(self)
-        if not self.IsPinned or not self.IsPinned() then
-            self:StartMoving()
+    local isDragging = false
+    local dragOffsetX, dragOffsetY = 0, 0
+    
+    -- Track mouse position relative to frame on mouse down
+    frame:SetScript("OnMouseDown", function(self, button)
+        if button == "LeftButton" and (not self.IsPinned or not self.IsPinned()) then
+            local scale = self:GetEffectiveScale()
+            local cursorX, cursorY = GetCursorPosition()
+            cursorX, cursorY = cursorX / scale, cursorY / scale
+            
+            dragOffsetX = cursorX - self:GetLeft()
+            dragOffsetY = cursorY - self:GetTop()
+            isDragging = true
         end
     end)
-    frame:SetScript("OnDragStop", function(self)
-        if not self.IsPinned or not self.IsPinned() then
-            self:StopMovingOrSizing()
-            -- Re-anchor to TOPLEFT after dragging to prevent resize jump
-            local left, top = self:GetLeft(), self:GetTop()
-            self:ClearAllPoints()
-            self:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
+    
+    frame:SetScript("OnMouseUp", function(self, button)
+        if button == "LeftButton" and isDragging then
+            isDragging = false
             
             -- Save position if layout key provided
             if layoutKey and Deathless.config.layout then
+                local left, top = self:GetLeft(), self:GetTop()
                 Deathless.config.layout[layoutKey] = Deathless.config.layout[layoutKey] or {}
                 Deathless.config.layout[layoutKey].point = "TOPLEFT"
                 Deathless.config.layout[layoutKey].x = left
@@ -134,6 +143,42 @@ function Deathless.Utils.UI.SetupPinnableDrag(frame, layoutKey)
                 Deathless:SaveConfig()
             end
         end
+    end)
+    
+    -- Store drag update function for OnUpdate handler
+    frame.UpdateDrag = function(self)
+        if isDragging then
+            -- Stop dragging if mouse button released (handles release outside frame)
+            if not IsMouseButtonDown("LeftButton") then
+                isDragging = false
+                
+                -- Save position if layout key provided
+                if layoutKey and Deathless.config.layout then
+                    local left, top = self:GetLeft(), self:GetTop()
+                    Deathless.config.layout[layoutKey] = Deathless.config.layout[layoutKey] or {}
+                    Deathless.config.layout[layoutKey].point = "TOPLEFT"
+                    Deathless.config.layout[layoutKey].x = left
+                    Deathless.config.layout[layoutKey].y = top
+                    Deathless:SaveConfig()
+                end
+                return
+            end
+            
+            local scale = self:GetEffectiveScale()
+            local cursorX, cursorY = GetCursorPosition()
+            cursorX, cursorY = cursorX / scale, cursorY / scale
+            
+            local newLeft = cursorX - dragOffsetX
+            local newTop = cursorY - dragOffsetY
+            
+            self:ClearAllPoints()
+            self:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", newLeft, newTop)
+        end
+    end
+    
+    -- Also clear drag state when hiding
+    frame:HookScript("OnHide", function()
+        isDragging = false
     end)
 end
 

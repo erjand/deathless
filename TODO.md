@@ -9,6 +9,7 @@
 - [ ] Feature: SafeGuard replacement things
 - [ ] Feature: Max level mode to disable leveling stuff?
 - [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
+- [ ] Feature: AtlasLoot for dungeons? (AL is soooo bad)
 
 ## UI
 

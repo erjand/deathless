@@ -91,6 +91,7 @@ local NAV_ITEMS = {
     { id = "selffound", label = "Self-Found (WIP)" },
     { id = "zones", label = "Zones (WIP)" },
     { divider = true },
+    { id = "commands", label = "Commands" },
     { id = "options", label = "Options" },
     { id = "support", label = "Support" },
 }

@@ -3,6 +3,7 @@
 ## Notes: A Hardcore Classic WoW companion addon
 ## Author: YourName
 ## Version: 1.0.0
+## SavedVariablesPerCharacter: DeathlessDB
 
 deathless.lua
 
@@ -36,6 +37,7 @@ ui\views\dungeons.lua
 ui\views\leveling.lua
 ui\views\selffound.lua
 ui\views\professions.lua
+ui\views\commands.lua
 ui\views\options.lua
 ui\views\support.lua
 ui\views\abilities_template.lua

@@ -4,5 +4,6 @@
 
 For this initial release, let's get:
 
-1. All class abilities done
-2. The mini viewer done with: abilities and warnings
+1. [x] All class abilities done
+2. [x] The mini viewer done with: abilities and warnings
+3. [ ] Save settings

@@ -51,6 +51,44 @@ local function CreatePixelBorder(parent, thickness, r, g, b, a)
     return borders
 end
 
+-- Helper: Create a simple close button (borderless 'x')
+local function CreateCloseButton(parent, options)
+    options = options or {}
+    local size = options.size or 14
+    local fontSize = options.fontSize or Deathless.UI.Fonts.small
+    local offsetX = options.offsetX or -3
+    
+    local btn = CreateFrame("Button", nil, parent)
+    btn:SetSize(size, size)
+    btn:SetPoint("RIGHT", parent, "RIGHT", offsetX, 0)
+    
+    btn.bg = btn:CreateTexture(nil, "BACKGROUND")
+    btn.bg:SetAllPoints()
+    btn.bg:SetColorTexture(0, 0, 0, 0)
+    
+    local Fonts = Deathless.UI.Fonts
+    btn.text = btn:CreateFontString(nil, "OVERLAY")
+    btn.text:SetFont(Fonts.family, fontSize, "")
+    btn.text:SetPoint("CENTER", 0, 0)
+    btn.text:SetText("x")
+    btn.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    
+    btn:SetScript("OnEnter", function(self)
+        self.bg:SetColorTexture(0.18, 0.18, 0.20, 1)
+        self.text:SetTextColor(1, 1, 1, 1)
+    end)
+    btn:SetScript("OnLeave", function(self)
+        self.bg:SetColorTexture(0, 0, 0, 0)
+        self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    end)
+    
+    if options.onClick then
+        btn:SetScript("OnClick", options.onClick)
+    end
+    
+    return btn
+end
+
 -- Helper: Create a simple pixel button
 local function CreatePixelButton(parent, width, height, text)
     local btn = CreateFrame("Button", nil, parent)
@@ -148,11 +186,12 @@ function Deathless.UI.Frame:Create()
     local pinBtn = PinUtils.CreatePinButton(frame, titleBar, "mainPinned", { offsetX = -28, Colors = Colors })
     
     -- Close button
-    local closeBtn = CreatePixelButton(titleBar, 20, 20, "x")
-    closeBtn:SetPoint("RIGHT", titleBar, "RIGHT", -4, 0)
-    closeBtn:SetScript("OnClick", function()
-        self:Hide()
-    end)
+    local closeBtn = CreateCloseButton(titleBar, {
+        size = 18,
+        fontSize = Fonts.body,
+        offsetX = -4,
+        onClick = function() self:Hide() end
+    })
     
     -- Create navigation sidebar
     local navigation = Deathless.UI.Navigation:Create(frame)
@@ -262,3 +301,4 @@ end
 Deathless.UI.Colors = Colors
 Deathless.UI.CreatePixelBorder = CreatePixelBorder
 Deathless.UI.CreatePixelButton = CreatePixelButton
+Deathless.UI.CreateCloseButton = CreateCloseButton

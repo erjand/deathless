@@ -105,32 +105,10 @@ function Deathless.UI.MiniSummary:Create()
     local pinBtn = PinUtils.CreatePinButton(frame, titleBar, "miniPinned", { Colors = Colors })
     
     -- Close button
-    local closeBtn = CreateFrame("Button", nil, titleBar)
-    closeBtn:SetSize(14, 14)
-    closeBtn:SetPoint("RIGHT", titleBar, "RIGHT", -3, 0)
-    
-    closeBtn.bg = closeBtn:CreateTexture(nil, "BACKGROUND")
-    closeBtn.bg:SetAllPoints()
-    closeBtn.bg:SetColorTexture(0, 0, 0, 0)
-    
-    local Fonts = Deathless.UI.Fonts
-    closeBtn.text = closeBtn:CreateFontString(nil, "OVERLAY")
-    closeBtn.text:SetFont(Fonts.family, Fonts.small, "")
-    closeBtn.text:SetPoint("CENTER", 0, 0)
-    closeBtn.text:SetText("x")
-    closeBtn.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-    
-    closeBtn:SetScript("OnEnter", function(self)
-        self.bg:SetColorTexture(0.18, 0.18, 0.20, 1)
-        self.text:SetTextColor(1, 1, 1, 1)
-    end)
-    closeBtn:SetScript("OnLeave", function(self)
-        self.bg:SetColorTexture(0, 0, 0, 0)
-        self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-    end)
-    closeBtn:SetScript("OnClick", function()
-        Deathless.UI.MiniSummary:Hide()
-    end)
+    local CreateCloseButton = Deathless.UI.CreateCloseButton
+    local closeBtn = CreateCloseButton(titleBar, {
+        onClick = function() Deathless.UI.MiniSummary:Hide() end
+    })
     
     -- Resize grip (higher frame level to stay above scroll frame)
     local resizeGrip = CreateFrame("Button", nil, frame)

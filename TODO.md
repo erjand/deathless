@@ -12,8 +12,7 @@
 
 ## UI
 
-- [x] Use the enhanced scroll bar and resize behavior from the Mini window
-- [ ] When you click and drag the window, there is about a 10-15 pixel lag before it jumps to the next position vs seamlessly moving as soon as you begin dragging
+- [ ] 
 
 ## Summary
 

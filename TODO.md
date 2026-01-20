@@ -1,9 +1,5 @@
 # TODO
 
-- [ ] Make Talents page a template also
-- [ ] Feature: Open Talents from Talents screen
-- [ ] Feature: Open Zones from Map
-- [ ] Split between Reference and Features on left nav-bar
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
 - [ ] Feature: Max level mode to disable leveling stuff?
@@ -13,6 +9,7 @@
 ## UI
 
 - [ ] Only show the top-level "Classes" section if more than one Class is selected, otherwise just use the class (e.g. "Warrior")
+- [ ] Split between Reference and Features on left nav-bar
 
 ## Summary
 
@@ -30,9 +27,7 @@
 
 ### Abilities
 
-- [x] Make Abilities page a template that is re-usable to populate with data vs having to update them all each time
-- [x] Feature: Open Abilities from Blizzard spellbook
-- [ ] Feature: Search / filter bar?
+- [ ] Search / filter bar?
 
 - [x] Priest: Audit
 - [x] Mage: Audit
@@ -57,6 +52,9 @@
 
 ### Talents
 
+- [ ] Make Talents page a template also
+- [ ] Open Talents from Talents screen
+
 - [ ] Druid Talents
 - [ ] Hunter Talents
 - [ ] Mage Talents
@@ -76,8 +74,11 @@
 - [ ] Light of Elune https://www.wowhead.com/classic/quest=1017/mage-summoner (Alliance)
 - [ ] Seal of Wrynn https://www.wowhead.com/classic/item=2933/seal-of-wrynn (Alliance)
 - [ ] That good Horde ring quest in Dustwallow
+- [ ] Alliance: DM main quest rewards
 
 ## Zones
+
+- [ ] Open Zones from Map
 
 ## Options
 

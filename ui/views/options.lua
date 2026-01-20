@@ -156,12 +156,22 @@ Deathless.UI.Views:Register("options", function(container)
                 end
             end
             
+            -- Frame background for hover effect
+            f.hoverBg = f:CreateTexture(nil, "BACKGROUND")
+            f.hoverBg:SetAllPoints()
+            f.hoverBg:SetColorTexture(Colors.accent[1] * 0.15, Colors.accent[2] * 0.15, Colors.accent[3] * 0.15, 0.3)
+            f.hoverBg:Hide()
+            
             -- Make entire frame clickable
             f:EnableMouse(true)
             f:SetScript("OnEnter", function(self)
                 self.label:SetTextColor(1, 1, 1, 1)
+                self.hoverBg:Show()
                 if not self.checked then
-                    self.btn.bg:SetColorTexture(Colors.bgLight[1] + 0.1, Colors.bgLight[2] + 0.1, Colors.bgLight[3] + 0.1, 1)
+                    self.btn.bg:SetColorTexture(Colors.bgLight[1] + 0.25, Colors.bgLight[2] + 0.25, Colors.bgLight[3] + 0.25, 1)
+                    self.btn.border:SetColorTexture(Colors.accent[1] * 0.6, Colors.accent[2] * 0.6, Colors.accent[3] * 0.6, 1)
+                else
+                    self.btn.border:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
                 end
                 
                 -- Show tooltip if provided
@@ -172,8 +182,12 @@ Deathless.UI.Views:Register("options", function(container)
             
             f:SetScript("OnLeave", function(self)
                 self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                self.hoverBg:Hide()
                 if not self.checked then
                     self.btn.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
+                    self.btn.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+                else
+                    self.btn.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
                 end
                 Deathless.UI.Tooltip:Hide()
             end)

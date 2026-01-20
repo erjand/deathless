@@ -2,7 +2,6 @@
 Deathless = Deathless or {}
 Deathless.version = "0.1.0"
 Deathless.modules = {}
-Deathless.config = {}
 
 -- Module registration system
 function Deathless:RegisterModule(name, module)

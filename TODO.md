@@ -1,7 +1,6 @@
 # TODO
 
 - [ ] Make Talents page a template also
-- [ ] Make addon settings persist across reloads
 - [ ] Feature: Open Talents from Talents screen
 - [ ] Feature: Open Zones from Map
 - [ ] Split between Reference and Features on left nav-bar
@@ -29,6 +28,7 @@
 - [x] MVP
 - [x] Lock / pin
 - [x] Show by default when loading UI (have to close manually if don't want)
+- [ ] Have "X" match visual style of the main window
 
 ## Classes
 

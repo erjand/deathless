@@ -51,8 +51,15 @@ function Deathless.UI.MiniSummary:Create()
     
     -- Create main frame
     local frame = CreateFrame("Frame", "DeathlessMiniSummary", UIParent, "BackdropTemplate")
-    frame:SetSize(300, 200)
-    frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 32, 300)
+    
+    -- Restore saved layout (always use TOPLEFT->BOTTOMLEFT for absolute positioning)
+    local layout = Deathless.config.layout and Deathless.config.layout.mini or {}
+    frame:SetSize(layout.width or 300, layout.height or 200)
+    if layout.x and layout.y then
+        frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", layout.x, layout.y)
+    else
+        frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 32, 300)
+    end
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:SetResizable(true)
@@ -150,11 +157,11 @@ function Deathless.UI.MiniSummary:Create()
     frame.isGripHovered = function() return isGripHovered end
     frame.setGripHovered = function(val) isGripHovered = val end
     
-    -- Setup pinnable resize behavior
-    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors)
+    -- Setup pinnable resize behavior (with layout saving)
+    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "mini")
     
-    -- Setup pinnable drag behavior
-    PinUtils.SetupPinnableDrag(frame)
+    -- Setup pinnable drag behavior (with layout saving)
+    PinUtils.SetupPinnableDrag(frame, "mini")
     
     -- Content scroll frame (no template - we'll make our own indicator)
     local scrollFrame = CreateFrame("ScrollFrame", nil, frame)
@@ -662,11 +669,23 @@ function Deathless.UI.MiniSummary:Show()
     if self.Refresh then
         self.Refresh()
     end
+    -- Save visibility state
+    if Deathless.config.layout then
+        Deathless.config.layout.mini = Deathless.config.layout.mini or {}
+        Deathless.config.layout.mini.shown = true
+        Deathless:SaveConfig()
+    end
 end
 
 function Deathless.UI.MiniSummary:Hide()
     if self.frame then
         self.frame:Hide()
+    end
+    -- Save visibility state
+    if Deathless.config.layout then
+        Deathless.config.layout.mini = Deathless.config.layout.mini or {}
+        Deathless.config.layout.mini.shown = false
+        Deathless:SaveConfig()
     end
 end
 
@@ -677,4 +696,16 @@ function Deathless.UI.MiniSummary:Toggle()
         self:Show()
     end
 end
+
+-- Restore mini window state on login
+local restoreFrame = CreateFrame("Frame")
+restoreFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+restoreFrame:SetScript("OnEvent", function(self, event)
+    self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+    -- Check if mini window should be shown
+    local layout = Deathless.config.layout and Deathless.config.layout.mini
+    if layout and layout.shown then
+        Deathless.UI.MiniSummary:Show()
+    end
+end)
 

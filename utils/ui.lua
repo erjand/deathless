@@ -110,7 +110,8 @@ end
 
 --- Setup drag handlers that respect pinned state
 -- @param frame The frame to setup drag handlers for
-function Deathless.Utils.UI.SetupPinnableDrag(frame)
+-- @param layoutKey Optional key in config.layout to save position (e.g. "mini" or "main")
+function Deathless.Utils.UI.SetupPinnableDrag(frame, layoutKey)
     frame:SetScript("OnDragStart", function(self)
         if not self.IsPinned or not self.IsPinned() then
             self:StartMoving()
@@ -123,6 +124,15 @@ function Deathless.Utils.UI.SetupPinnableDrag(frame)
             local left, top = self:GetLeft(), self:GetTop()
             self:ClearAllPoints()
             self:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
+            
+            -- Save position if layout key provided
+            if layoutKey and Deathless.config.layout then
+                Deathless.config.layout[layoutKey] = Deathless.config.layout[layoutKey] or {}
+                Deathless.config.layout[layoutKey].point = "TOPLEFT"
+                Deathless.config.layout[layoutKey].x = left
+                Deathless.config.layout[layoutKey].y = top
+                Deathless:SaveConfig()
+            end
         end
     end)
 end
@@ -132,7 +142,8 @@ end
 -- @param resizeGrip The resize grip button
 -- @param gripTexture The grip texture for hover effects
 -- @param Colors Color palette
-function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors)
+-- @param layoutKey Optional key in config.layout to save size (e.g. "mini" or "main")
+function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, layoutKey)
     resizeGrip:SetScript("OnMouseDown", function(self, button)
         if button == "LeftButton" and (not frame.IsPinned or not frame.IsPinned()) then
             -- Only re-anchor if not already anchored to TOPLEFT to prevent jump
@@ -148,6 +159,14 @@ function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, 
     
     resizeGrip:SetScript("OnMouseUp", function()
         frame:StopMovingOrSizing()
+        
+        -- Save size if layout key provided
+        if layoutKey and Deathless.config.layout then
+            Deathless.config.layout[layoutKey] = Deathless.config.layout[layoutKey] or {}
+            Deathless.config.layout[layoutKey].width = frame:GetWidth()
+            Deathless.config.layout[layoutKey].height = frame:GetHeight()
+            Deathless:SaveConfig()
+        end
     end)
     
     resizeGrip:SetScript("OnEnter", function(self)

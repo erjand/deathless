@@ -6,6 +6,11 @@ Deathless.config = Deathless.config or {
         scale = 1.0,
         locked = false,
     },
+    -- Window layout (persisted positions/sizes)
+    layout = {
+        mini = { shown = false },
+        main = {},
+    },
     -- Module settings
     modules = {
         classes = { enabled = true },

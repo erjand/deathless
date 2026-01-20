@@ -95,8 +95,15 @@ function Deathless.UI.Frame:Create()
     
     -- Create main frame
     local frame = CreateFrame("Frame", "DeathlessMainFrame", UIParent)
-    frame:SetSize(800, 600)
-    frame:SetPoint("CENTER")
+    
+    -- Restore saved layout (use TOPLEFT->BOTTOMLEFT for absolute positioning if saved)
+    local layout = Deathless.config.layout and Deathless.config.layout.main or {}
+    frame:SetSize(layout.width or 800, layout.height or 600)
+    if layout.x and layout.y and layout.point == "TOPLEFT" then
+        frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", layout.x, layout.y)
+    else
+        frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+    end
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:SetResizable(true)
@@ -187,11 +194,11 @@ function Deathless.UI.Frame:Create()
     frame.isGripHovered = function() return isGripHovered end
     frame.setGripHovered = function(val) isGripHovered = val end
     
-    -- Setup pinnable resize behavior
-    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors)
+    -- Setup pinnable resize behavior (with layout saving)
+    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "main")
     
-    -- Setup pinnable drag behavior
-    PinUtils.SetupPinnableDrag(frame)
+    -- Setup pinnable drag behavior (with layout saving)
+    PinUtils.SetupPinnableDrag(frame, "main")
     
     -- Setup grip alpha updater using shared utility
     local UpdateGripAlpha, getGripTargetAlpha = PinUtils.CreateGripAlphaUpdater(

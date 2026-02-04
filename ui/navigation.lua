@@ -63,7 +63,7 @@ local DRUID_ITEMS = {
 -- Sub-items for Warlock class
 local WARLOCK_ITEMS = {
     { id = "warlock_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "warlock_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "warlock_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Classic WoW classes in alphabetical order (with icons and optional children)

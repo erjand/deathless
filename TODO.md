@@ -60,7 +60,6 @@
 - [ ] Whirlwind Axe
 - [ ] SM Quest Chain - "In the Name of the Light" (~lvl 40ish) https://www.wowhead.com/classic/quest=1053/in-the-name-of-the-light
 
-
 ### Talents
 
 - [ ] Make Talents page a template also
@@ -73,10 +72,10 @@
 - [x] Priest Talents
 - [ ] Rogue Talents
 - [ ] Shaman Talents
-- [ ] Warlock Talents
+- [x] Warlock Talents
 - [ ] Warrior Talents
 
-#### Warriors
+#### Warrior
 
 10-14 Cruelty
 15-19 Imp Demo Shout

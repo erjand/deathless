@@ -20,7 +20,7 @@ Deathless.UI.Views:Register("options", function(container)
     local CLASS_ROWS = 3
     
     -- Section collapse state
-    local sectionState = { classes = true, summary = true, warnings = true, abilities = true }
+    local sectionState = { classes = true, summary = true, warnings = true, xpProgress = true, abilities = true }
     
     -- Element pools
     local pools = { section = {}, subheader = {}, checkbox = {} }
@@ -328,6 +328,32 @@ Deathless.UI.Views:Register("options", function(container)
                 
                 -- Update yOffset: WARNING_ROWS is the number of rows (4), not columns
                 yOffset = yOffset - 8 - (WARNING_ROWS * ROW_HEIGHT) - 8
+            end
+            
+            -- XP Progress sub-section header
+            local xpHeader = GetPooledElement("subheader", function()
+                return Utils:CreateCollapsibleSubSection(scrollChild)
+            end)
+            xpHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
+            xpHeader:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            Utils:ConfigureSubSection(xpHeader, sectionState.xpProgress, "XP Progress", { 0.4, 0.8, 1.0 })
+            xpHeader.sectionKey = "xpProgress"
+            xpHeader:SetScript("OnClick", function(self)
+                sectionState[self.sectionKey] = not sectionState[self.sectionKey]
+                Refresh()
+            end)
+            yOffset = yOffset - SUBSECTION_HEIGHT
+            
+            if sectionState.xpProgress then
+                local xpCheckbox = GetCheckbox("Show XP Progress", nil, function(checked)
+                    Deathless.config.showXPProgress = checked
+                    Deathless:SaveConfig()
+                    Deathless.Utils.Warnings:TriggerRefresh()
+                end, "Show XP progress, session stats, and time to level in Summary and Mini views")
+                
+                xpCheckbox:SetPoint("TOPLEFT", xpHeader, "BOTTOMLEFT", 0, -8)
+                xpCheckbox:SetChecked(Deathless.config.showXPProgress ~= false)
+                yOffset = yOffset - 8 - ROW_HEIGHT - 8
             end
             
             -- Abilities sub-section header (anchor to scrollChild using absolute yOffset)

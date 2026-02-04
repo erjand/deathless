@@ -415,7 +415,8 @@ function Deathless.UI.MiniSummary:SetupContent()
         
         -- XP Progress Section (compact for mini view)
         local xpData = Deathless.Utils.XP:GetData()
-        if not xpData.isMaxLevel then
+        local showXP = Deathless.config.showXPProgress ~= false
+        if showXP and not xpData.isMaxLevel then
             local xpHeader = CreateFrame("Button", nil, scrollChild)
             xpHeader:SetHeight(18)
             xpHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)

@@ -5,7 +5,6 @@
 - [ ] Feature: Max level mode to disable leveling stuff?
 - [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
 - [ ] Feature: AtlasLoot for dungeons? (AL is soooo bad)
-- [ ] Feature: XP average / TTL in the mini?
 
 ## UI
 
@@ -30,8 +29,6 @@
 ### Abilities
 
 - [ ] Search / filter bar?
-
-- [ ] Warrior: Missing dual wield at 20? 40s at lvl 20
 
 - [x] Priest: Audit
 - [x] Mage: Audit

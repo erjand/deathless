@@ -295,7 +295,8 @@ end
         
         -- XP Progress Section
         local xpData = Deathless.Utils.XP:GetData()
-        if not xpData.isMaxLevel then
+        local showXP = Deathless.config.showXPProgress ~= false
+        if showXP and not xpData.isMaxLevel then
             local xpColor = { 0.4, 0.8, 1.0 }
             yOffset = CreateSectionHeader("xp", "XP Progress", nil, yOffset, xpColor)
             

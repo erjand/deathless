@@ -73,15 +73,7 @@
 - [ ] Rogue Talents
 - [ ] Shaman Talents
 - [x] Warlock Talents
-- [ ] Warrior Talents
-
-#### Warrior
-
-10-14 Cruelty
-15-19 Imp Demo Shout
-20 Piercing Howl
-21-24 Imp Battle Shout
-
+- [x] Warrior Talents
 
 ## Dungeons
 

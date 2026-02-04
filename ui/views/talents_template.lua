@@ -390,7 +390,18 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 
                 -- Sub-rows for expanded talents
                 if hasRanks and isRowExpanded then
-                    local totalRanks = #ranks
+                    -- Parse points to get actual rank numbers (e.g., "5/5" → endRank=5, maxRanks=5)
+                    local endRank, maxRanks = 0, 0
+                    if talentPoints then
+                        endRank, maxRanks = talentPoints:match("(%d+)/(%d+)")
+                        endRank = tonumber(endRank) or #ranks
+                        maxRanks = tonumber(maxRanks) or #ranks
+                    else
+                        endRank = #ranks
+                        maxRanks = #ranks
+                    end
+                    local startRank = endRank - #ranks + 1
+                    
                     for rankIndex, rankData in ipairs(ranks) do
                         local subRow = GetSubRow()
                         subRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
@@ -413,8 +424,9 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                         end
                         subRow.talentIcon:Show()
                         
-                        -- Show "Talent Name X/Y" format
-                        subRow.rankText:SetText(talentName .. " " .. rankIndex .. "/" .. totalRanks)
+                        -- Show "Talent Name X/Y" format with actual rank numbers
+                        local actualRank = startRank + rankIndex - 1
+                        subRow.rankText:SetText(talentName .. " " .. actualRank .. "/" .. maxRanks)
                         subRow.rankText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.8)
                         
                         -- Tooltip for sub-row

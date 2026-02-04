@@ -15,7 +15,7 @@ local ICON_GEAR = Icons.NAV_GEAR
 local WARRIOR_ITEMS = {
     { id = "warrior_abilities", label = "Abilities", icon = ICON_ABILITIES },
     { id = "warrior_gear", label = "Gear (WIP)", icon = ICON_GEAR },
-    { id = "warrior_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "warrior_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Mage class

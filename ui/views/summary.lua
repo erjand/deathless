@@ -49,7 +49,7 @@ end
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
     
     -- Section collapse state
-    local sectionState = { warnings = true, abilities = true, availableNow = true, nextAvailable = true }
+    local sectionState = { warnings = true, xp = true, abilities = true, availableNow = true, nextAvailable = true }
     
     -- Element pooling
     local pools = {
@@ -293,6 +293,85 @@ end
         
         yOffset = yOffset - 10  -- Spacing between sections
         
+        -- XP Progress Section
+        local xpData = Deathless.Utils.XP:GetData()
+        if not xpData.isMaxLevel then
+            local xpColor = { 0.4, 0.8, 1.0 }
+            yOffset = CreateSectionHeader("xp", "XP Progress", nil, yOffset, xpColor)
+            
+            if sectionState.xp then
+                -- XP Bar
+                local barFrame = GetFrame("row")
+                barFrame:SetHeight(20)
+                barFrame:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                barFrame:SetPoint("RIGHT", scrollChild, "RIGHT", -12, 0)
+                
+                -- Background bar
+                if not barFrame.barBg then
+                    barFrame.barBg = barFrame:CreateTexture(nil, "BACKGROUND")
+                    barFrame.barBg:SetAllPoints()
+                    barFrame.barBg:SetColorTexture(0.1, 0.1, 0.1, 0.8)
+                end
+                barFrame.barBg:Show()
+                
+                -- Progress bar
+                if not barFrame.barFill then
+                    barFrame.barFill = barFrame:CreateTexture(nil, "ARTWORK")
+                    barFrame.barFill:SetPoint("TOPLEFT", barFrame, "TOPLEFT", 1, -1)
+                    barFrame.barFill:SetPoint("BOTTOMLEFT", barFrame, "BOTTOMLEFT", 1, 1)
+                end
+                barFrame.barFill:SetWidth(math.max(1, (barFrame:GetWidth() - 2) * (xpData.percent / 100)))
+                barFrame.barFill:SetColorTexture(0.4, 0.8, 1.0, 0.8)
+                barFrame.barFill:Show()
+                
+                -- XP text on bar
+                barFrame.name:SetPoint("CENTER", barFrame, "CENTER", 0, 0)
+                barFrame.name:SetText(string.format("%s / %s (%.1f%%)", 
+                    Deathless.Utils.XP:FormatNumber(xpData.currentXP),
+                    Deathless.Utils.XP:FormatNumber(xpData.maxXP),
+                    xpData.percent))
+                barFrame.name:SetTextColor(1, 1, 1, 1)
+                barFrame.level:SetText("")
+                barFrame.cost:SetText("")
+                barFrame.icon:Hide()
+                
+                yOffset = yOffset - 24
+                
+                -- Session stats row
+                local statsRow = GetFrame("row")
+                statsRow:SetHeight(20)
+                statsRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                statsRow:SetPoint("RIGHT", scrollChild, "RIGHT", -12, 0)
+                statsRow.icon:Hide()
+                
+                statsRow.name:ClearAllPoints()
+                statsRow.name:SetPoint("LEFT", statsRow, "LEFT", 0, 0)
+                statsRow.name:SetText("Session: " .. Deathless.Utils.XP:FormatNumber(xpData.xpThisSession) .. " XP")
+                statsRow.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                
+                statsRow.level:ClearAllPoints()
+                statsRow.level:SetPoint("CENTER", statsRow, "CENTER", 0, 0)
+                statsRow.level:SetText(Deathless.Utils.XP:FormatNumber(xpData.xpPerHour) .. " XP/hr")
+                statsRow.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                
+                statsRow.cost:SetText("TTL: " .. Deathless.Utils.XP:FormatTime(xpData.timeToLevel))
+                statsRow.cost:SetTextColor(xpColor[1], xpColor[2], xpColor[3], 1)
+                
+                yOffset = yOffset - 24
+                
+                -- Rested XP (if any)
+                if xpData.restedXP > 0 then
+                    local restedRow = GetFrame("text")
+                    restedRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                    restedRow:SetText("Rested: " .. Deathless.Utils.XP:FormatNumber(xpData.restedXP) .. " XP")
+                    restedRow:SetTextColor(0.4, 0.9, 0.4, 1)
+                    yOffset = yOffset - 20
+                end
+            end
+        end
+        
+        yOffset = yOffset - 10  -- Spacing between sections
+        
         -- Abilities Section
         local abilitiesCount = #available + #nextAvailable
         yOffset = CreateSectionHeader("abilities", "Abilities", abilitiesCount > 0 and abilitiesCount or nil, yOffset, { Colors.accent[1], Colors.accent[2], Colors.accent[3] })
@@ -428,6 +507,13 @@ end
     
     -- Register for automatic refresh when warnings/state changes
     Deathless.Utils.Warnings:RegisterRefresh("summary", function()
+        if container:IsVisible() then
+            Refresh()
+        end
+    end)
+    
+    -- Register for XP changes
+    Deathless.Utils.XP:RegisterRefresh("summary", function()
         if container:IsVisible() then
             Refresh()
         end

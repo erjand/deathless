@@ -17,6 +17,7 @@ utils\ui.lua
 utils\chat.lua
 utils\icons.lua
 utils\warnings.lua
+utils\xp.lua
 
 modules\classes\init.lua
 modules\zones\init.lua

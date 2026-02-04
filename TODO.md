@@ -5,9 +5,11 @@
 - [ ] Feature: Max level mode to disable leveling stuff?
 - [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
 - [ ] Feature: AtlasLoot for dungeons? (AL is soooo bad)
+- [ ] Feature: XP average / TTL in the mini?
 
 ## UI
 
+- [ ] Give the overall UI a bit darker background vs the gray it has right now
 - [ ] Only show the top-level "Classes" section if more than one Class is selected, otherwise just use the class (e.g. "Warrior")
 - [ ] Split between Reference and Features on left nav-bar
 
@@ -29,6 +31,8 @@
 
 - [ ] Search / filter bar?
 
+- [ ] Warrior: Missing dual wield at 20? 40s at lvl 20
+
 - [x] Priest: Audit
 - [x] Mage: Audit
 - [x] Rogue: Audit
@@ -48,7 +52,17 @@
 - [ ] Rogue Gear
 - [ ] Shaman Gear
 - [ ] Warlock Gear
-- [ ] Warrior Gear
+
+#### Warrior
+
+##### Weapons
+
+- [ ] White weapons from the Youtube video https://www.youtube.com/watch?v=IoImsJ1fvnM
+- [ ] Executioner's Sword
+- [ ] Corpsemaker (RFK drop)
+- [ ] Whirlwind Axe
+- [ ] SM Quest Chain - "In the Name of the Light" (~lvl 40ish) https://www.wowhead.com/classic/quest=1053/in-the-name-of-the-light
+
 
 ### Talents
 
@@ -65,6 +79,14 @@
 - [ ] Warlock Talents
 - [ ] Warrior Talents
 
+#### Warriors
+
+10-14 Cruelty
+15-19 Imp Demo Shout
+20 Piercing Howl
+21-24 Imp Battle Shout
+
+
 ## Dungeons
 
 ## Professions
@@ -75,10 +97,15 @@
 - [ ] Seal of Wrynn https://www.wowhead.com/classic/item=2933/seal-of-wrynn (Alliance)
 - [ ] That good Horde ring quest in Dustwallow
 - [ ] Alliance: DM main quest rewards
+- [ ] Nifty Stopwatch (~40 Badlands)
 
 ## Zones
 
 - [ ] Open Zones from Map
+
+### Elwynn Forest
+
+- [ ] Danger: Murlocs; Princess
 
 ## Options
 

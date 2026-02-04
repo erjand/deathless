@@ -75,6 +75,9 @@ Deathless.Data.Abilities["Warrior"] = {
     -- Disarm
     { name = "Disarm", level = 18, rank = 1, base_cost = 3000, icon = "Ability_Warrior_Disarm", source = "trainer", train = "yes", spellId = 676 },
 
+    -- Dual Wield
+    { name = "Dual Wield", level = 20, rank = 1, base_cost = 4000, icon = "Ability_DualWield", source = "trainer", train = "yes", spellId = 674 },
+
     -- Execute
     { name = "Execute", level = 24, rank = 1, base_cost = 8000, icon = "INV_Sword_48", source = "trainer", train = "yes", spellId = 5308 },
     { name = "Execute", level = 32, rank = 2, base_cost = 14000, icon = "INV_Sword_48", source = "trainer", train = "yes", spellId = 20658 },

@@ -21,7 +21,7 @@ local WARRIOR_ITEMS = {
 -- Sub-items for Mage class
 local MAGE_ITEMS = {
     { id = "mage_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "mage_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "mage_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Priest class
@@ -32,32 +32,32 @@ local PRIEST_ITEMS = {
 
 -- Sub-items for Rogue class
 local ROGUE_ITEMS = {
-    { id = "rogue_abilities", label = "Abilities (WIP)", icon = ICON_ABILITIES },
-    { id = "rogue_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "rogue_abilities", label = "Abilities", icon = ICON_ABILITIES },
+    { id = "rogue_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Hunter class
 local HUNTER_ITEMS = {
     { id = "hunter_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "hunter_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "hunter_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Paladin class
 local PALADIN_ITEMS = {
     { id = "paladin_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "paladin_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "paladin_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Shaman class
 local SHAMAN_ITEMS = {
     { id = "shaman_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "shaman_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "shaman_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Druid class
 local DRUID_ITEMS = {
     { id = "druid_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "druid_talents", label = "Talents (WIP)", icon = ICON_TALENTS },
+    { id = "druid_talents", label = "Talents", icon = ICON_TALENTS },
 }
 
 -- Sub-items for Warlock class

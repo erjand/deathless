@@ -54,9 +54,13 @@ ui\views\priest_talents.lua
 ui\views\rogue_abilities.lua
 ui\views\rogue_talents.lua
 ui\views\hunter_abilities.lua
+ui\views\hunter_talents.lua
 ui\views\paladin_abilities.lua
+ui\views\paladin_talents.lua
 ui\views\shaman_abilities.lua
+ui\views\shaman_talents.lua
 ui\views\druid_abilities.lua
+ui\views\druid_talents.lua
 ui\views\warlock_abilities.lua
 ui\views\warlock_talents.lua
 ui\content.lua
@@ -73,9 +77,7 @@ data\zones.lua
 data\dungeons.lua
 data\professions.lua
 data\talents\warrior.lua
-data\talents\mage.lua
 data\talents\priest.lua
-data\talents\rogue.lua
 data\talents\warlock.lua
 data\abilities\warrior.lua
 data\abilities\paladin.lua

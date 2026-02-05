@@ -62,9 +62,6 @@
 
 ### Talents
 
-- [ ] Make Talents page a template also
-- [ ] Open Talents from Talents screen
-
 - [ ] Druid Talents
 - [ ] Hunter Talents
 - [ ] Mage Talents

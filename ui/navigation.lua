@@ -79,12 +79,14 @@ local CLASS_ITEMS = {
     { id = "class_warrior", label = "Warrior", icon = Icons.CLASS_WARRIOR, children = WARRIOR_ITEMS },
 }
 
--- Navigation items configuration (with optional children)
-local NAV_ITEMS = {
+-- Base navigation items (classes section is inserted dynamically)
+local NAV_ITEMS_TOP = {
     { id = "home", label = "Home" },
     { id = "summary", label = "Summary" },
     { divider = true },
-    { id = "classes", label = "Classes", children = CLASS_ITEMS },
+}
+
+local NAV_ITEMS_BOTTOM = {
     { id = "dungeons", label = "Dungeons (WIP)" },
     { id = "leveling", label = "Leveling (WIP)" },
     { id = "professions", label = "Professions (WIP)" },
@@ -95,6 +97,60 @@ local NAV_ITEMS = {
     { id = "options", label = "Options" },
     { id = "support", label = "Support" },
 }
+
+--- Get the count and single class item if only one is included
+---@return number count Number of included classes
+---@return table|nil singleClass The single class item if count == 1
+local function GetIncludedClassInfo()
+    local config = Deathless.config
+    if not config or not config.includedClasses then
+        return #CLASS_ITEMS, nil
+    end
+    
+    local count = 0
+    local singleClass = nil
+    for _, item in ipairs(CLASS_ITEMS) do
+        if config.includedClasses[item.label] then
+            count = count + 1
+            singleClass = item
+        end
+    end
+    
+    return count, (count == 1) and singleClass or nil
+end
+
+--- Build nav items dynamically based on config
+---@return table The navigation items
+local function GetNavItems()
+    local items = {}
+    
+    -- Add top items
+    for _, item in ipairs(NAV_ITEMS_TOP) do
+        table.insert(items, item)
+    end
+    
+    -- Add class section (single class promoted or full Classes menu)
+    local count, singleClass = GetIncludedClassInfo()
+    if singleClass then
+        -- Promote single class to top level with its icon
+        table.insert(items, {
+            id = singleClass.id,
+            label = singleClass.label,
+            icon = singleClass.icon,
+            children = singleClass.children,
+        })
+    else
+        -- Show full Classes menu
+        table.insert(items, { id = "classes", label = "Classes", children = CLASS_ITEMS })
+    end
+    
+    -- Add bottom items
+    for _, item in ipairs(NAV_ITEMS_BOTTOM) do
+        table.insert(items, item)
+    end
+    
+    return items
+end
 
 -- Width of the navigation sidebar
 local NAV_WIDTH = 160
@@ -197,6 +253,32 @@ local function SetButtonExpanded(btn, expanded)
     if btn.expandIcon then
         btn.expandIcon:SetText(expanded and "−" or "+")
     end
+end
+
+--- Update button styling for current depth
+---@param btn Button The nav button
+---@param depth number Current depth (0 = top level)
+local function UpdateButtonDepthStyle(btn, depth)
+    local height = depth == 0 and BUTTON_HEIGHT or (depth == 1 and SUB_BUTTON_HEIGHT or SUB_SUB_BUTTON_HEIGHT)
+    local indent = depth * 16
+    local Fonts = Deathless.UI.Fonts
+    local fontSize = depth == 0 and Fonts.sectionHeader or (depth == 1 and Fonts.subtitle or Fonts.body)
+    local iconSize = depth == 0 and 18 or (depth == 1 and 16 or 14)
+    
+    btn:SetHeight(height)
+    btn:SetWidth(NAV_WIDTH - 8 - indent)
+    btn.label:SetFont(Fonts.family, fontSize, "")
+    
+    if btn.icon then
+        btn.icon:SetSize(iconSize, iconSize)
+        btn.label:SetPoint("LEFT", btn, "LEFT", 8 + iconSize + 4, 0)
+    end
+    
+    if btn.indicator then
+        btn.indicator:SetHeight(height - 6)
+    end
+    
+    btn.depth = depth
 end
 
 --- Add expand/collapse indicator to a button
@@ -309,6 +391,7 @@ local function PositionButtonsRecursive(nav, scrollChild, items, yOffset, depth,
             
             if btn then
                 if parentExpanded and shouldShow then
+                    UpdateButtonDepthStyle(btn, depth)
                     btn:ClearAllPoints()
                     btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 4 + indent, yOffset)
                     btn:Show()
@@ -341,7 +424,15 @@ function Deathless.UI.Navigation:RepositionButtons()
     local scrollChild = nav.scrollChild
     if not scrollChild then return end
     
-    local yOffset = PositionButtonsRecursive(nav, scrollChild, NAV_ITEMS, -4, 0, true)
+    -- Hide all buttons first (they'll be shown by positioning if needed)
+    for _, btn in pairs(nav.buttons) do
+        btn:Hide()
+    end
+    for _, divider in pairs(nav.dividers) do
+        divider:Hide()
+    end
+    
+    local yOffset = PositionButtonsRecursive(nav, scrollChild, GetNavItems(), -4, 0, true)
     
     -- Update scroll child height and scrollbar
     scrollChild:SetHeight(math.abs(yOffset) + 10)
@@ -508,8 +599,15 @@ function Deathless.UI.Navigation:Create(parent)
     nav.buttons = {}
     nav.dividers = {}
     
-    -- Create all nav buttons recursively (using scrollChild as parent)
-    for _, item in ipairs(NAV_ITEMS) do
+    -- Create all nav buttons (for all possible structures)
+    -- Top items
+    for _, item in ipairs(NAV_ITEMS_TOP) do
+        CreateButtonsRecursive(nav, scrollChild, item, 0)
+    end
+    -- Classes parent (for multi-class mode)
+    CreateButtonsRecursive(nav, scrollChild, { id = "classes", label = "Classes", children = CLASS_ITEMS }, 0)
+    -- Bottom items
+    for _, item in ipairs(NAV_ITEMS_BOTTOM) do
         CreateButtonsRecursive(nav, scrollChild, item, 0)
     end
     

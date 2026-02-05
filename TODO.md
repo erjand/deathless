@@ -8,9 +8,7 @@
 
 ## UI
 
-- [ ] Give the overall UI a bit darker background vs the gray it has right now
-- [ ] Only show the top-level "Classes" section if more than one Class is selected, otherwise just use the class (e.g. "Warrior")
-- [ ] Split between Reference and Features on left nav-bar
+- [ ] 
 
 ## Summary
 

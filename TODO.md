@@ -26,15 +26,7 @@
 
 ### Abilities
 
-- [ ] Search / filter bar?
-
-- [x] Priest: Audit
-- [x] Mage: Audit
-- [x] Rogue: Audit
-- [x] Druid: Audit
 - [ ] Hunter Pets
-- [x] Paladin: Audit
-- [x] Shaman: Audit
 - [ ] Warlock Tomes
 
 ### Gear
@@ -47,6 +39,7 @@
 - [ ] Rogue Gear
 - [ ] Shaman Gear
 - [ ] Warlock Gear
+- [ ] Warrior Gear
 
 #### Warrior
 

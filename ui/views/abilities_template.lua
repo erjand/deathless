@@ -80,7 +80,7 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
     
     local btn = CreateFrame("Button", nil, parent)
     btn:SetSize(width, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -75)
+    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -95)
     
     local Fonts = Deathless.UI.Fonts
     btn.label = btn:CreateFontString(nil, "OVERLAY")
@@ -144,8 +144,48 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         
         local title, subtitle = Utils:CreateHeader(container, className .. " Abilities", "", classColor)
         
+        -- Search state
+        local searchState = { term = "" }
+        
+        -- Create search bar
+        local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
+        searchBox:SetSize(180, 20)
+        searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, -52)
+        searchBox:SetFont(Fonts.family, Fonts.body, "")
+        searchBox:SetAutoFocus(false)
+        searchBox:SetMaxLetters(50)
+        searchBox:SetTextInsets(4, 20, 0, 0)
+        
+        local searchLabel = container:CreateFontString(nil, "OVERLAY")
+        searchLabel:SetFont(Fonts.family, Fonts.small, "")
+        searchLabel:SetPoint("BOTTOMLEFT", searchBox, "TOPLEFT", 2, 2)
+        searchLabel:SetText("Search")
+        searchLabel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        
+        -- Clear button (X)
+        local clearBtn = CreateFrame("Button", nil, searchBox)
+        clearBtn:SetSize(16, 16)
+        clearBtn:SetPoint("RIGHT", searchBox, "RIGHT", -2, 0)
+        clearBtn:SetNormalFontObject("GameFontNormalSmall")
+        clearBtn.text = clearBtn:CreateFontString(nil, "OVERLAY")
+        clearBtn.text:SetFont(Fonts.family, Fonts.body, "")
+        clearBtn.text:SetPoint("CENTER")
+        clearBtn.text:SetText("×")
+        clearBtn.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        clearBtn:Hide()
+        clearBtn:SetScript("OnClick", function()
+            searchBox:SetText("")
+            searchBox:ClearFocus()
+        end)
+        clearBtn:SetScript("OnEnter", function(self)
+            self.text:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        end)
+        clearBtn:SetScript("OnLeave", function(self)
+            self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        end)
+        
         -- Enhanced scroll frame with auto-hiding scrollbar
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -95, 24)
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -115, 24)
         
         -- Sort state
         local sortState = { sortKey = "level", sortAsc = true }
@@ -435,14 +475,21 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local NEXT_LEVEL_RANGE = 2
             local nextLevelCap = playerLevel + NEXT_LEVEL_RANGE
             
+            -- Search filter
+            local searchTerm = searchState.term:lower()
+            local hasSearch = searchTerm ~= ""
+            
             local learned = {}
             local available = {}
             local nextAvailable = {}
             local unavailable = {}
             
             for _, ability in ipairs(rawAbilities) do
+                -- Apply search filter
+                if hasSearch and not ability.name:lower():find(searchTerm, 1, true) then
+                    -- Skip abilities that don't match search
                 -- Skip abilities for other races/factions
-                if not IsRaceMatch(ability, playerRace) or not IsFactionMatch(ability, playerFaction) then
+                elseif not IsRaceMatch(ability, playerRace) or not IsFactionMatch(ability, playerFaction) then
                     -- Skip this ability entirely
                 elseif ability.source == "talent" then
                     local hasTalent = IsTalentKnown(ability.name)
@@ -558,6 +605,27 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             end)
         end
         
+        -- Wire up search box events
+        searchBox:SetScript("OnTextChanged", function(self)
+            local text = self:GetText()
+            searchState.term = text
+            if text ~= "" then
+                clearBtn:Show()
+            else
+                clearBtn:Hide()
+            end
+            PopulateRows()
+        end)
+        
+        searchBox:SetScript("OnEscapePressed", function(self)
+            self:SetText("")
+            self:ClearFocus()
+        end)
+        
+        searchBox:SetScript("OnEnterPressed", function(self)
+            self:ClearFocus()
+        end)
+        
         -- Create headers
         local headers = {}
         
@@ -595,6 +663,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             scrollFrame = scrollFrame, 
             scrollChild = scrollChild,
             headers = headers,
+            searchBox = searchBox,
             Refresh = PopulateRows
         }
     end)

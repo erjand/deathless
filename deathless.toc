@@ -62,7 +62,8 @@ ui\views\warlock_talents.lua
 ui\content.lua
 ui\frame.lua
 ui\mini.lua
-ui\spellbook.lua
+ui\blizz_spellbook.lua
+ui\blizz_talents.lua
 ui\components\button.lua
 ui\components\panel.lua
 ui\components\text.lua

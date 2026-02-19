@@ -1,10 +1,15 @@
 # TODO
 
+## Features / Ideas
+
+- [ ] Rename to something more like "Atlas", "Gazateer" etc - focus not just on HC but Classic in general?
+
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
 - [ ] Feature: Max level mode to disable leveling stuff?
 - [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
 - [ ] Feature: AtlasLoot for dungeons? (AL is soooo bad)
+- [ ] Feature: Equipment swap (Itemrack and Outfiteer are both really bad)
 
 ## UI
 
@@ -55,7 +60,7 @@
 
 - [ ] Druid Talents
 - [ ] Hunter Talents
-- [ ] Mage Talents
+- [x] Mage Talents
 - [ ] Paladin Talents
 - [x] Priest Talents
 - [ ] Rogue Talents
@@ -71,8 +76,9 @@
 
 - [ ] Light of Elune https://www.wowhead.com/classic/quest=1017/mage-summoner (Alliance)
 - [ ] Seal of Wrynn https://www.wowhead.com/classic/item=2933/seal-of-wrynn (Alliance)
-- [ ] That good Horde ring quest in Dustwallow
+- [ ] That good Horde ring quest in Dustwallow (Horde)
 - [ ] Alliance: DM main quest rewards
+
 - [ ] Nifty Stopwatch (~40 Badlands)
 
 ## Zones

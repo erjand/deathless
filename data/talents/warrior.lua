@@ -6,7 +6,7 @@ Deathless.Data.Talents = Deathless.Data.Talents or {}
 -- Warrior talent builds for Hardcore leveling
 Deathless.Data.Talents.Warrior = {
     {
-        name = "Fury (10-30)",
+        name = "Fury (10-30) (0/21/0)",
         description = "Early leveling fury build for consistent damage.",
         progression = {
             { 
@@ -58,7 +58,7 @@ Deathless.Data.Talents.Warrior = {
         }
     },
     {
-        name = "Arms Sweeping Strikes (30-50)",
+        name = "Arms Sweeping Strikes (30-50) (31/10/0)",
         description = "Respec at 30 for Sweeping Strikes and Mortal Strike.",
         progression = {
             { 
@@ -160,7 +160,7 @@ Deathless.Data.Talents.Warrior = {
         }
     },
     {
-        name = "Fury Bloodthirst (50-60)",
+        name = "Fury Bloodthirst (50-59) (13/37/0)",
         description = "Respec at 50 for Bloodthirst dual-wield build.",
         progression = {
             { 

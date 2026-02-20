@@ -13,7 +13,9 @@
 
 ## UI
 
-- [ ] 
+- [ ] Allow main window to not be resized horizontally, just vertically (messes up intentional column spacing)?
+- [ ] Window scale?
+- [ ] Accent color?
 
 ## Summary
 
@@ -58,6 +60,8 @@
 
 ## Dungeons
 
+- [ ] Finish dungeons that are WIP
+
 ## Professions
 
 ## Quests / Leveling
@@ -76,8 +80,3 @@
 ### Elwynn Forest
 
 - [ ] Danger: Murlocs; Princess
-
-## Options
-
-- [ ] Window scale
-- [ ] Accent color

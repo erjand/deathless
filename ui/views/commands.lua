@@ -4,8 +4,11 @@ local Utils = Deathless.UI.Views.Utils
 -- Command definitions with descriptions
 local COMMANDS = {
     { command = "/deathless", alias = "/dls", description = "Toggle the main Deathless window" },
+    { command = "/deathless class", alias = "/dls c", description = "Open the Class view" },
+    { command = "/deathless dungeons", alias = "/dls d", description = "Open the Dungeons view" },
     { command = "/deathless mini", alias = "/dls m", description = "Toggle the mini summary overlay" },
     { command = "/deathless options", alias = "/dls o", description = "Open the Options view" },
+    
 }
 
 --- Commands view content

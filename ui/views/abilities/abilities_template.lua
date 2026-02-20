@@ -360,11 +360,11 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             train:SetText(trainText)
             local alpha = dimmed and 0.6 or 1
             if trainValue == "yes" then
-                train:SetTextColor(0.4, 0.8, 0.4, alpha)  -- Green
+                train:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], alpha)
             elseif trainValue == "no" then
-                train:SetTextColor(0.8, 0.4, 0.4, alpha)  -- Red
+                train:SetTextColor(Colors.red[1], Colors.red[2], Colors.red[3], alpha)
             else  -- maybe
-                train:SetTextColor(0.9, 0.8, 0.3, alpha)  -- Yellow
+                train:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], alpha)
             end
             row.elements.train = train
             

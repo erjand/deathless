@@ -312,7 +312,7 @@ function Deathless.UI.MiniSummary:SetupContent()
             label:SetFont(Fonts.family, Fonts.body, "")
             label:SetPoint("LEFT", icon, "RIGHT", 4, 0)
             label:SetText("Warnings (" .. warningCount .. ")")
-            label:SetTextColor(1, 0.8, 0.2, 1)
+            label:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], 1)
             
             warningsHeader:SetScript("OnClick", function()
                 sectionState.warnings = not sectionState.warnings

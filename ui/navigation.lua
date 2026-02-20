@@ -87,11 +87,11 @@ local NAV_ITEMS_TOP = {
 }
 
 local NAV_ITEMS_BOTTOM = {
-    { id = "dungeons", label = "Dungeons (WIP)" },
-    { id = "leveling", label = "Leveling (WIP)" },
-    { id = "professions", label = "Professions (WIP)" },
-    { id = "selffound", label = "Self-Found (WIP)" },
-    { id = "zones", label = "Zones (WIP)" },
+    { id = "dungeons", label = "Dungeons" },
+    { id = "leveling", label = "Leveling (WIP)", hidden = true },
+    { id = "professions", label = "Professions (WIP)", hidden = true },
+    { id = "selffound", label = "Self-Found (WIP)", hidden = true },
+    { id = "zones", label = "Zones (WIP)", hidden = true },
     { divider = true },
     { id = "commands", label = "Commands" },
     { id = "options", label = "Options" },
@@ -144,9 +144,11 @@ local function GetNavItems()
         table.insert(items, { id = "classes", label = "Classes", children = CLASS_ITEMS })
     end
     
-    -- Add bottom items
+    -- Add bottom items (skip hidden views)
     for _, item in ipairs(NAV_ITEMS_BOTTOM) do
-        table.insert(items, item)
+        if not item.hidden then
+            table.insert(items, item)
+        end
     end
     
     return items

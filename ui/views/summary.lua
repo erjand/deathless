@@ -196,7 +196,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         
         -- Display Warnings Section
         local hasWarnings = #activeWarnings > 0
-        local warningsColor = hasWarnings and { 1, 0.8, 0.2 } or { 0.2, 1, 0.2 }
+        local warningsColor = hasWarnings and Colors.yellow or Colors.accent
         yOffset = CreateSectionHeader("warnings", "Warnings", hasWarnings and #activeWarnings or nil, yOffset, warningsColor)
         
         if sectionState.warnings then

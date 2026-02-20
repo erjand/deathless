@@ -305,7 +305,7 @@ Deathless.UI.Views:Register("options", function(container)
         
         if sectionState.summary then
             -- Warnings sub-section header
-            local warningsHeader, _ = GetSubSectionHeader("warnings", "Warnings", summarySection, -8, { 1, 0.8, 0.2 })
+            local warningsHeader, _ = GetSubSectionHeader("warnings", "Warnings", summarySection, -8, Colors.yellow)
             yOffset = yOffset - 8 - SUBSECTION_HEIGHT
             
             if sectionState.warnings then

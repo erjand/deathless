@@ -11,6 +11,16 @@ local Colors = {
     accent = { 0.4, 0.8, 0.4, 1 },           -- Green accent (matches print color)
     text = { 0.9, 0.9, 0.9, 1 },             -- Main text
     textDim = { 0.6, 0.6, 0.6, 1 },          -- Dimmed text
+    -- Semantic colors (shared across addon)
+    yellow  = { 1.0, 0.8, 0.2 },             -- Warnings, difficulty
+    red     = { 0.8, 0.3, 0.3 },             -- Negative, danger
+    orange  = { 1.0, 0.5, 0.25 },            -- Caution
+    -- Mob/NPC difficulty colors (relative to player level)
+    diffRed    = { 0.8, 0.3, 0.3 },          -- 5+ levels above
+    diffOrange = { 1.0, 0.5, 0.25 },         -- 3-4 levels above
+    diffYellow = { 1.0, 0.8, 0.2 },          -- ±2 levels
+    diffGreen  = { 0.4, 0.8, 0.4 },          -- Below but still gives XP
+    diffGray   = { 0.6, 0.6, 0.6 },          -- No XP
 }
 
 -- Helper: Create a pixel border around a frame

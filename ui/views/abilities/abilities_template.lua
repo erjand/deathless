@@ -474,6 +474,20 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             -- "Next available" includes abilities within next 2 levels
             local NEXT_LEVEL_RANGE = 2
             local nextLevelCap = playerLevel + NEXT_LEVEL_RANGE
+
+            -- Ensure cap always reaches the next level breakpoint
+            local minNextLevel
+            for _, ability in ipairs(rawAbilities) do
+                if IsRaceMatch(ability, playerRace) and IsFactionMatch(ability, playerFaction)
+                    and ability.source ~= "talent" and ability.level > playerLevel then
+                    if not minNextLevel or ability.level < minNextLevel then
+                        minNextLevel = ability.level
+                    end
+                end
+            end
+            if minNextLevel and minNextLevel > nextLevelCap then
+                nextLevelCap = minNextLevel
+            end
             
             -- Search filter
             local searchTerm = searchState.term:lower()

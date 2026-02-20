@@ -304,6 +304,19 @@ function Deathless.UI.MiniSummary:SetupContent()
         local available = {}
         local nextAvailable = {}
         local nextLevelCap = playerLevel + 2
+
+        -- Ensure cap always reaches the next level breakpoint
+        local minNextLevel
+        for _, ability in ipairs(rawAbilities) do
+            if IsMatch(ability) and ability.source ~= "talent" and ability.level > playerLevel then
+                if not minNextLevel or ability.level < minNextLevel then
+                    minNextLevel = ability.level
+                end
+            end
+        end
+        if minNextLevel and minNextLevel > nextLevelCap then
+            nextLevelCap = minNextLevel
+        end
         
         for _, ability in ipairs(rawAbilities) do
             if IsMatch(ability) then

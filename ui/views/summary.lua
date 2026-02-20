@@ -315,14 +315,30 @@ end
                 end
                 barFrame.barBg:Show()
                 
+                -- Rested XP fill (behind normal bar)
+                if not barFrame.restedFill then
+                    barFrame.restedFill = barFrame:CreateTexture(nil, "ARTWORK", nil, 0)
+                    barFrame.restedFill:SetPoint("TOPLEFT", barFrame, "TOPLEFT", 1, -1)
+                    barFrame.restedFill:SetPoint("BOTTOMLEFT", barFrame, "BOTTOMLEFT", 1, 1)
+                end
+                if xpData.restedXP > 0 and xpData.maxXP > 0 then
+                    local restedEnd = math.min(xpData.currentXP + xpData.restedXP, xpData.maxXP)
+                    local restedPct = restedEnd / xpData.maxXP
+                    barFrame.restedFill:SetWidth(math.max(1, (barFrame:GetWidth() - 2) * restedPct))
+                    barFrame.restedFill:SetColorTexture(0.0, 0.39, 0.88, 0.8)
+                    barFrame.restedFill:Show()
+                else
+                    barFrame.restedFill:Hide()
+                end
+                
                 -- Progress bar
                 if not barFrame.barFill then
-                    barFrame.barFill = barFrame:CreateTexture(nil, "ARTWORK")
+                    barFrame.barFill = barFrame:CreateTexture(nil, "ARTWORK", nil, 1)
                     barFrame.barFill:SetPoint("TOPLEFT", barFrame, "TOPLEFT", 1, -1)
                     barFrame.barFill:SetPoint("BOTTOMLEFT", barFrame, "BOTTOMLEFT", 1, 1)
                 end
                 barFrame.barFill:SetWidth(math.max(1, (barFrame:GetWidth() - 2) * (xpData.percent / 100)))
-                barFrame.barFill:SetColorTexture(0.4, 0.8, 1.0, 0.8)
+                barFrame.barFill:SetColorTexture(0.58, 0.0, 0.55, 0.8)
                 barFrame.barFill:Show()
                 
                 -- XP text on bar

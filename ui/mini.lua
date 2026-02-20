@@ -461,11 +461,22 @@ function Deathless.UI.MiniSummary:SetupContent()
                 barBg:SetAllPoints()
                 barBg:SetColorTexture(0.1, 0.1, 0.1, 0.8)
                 
-                local barFill = barRow:CreateTexture(nil, "ARTWORK")
+                -- Rested XP fill (behind normal bar, extends past current XP)
+                if xpData.restedXP > 0 and xpData.maxXP > 0 then
+                    local restedEnd = math.min(xpData.currentXP + xpData.restedXP, xpData.maxXP)
+                    local restedPct = restedEnd / xpData.maxXP
+                    local restedFill = barRow:CreateTexture(nil, "ARTWORK", nil, 0)
+                    restedFill:SetPoint("TOPLEFT", barRow, "TOPLEFT", 1, -1)
+                    restedFill:SetPoint("BOTTOMLEFT", barRow, "BOTTOMLEFT", 1, 1)
+                    restedFill:SetWidth(math.max(1, (barRow:GetWidth() - 2) * restedPct))
+                    restedFill:SetColorTexture(0.0, 0.39, 0.88, 0.8)
+                end
+                
+                local barFill = barRow:CreateTexture(nil, "ARTWORK", nil, 1)
                 barFill:SetPoint("TOPLEFT", barRow, "TOPLEFT", 1, -1)
                 barFill:SetPoint("BOTTOMLEFT", barRow, "BOTTOMLEFT", 1, 1)
                 barFill:SetWidth(math.max(1, (barRow:GetWidth() - 2) * (xpData.percent / 100)))
-                barFill:SetColorTexture(0.4, 0.8, 1.0, 0.8)
+                barFill:SetColorTexture(0.58, 0.0, 0.55, 0.8)
                 
                 local barText = barRow:CreateFontString(nil, "OVERLAY")
                 barText:SetFont(Fonts.family, Fonts.small - 1, "")

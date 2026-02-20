@@ -82,6 +82,7 @@ data\talents\warlock.lua
 data\talents\mage.lua
 data\talents\paladin.lua
 data\talents\rogue.lua
+data\talents\shaman.lua
 data\abilities\warrior.lua
 data\abilities\paladin.lua
 data\abilities\hunter.lua

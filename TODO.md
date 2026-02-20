@@ -63,8 +63,8 @@
 - [x] Mage Talents
 - [x] Paladin Talents
 - [x] Priest Talents
-- [ ] Rogue Talents
-- [ ] Shaman Talents
+- [x] Rogue Talents
+- [x] Shaman Talents
 - [x] Warlock Talents
 - [x] Warrior Talents
 

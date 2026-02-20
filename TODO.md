@@ -59,7 +59,7 @@
 ### Talents
 
 - [ ] Druid Talents
-- [ ] Hunter Talents
+- [x] Hunter Talents
 - [x] Mage Talents
 - [x] Paladin Talents
 - [x] Priest Talents

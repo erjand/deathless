@@ -56,18 +56,6 @@
 - [ ] Whirlwind Axe
 - [ ] SM Quest Chain - "In the Name of the Light" (~lvl 40ish) https://www.wowhead.com/classic/quest=1053/in-the-name-of-the-light
 
-### Talents
-
-- [ ] Druid Talents
-- [x] Hunter Talents
-- [x] Mage Talents
-- [x] Paladin Talents
-- [x] Priest Talents
-- [x] Rogue Talents
-- [x] Shaman Talents
-- [x] Warlock Talents
-- [x] Warrior Talents
-
 ## Dungeons
 
 ## Professions

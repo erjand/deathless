@@ -61,7 +61,7 @@
 - [ ] Druid Talents
 - [ ] Hunter Talents
 - [x] Mage Talents
-- [ ] Paladin Talents
+- [x] Paladin Talents
 - [x] Priest Talents
 - [ ] Rogue Talents
 - [ ] Shaman Talents

@@ -14,7 +14,7 @@ alwaysApply: true
 - **Entry**: `deathless.lua` - Main namespace and module registration system
 - **Core**: `core/` - Initialization, config, events, commands
 - **Modules**: `modules/` - Feature modules (classes, zones, dungeons, etc.) that register via `Deathless:RegisterModule()`
-- **UI**: `ui/` - UI system with views (`ui/views/`), reusable components (`ui/components/`), and core UI elements
+- **UI**: `ui/` - UI system with views (`ui/views/`: root for home/summary/options etc.; `views/talents/`, `views/abilities/`, `views/gear/` for class views), reusable components (`ui/components/`), and core UI elements
 - **Data**: `data/` - Static data files (classes, zones, abilities, talents, gear) separated from logic
 - **Utils**: `utils/` - Shared utility functions (table, ui, chat, icons, warnings)
 

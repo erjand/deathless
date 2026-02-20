@@ -38,6 +38,8 @@
 
 ### Gear
 
+- [ ] Shields: Add low-level ones, plus maybe some others like Miner Johnson?
+
 - [ ] Druid Gear 
 - [ ] Hunter Gear
 - [ ] Mage Gear
@@ -47,6 +49,7 @@
 - [ ] Shaman Gear
 - [ ] Warlock Gear
 - [ ] Warrior Gear
+- [ ] Shared Gear
 
 #### Warrior
 

@@ -34,6 +34,8 @@ local SLOT_ICONS = {
 }
 
 -- Column layout
+local ICON_SIZE = 18
+local ICON_PAD = 4
 local COL = {
     name   = { x = 16,  w = 190 },
     type   = { x = 210, w = 65 },
@@ -95,7 +97,7 @@ end
 local function AttachSlotIcon(frame, iconKey)
     if not frame.slotIcon then
         frame.slotIcon = frame:CreateTexture(nil, "ARTWORK")
-        frame.slotIcon:SetSize(16, 16)
+        frame.slotIcon:SetSize(20, 20)
     end
 
     local texture = SLOT_ICONS[iconKey]
@@ -176,23 +178,43 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         local sortState = { sortKey = "lvl", sortAsc = true }
 
         -- Section collapse state (all collapsed by default)
-        local sectionState = { weapons = false, shields = false, ranged = false, armor = false, misc = false }
+        local sectionState = {}
 
         -- Build gear data by filtering shared item pools for this class
-        local SECTION_DATA = {
-            weapons = Deathless.Data.Gear.Weapons,
-            shields = Deathless.Data.Gear.Shields,
-            ranged  = Deathless.Data.Gear.Ranged,
-            armor   = Deathless.Data.Gear.Armor,
-            misc    = Deathless.Data.Gear.Misc,
+        local FLAT_SOURCES = {
+            { key = "weapons", items = Deathless.Data.Gear.Weapons },
+            { key = "shields", items = Deathless.Data.Gear.Shields },
+            { key = "ranged",  items = Deathless.Data.Gear.Ranged },
         }
 
         local gearData = {}
-        for key, items in pairs(SECTION_DATA) do
-            gearData[key] = {}
-            if items then
-                for _, item in ipairs(items) do
+        for _, src in ipairs(FLAT_SOURCES) do
+            gearData[src.key] = {}
+            sectionState[src.key] = false
+            if src.items then
+                for _, item in ipairs(src.items) do
                     if item.classes and tContains(item.classes, className) then
+                        table.insert(gearData[src.key], item)
+                    end
+                end
+            end
+        end
+
+        -- Split armor and misc items into per-slot sections
+        local SLOT_SOURCES = {
+            { items = Deathless.Data.Gear.Armor },
+            { items = Deathless.Data.Gear.Misc },
+        }
+        for _, src in ipairs(SLOT_SOURCES) do
+            if src.items then
+                for _, item in ipairs(src.items) do
+                    if item.classes and tContains(item.classes, className) then
+                        local slot = item.slot or "Other"
+                        local key = "slot:" .. slot
+                        if not gearData[key] then
+                            gearData[key] = {}
+                            sectionState[key] = false
+                        end
                         table.insert(gearData[key], item)
                     end
                 end
@@ -202,13 +224,10 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         -- Element pools
         local rowPool = {}
         local sectionPool = {}
-        local subSectionPool = {}
+        local dividerPool = {}
         local poolIndex = 0
         local sectionIndex = 0
-        local subSectionIndex = 0
-
-        -- Sub-section collapse state (collapsed by default)
-        local subSectionState = {}
+        local dividerIndex = 0
 
         local function ClearElements()
             for _, row in ipairs(rowPool) do
@@ -219,13 +238,13 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                 section:Hide()
                 section:ClearAllPoints()
             end
-            for _, sub in ipairs(subSectionPool) do
-                sub:Hide()
-                sub:ClearAllPoints()
+            for _, div in ipairs(dividerPool) do
+                div:Hide()
+                div:ClearAllPoints()
             end
             poolIndex = 0
             sectionIndex = 0
-            subSectionIndex = 0
+            dividerIndex = 0
         end
 
         local function GetSectionHeader()
@@ -236,16 +255,6 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                 sectionPool[sectionIndex] = section
             end
             return section
-        end
-
-        local function GetSubSectionHeader()
-            subSectionIndex = subSectionIndex + 1
-            local sub = subSectionPool[subSectionIndex]
-            if not sub then
-                sub = Utils:CreateCollapsibleSubSection(scrollChild)
-                subSectionPool[subSectionIndex] = sub
-            end
-            return sub
         end
 
         local function GetRow()
@@ -260,6 +269,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                     if el.Hide then el:Hide() end
                 end
             end
+            if row.itemIcon then row.itemIcon:Hide() end
             row.elements = {}
             return row
         end
@@ -350,12 +360,37 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                 row.bg:Hide()
             end
 
+            -- Item icon
+            local iconX = COL.name.x + indent
+            if item.itemId then
+                if not row.itemIcon then
+                    row.itemIcon = row:CreateTexture(nil, "ARTWORK")
+                    row.itemIcon:SetSize(ICON_SIZE, ICON_SIZE)
+                end
+                row.itemIcon:ClearAllPoints()
+                row.itemIcon:SetPoint("LEFT", row, "LEFT", iconX, 0)
+                row.itemIcon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+                row.itemIcon:Show()
+
+                local iconBtn = row.itemIcon
+                local itemObj = Item:CreateFromItemID(item.itemId)
+                itemObj:ContinueOnItemLoad(function()
+                    local _, _, _, _, _, _, _, _, _, tex = GetItemInfo(item.itemId)
+                    if tex and iconBtn then
+                        iconBtn:SetTexture(tex)
+                    end
+                end)
+            elseif row.itemIcon then
+                row.itemIcon:Hide()
+            end
+
             -- Name (rarity colored)
+            local nameX = item.itemId and (iconX + ICON_SIZE + ICON_PAD) or (iconX)
             local rarityColor = RARITY_COLORS[item.rarity] or RARITY_COLORS.common
             local name = row:CreateFontString(nil, "OVERLAY")
             name:SetFont(Fonts.family, Fonts.body, "")
-            name:SetPoint("LEFT", row, "LEFT", COL.name.x + indent, 0)
-            name:SetWidth(COL.name.w - indent)
+            name:SetPoint("LEFT", row, "LEFT", nameX, 0)
+            name:SetWidth(COL.name.w - indent - (item.itemId and (ICON_SIZE + ICON_PAD) or 0))
             name:SetJustifyH("LEFT")
             name:SetText(item.name)
             name:SetTextColor(rarityColor[1], rarityColor[2], rarityColor[3], 1)
@@ -423,78 +458,43 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             return yOffset - SECTION_HEIGHT
         end
 
+        local armorColor = { 0.50, 0.70, 0.90 }
+        local miscColor  = { 0.75, 0.60, 0.85 }
         local SECTION_DEFS = {
-            { key = "weapons", label = "Weapon",  color = { 0.90, 0.65, 0.35 }, grouped = false },
-            { key = "shields", label = "Shield",  color = { 0.65, 0.75, 0.85 }, grouped = false },
-            { key = "ranged",  label = "Ranged",  color = { 0.70, 0.80, 0.60 }, grouped = false },
-            { key = "armor",   label = "Armor",   color = { 0.50, 0.70, 0.90 }, grouped = true, groupBy = "slot",
-              groupOrder = { "Head", "Shoulders", "Chest", "Wrist", "Hands", "Waist", "Legs", "Feet" } },
-            { key = "misc",    label = "Misc",    color = { 0.75, 0.60, 0.85 }, grouped = true, groupBy = "slot",
-              groupOrder = { "Neck", "Ring", "Trinket" } },
+            { key = "weapons",        label = "Weapon",    color = { 0.90, 0.65, 0.35 } },
+            { key = "shields",        label = "Shield",    color = { 0.72, 0.72, 0.78 } },
+            { key = "ranged",         label = "Ranged",    color = { 0.70, 0.80, 0.60 } },
+            { key = "slot:Head",      label = "Head",      color = armorColor, dividerBefore = true },
+            { key = "slot:Shoulders", label = "Shoulders", color = armorColor },
+            { key = "slot:Chest",     label = "Chest",     color = armorColor },
+            { key = "slot:Wrist",     label = "Wrist",     color = armorColor },
+            { key = "slot:Hands",     label = "Hands",     color = armorColor },
+            { key = "slot:Waist",     label = "Waist",     color = armorColor },
+            { key = "slot:Legs",      label = "Legs",      color = armorColor },
+            { key = "slot:Feet",      label = "Feet",      color = armorColor },
+            { key = "slot:Neck",      label = "Neck",      color = miscColor, dividerBefore = true },
+            { key = "slot:Ring",      label = "Ring",      color = miscColor },
+            { key = "slot:Trinket",   label = "Trinket",   color = miscColor },
         }
 
-        --- Group items by a field, ordered by a predefined list
-        local function GroupByField(items, field, order)
-            local groups = {}
-            for _, item in ipairs(items) do
-                local key = item[field] or "Other"
-                if not groups[key] then
-                    groups[key] = {}
-                end
-                table.insert(groups[key], item)
+        local function CreateDividerAt(yOffset)
+            local DIVIDER_HEIGHT = 12
+            dividerIndex = dividerIndex + 1
+            local div = dividerPool[dividerIndex]
+            if not div then
+                div = CreateFrame("Frame", nil, scrollChild)
+                div.line = div:CreateTexture(nil, "ARTWORK")
+                div.line:SetHeight(1)
+                div.line:SetPoint("LEFT", div, "LEFT", 10, 0)
+                div.line:SetPoint("RIGHT", div, "RIGHT", -10, 0)
+                div.line:SetColorTexture(1, 1, 1, 0.08)
+                dividerPool[dividerIndex] = div
             end
-
-            -- Build ordered list: predefined order first, then any extras
-            local finalOrder = {}
-            local seen = {}
-            if order then
-                for _, key in ipairs(order) do
-                    if groups[key] then
-                        table.insert(finalOrder, key)
-                        seen[key] = true
-                    end
-                end
-            end
-            for key in pairs(groups) do
-                if not seen[key] then
-                    table.insert(finalOrder, key)
-                end
-            end
-
-            return groups, finalOrder
-        end
-
-        local function CreateSubSectionAt(stateKey, label, yOffset, color)
-            local sub = GetSubSectionHeader()
-            local SUB_HEIGHT = 22
-
-            sub:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 20, yOffset)
-            sub:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
-            sub:Show()
-
-            -- Slot icon on the sub-section header
-            AttachSlotIcon(sub, label)
-            sub.slotIcon:ClearAllPoints()
-            sub.slotIcon:SetPoint("LEFT", sub, "LEFT", 0, 0)
-            sub.slotIcon:SetSize(14, 14)
-            -- Shift the arrow right to make room
-            sub.icon:ClearAllPoints()
-            sub.icon:SetPoint("LEFT", sub.slotIcon, "RIGHT", 3, 0)
-
-            if subSectionState[stateKey] == nil then
-                subSectionState[stateKey] = false
-            end
-
-            local expanded = subSectionState[stateKey]
-            Utils:ConfigureSubSection(sub, expanded, label, color)
-
-            sub.stateKey = stateKey
-            sub:SetScript("OnClick", function(self)
-                subSectionState[self.stateKey] = not subSectionState[self.stateKey]
-                PopulateRows()
-            end)
-
-            return yOffset - SUB_HEIGHT
+            div:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
+            div:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            div:SetHeight(DIVIDER_HEIGHT)
+            div:Show()
+            return yOffset - DIVIDER_HEIGHT
         end
 
         PopulateRows = function()
@@ -508,29 +508,16 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                 local items = FilterItems(raw)
 
                 if #items > 0 then
+                    if def.dividerBefore then
+                        yOffset = CreateDividerAt(yOffset)
+                    end
                     items = SortItems(items)
                     yOffset = CreateSectionHeaderAt(def.key, def.label, yOffset, def.color)
 
                     if sectionState[def.key] then
-                        if def.grouped then
-                            local groups, order = GroupByField(items, def.groupBy, def.groupOrder)
-                            for _, groupName in ipairs(order) do
-                                local groupItems = groups[groupName]
-                                local stateKey = def.key .. ":" .. groupName
-                                yOffset = CreateSubSectionAt(stateKey, groupName, yOffset, def.color)
-
-                                if subSectionState[stateKey] then
-                                    for _, item in ipairs(groupItems) do
-                                        rowNum = rowNum + 1
-                                        yOffset = CreateItemRowAt(item, yOffset, rowNum, 16)
-                                    end
-                                end
-                            end
-                        else
-                            for _, item in ipairs(items) do
-                                rowNum = rowNum + 1
-                                yOffset = CreateItemRowAt(item, yOffset, rowNum)
-                            end
+                        for _, item in ipairs(items) do
+                            rowNum = rowNum + 1
+                            yOffset = CreateItemRowAt(item, yOffset, rowNum)
                         end
                     end
                 end
@@ -575,10 +562,15 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             PopulateRows()
         end
 
-        headers.name   = CreateSortableHeader(container, "NAME",   COL.name,   "name",   sortState, OnSort, sortHeaderY)
-        headers.type   = CreateSortableHeader(container, "TYPE",   COL.type,   "type",   sortState, OnSort, sortHeaderY)
-        headers.lvl    = CreateSortableHeader(container, "LVL",    COL.lvl,    "lvl",    sortState, OnSort, sortHeaderY)
-        headers.source = CreateSortableHeader(container, "SOURCE", COL.source, "source", sortState, OnSort, sortHeaderY)
+        local SCROLL_INSET = 8
+        local hName   = { x = COL.name.x   + SCROLL_INSET + ICON_SIZE + ICON_PAD, w = COL.name.w - ICON_SIZE - ICON_PAD }
+        local hType   = { x = COL.type.x   + SCROLL_INSET, w = COL.type.w }
+        local hLvl    = { x = COL.lvl.x    + SCROLL_INSET, w = COL.lvl.w }
+        local hSource = { x = COL.source.x + SCROLL_INSET, w = COL.source.w }
+        headers.name   = CreateSortableHeader(container, "NAME",   hName,   "name",   sortState, OnSort, sortHeaderY)
+        headers.type   = CreateSortableHeader(container, "TYPE",   hType,   "type",   sortState, OnSort, sortHeaderY)
+        headers.lvl    = CreateSortableHeader(container, "LVL",    hLvl,    "lvl",    sortState, OnSort, sortHeaderY)
+        headers.source = CreateSortableHeader(container, "SOURCE", hSource, "source", sortState, OnSort, sortHeaderY)
 
         OnSort()
 

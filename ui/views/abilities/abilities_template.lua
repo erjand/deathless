@@ -37,12 +37,12 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
 ---@param onSort function Callback when sort changes
 ---@param tooltip table|nil Optional tooltip lines {title, line1, line2, ...}
 ---@return Button The header button
-local function CreateSortableHeader(parent, label, xOffset, width, sortKey, state, onSort, tooltip)
+local function CreateSortableHeader(parent, label, xOffset, width, sortKey, state, onSort, tooltip, headerY)
     local Colors = Utils:GetColors()
     
     local btn = CreateFrame("Button", nil, parent)
     btn:SetSize(width, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -95)
+    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, headerY or -95)
     
     local Fonts = Deathless.UI.Fonts
     btn.label = btn:CreateFontString(nil, "OVERLAY")
@@ -100,11 +100,19 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
     local classId = config.classId         -- e.g., "WARRIOR"
     local classColor = config.classColor   -- e.g., { 0.78, 0.61, 0.43 }
     
-    Deathless.UI.Views:Register(viewName, function(container)
+    Deathless.UI.Views:Register(viewName, function(container, options)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
+        local embedded = options and options.embedded
         
-        local title, subtitle = Utils:CreateHeader(container, className .. " Abilities", "", classColor)
+        local title, subtitle
+        if not embedded then
+            title, subtitle = Utils:CreateHeader(container, className .. " Abilities", "", classColor)
+        end
+        
+        local searchBoxY = embedded and -16 or -52
+        local sortHeaderY = embedded and -59 or -95
+        local scrollTopOffset = embedded and -79 or -115
         
         -- Search state
         local searchState = { term = "" }
@@ -112,7 +120,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         -- Create search bar
         local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
         searchBox:SetSize(180, 20)
-        searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, -52)
+        searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, searchBoxY)
         searchBox:SetFont(Fonts.family, Fonts.body, "")
         searchBox:SetAutoFocus(false)
         searchBox:SetMaxLetters(50)
@@ -147,7 +155,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         end)
         
         -- Enhanced scroll frame with auto-hiding scrollbar
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -115, 24)
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
         
         -- Sort state
         local sortState = { sortKey = "level", sortAsc = true }
@@ -585,16 +593,16 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             PopulateRows()
         end
         
-        headers.name = CreateSortableHeader(container, "ABILITY", 36, 200, "name", sortState, OnSort)
-        headers.level = CreateSortableHeader(container, "LEVEL", 250, 50, "level", sortState, OnSort)
-        headers.cost = CreateSortableHeader(container, "COST", 310, 80, "cost", sortState, OnSort)
-        headers.source = CreateSortableHeader(container, "SOURCE", 400, 60, "source", sortState, OnSort)
+        headers.name = CreateSortableHeader(container, "ABILITY", 36, 200, "name", sortState, OnSort, nil, sortHeaderY)
+        headers.level = CreateSortableHeader(container, "LEVEL", 250, 50, "level", sortState, OnSort, nil, sortHeaderY)
+        headers.cost = CreateSortableHeader(container, "COST", 310, 80, "cost", sortState, OnSort, nil, sortHeaderY)
+        headers.source = CreateSortableHeader(container, "SOURCE", 400, 60, "source", sortState, OnSort, nil, sortHeaderY)
         headers.train = CreateSortableHeader(container, "TRAIN (?)", 470, 50, "train", sortState, OnSort, {
             title = "Training Priority",
             "|cff66cc66Yes|r - Train when available",
             "|cffcccc55Wait|r - Marginal upgrade",
             "|cffcc6666No|r - Not useful for Hardcore",
-        })
+        }, sortHeaderY)
         
         OnSort()
         

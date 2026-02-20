@@ -6,77 +6,17 @@ local Colors = nil -- Set after frame.lua loads
 local CreatePixelBorder = nil
 local Icons = Deathless.Utils.Icons
 
--- Generic icons for sub-items
-local ICON_ABILITIES = Icons.NAV_ABILITIES
-local ICON_TALENTS = Icons.NAV_TALENTS
-local ICON_GEAR = Icons.NAV_GEAR
-
--- Sub-items for Warrior class
-local WARRIOR_ITEMS = {
-    { id = "warrior_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "warrior_gear", label = "Gear (WIP)", icon = ICON_GEAR },
-    { id = "warrior_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Sub-items for Mage class
-local MAGE_ITEMS = {
-    { id = "mage_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "mage_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Sub-items for Priest class
-local PRIEST_ITEMS = {
-    { id = "priest_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "priest_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Sub-items for Rogue class
-local ROGUE_ITEMS = {
-    { id = "rogue_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "rogue_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Sub-items for Hunter class
-local HUNTER_ITEMS = {
-    { id = "hunter_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "hunter_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Sub-items for Paladin class
-local PALADIN_ITEMS = {
-    { id = "paladin_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "paladin_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Sub-items for Shaman class
-local SHAMAN_ITEMS = {
-    { id = "shaman_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "shaman_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Sub-items for Druid class
-local DRUID_ITEMS = {
-    { id = "druid_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "druid_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Sub-items for Warlock class
-local WARLOCK_ITEMS = {
-    { id = "warlock_abilities", label = "Abilities", icon = ICON_ABILITIES },
-    { id = "warlock_talents", label = "Talents", icon = ICON_TALENTS },
-}
-
--- Classic WoW classes in alphabetical order (with icons and optional children)
+-- Classes are leaf items; abilities/talents/gear are shown via tabs inside each class view
 local CLASS_ITEMS = {
-    { id = "class_druid", label = "Druid", icon = Icons.CLASS_DRUID, children = DRUID_ITEMS },
-    { id = "class_hunter", label = "Hunter", icon = Icons.CLASS_HUNTER, children = HUNTER_ITEMS },
-    { id = "class_mage", label = "Mage", icon = Icons.CLASS_MAGE, children = MAGE_ITEMS },
-    { id = "class_paladin", label = "Paladin", icon = Icons.CLASS_PALADIN, children = PALADIN_ITEMS },
-    { id = "class_priest", label = "Priest", icon = Icons.CLASS_PRIEST, children = PRIEST_ITEMS },
-    { id = "class_rogue", label = "Rogue", icon = Icons.CLASS_ROGUE, children = ROGUE_ITEMS },
-    { id = "class_shaman", label = "Shaman", icon = Icons.CLASS_SHAMAN, children = SHAMAN_ITEMS },
-    { id = "class_warlock", label = "Warlock", icon = Icons.CLASS_WARLOCK, children = WARLOCK_ITEMS },
-    { id = "class_warrior", label = "Warrior", icon = Icons.CLASS_WARRIOR, children = WARRIOR_ITEMS },
+    { id = "class_druid", label = "Druid", icon = Icons.CLASS_DRUID },
+    { id = "class_hunter", label = "Hunter", icon = Icons.CLASS_HUNTER },
+    { id = "class_mage", label = "Mage", icon = Icons.CLASS_MAGE },
+    { id = "class_paladin", label = "Paladin", icon = Icons.CLASS_PALADIN },
+    { id = "class_priest", label = "Priest", icon = Icons.CLASS_PRIEST },
+    { id = "class_rogue", label = "Rogue", icon = Icons.CLASS_ROGUE },
+    { id = "class_shaman", label = "Shaman", icon = Icons.CLASS_SHAMAN },
+    { id = "class_warlock", label = "Warlock", icon = Icons.CLASS_WARLOCK },
+    { id = "class_warrior", label = "Warrior", icon = Icons.CLASS_WARRIOR },
 }
 
 -- Base navigation items (classes section is inserted dynamically)
@@ -137,7 +77,6 @@ local function GetNavItems()
             id = singleClass.id,
             label = singleClass.label,
             icon = singleClass.icon,
-            children = singleClass.children,
         })
     else
         -- Show full Classes menu

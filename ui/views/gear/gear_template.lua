@@ -11,14 +11,19 @@ function Deathless.UI.Views.GearTemplate:Create(config)
     local className = config.className
     local classColor = config.classColor
     
-    Deathless.UI.Views:Register(viewName, function(container)
+    Deathless.UI.Views:Register(viewName, function(container, options)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
+        local embedded = options and options.embedded
         
-        local title, subtitle = Utils:CreateHeader(container, className .. " Gear", "Equipment progression for Hardcore", classColor)
+        local title, subtitle
+        if not embedded then
+            title, subtitle = Utils:CreateHeader(container, className .. " Gear", "Equipment progression for Hardcore", classColor)
+        end
         
         -- Enhanced scroll frame with auto-hiding scrollbar
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -70, 24)
+        local scrollTopOffset = embedded and -10 or -70
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
         scrollChild:SetWidth(540)
         scrollChild:SetHeight(800)
         

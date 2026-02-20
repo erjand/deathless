@@ -12,14 +12,19 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
     local className = config.className     -- e.g., "Priest"
     local classColor = config.classColor   -- e.g., { 1.00, 1.00, 1.00 }
     
-    Deathless.UI.Views:Register(viewName, function(container)
+    Deathless.UI.Views:Register(viewName, function(container, options)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
+        local embedded = options and options.embedded
         
-        local title, subtitle = Utils:CreateHeader(container, className .. " Talents", "Recommended builds for Hardcore leveling - adjust as desired.", classColor)
+        local title, subtitle
+        if not embedded then
+            title, subtitle = Utils:CreateHeader(container, className .. " Talents", "Recommended builds for Hardcore leveling - adjust as desired.", classColor)
+        end
         
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -70, 24)
+        local scrollTopOffset = embedded and -10 or -70
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
         
         -- Section collapse state (keyed by build name)
         local sectionState = {}

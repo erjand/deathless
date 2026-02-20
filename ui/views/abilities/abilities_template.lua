@@ -23,47 +23,9 @@ local function FormatMoney(copper)
     return table.concat(parts, " ")
 end
 
---- Format copper amount with colored g/s/c letters
----@param copper number Amount in copper
----@return string Formatted string with color codes
-local function FormatMoneyColored(copper)
-    if copper == 0 then return "0|cffb87333c|r" end
-    
-    local gold = math.floor(copper / 10000)
-    local silver = math.floor((copper % 10000) / 100)
-    local cop = copper % 100
-    
-    local parts = {}
-    if gold > 0 then table.insert(parts, gold .. "|cffffd700g|r") end
-    if silver > 0 then table.insert(parts, silver .. "|cffc0c0c0s|r") end
-    if cop > 0 then table.insert(parts, cop .. "|cffb87333c|r") end
-    
-    return table.concat(parts, " ")
-end
-
---- Check if a spell is known by searching the spellbook
----@param spellName string The spell name to check
----@param spellRank number|nil Optional rank to match
----@return boolean Whether the spell is known
-local function IsSpellKnown(spellName, spellRank)
-    local i = 1
-    while true do
-        local name, rank = GetSpellBookItemName(i, BOOKTYPE_SPELL)
-        if not name then break end
-        
-        if name == spellName then
-            if not spellRank or spellRank == 1 then
-                return true
-            end
-            local rankNum = rank and tonumber(rank:match("%d+"))
-            if rankNum and rankNum >= spellRank then
-                return true
-            end
-        end
-        i = i + 1
-    end
-    return false
-end
+local AbilityUtils = Deathless.Utils.Abilities
+local FormatMoneyColored = AbilityUtils.FormatMoneyColored
+local IsSpellKnown = AbilityUtils.IsSpellKnown
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -437,29 +399,11 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             return yOffset - SECTION_HEIGHT
         end
         
+        local IsRaceMatch = AbilityUtils.IsRaceMatch
+        local IsFactionMatch = AbilityUtils.IsFactionMatch
+        
         local function IsTalentKnown(spellName)
             return IsSpellKnown(spellName, 1)
-        end
-        
-        --- Check if player's race matches ability's race requirement
-        ---@param ability table The ability to check
-        ---@param playerRace string The player's race
-        ---@return boolean Whether ability is available for this race
-        local function IsRaceMatch(ability, playerRace)
-            if not ability.race then return true end  -- No race restriction
-            for _, race in ipairs(ability.race) do
-                if race == playerRace then return true end
-            end
-            return false
-        end
-        
-        --- Check if player's faction matches ability's faction requirement
-        ---@param ability table The ability to check
-        ---@param playerFaction string The player's faction ("Alliance" or "Horde")
-        ---@return boolean Whether ability is available for this faction
-        local function IsFactionMatch(ability, playerFaction)
-            if not ability.faction then return true end  -- No faction restriction
-            return ability.faction == playerFaction
         end
         
         PopulateRows = function()
@@ -471,23 +415,9 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local playerFaction = UnitFactionGroup("player") or ""
             local isCorrectClass = (playerClass == classId)
             
-            -- "Next available" includes abilities within next 2 levels
-            local NEXT_LEVEL_RANGE = 2
-            local nextLevelCap = playerLevel + NEXT_LEVEL_RANGE
-
-            -- Ensure cap always reaches the next level breakpoint
-            local minNextLevel
-            for _, ability in ipairs(rawAbilities) do
-                if IsRaceMatch(ability, playerRace) and IsFactionMatch(ability, playerFaction)
-                    and ability.source ~= "talent" and ability.level > playerLevel then
-                    if not minNextLevel or ability.level < minNextLevel then
-                        minNextLevel = ability.level
-                    end
-                end
-            end
-            if minNextLevel and minNextLevel > nextLevelCap then
-                nextLevelCap = minNextLevel
-            end
+            local nextLevelCap = AbilityUtils.NextLevelCap(rawAbilities, playerLevel, function(ability)
+                return AbilityUtils.IsMatch(ability, playerRace, playerFaction)
+            end)
             
             -- Search filter
             local searchTerm = searchState.term:lower()

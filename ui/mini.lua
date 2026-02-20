@@ -3,42 +3,9 @@ local Deathless = Deathless
 Deathless.UI.MiniSummary = Deathless.UI.MiniSummary or {}
 local Icons = Deathless.Utils.Icons
 
--- Format copper amount with colored g/s/c letters
-local function FormatMoneyColored(copper)
-    if copper == 0 then return "0|cffb87333c|r" end
-    
-    local gold = math.floor(copper / 10000)
-    local silver = math.floor((copper % 10000) / 100)
-    local cop = copper % 100
-    
-    local parts = {}
-    if gold > 0 then table.insert(parts, gold .. "|cffffd700g|r") end
-    if silver > 0 then table.insert(parts, silver .. "|cffc0c0c0s|r") end
-    if cop > 0 then table.insert(parts, cop .. "|cffb87333c|r") end
-    
-    return table.concat(parts, " ")
-end
-
--- Check if a spell is known by searching the spellbook
-local function IsSpellKnown(spellName, spellRank)
-    local i = 1
-    while true do
-        local name, rank = GetSpellBookItemName(i, BOOKTYPE_SPELL)
-        if not name then break end
-        
-        if name == spellName then
-            if not spellRank or spellRank == 1 then
-                return true
-            end
-            local rankNum = rank and tonumber(rank:match("%d+"))
-            if rankNum and rankNum >= spellRank then
-                return true
-            end
-        end
-        i = i + 1
-    end
-    return false
-end
+local AbilityUtils = Deathless.Utils.Abilities
+local FormatMoneyColored = AbilityUtils.FormatMoneyColored
+local IsSpellKnown = AbilityUtils.IsSpellKnown
 
 function Deathless.UI.MiniSummary:Create()
     if self.frame then
@@ -292,55 +259,28 @@ function Deathless.UI.MiniSummary:SetupContent()
         local playerFaction = UnitFactionGroup("player") or ""
         
         local function IsMatch(ability)
-            if ability.race then
-                local match = false
-                for _, r in ipairs(ability.race) do if r == playerRace then match = true break end end
-                if not match then return false end
-            end
-            if ability.faction and ability.faction ~= playerFaction then return false end
-            return true
+            return AbilityUtils.IsMatch(ability, playerRace, playerFaction)
         end
         
         local available = {}
         local nextAvailable = {}
-        local nextLevelCap = playerLevel + 2
-
-        -- Ensure cap always reaches the next level breakpoint
-        local minNextLevel
-        for _, ability in ipairs(rawAbilities) do
-            if IsMatch(ability) and ability.source ~= "talent" and ability.level > playerLevel then
-                if not minNextLevel or ability.level < minNextLevel then
-                    minNextLevel = ability.level
-                end
-            end
-        end
-        if minNextLevel and minNextLevel > nextLevelCap then
-            nextLevelCap = minNextLevel
-        end
+        local nextLevelCap = AbilityUtils.NextLevelCap(rawAbilities, playerLevel, IsMatch)
         
         for _, ability in ipairs(rawAbilities) do
-            if IsMatch(ability) then
-                if ability.source ~= "talent" then
-                    local isKnown = IsSpellKnown(ability.name, ability.rank)
-                    if not isKnown then
-                        if ability.level <= playerLevel then
-                            table.insert(available, ability)
-                        elseif ability.level <= nextLevelCap then
-                            table.insert(nextAvailable, ability)
-                        end
+            if IsMatch(ability) and ability.source ~= "talent" then
+                local isKnown = IsSpellKnown(ability.name, ability.rank)
+                if not isKnown then
+                    if ability.level <= playerLevel then
+                        table.insert(available, ability)
+                    elseif ability.level <= nextLevelCap then
+                        table.insert(nextAvailable, ability)
                     end
                 end
             end
         end
         
-        table.sort(available, function(a, b)
-            if a.level == b.level then return a.name < b.name end
-            return a.level < b.level
-        end)
-        table.sort(nextAvailable, function(a, b)
-            if a.level == b.level then return a.name < b.name end
-            return a.level < b.level
-        end)
+        AbilityUtils.Sort(available)
+        AbilityUtils.Sort(nextAvailable)
         
         -- Get warnings from shared module
         local activeWarnings = Deathless.Utils.Warnings:GetActive()

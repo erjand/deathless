@@ -63,7 +63,6 @@ ui\views\abilities\shaman_abilities.lua
 ui\views\abilities\druid_abilities.lua
 ui\views\abilities\warlock_abilities.lua
 ui\views\gear\gear_template.lua
-ui\views\gear\warrior_gear.lua
 ui\content.lua
 ui\frame.lua
 ui\mini.lua
@@ -96,5 +95,9 @@ data\abilities\shaman.lua
 data\abilities\mage.lua
 data\abilities\warlock.lua
 data\abilities\druid.lua
-data\gear\warrior.lua
+data\gear\weapons.lua
+data\gear\shields.lua
+data\gear\ranged.lua
+data\gear\armor.lua
+data\gear\misc.lua
 

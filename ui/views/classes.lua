@@ -41,8 +41,18 @@ local function GetClassTabs(className, displayName)
         { id = className .. "_abilities", label = "Abilities" },
         { id = className .. "_talents", label = "Talents" },
     }
-    if Deathless.Data.Gear and Deathless.Data.Gear[displayName] then
-        table.insert(tabs, { id = className .. "_gear", label = "Gear" })
+    local gearSections = { "Weapons", "Shields", "Ranged", "Armor", "Misc" }
+    for _, section in ipairs(gearSections) do
+        local items = Deathless.Data.Gear and Deathless.Data.Gear[section]
+        if items then
+            for _, item in ipairs(items) do
+                if item.classes and tContains(item.classes, displayName) then
+                    table.insert(tabs, { id = className .. "_gear", label = "Gear" })
+                    break
+                end
+            end
+        end
+        if tabs[#tabs] and tabs[#tabs].id == className .. "_gear" then break end
     end
     return tabs
 end
@@ -57,7 +67,7 @@ local function CreateTabbedClassView(className, displayName)
         local classColor = CLASS_COLORS[className] or Colors.accent
         
         local title, subtitle, separator = Utils:CreateHeader(
-            container, displayName, "Hardcore " .. displayName .. " Guide", classColor
+            container, displayName, "", classColor
         )
         
         local tabs = GetClassTabs(className, displayName)

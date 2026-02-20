@@ -16,7 +16,7 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
 
     local btn = CreateFrame("Button", nil, parent)
     btn:SetSize(width, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -95)
+    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -111)
 
     local Fonts = Deathless.UI.Fonts
     btn.label = btn:CreateFontString(nil, "OVERLAY")
@@ -143,7 +143,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
     -- Search bar
     local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
     searchBox:SetSize(180, 20)
-    searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, -52)
+    searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, -68)
     searchBox:SetFont(Fonts.family, Fonts.body, "")
     searchBox:SetAutoFocus(false)
     searchBox:SetMaxLetters(50)
@@ -177,7 +177,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
     end)
 
     -- Scroll frame
-    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -115, 24)
+    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -131, 24)
 
     -- Sort state (default: sort by min level ascending)
     local sortState = { sortKey = "level", sortAsc = true }
@@ -438,7 +438,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
             table.sort(sortedQuests, function(a, b) return a.name < b.name end)
         end
 
-        if #sortedQuests > 0 then
+        do
             local sec = GetSection()
             sec:ClearAllPoints()
             sec:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
@@ -451,7 +451,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
             sec:Show()
             yOffset = yOffset - SECTION_HEIGHT
 
-            if state.quests then
+            if state.quests and #sortedQuests > 0 then
                 yOffset = yOffset - 4
                 -- Column headers
                 local headers = { "NAME", "LVL", "STARTS", "PREREQ", "REWARDS" }

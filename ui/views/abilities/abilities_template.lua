@@ -110,9 +110,9 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             title, subtitle = Utils:CreateHeader(container, className .. " Abilities", "", classColor)
         end
         
-        local searchBoxY = embedded and -16 or -52
-        local sortHeaderY = embedded and -59 or -95
-        local scrollTopOffset = embedded and -79 or -115
+        local searchBoxY = embedded and -16 or -60
+        local sortHeaderY = embedded and -59 or -103
+        local scrollTopOffset = embedded and -79 or -123
         
         -- Search state
         local searchState = { term = "" }

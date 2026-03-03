@@ -13,18 +13,18 @@ Deathless.UI.Views:Register("options", function(container)
     
     -- Layout constants
     local COL_WIDTH = 150
+    local COL_GAP = 24
     local ROW_HEIGHT = 24
     local SECTION_HEIGHT = 28
-    local SUBSECTION_HEIGHT = 22
     local WARNING_ROWS = 4
     local CLASS_ROWS = 3
     
     -- Section collapse state
-    local sectionState = { classes = true, summary = true, warnings = true, xpProgress = true, abilities = true }
+    local sectionState = { classes = true, warnings = true }
     
     -- Element pools
-    local pools = { section = {}, subheader = {}, checkbox = {} }
-    local poolIndexes = { section = 0, subheader = 0, checkbox = 0 }
+    local pools = { section = {}, checkbox = {} }
+    local poolIndexes = { section = 0, checkbox = 0 }
     
     -- Forward declare Refresh
     local Refresh
@@ -77,26 +77,6 @@ Deathless.UI.Views:Register("options", function(container)
         end)
         
         return section, yOffset - SECTION_HEIGHT
-    end
-    
-    --- Get a pooled collapsible sub-section header
-    local function GetSubSectionHeader(sectionKey, label, anchorFrame, yOffset, color)
-        local header = GetPooledElement("subheader", function()
-            return Utils:CreateCollapsibleSubSection(scrollChild)
-        end)
-        
-        header:SetPoint("TOPLEFT", anchorFrame, "BOTTOMLEFT", 8, yOffset)
-        header:SetPoint("TOPRIGHT", anchorFrame, "BOTTOMRIGHT", 0, yOffset)
-        
-        Utils:ConfigureSubSection(header, sectionState[sectionKey], label, color)
-        
-        header.sectionKey = sectionKey
-        header:SetScript("OnClick", function(self)
-            sectionState[self.sectionKey] = not sectionState[self.sectionKey]
-            Refresh()
-        end)
-        
-        return header, yOffset - SUBSECTION_HEIGHT
     end
     
     --- Create a checkbox with label and optional icon
@@ -261,14 +241,6 @@ Deathless.UI.Views:Register("options", function(container)
         { key = "talents", label = "Unspent Talents", icon = Icons.WARNING_TALENTS, tooltip = "Show warnings for unspent talent points" },
     }
     
-    -- Ability section definitions
-    local ABILITY_SECTIONS = {
-        { key = "showLearned", label = "Show Learned", tooltip = "Show abilities you have already learned" },
-        { key = "showAvailable", label = "Show Available", tooltip = "Show abilities available at your current level" },
-        { key = "showNextAvailable", label = "Show Next Available", tooltip = "Show abilities that will be available soon" },
-        { key = "showUnavailable", label = "Show Unavailable", tooltip = "Show abilities not yet available" },
-    }
-    
     Refresh = function()
         ClearPools()
         
@@ -292,104 +264,37 @@ Deathless.UI.Views:Register("options", function(container)
                     Deathless.Utils.Warnings:TriggerRefresh()
                 end, CLASS_TOOLTIPS[className])
                 
-                checkbox:SetPoint("TOPLEFT", classSection, "BOTTOMLEFT", 8 + (col * COL_WIDTH), -8 - (row * ROW_HEIGHT))
+                checkbox:SetPoint("TOPLEFT", classSection, "BOTTOMLEFT", 8 + (col * (COL_WIDTH + COL_GAP)), -8 - (row * ROW_HEIGHT))
                 checkbox:SetChecked(Deathless.config.includedClasses[className] == true)
             end
             
             yOffset = yOffset - (CLASS_ROWS * ROW_HEIGHT) - 16
         end
         
-        -- === Summary Section ===
-        local summarySection
-        summarySection, yOffset = GetSectionHeader("summary", "Summary", yOffset)
-        
-        if sectionState.summary then
-            -- Warnings sub-section header
-            local warningsHeader, _ = GetSubSectionHeader("warnings", "Warnings", summarySection, -8, Colors.yellow)
-            yOffset = yOffset - 8 - SUBSECTION_HEIGHT
-            
-            if sectionState.warnings then
-                -- Ensure warnings config exists
-                Deathless.config.warnings = Deathless.config.warnings or {}
-                
-                for i, category in ipairs(WARNING_CATEGORIES) do
-                    local col = math.floor((i - 1) / WARNING_ROWS)
-                    local row = (i - 1) % WARNING_ROWS
-                    
-                    local checkbox = GetCheckbox(category.label, category.icon, function(checked)
-                        Deathless.config.warnings[category.key] = checked
-                        Deathless:SaveConfig()
-                        Deathless.Utils.Warnings:TriggerRefresh()
-                    end, category.tooltip)
-                    
-                    checkbox:SetPoint("TOPLEFT", warningsHeader, "BOTTOMLEFT", col * COL_WIDTH, -8 - (row * ROW_HEIGHT))
-                    checkbox:SetChecked(Deathless.config.warnings[category.key] ~= false)
-                end
-                
-                -- Update yOffset: WARNING_ROWS is the number of rows (4), not columns
-                yOffset = yOffset - 8 - (WARNING_ROWS * ROW_HEIGHT) - 8
-            end
-            
-            -- XP Progress sub-section header
-            local xpHeader = GetPooledElement("subheader", function()
-                return Utils:CreateCollapsibleSubSection(scrollChild)
-            end)
-            xpHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
-            xpHeader:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
-            Utils:ConfigureSubSection(xpHeader, sectionState.xpProgress, "XP Progress", Colors.xpHeader)
-            xpHeader.sectionKey = "xpProgress"
-            xpHeader:SetScript("OnClick", function(self)
-                sectionState[self.sectionKey] = not sectionState[self.sectionKey]
-                Refresh()
-            end)
-            yOffset = yOffset - SUBSECTION_HEIGHT
-            
-            if sectionState.xpProgress then
-                local xpCheckbox = GetCheckbox("Show XP Progress", nil, function(checked)
-                    Deathless.config.showXPProgress = checked
+        -- === Warnings Section ===
+        local warningsSection
+        warningsSection, yOffset = GetSectionHeader("warnings", "Warnings", yOffset)
+
+        if sectionState.warnings then
+            -- Ensure warnings config exists
+            Deathless.config.warnings = Deathless.config.warnings or {}
+
+            for i, category in ipairs(WARNING_CATEGORIES) do
+                local col = math.floor((i - 1) / WARNING_ROWS)
+                local row = (i - 1) % WARNING_ROWS
+
+                local checkbox = GetCheckbox(category.label, category.icon, function(checked)
+                    Deathless.config.warnings[category.key] = checked
                     Deathless:SaveConfig()
                     Deathless.Utils.Warnings:TriggerRefresh()
-                end, "Show XP progress, session stats, and time to level in Summary and Mini views")
-                
-                xpCheckbox:SetPoint("TOPLEFT", xpHeader, "BOTTOMLEFT", 0, -8)
-                xpCheckbox:SetChecked(Deathless.config.showXPProgress ~= false)
-                yOffset = yOffset - 8 - ROW_HEIGHT - 8
+                end, category.tooltip)
+
+                checkbox:SetPoint("TOPLEFT", warningsSection, "BOTTOMLEFT", 8 + (col * (COL_WIDTH + COL_GAP)), -8 - (row * ROW_HEIGHT))
+                checkbox:SetChecked(Deathless.config.warnings[category.key] ~= false)
             end
-            
-            -- Abilities sub-section header (anchor to scrollChild using absolute yOffset)
-            local abilitiesHeader = GetPooledElement("subheader", function()
-                return Utils:CreateCollapsibleSubSection(scrollChild)
-            end)
-            abilitiesHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
-            abilitiesHeader:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
-            Utils:ConfigureSubSection(abilitiesHeader, sectionState.abilities, "Abilities", Colors.info)
-            abilitiesHeader.sectionKey = "abilities"
-            abilitiesHeader:SetScript("OnClick", function(self)
-                sectionState[self.sectionKey] = not sectionState[self.sectionKey]
-                Refresh()
-            end)
-            yOffset = yOffset - SUBSECTION_HEIGHT
-            
-            if sectionState.abilities then
-                -- Ensure abilities config exists
-                Deathless.config.abilities = Deathless.config.abilities or {}
-                
-                for i, section in ipairs(ABILITY_SECTIONS) do
-                    local row = i - 1
-                    
-                    local checkbox = GetCheckbox(section.label, nil, function(checked)
-                        Deathless.config.abilities[section.key] = checked
-                        Deathless:SaveConfig()
-                        Deathless.Utils.Warnings:TriggerRefresh()
-                    end, section.tooltip)
-                    
-                    checkbox:SetPoint("TOPLEFT", abilitiesHeader, "BOTTOMLEFT", 0, -8 - (row * ROW_HEIGHT))
-                    checkbox:SetChecked(Deathless.config.abilities[section.key] ~= false)
-                end
-                
-                -- Update yOffset for abilities content
-                yOffset = yOffset - 8 - (#ABILITY_SECTIONS * ROW_HEIGHT) - 8
-            end
+
+            -- WARNING_ROWS is the number of rows (4), not columns
+            yOffset = yOffset - 8 - (WARNING_ROWS * ROW_HEIGHT) - 8
         end
         
         -- Update scroll child height and scrollbar (match abilities_template behavior)

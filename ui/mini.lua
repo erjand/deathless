@@ -300,11 +300,6 @@ function Deathless.UI.MiniSummary:SetupContent()
         local activeWarnings = Deathless.Utils.Warnings:GetActive()
         local warningCount = #activeWarnings
         
-        -- Check abilities config for section visibility
-        local abilitiesConfig = Deathless.config.abilities or {}
-        local showAvailable = abilitiesConfig.showAvailable ~= false
-        local showNextAvailable = abilitiesConfig.showNextAvailable ~= false
-        
         local yOffset = -4
         
         -- Collapsible warnings section (only if there are warnings)
@@ -382,8 +377,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         
         -- XP Progress Section (compact for mini view)
         local xpData = Deathless.Utils.XP:GetData()
-        local showXP = Deathless.config.showXPProgress ~= false
-        if showXP and not xpData.isMaxLevel then
+        if not xpData.isMaxLevel then
             local xpHeader = CreateFrame("Button", nil, scrollChild)
             xpHeader:SetHeight(18)
             xpHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
@@ -484,7 +478,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         end
         
         -- Available abilities (collapsible)
-        if showAvailable and #available > 0 then
+        if #available > 0 then
             local totalCost = 0
             for _, ab in ipairs(available) do totalCost = totalCost + (ab.base_cost or 0) end
             
@@ -582,7 +576,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         end
         
         -- Next available abilities (collapsible)
-        if showNextAvailable and #nextAvailable > 0 then
+        if #nextAvailable > 0 then
             local nextCost = 0
             for _, ab in ipairs(nextAvailable) do nextCost = nextCost + (ab.base_cost or 0) end
             
@@ -682,8 +676,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         end
         
         -- No abilities message (only if class is enabled and sections are shown)
-        local showingAbilities = showAvailable or showNextAvailable
-        if classEnabled and showingAbilities and #available == 0 and #nextAvailable == 0 then
+        if classEnabled and #available == 0 and #nextAvailable == 0 then
             local msg = scrollChild:CreateFontString(nil, "OVERLAY")
             msg:SetFont(Fonts.family, Fonts.small, "")
             msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 4, yOffset)

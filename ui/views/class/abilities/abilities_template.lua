@@ -117,6 +117,14 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         
         -- Search state
         local searchState = { term = "" }
+        local filterState = {}
+        local FILTER_ORDER = { "learned", "available", "nextAvailable", "unavailable" }
+        local FILTER_LABELS = {
+            learned = "Learned",
+            available = "Available",
+            nextAvailable = "Next Available",
+            unavailable = "Unavailable",
+        }
         
         -- Create search bar
         local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
@@ -154,6 +162,91 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         clearBtn:SetScript("OnLeave", function(self)
             self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         end)
+
+        -- Ability filter controls
+        Deathless.config.abilities = Deathless.config.abilities or {}
+        Deathless.config.abilities.filters = Deathless.config.abilities.filters or {}
+        for _, key in ipairs(FILTER_ORDER) do
+            filterState[key] = Deathless.config.abilities.filters[key] ~= false
+        end
+
+        local function SaveFilterState()
+            Deathless.config.abilities = Deathless.config.abilities or {}
+            Deathless.config.abilities.filters = Deathless.config.abilities.filters or {}
+            for _, key in ipairs(FILTER_ORDER) do
+                Deathless.config.abilities.filters[key] = filterState[key] ~= false
+            end
+            Deathless:SaveConfig()
+        end
+
+        local function UpdateFilterCheckboxVisual(button, checked)
+            if checked then
+                button.check:Show()
+                button.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            else
+                button.check:Hide()
+                button.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            end
+        end
+
+        local PopulateRows
+        local filterCheckboxes = {}
+
+        local function CreateFilterCheckbox(filterKey, xOffset, width)
+            local button = CreateFrame("Button", nil, container)
+            button:SetSize(width, 20)
+            button:SetPoint("LEFT", searchBox, "RIGHT", xOffset, 0)
+
+            button.box = button:CreateTexture(nil, "BACKGROUND")
+            button.box:SetSize(14, 14)
+            button.box:SetPoint("LEFT", button, "LEFT", 0, 0)
+            button.box:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
+
+            button.border = button:CreateTexture(nil, "BORDER")
+            button.border:SetPoint("TOPLEFT", button.box, "TOPLEFT", -1, 1)
+            button.border:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", 1, -1)
+            button.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+
+            button.check = button:CreateTexture(nil, "ARTWORK")
+            button.check:SetPoint("TOPLEFT", button.box, "TOPLEFT", 1, -1)
+            button.check:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", -1, 1)
+            button.check:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+
+            button.label = button:CreateFontString(nil, "OVERLAY")
+            button.label:SetFont(Fonts.family, Fonts.small, "")
+            button.label:SetPoint("LEFT", button.box, "RIGHT", 6, 0)
+            button.label:SetText(FILTER_LABELS[filterKey])
+
+            button.filterKey = filterKey
+            UpdateFilterCheckboxVisual(button, filterState[filterKey] == true)
+
+            button:SetScript("OnEnter", function(self)
+                self.border:SetColorTexture(Colors.accent[1] * 0.8, Colors.accent[2] * 0.8, Colors.accent[3] * 0.8, 1)
+                self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            end)
+            button:SetScript("OnLeave", function(self)
+                self.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+                UpdateFilterCheckboxVisual(self, filterState[self.filterKey] == true)
+            end)
+            button:SetScript("OnClick", function(self)
+                local key = self.filterKey
+                filterState[key] = not filterState[key]
+                for _, cb in ipairs(filterCheckboxes) do
+                    UpdateFilterCheckboxVisual(cb, filterState[cb.filterKey] == true)
+                end
+                SaveFilterState()
+                if PopulateRows then
+                    PopulateRows()
+                end
+            end)
+
+            return button
+        end
+
+        table.insert(filterCheckboxes, CreateFilterCheckbox("learned", 16, 78))
+        table.insert(filterCheckboxes, CreateFilterCheckbox("available", 102, 84))
+        table.insert(filterCheckboxes, CreateFilterCheckbox("nextAvailable", 194, 108))
+        table.insert(filterCheckboxes, CreateFilterCheckbox("unavailable", 310, 96))
         
         -- Enhanced scroll frame with auto-hiding scrollbar
         local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
@@ -380,8 +473,6 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             return yOffset - ROW_HEIGHT
         end
         
-        local PopulateRows
-        
         local function CreateSectionHeaderAt(sectionKey, label, count, yOffset, color, costCopper, costLabel)
             local section = GetSectionHeader()
             local SECTION_HEIGHT = 28
@@ -485,14 +576,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local nextAvailableColor = Deathless.Constants.Colors.AbilitySection.nextAvailable
             local unavailableColor = Deathless.Constants.Colors.AbilitySection.unavailable
             
-            -- Check abilities config for section visibility
-            local abilitiesConfig = Deathless.config.abilities or {}
-            local showLearned = abilitiesConfig.showLearned ~= false
-            local showAvailable = abilitiesConfig.showAvailable ~= false
-            local showNextAvailable = abilitiesConfig.showNextAvailable ~= false
-            local showUnavailable = abilitiesConfig.showUnavailable ~= false
-            
-            if showLearned and #learned > 0 then
+            if filterState.learned and #learned > 0 then
                 local learnedCost = 0
                 for _, ability in ipairs(learned) do
                     learnedCost = learnedCost + (ability.base_cost or 0)
@@ -506,7 +590,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                 end
             end
             
-            if showAvailable and #available > 0 then
+            if filterState.available and #available > 0 then
                 local availableCost = 0
                 for _, ability in ipairs(available) do
                     availableCost = availableCost + (ability.base_cost or 0)
@@ -520,7 +604,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                 end
             end
             
-            if showNextAvailable and #nextAvailable > 0 then
+            if filterState.nextAvailable and #nextAvailable > 0 then
                 local totalCost = 0
                 for _, ability in ipairs(nextAvailable) do
                     totalCost = totalCost + (ability.base_cost or 0)
@@ -534,7 +618,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                 end
             end
             
-            if showUnavailable and #unavailable > 0 then
+            if filterState.unavailable and #unavailable > 0 then
                 local unavailableCost = 0
                 for _, ability in ipairs(unavailable) do
                     unavailableCost = unavailableCost + (ability.base_cost or 0)

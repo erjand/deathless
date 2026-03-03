@@ -66,11 +66,11 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 
                 frame.level = frame:CreateFontString(nil, "OVERLAY")
                 frame.level:SetFont(Fonts.family, Fonts.body, "")
-                frame.level:SetPoint("RIGHT", frame, "RIGHT", -100, 0)
+                frame.level:SetPoint("RIGHT", frame, "RIGHT", -96, 0)
                 
                 frame.cost = frame:CreateFontString(nil, "OVERLAY")
                 frame.cost:SetFont(Fonts.family, Fonts.body, "")
-                frame.cost:SetPoint("RIGHT", frame, "RIGHT", 0, 0)
+                frame.cost:SetPoint("RIGHT", frame, "RIGHT", -4, 0)
                 
                 frame:EnableMouse(true)
                 frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -123,7 +123,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
             if not subsection.cost then
                 subsection.cost = subsection:CreateFontString(nil, "OVERLAY")
                 subsection.cost:SetFont(Fonts.family, Fonts.body, "")
-                subsection.cost:SetPoint("LEFT", subsection.label, "RIGHT", 8, 0)
+                    subsection.cost:SetPoint("RIGHT", subsection, "RIGHT", -4, 0)
             end
             subsection.cost:SetText(costText)
             subsection.cost:SetTextColor(1, 1, 1, 1)
@@ -315,7 +315,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 statsRow.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
                 
                 statsRow.level:ClearAllPoints()
-                statsRow.level:SetPoint("CENTER", statsRow, "CENTER", 0, 0)
+                statsRow.level:SetPoint("RIGHT", statsRow.cost, "LEFT", -12, 0)
                 statsRow.level:SetText(Deathless.Utils.XP:FormatNumber(xpData.xpPerHour) .. " XP/hr")
                 statsRow.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                 

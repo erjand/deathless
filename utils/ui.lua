@@ -188,7 +188,10 @@ end
 -- @param gripTexture The grip texture for hover effects
 -- @param Colors Color palette
 -- @param layoutKey Optional key in config.layout to save size (e.g. "mini" or "main")
-function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, layoutKey)
+-- @param resizePoint Optional resize anchor point for StartSizing (default "BOTTOMRIGHT")
+function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, layoutKey, resizePoint)
+    local startSizingPoint = resizePoint or "BOTTOMRIGHT"
+
     resizeGrip:SetScript("OnMouseDown", function(self, button)
         if button == "LeftButton" and (not frame.IsPinned or not frame.IsPinned()) then
             -- Only re-anchor if not already anchored to TOPLEFT to prevent jump
@@ -198,7 +201,7 @@ function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, 
                 frame:ClearAllPoints()
                 frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
             end
-            frame:StartSizing("BOTTOMRIGHT")
+            frame:StartSizing(startSizingPoint)
         end
     end)
     
@@ -228,27 +231,59 @@ end
 --- Create a resize grip for a frame
 -- @param frame The parent frame
 -- @param Colors Color palette
+-- @param options Optional table: { point, relativePoint, offsetX, offsetY, style }
 -- @return resizeGrip button, gripTexture texture
-function Deathless.Utils.UI.CreateResizeGrip(frame, Colors)
+function Deathless.Utils.UI.CreateResizeGrip(frame, Colors, options)
+    options = options or {}
+    local point = options.point or "BOTTOMRIGHT"
+    local relativePoint = options.relativePoint or point
+    local offsetX = options.offsetX
+    local offsetY = options.offsetY
+    local style = options.style or "corner"
+
+    if offsetX == nil then
+        offsetX = point == "BOTTOMRIGHT" and -2 or 0
+    end
+    if offsetY == nil then
+        offsetY = point == "BOTTOMRIGHT" and 2 or 2
+    end
+
     local resizeGrip = CreateFrame("Button", nil, frame)
-    resizeGrip:SetSize(16, 16)
-    resizeGrip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+    if style == "bottom" then
+        resizeGrip:SetSize(24, 12)
+    else
+        resizeGrip:SetSize(16, 16)
+    end
+    resizeGrip:SetPoint(point, frame, relativePoint, offsetX, offsetY)
     resizeGrip:SetFrameLevel(frame:GetFrameLevel() + 10)
     resizeGrip:EnableMouse(true)
     resizeGrip:SetAlpha(0)
     
     -- Grip texture
     local gripTexture = resizeGrip:CreateTexture(nil, "OVERLAY")
-    gripTexture:SetSize(12, 12)
+    if style == "bottom" then
+        gripTexture:SetSize(16, 4)
+    else
+        gripTexture:SetSize(12, 12)
+    end
     gripTexture:SetPoint("CENTER", 0, 0)
     gripTexture:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.6)
     
-    -- Create diagonal grip lines
-    for i = 1, 3 do
-        local line = resizeGrip:CreateTexture(nil, "OVERLAY")
-        line:SetColorTexture(Colors.borderLight[1], Colors.borderLight[2], Colors.borderLight[3], 0.8)
-        line:SetSize(2, 2)
-        line:SetPoint("BOTTOMRIGHT", resizeGrip, "BOTTOMRIGHT", -2 - (i * 3), 2 + (i * 3))
+    -- Create resize hint lines
+    if style == "bottom" then
+        for i = 1, 3 do
+            local line = resizeGrip:CreateTexture(nil, "OVERLAY")
+            line:SetColorTexture(Colors.borderLight[1], Colors.borderLight[2], Colors.borderLight[3], 0.85)
+            line:SetSize(14, 1)
+            line:SetPoint("CENTER", resizeGrip, "CENTER", 0, i - 2)
+        end
+    else
+        for i = 1, 3 do
+            local line = resizeGrip:CreateTexture(nil, "OVERLAY")
+            line:SetColorTexture(Colors.borderLight[1], Colors.borderLight[2], Colors.borderLight[3], 0.8)
+            line:SetSize(2, 2)
+            line:SetPoint("BOTTOMRIGHT", resizeGrip, "BOTTOMRIGHT", -2 - (i * 3), 2 + (i * 3))
+        end
     end
     
     -- Store on frame for easy access

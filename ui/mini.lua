@@ -7,6 +7,13 @@ local AbilityUtils = Deathless.Utils.Abilities
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
 
+local MINI_DEFAULT_WIDTH = 300
+local MINI_DEFAULT_HEIGHT = 200
+local MINI_MIN_WIDTH = 300
+local MINI_MAX_WIDTH = 300
+local MINI_MIN_HEIGHT = 120
+local MINI_MAX_HEIGHT = 500
+
 function Deathless.UI.MiniSummary:Create()
     if self.frame then
         return self.frame
@@ -21,7 +28,7 @@ function Deathless.UI.MiniSummary:Create()
     
     -- Restore saved layout (always use TOPLEFT->BOTTOMLEFT for absolute positioning)
     local layout = Deathless.config.layout and Deathless.config.layout.mini or {}
-    frame:SetSize(layout.width or 300, layout.height or 200)
+    frame:SetSize(MINI_DEFAULT_WIDTH, layout.height or MINI_DEFAULT_HEIGHT)
     if layout.x and layout.y then
         frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", layout.x, layout.y)
     else
@@ -30,7 +37,7 @@ function Deathless.UI.MiniSummary:Create()
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:SetResizable(true)
-    frame:SetResizeBounds(200, 120, 500, 400)
+    frame:SetResizeBounds(MINI_MIN_WIDTH, MINI_MIN_HEIGHT, MINI_MAX_WIDTH, MINI_MAX_HEIGHT)
     frame:RegisterForDrag("LeftButton")
     frame:SetFrameStrata("MEDIUM")
     frame:SetClampedToScreen(true)
@@ -78,10 +85,16 @@ function Deathless.UI.MiniSummary:Create()
     })
     
     -- Resize grip (using shared component)
-    local resizeGrip, gripTexture = PinUtils.CreateResizeGrip(frame, Colors)
+    local resizeGrip, gripTexture = PinUtils.CreateResizeGrip(frame, Colors, {
+        point = "BOTTOM",
+        relativePoint = "BOTTOM",
+        offsetX = 0,
+        offsetY = 2,
+        style = "bottom",
+    })
     
     -- Setup pinnable resize behavior (with layout saving)
-    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "mini")
+    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "mini", "BOTTOM")
     
     -- Setup pinnable drag behavior (with layout saving)
     PinUtils.SetupPinnableDrag(frame, "mini")
@@ -407,7 +420,7 @@ function Deathless.UI.MiniSummary:SetupContent()
             if isExpanded then
                 -- XP Bar (compact)
                 local barRow = CreateFrame("Frame", nil, scrollChild)
-                barRow:SetSize(scrollChild:GetWidth() - 16, 12)
+                barRow:SetSize(scrollChild:GetWidth() - 24, 12)
                 barRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
                 
                 local barBg = barRow:CreateTexture(nil, "BACKGROUND")
@@ -443,7 +456,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                 
                 -- Stats row
                 local statsRow = CreateFrame("Frame", nil, scrollChild)
-                statsRow:SetSize(scrollChild:GetWidth() - 16, 14)
+                statsRow:SetSize(scrollChild:GetWidth() - 24, 14)
                 statsRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
                 
                 local sessionText = statsRow:CreateFontString(nil, "OVERLAY")
@@ -454,7 +467,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                 
                 local rateText = statsRow:CreateFontString(nil, "OVERLAY")
                 rateText:SetFont(Fonts.family, Fonts.small, "")
-                rateText:SetPoint("RIGHT", statsRow, "RIGHT", 0, 0)
+                rateText:SetPoint("RIGHT", statsRow, "RIGHT", -8, 0)
                 rateText:SetText(Deathless.Utils.XP:FormatNumber(xpData.xpPerHour) .. "/hr")
                 rateText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                 
@@ -504,7 +517,7 @@ function Deathless.UI.MiniSummary:SetupContent()
             if isExpanded then
                 for _, ability in ipairs(available) do
                     local row = CreateFrame("Frame", nil, scrollChild)
-                    row:SetSize(scrollChild:GetWidth() - 16, 18)
+                    row:SetSize(scrollChild:GetWidth() - 24, 18)
                     row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
                     
                     local icon = row:CreateTexture(nil, "ARTWORK")
@@ -526,7 +539,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     
                     local cost = row:CreateFontString(nil, "OVERLAY")
                     cost:SetFont(Fonts.family, Fonts.small, "")
-                    cost:SetPoint("RIGHT", row, "RIGHT", -5, 0)
+                    cost:SetPoint("RIGHT", row, "RIGHT", -8, 0)
                     if ability.base_cost == 0 then
                         cost:SetText("Free")
                         cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
@@ -590,7 +603,7 @@ function Deathless.UI.MiniSummary:SetupContent()
             if isExpanded then
                 for _, ability in ipairs(nextAvailable) do
                     local row = CreateFrame("Frame", nil, scrollChild)
-                    row:SetSize(scrollChild:GetWidth() - 16, 18)
+                    row:SetSize(scrollChild:GetWidth() - 24, 18)
                     row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
                     
                     local icon = row:CreateTexture(nil, "ARTWORK")
@@ -614,7 +627,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     
                     local cost = row:CreateFontString(nil, "OVERLAY")
                     cost:SetFont(Fonts.family, Fonts.small, "")
-                    cost:SetPoint("RIGHT", row, "RIGHT", -5, 0)
+                    cost:SetPoint("RIGHT", row, "RIGHT", -8, 0)
                     if ability.base_cost == 0 then
                         cost:SetText("Free")
                         cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.6)

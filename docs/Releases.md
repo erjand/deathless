@@ -11,3 +11,4 @@ For this initial release, let's get:
 5. [ ] Dungeons
 6. [ ] Gear
 7. [ ] Macros
+8. [ ] Versioning / tags

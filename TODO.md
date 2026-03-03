@@ -2,6 +2,8 @@
 
 ## Features / Ideas
 
+- [ ] Add release versioning / tags
+
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
 - [ ] Feature: Max level mode to disable leveling stuff?

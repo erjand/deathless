@@ -2,6 +2,12 @@ local Deathless = Deathless
 
 Deathless.UI.Frame = Deathless.UI.Frame or {}
 
+local MAIN_MIN_WIDTH = 800
+local MAIN_MAX_WIDTH = 800
+local MAIN_DEFAULT_HEIGHT = 600
+local MAIN_MIN_HEIGHT = 400
+local MAIN_MAX_HEIGHT = 800
+
 -- Color palette
 local Colors = {
     bg = { 0.08, 0.08, 0.10, 0.95 },         -- Dark background
@@ -146,7 +152,7 @@ function Deathless.UI.Frame:Create()
     
     -- Restore saved layout (use TOPLEFT->BOTTOMLEFT for absolute positioning if saved)
     local layout = Deathless.config.layout and Deathless.config.layout.main or {}
-    frame:SetSize(layout.width or 800, layout.height or 600)
+    frame:SetSize(MAIN_MIN_WIDTH, layout.height or MAIN_DEFAULT_HEIGHT)
     if layout.x and layout.y and layout.point == "TOPLEFT" then
         frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", layout.x, layout.y)
     else
@@ -155,7 +161,7 @@ function Deathless.UI.Frame:Create()
     frame:SetMovable(true)
     frame:EnableMouse(true)
     frame:SetResizable(true)
-    frame:SetResizeBounds(800, 400, 1200, 800)
+    frame:SetResizeBounds(MAIN_MIN_WIDTH, MAIN_MIN_HEIGHT, MAIN_MAX_WIDTH, MAIN_MAX_HEIGHT)
     frame:RegisterForDrag("LeftButton")
     frame:SetFrameStrata("HIGH")
     
@@ -216,11 +222,17 @@ function Deathless.UI.Frame:Create()
     end)
     
     -- Resize grip (using shared component)
-    local resizeGrip, gripTexture = PinUtils.CreateResizeGrip(frame, Colors)
+    local resizeGrip, gripTexture = PinUtils.CreateResizeGrip(frame, Colors, {
+        point = "BOTTOM",
+        relativePoint = "BOTTOM",
+        offsetX = 0,
+        offsetY = 2,
+        style = "bottom",
+    })
     local isFrameHovered = false
     
     -- Setup pinnable resize behavior (with layout saving)
-    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "main")
+    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "main", "BOTTOM")
     
     -- Setup pinnable drag behavior (with layout saving)
     PinUtils.SetupPinnableDrag(frame, "main")

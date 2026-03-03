@@ -1,4 +1,8 @@
 local Deathless = Deathless
+local GearTiers = (Deathless.Constants and Deathless.Constants.GearTiers) or {
+    LEVELING = "Leveling",
+    PRE_BIS = "Pre-BiS",
+}
 
 Deathless.config = Deathless.config or {
     -- UI settings
@@ -35,6 +39,13 @@ Deathless.config = Deathless.config or {
         hearthstone = true,
         talents = true,
     },
+    -- Gear view filter settings
+    gear = {
+        tierFilters = {
+            [GearTiers.LEVELING] = true,
+            [GearTiers.PRE_BIS] = false,
+        },
+    },
 }
 
 -- Class list in alphabetical order
@@ -66,6 +77,18 @@ local function LoadConfig()
     end
     -- Initialize class filter if needed
     InitIncludedClasses()
+
+    -- Ensure gear filter defaults exist for older saved variables
+    Deathless.config.gear = Deathless.config.gear or {}
+    Deathless.config.gear.tierFilters = Deathless.config.gear.tierFilters or {}
+    if Deathless.config.gear.tierFilters[GearTiers.LEVELING] == nil then
+        Deathless.config.gear.tierFilters[GearTiers.LEVELING] = true
+    end
+    if Deathless.config.gear.tierFilters[GearTiers.PRE_BIS] == nil then
+        Deathless.config.gear.tierFilters[GearTiers.PRE_BIS] = false
+    end
+    -- Remove deprecated raid tier filter from older saved variables.
+    Deathless.config.gear.tierFilters.Raid = nil
 end
 
 -- Save configuration

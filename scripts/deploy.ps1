@@ -1,22 +1,11 @@
-# Deploy script for Deathless WoW addon (TBC Classic Anniversary)
-# Copies addon files to WoW TBC Classic Anniversary AddOns directory
+# Deploy script for Deathless WoW addon
+# Copies addon files to WoW Classic Era AddOns directory
 
-$SourceDir = $PSScriptRoot
-$TargetDir = "C:\Program Files (x86)\World of Warcraft\_anniversary_\Interface\AddOns\deathless"
+$ScriptDir = $PSScriptRoot
+$SourceDir = Split-Path -Parent $ScriptDir
+$TargetDir = "C:\Program Files (x86)\World of Warcraft\_classic_era_\Interface\AddOns\deathless"
 
-# Files and directories to exclude
-$ExcludeItems = @(
-    ".git",
-    ".cursor",
-    ".gitignore",
-    "README.md",
-    "deploy.ps1",
-    "deploy.bat",
-    "deploy-tbc.ps1",
-    "deploy-tbc.bat"
-)
-
-Write-Host "Deploying Deathless addon to TBC Classic Anniversary..." -ForegroundColor Green
+Write-Host "Deploying Deathless addon..." -ForegroundColor Green
 Write-Host "Source: $SourceDir" -ForegroundColor Cyan
 Write-Host "Target: $TargetDir" -ForegroundColor Cyan
 Write-Host ""

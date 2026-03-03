@@ -1,0 +1,16 @@
+name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,faction,pre_bis
+"Ring of Iron Will","Ring",15,"Quest - Howling in the Hills","uncommon",1319,true,true,true,true,true,true,true,true,false,"Alliance",false
+"Seal of Wrynn","Ring",16,"Quest - An Audience with the King","rare",2933,true,true,true,true,false,false,false,true,false,"Alliance",false
+"Lavishly Jeweled Ring","Ring",17,"Deadmines - Gilnid","rare",1156,false,false,true,false,true,true,true,true,true,"",false
+"Ring of Pure Silver","Ring",18,"Quest - Raene's Cleansing","uncommon",1116,false,true,false,false,true,true,true,true,false,"Alliance",false
+"Seal of Sylvanas","Ring",18,"Quest - Arugal Must Die","rare",6414,true,false,true,true,false,false,false,true,true,"Horde",false
+"Sustaining Ring","Ring",19,"Quest - Knowledge in the Deeps","uncommon",6743,false,true,false,false,true,true,true,true,false,"Alliance",false
+"Silverlaine's Family Seal","Ring",21,"SFK - Baron Silverlaine","rare",6321,true,true,false,true,false,false,false,true,true,"",false
+"Deep Fathom Ring","Ring",21,"WC - Mutanus the Devourer","rare",6463,false,true,false,false,true,true,true,true,true,"",false
+"Band of Allegiance","Ring",30,"Quest - Service to the Horde","rare",18585,true,false,true,true,false,false,false,true,true,"Horde",false
+"Lonetree's Circle","Ring",30,"Quest - Service to the Horde","rare",18586,false,false,true,false,true,true,true,true,true,"Horde",false
+"Archaedic Stone","Ring",42,"Uldaman - Archaedas","rare",11118,true,true,true,true,false,false,false,true,true,"",false
+"Blackstone Ring","Ring",49,"Maraudon - Princess Theradras","rare",17713,true,true,true,true,false,false,false,true,true,"",false
+"Magni's Will","Ring",52,"Quest - The Princess's Surprise","rare",12548,true,true,true,true,false,false,false,true,false,"Alliance",false
+"Band of Flesh","Ring",55,"Stratholme - Ramstein","rare",13373,true,true,true,true,false,false,false,true,true,"",false
+"Tarnished Elven Ring","Ring",56,"DM North - Tribute","rare",18500,true,true,true,true,false,false,false,true,true,"",false

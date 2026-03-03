@@ -8,6 +8,7 @@
 deathless.lua
 
 core\init.lua
+core\constants.lua
 core\config.lua
 core\events.lua
 core\commands.lua
@@ -98,7 +99,14 @@ data\abilities\druid.lua
 data\gear\weapons.lua
 data\gear\shields.lua
 data\gear\ranged.lua
-data\gear\armor.lua
+data\gear\armor_head.lua
+data\gear\armor_shoulders.lua
+data\gear\armor_chest.lua
+data\gear\armor_wrist.lua
+data\gear\armor_hands.lua
+data\gear\armor_waist.lua
+data\gear\armor_legs.lua
+data\gear\armor_feet.lua
 data\gear\rings.lua
 data\gear\trinkets.lua
 data\gear\amulets.lua

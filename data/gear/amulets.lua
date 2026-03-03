@@ -3,9 +3,9 @@ local Deathless = Deathless
 Deathless.Data = Deathless.Data or {}
 Deathless.Data.Gear = Deathless.Data.Gear or {}
 
--- Every item must have a `classes` field listing which class gear pages it appears on
 -- Source format: "{Dungeon} - {Boss}", "Quest - {Name}", "{Profession} ({Detail})", "Reputation - {Faction} ({Level})", "World Drop", "Vendor"
+-- GENERATED FROM data/source/amulets.csv. DO NOT EDIT MANUALLY.
 
 Deathless.Data.Gear.Amulets = {
-    { name = "Placeholder",           slot = "Neck",  type = "Neck",  levelReq = 16, source = "Quest - An Audience with the King",        rarity = "rare",      itemId = 2933,  classes = { "Warrior", "Paladin", "Rogue", "Hunter", "Druid" }, faction = "Alliance" },
+    { name = "Placeholder Amulet", slot = "Neck", type = "Neck", levelReq = 20, source = "Quest - Placeholder", rarity = "uncommon", itemId = 1200, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Mage", "Warlock", "Druid", "Shaman" } },
 }

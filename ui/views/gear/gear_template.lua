@@ -40,11 +40,18 @@ local COL = {
     name   = { x = 16,  w = 190 },
     type   = { x = 210, w = 65 },
     lvl    = { x = 280, w = 36 },
-    source = { x = 322, w = 210 },
+    source = { x = 322, w = 170 },
+    prebis = { x = 496, w = 64 },
 }
 
+local GEAR_TIER = (Deathless.Constants and Deathless.Constants.GearTiers) or {
+    LEVELING = "Leveling",
+    PRE_BIS = "Pre-BiS",
+}
+local TIER_ORDER = { GEAR_TIER.LEVELING, GEAR_TIER.PRE_BIS }
+
 --- Create a sortable column header button
-local function CreateSortableHeader(parent, label, col, sortKey, state, onSort, headerY)
+local function CreateSortableHeader(parent, label, col, sortKey, state, onSort, headerY, tooltip)
     local Colors = Utils:GetColors()
     local Fonts = Deathless.UI.Fonts
 
@@ -72,6 +79,9 @@ local function CreateSortableHeader(parent, label, col, sortKey, state, onSort, 
 
     btn:SetScript("OnEnter", function(self)
         self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        if tooltip then
+            Deathless.UI.Tooltip:Show(self, "ANCHOR_TOP", tooltip.title or label, tooltip)
+        end
     end)
     btn:SetScript("OnLeave", function(self)
         if state.sortKey == sortKey then
@@ -79,6 +89,7 @@ local function CreateSortableHeader(parent, label, col, sortKey, state, onSort, 
         else
             self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         end
+        Deathless.UI.Tooltip:Hide()
     end)
     btn:SetScript("OnClick", function()
         if state.sortKey == sortKey then
@@ -134,6 +145,20 @@ function Deathless.UI.Views.GearTemplate:Create(config)
 
         -- Search state
         local searchState = { term = "" }
+        local tierFilterState = {}
+
+        -- Load/sanitize persisted tier filters
+        Deathless.config.gear = Deathless.config.gear or {}
+        Deathless.config.gear.tierFilters = Deathless.config.gear.tierFilters or {}
+        for _, tier in ipairs(TIER_ORDER) do
+            tierFilterState[tier] = Deathless.config.gear.tierFilters[tier] == true
+        end
+        if not (tierFilterState[GEAR_TIER.LEVELING] or tierFilterState[GEAR_TIER.PRE_BIS]) then
+            tierFilterState[GEAR_TIER.LEVELING] = true
+            Deathless.config.gear.tierFilters[GEAR_TIER.LEVELING] = true
+            Deathless.config.gear.tierFilters[GEAR_TIER.PRE_BIS] = false
+            Deathless:SaveConfig()
+        end
 
         -- Search bar
         local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
@@ -171,6 +196,83 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         end)
 
+        local PopulateRows
+
+        -- Tier filter controls
+        local tierCheckboxes = {}
+
+        local function SaveTierFilters()
+            Deathless.config.gear = Deathless.config.gear or {}
+            Deathless.config.gear.tierFilters = Deathless.config.gear.tierFilters or {}
+            for _, tier in ipairs(TIER_ORDER) do
+                Deathless.config.gear.tierFilters[tier] = tierFilterState[tier] == true
+            end
+            Deathless:SaveConfig()
+        end
+
+        local function UpdateTierCheckboxVisual(button, checked)
+            if checked then
+                button.check:Show()
+                button.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            else
+                button.check:Hide()
+                button.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            end
+        end
+
+        local function CreateTierCheckbox(tier, displayLabel, xOffset)
+            local button = CreateFrame("Button", nil, container)
+            button:SetSize(108, 20)
+            button:SetPoint("LEFT", searchBox, "RIGHT", xOffset, 0)
+
+            button.box = button:CreateTexture(nil, "BACKGROUND")
+            button.box:SetSize(14, 14)
+            button.box:SetPoint("LEFT", button, "LEFT", 0, 0)
+            button.box:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
+
+            button.border = button:CreateTexture(nil, "BORDER")
+            button.border:SetPoint("TOPLEFT", button.box, "TOPLEFT", -1, 1)
+            button.border:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", 1, -1)
+            button.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+
+            button.check = button:CreateTexture(nil, "ARTWORK")
+            button.check:SetPoint("TOPLEFT", button.box, "TOPLEFT", 1, -1)
+            button.check:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", -1, 1)
+            button.check:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+
+            button.label = button:CreateFontString(nil, "OVERLAY")
+            button.label:SetFont(Fonts.family, Fonts.small, "")
+            button.label:SetPoint("LEFT", button.box, "RIGHT", 6, 0)
+            button.label:SetText(displayLabel)
+
+            button.tier = tier
+            UpdateTierCheckboxVisual(button, tierFilterState[tier] == true)
+
+            button:SetScript("OnEnter", function(self)
+                self.border:SetColorTexture(Colors.accent[1] * 0.8, Colors.accent[2] * 0.8, Colors.accent[3] * 0.8, 1)
+                self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            end)
+            button:SetScript("OnLeave", function(self)
+                self.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+                UpdateTierCheckboxVisual(self, tierFilterState[self.tier] == true)
+            end)
+            button:SetScript("OnClick", function(self)
+                tierFilterState[self.tier] = not tierFilterState[self.tier]
+                for _, cb in ipairs(tierCheckboxes) do
+                    UpdateTierCheckboxVisual(cb, tierFilterState[cb.tier] == true)
+                end
+                SaveTierFilters()
+                if PopulateRows then PopulateRows() end
+            end)
+
+            return button
+        end
+
+        local levelingCB = CreateTierCheckbox(GEAR_TIER.LEVELING, GEAR_TIER.LEVELING, 16)
+        local preBisCB = CreateTierCheckbox(GEAR_TIER.PRE_BIS, GEAR_TIER.PRE_BIS, 130)
+        table.insert(tierCheckboxes, levelingCB)
+        table.insert(tierCheckboxes, preBisCB)
+
         -- Scroll frame
         local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
 
@@ -202,7 +304,14 @@ function Deathless.UI.Views.GearTemplate:Create(config)
 
         -- Split armor and misc items into per-slot sections
         local SLOT_SOURCES = {
-            { items = Deathless.Data.Gear.Armor },
+            { items = Deathless.Data.Gear.ArmorHead },
+            { items = Deathless.Data.Gear.ArmorShoulders },
+            { items = Deathless.Data.Gear.ArmorChest },
+            { items = Deathless.Data.Gear.ArmorWrist },
+            { items = Deathless.Data.Gear.ArmorHands },
+            { items = Deathless.Data.Gear.ArmorWaist },
+            { items = Deathless.Data.Gear.ArmorLegs },
+            { items = Deathless.Data.Gear.ArmorFeet },
             { items = Deathless.Data.Gear.Rings },
             { items = Deathless.Data.Gear.Trinkets },
             { items = Deathless.Data.Gear.Amulets },
@@ -296,6 +405,15 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                     valA, valB = a.levelReq or 0, b.levelReq or 0
                 elseif key == "source" then
                     valA, valB = a.source, b.source
+                elseif key == "prebis" then
+                    local function IsPreBis(item)
+                        if not item.tiers then return false end
+                        for _, tier in ipairs(item.tiers) do
+                            if tier == GEAR_TIER.PRE_BIS then return true end
+                        end
+                        return false
+                    end
+                    valA, valB = IsPreBis(a) and 1 or 0, IsPreBis(b) and 1 or 0
                 else
                     valA, valB = a.levelReq or 0, b.levelReq or 0
                 end
@@ -315,13 +433,31 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                 -- Faction filter
                 if item.faction and item.faction ~= playerFaction then
                     -- skip
-                elseif searchTerm == "" then
-                    table.insert(filtered, item)
-                elseif item.name:lower():find(searchTerm, 1, true)
-                    or item.type:lower():find(searchTerm, 1, true)
-                    or item.source:lower():find(searchTerm, 1, true)
-                    or (item.slot and item.slot:lower():find(searchTerm, 1, true)) then
-                    table.insert(filtered, item)
+                else
+                    local tiers = item.tiers
+                    local tierMatch = false
+                    if tiers and #tiers > 0 then
+                        for _, tier in ipairs(tiers) do
+                            if tierFilterState[tier] then
+                                tierMatch = true
+                                break
+                            end
+                        end
+                    else
+                        -- Backward compatibility: items without explicit tiers are leveling items.
+                        tierMatch = tierFilterState[GEAR_TIER.LEVELING] == true
+                    end
+
+                    if not tierMatch then
+                        -- skip
+                    elseif searchTerm == "" then
+                        table.insert(filtered, item)
+                    elseif item.name:lower():find(searchTerm, 1, true)
+                        or item.type:lower():find(searchTerm, 1, true)
+                        or item.source:lower():find(searchTerm, 1, true)
+                        or (item.slot and item.slot:lower():find(searchTerm, 1, true)) then
+                        table.insert(filtered, item)
+                    end
                 end
             end
             return filtered
@@ -428,12 +564,34 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             source:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             row.elements.source = source
 
+            -- Pre-BiS marker
+            local isPreBis = false
+            if item.tiers then
+                for _, tier in ipairs(item.tiers) do
+                    if tier == GEAR_TIER.PRE_BIS then
+                        isPreBis = true
+                        break
+                    end
+                end
+            end
+            local preBis = row:CreateFontString(nil, "OVERLAY")
+            preBis:SetFont(Fonts.family, Fonts.body, "")
+            preBis:SetPoint("LEFT", row, "LEFT", COL.prebis.x + indent, 0)
+            preBis:SetWidth(COL.prebis.w)
+            preBis:SetJustifyH("CENTER")
+            if isPreBis then
+                preBis:SetText("Yes")
+                preBis:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+            else
+                preBis:SetText("")
+                preBis:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            end
+            row.elements.preBis = preBis
+
             return yOffset - ROW_HEIGHT
         end
 
-        local PopulateRows
-
-        local function CreateSectionHeaderAt(sectionKey, label, yOffset, color, iconKey)
+        local function CreateSectionHeaderAt(sectionKey, label, count, yOffset, color, iconKey)
             local section = GetSectionHeader()
             local SECTION_HEIGHT = 28
 
@@ -449,7 +607,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             section.icon:ClearAllPoints()
             section.icon:SetPoint("LEFT", section.slotIcon, "RIGHT", 4, 0)
 
-            Utils:ConfigureSection(section, sectionState[sectionKey], label, color)
+            Utils:ConfigureSection(section, sectionState[sectionKey], label, color, count)
 
             section.sectionKey = sectionKey
             section:SetScript("OnClick", function(self)
@@ -466,17 +624,17 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             { key = "weapons",        label = "Weapon",    color = { 0.90, 0.65, 0.35 } },
             { key = "shields",        label = "Shield",    color = { 0.72, 0.72, 0.78 } },
             { key = "ranged",         label = "Ranged",    color = { 0.70, 0.80, 0.60 } },
-            { key = "slot:Head",      label = "Head",      color = armorColor, dividerBefore = true },
-            { key = "slot:Shoulders", label = "Shoulders", color = armorColor },
-            { key = "slot:Chest",     label = "Chest",     color = armorColor },
-            { key = "slot:Wrist",     label = "Wrist",     color = armorColor },
-            { key = "slot:Hands",     label = "Hands",     color = armorColor },
-            { key = "slot:Waist",     label = "Waist",     color = armorColor },
-            { key = "slot:Legs",      label = "Legs",      color = armorColor },
-            { key = "slot:Feet",      label = "Feet",      color = armorColor },
-            { key = "slot:Neck",      label = "Neck",      color = miscColor, dividerBefore = true },
-            { key = "slot:Ring",      label = "Ring",      color = miscColor },
-            { key = "slot:Trinket",   label = "Trinket",   color = miscColor },
+            { key = "slot:Head",      label = "Head",      color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Shoulders", label = "Shoulders", color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Chest",     label = "Chest",     color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Wrist",     label = "Wrist",     color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Hands",     label = "Hands",     color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Waist",     label = "Waist",     color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Legs",      label = "Legs",      color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Feet",      label = "Feet",      color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Neck",      label = "Neck",      color = miscColor,  dividerBefore = true, dividerKey = "misc" },
+            { key = "slot:Ring",      label = "Ring",      color = miscColor,  dividerBefore = true, dividerKey = "misc" },
+            { key = "slot:Trinket",   label = "Trinket",   color = miscColor,  dividerBefore = true, dividerKey = "misc" },
         }
 
         local function CreateDividerAt(yOffset)
@@ -504,6 +662,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
 
             local yOffset = 0
             local rowNum = 0
+            local drawnDividerKeys = {}
 
             for _, def in ipairs(SECTION_DEFS) do
                 local raw = gearData[def.key] or {}
@@ -511,10 +670,15 @@ function Deathless.UI.Views.GearTemplate:Create(config)
 
                 if #items > 0 then
                     if def.dividerBefore then
-                        yOffset = CreateDividerAt(yOffset)
+                        if not def.dividerKey or not drawnDividerKeys[def.dividerKey] then
+                            yOffset = CreateDividerAt(yOffset)
+                            if def.dividerKey then
+                                drawnDividerKeys[def.dividerKey] = true
+                            end
+                        end
                     end
                     items = SortItems(items)
-                    yOffset = CreateSectionHeaderAt(def.key, def.label, yOffset, def.color)
+                    yOffset = CreateSectionHeaderAt(def.key, def.label, #items, yOffset, def.color)
 
                     if sectionState[def.key] then
                         for _, item in ipairs(items) do
@@ -569,10 +733,15 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         local hType   = { x = COL.type.x   + SCROLL_INSET, w = COL.type.w }
         local hLvl    = { x = COL.lvl.x    + SCROLL_INSET, w = COL.lvl.w }
         local hSource = { x = COL.source.x + SCROLL_INSET, w = COL.source.w }
+        local hPreBis = { x = COL.prebis.x + SCROLL_INSET, w = COL.prebis.w }
         headers.name   = CreateSortableHeader(container, "NAME",   hName,   "name",   sortState, OnSort, sortHeaderY)
         headers.type   = CreateSortableHeader(container, "TYPE",   hType,   "type",   sortState, OnSort, sortHeaderY)
         headers.lvl    = CreateSortableHeader(container, "LVL",    hLvl,    "lvl",    sortState, OnSort, sortHeaderY)
         headers.source = CreateSortableHeader(container, "SOURCE", hSource, "source", sortState, OnSort, sortHeaderY)
+        headers.prebis = CreateSortableHeader(container, "PRE-BIS (?)", hPreBis, "prebis", sortState, OnSort, sortHeaderY, {
+            title = "Pre-BiS",
+            "Best-in-Slot gear at level 60 prior to raid content",
+        })
 
         OnSort()
 

@@ -2,8 +2,6 @@
 
 ## Features / Ideas
 
-- [ ] Rename to something more like "Atlas", "Gazateer" etc - focus not just on HC but Classic in general?
-
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
 - [ ] Feature: Max level mode to disable leveling stuff?
@@ -39,18 +37,16 @@
 ### Gear
 
 - [x] Shields
-- [ ] Ranged (Warrior)
-
-- [ ] Druid Gear 
-- [ ] Hunter Gear
-- [ ] Mage Gear
-- [ ] Paladin Gear
-- [ ] Priest Gear
-- [ ] Rogue Gear
-- [ ] Shaman Gear
-- [ ] Warlock Gear
-- [ ] Warrior Gear
-- [ ] Shared Gear
+- [ ] Armor: Chest
+- [ ] Armor: Feet
+- [ ] Armor: Hands
+- [ ] Armor: Head
+- [ ] Armor: Legs
+- [ ] Armor: Shoulders
+- [ ] Armor: Waist
+- [ ] Armor: Wrist
+- [ ] Ranged
+- [ ] Weapons
 
 #### Warrior
 
@@ -65,7 +61,7 @@
 ## Dungeons
 
 - [ ] Finish dungeons that are WIP
-    - [x] Ragefire Chasm
+- [ ] Add filter checkbox for "In Range" (see Gear filters for similar)
 
 ## Professions
 

@@ -1,0 +1,11 @@
+name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,pre_bis,leveling
+"Nifty Stopwatch","Trinket",36,"Quest - This Is Going to Be Hard","uncommon",2820,true,true,true,true,true,true,true,true,true,false,true
+"Tidal Charm","Trinket",36,"Arathi Highlands - Prince Nazjak (Rare)","uncommon",1404,true,true,true,true,true,true,true,true,true,false,true
+"Mark of the Chosen","Trinket",39,"Quest - The Pariah's Instructions","uncommon",17774,true,true,true,true,false,false,false,true,true,true,true
+"Carrot on a Stick","Trinket",40,"Quest - Gahz'rilla","uncommon",11122,true,true,true,true,true,true,true,true,true,false,true
+"Linken's Boomerang","Trinket",47,"Quest - It's Dangerous to Go Alone","uncommon",11905,true,true,true,true,true,true,true,true,true,false,true
+"Hand of Justice","Trinket",53,"BRD - Emperor Dagran Thaurissan","rare",11815,true,true,true,true,false,false,false,true,true,true,false
+"Second Wind","Trinket",54,"BRD - Golem Lord Argelmach","rare",11819,false,true,false,false,true,false,false,true,true,true,false
+"Blackhand's Breadth","Trinket",55,"Quest - General Drakkisath's Demise","rare",13965,true,true,true,true,false,false,false,true,true,true,false
+"Mark of Tyranny","Trinket",55,"Quest - General Drakkisath's Demise","rare",13966,true,true,false,false,false,false,false,true,false,true,false
+"Eye of the Beast","Trinket",55,"Quest - General Drakkisath's Demise","rare",13968,false,false,false,false,true,true,true,true,true,true,false

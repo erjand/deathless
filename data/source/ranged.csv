@@ -1,0 +1,2 @@
+name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,faction,pre_bis
+"Placeholder Ranged","Gun",20,"Vendor","uncommon",3023,true,false,true,true,false,false,false,false,false,"",false

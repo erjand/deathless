@@ -1,0 +1,25 @@
+name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,faction,pre_bis
+"Banded Buckler","Shield",9,"Vendor","common",17187,true,true,false,false,false,false,false,false,true,"",false
+"Ringed Buckler","Shield",14,"Vendor","common",17188,true,true,false,false,false,false,false,false,true,"",false
+"Gold-plated Buckler","Shield",15,"Deadmines - Miner Johnson (Rare)","rare",5443,true,true,false,false,false,false,false,false,true,"",false
+"Kresh's Back","Shield",15,"Wailing Caverns - Kresh","rare",13245,true,true,false,false,false,false,false,false,true,"",false
+"Arctic Buckler","Shield",18,"Quest - Blackfathom Villainy","rare",7002,true,true,false,false,false,false,false,false,true,"",false
+"Bastion of Stormwind","Shield",20,"Quest - The Tome of Valor","uncommon",9607,false,true,false,false,false,false,false,false,false,"Alliance",false
+"Crest of Darkshire","Shield",20,"Quest - Bride of the Embalmer","uncommon",6223,true,true,false,false,false,false,false,false,false,"Alliance",false
+"Commander's Crest","Shield",23,"SFK - Commander Springvale","rare",6320,true,true,false,false,false,false,false,false,true,"",false
+"Marbled Buckler","Shield",29,"Quest - The Crone of the Kraul","rare",6725,true,true,false,false,false,false,false,false,true,"",false
+"Aegis of the Scarlet Commander","Shield",35,"SM Armory - Herod","rare",7726,true,true,false,false,false,false,false,false,true,"",false
+"Olaf's All Purpose Shield","Shield",37,"Uldaman - Olaf","rare",9404,true,true,false,false,false,false,false,false,true,"",false
+"Savage Boar's Guard","Shield",37,"RFD - Ragglesnout","rare",10767,true,true,false,false,false,false,false,false,true,"",false
+"Troll Protector","Shield",43,"ZF - Sandarr Dunereaver (Rare)","rare",2040,true,true,false,false,false,false,false,false,true,"",false
+"Crest of Supremacy","Shield",51,"Sunken Temple - Shade of Eranikus","rare",10835,true,true,false,false,false,false,false,false,true,"",false
+"Crest of Retribution","Shield",55,"Stratholme - Ramstein","rare",13375,true,true,false,false,false,false,false,false,true,"",false
+"Husk of Nerub'enkan","Shield",56,"Stratholme - Nerub'enkan","rare",13529,true,true,false,false,false,false,false,false,true,"",false
+"Observer's Shield","Shield",56,"DM North - Cho'Rush the Observer","rare",18485,false,true,false,false,false,false,false,false,true,"",false
+"Sacred Protector","Shield",56,"Quest - Order Must Be Restored","rare",16998,false,true,false,false,false,false,false,false,true,"",false
+"Barrier Shield","Shield",57,"DM North - Mizzle the Crafty","rare",18499,true,true,false,false,false,false,false,false,false,"",false
+"Intricately Runed Shield","Shield",57,"Scholomance - Ras Frostwhisper","rare",18696,true,true,false,false,false,false,false,false,false,"",false
+"Rattlecage Buckler","Shield",57,"Scholomance - Rattlegore","rare",14528,false,true,false,false,false,false,false,false,true,"",false
+"Dreadguard's Protector","Shield",57,"DM West - Lord Hel'nurath","rare",18756,true,true,false,false,false,false,false,false,false,"",false
+"Draconian Deflector","Shield",58,"UBRS - General Drakkisath","rare",12602,true,true,false,false,false,false,false,false,false,"",false
+"Force Reactive Disk","Shield",60,"Engineering (300)","epic",18168,true,true,false,false,false,false,false,false,false,"",false

@@ -140,6 +140,11 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
     -- Search state
     local searchState = { term = "" }
+    local filterState = { inLevelRange = false }
+
+    -- Load persisted filter state
+    Deathless.config.dungeons = Deathless.config.dungeons or {}
+    filterState.inLevelRange = Deathless.config.dungeons.inLevelRange == true
 
     -- Search bar
     local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
@@ -176,6 +181,71 @@ Deathless.UI.Views:Register("dungeons", function(container)
     clearBtn:SetScript("OnLeave", function(self)
         self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
     end)
+
+    local function SaveFilterState()
+        Deathless.config.dungeons = Deathless.config.dungeons or {}
+        Deathless.config.dungeons.inLevelRange = filterState.inLevelRange == true
+        Deathless:SaveConfig()
+    end
+
+    local function UpdateFilterCheckboxVisual(button, checked)
+        if checked then
+            button.check:Show()
+            button.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        else
+            button.check:Hide()
+            button.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        end
+    end
+
+    local PopulateRows
+
+    local function CreateFilterCheckbox()
+        local button = CreateFrame("Button", nil, container)
+        button:SetSize(130, 20)
+        button:SetPoint("LEFT", searchBox, "RIGHT", 16, 0)
+
+        button.box = button:CreateTexture(nil, "BACKGROUND")
+        button.box:SetSize(14, 14)
+        button.box:SetPoint("LEFT", button, "LEFT", 0, 0)
+        button.box:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
+
+        button.border = button:CreateTexture(nil, "BORDER")
+        button.border:SetPoint("TOPLEFT", button.box, "TOPLEFT", -1, 1)
+        button.border:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", 1, -1)
+        button.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+
+        button.check = button:CreateTexture(nil, "ARTWORK")
+        button.check:SetPoint("TOPLEFT", button.box, "TOPLEFT", 1, -1)
+        button.check:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", -1, 1)
+        button.check:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+
+        button.label = button:CreateFontString(nil, "OVERLAY")
+        button.label:SetFont(Fonts.family, Fonts.small, "")
+        button.label:SetPoint("LEFT", button.box, "RIGHT", 6, 0)
+        button.label:SetText("In Level Range")
+
+        UpdateFilterCheckboxVisual(button, filterState.inLevelRange)
+
+        button:SetScript("OnEnter", function(self)
+            self.border:SetColorTexture(Colors.accent[1] * 0.8, Colors.accent[2] * 0.8, Colors.accent[3] * 0.8, 1)
+            self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        end)
+        button:SetScript("OnLeave", function(self)
+            self.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+            UpdateFilterCheckboxVisual(self, filterState.inLevelRange)
+        end)
+        button:SetScript("OnClick", function(self)
+            filterState.inLevelRange = not filterState.inLevelRange
+            UpdateFilterCheckboxVisual(self, filterState.inLevelRange)
+            SaveFilterState()
+            if PopulateRows then PopulateRows() end
+        end)
+
+        return button
+    end
+
+    local inLevelRangeCheckbox = CreateFilterCheckbox()
 
     -- Scroll frame
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -131, 24)
@@ -285,7 +355,6 @@ Deathless.UI.Views:Register("dungeons", function(container)
         return sorted
     end
 
-    local PopulateRows
     local QUEST_COLOR = Deathless.Constants.Colors.Dungeon.quest
     local QUEST_ROW_HEIGHT = 20
 
@@ -715,11 +784,17 @@ Deathless.UI.Views:Register("dungeons", function(container)
         local hasSearch = searchTerm ~= ""
 
         local filtered = {}
+        local playerLevel = UnitLevel("player") or 60
         for _, dungeon in ipairs(rawDungeons) do
-            if not hasSearch
+            local inRange = playerLevel >= dungeon.levelMin and playerLevel <= dungeon.levelMax
+            local matchesLevelRange = (not filterState.inLevelRange) or inRange
+
+            if matchesLevelRange and (
+                not hasSearch
                 or dungeon.name:lower():find(searchTerm, 1, true)
                 or dungeon.zone:lower():find(searchTerm, 1, true)
-                or dungeon.endBoss:lower():find(searchTerm, 1, true) then
+                or dungeon.endBoss:lower():find(searchTerm, 1, true)
+            ) then
                 table.insert(filtered, dungeon)
             end
         end
@@ -792,6 +867,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
         scrollChild = scrollChild,
         headers = headers,
         searchBox = searchBox,
+        inLevelRangeCheckbox = inLevelRangeCheckbox,
         Refresh = PopulateRows,
     }
 end)

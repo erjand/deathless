@@ -74,7 +74,6 @@
 ## Dungeons
 
 - [ ] Finish dungeons that are WIP
-- [ ] Add filter checkbox for "In Range" (see Gear filters for similar)
 
 ## Professions
 

@@ -3,6 +3,9 @@ local Deathless = Deathless
 Deathless.Data = Deathless.Data or {}
 Deathless.Data.Gear = Deathless.Data.Gear or {}
 
+-- Every item must have a `classes` field listing which class gear pages it appears on
+-- Source format: "{Dungeon} - {Boss}", "Quest - {Name}", "{Profession} ({Detail})", "Reputation - {Faction} ({Level})", "World Drop", "Vendor"
+
 Deathless.Data.Gear.Shields = {
     { name = "Banded Buckler",                  type = "Shield", levelReq =  9, source = "Vendor",                                rarity = "common",    itemId = 17187, classes = { "Warrior", "Paladin", "Shaman" } },
     { name = "Ringed Buckler",                  type = "Shield", levelReq = 14, source = "Vendor",                                rarity = "common",    itemId = 17188, classes = { "Warrior", "Paladin", "Shaman" } },

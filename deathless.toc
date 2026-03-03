@@ -99,5 +99,7 @@ data\gear\weapons.lua
 data\gear\shields.lua
 data\gear\ranged.lua
 data\gear\armor.lua
-data\gear\misc.lua
+data\gear\rings.lua
+data\gear\trinkets.lua
+data\gear\amulets.lua
 

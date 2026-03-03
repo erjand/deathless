@@ -203,7 +203,9 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         -- Split armor and misc items into per-slot sections
         local SLOT_SOURCES = {
             { items = Deathless.Data.Gear.Armor },
-            { items = Deathless.Data.Gear.Misc },
+            { items = Deathless.Data.Gear.Rings },
+            { items = Deathless.Data.Gear.Trinkets },
+            { items = Deathless.Data.Gear.Amulets },
         }
         for _, src in ipairs(SLOT_SOURCES) do
             if src.items then

@@ -38,7 +38,8 @@
 
 ### Gear
 
-- [ ] Shields: Add low-level ones, plus maybe some others like Miner Johnson?
+- [x] Shields
+- [ ] Ranged (Warrior)
 
 - [ ] Druid Gear 
 - [ ] Hunter Gear
@@ -64,6 +65,7 @@
 ## Dungeons
 
 - [ ] Finish dungeons that are WIP
+    - [x] Ragefire Chasm
 
 ## Professions
 

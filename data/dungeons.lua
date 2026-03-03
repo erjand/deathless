@@ -80,7 +80,7 @@ Deathless.Data.Dungeons = {
         levelMax = 25,
         warnings = {
             "Deviate Guardian will call nearby raptors when their health is low.",
-            "Deviate Dreadfang casts a fear effect",
+            "Deviate Dreadfang casts a fear effect.",
             "Verdan the Everliving hits the tank for very high melee damage.",
         },
         quests = {},

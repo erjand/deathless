@@ -40,13 +40,13 @@ local function SlashCommandHandler(msg)
         Deathless.Utils.Chat.Print("Available commands:")
         Deathless.Utils.Chat.Print("/deathless (/dls) - Toggle the main window")
         Deathless.Utils.Chat.Print("/deathless help (/dls h) - Show this help")
-        Deathless.Utils.Chat.Print("/deathless class (/dls c) - Open the Class view")
         Deathless.Utils.Chat.Print("/deathless abilities (/dls a) - Open your class Abilities tab")
-        Deathless.Utils.Chat.Print("/deathless talents (/dls t) - Open your class Talents tab")
-        Deathless.Utils.Chat.Print("/deathless gear (/dls g) - Open your class Gear tab")
+        Deathless.Utils.Chat.Print("/deathless class (/dls c) - Open the class view")
         Deathless.Utils.Chat.Print("/deathless dungeons (/dls d) - Open the Dungeons view")
+        Deathless.Utils.Chat.Print("/deathless gear (/dls g) - Open your class Gear tab")
         Deathless.Utils.Chat.Print("/deathless mini (/dls m) - Toggle the mini summary")
         Deathless.Utils.Chat.Print("/deathless options (/dls o) - Open the Options view")
+        Deathless.Utils.Chat.Print("/deathless talents (/dls t) - Open your class Talents tab")
     end
     
     -- /deathless mini - toggle mini summary

@@ -16,7 +16,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
     
     -- Section collapse state
-    local sectionState = { warnings = true, xp = true, available = true, nextAvailable = true }
+    local sectionState = { warnings = true, available = true, nextAvailable = true }
     
     -- Element pooling
     local pools = {
@@ -241,99 +241,6 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         
         yOffset = yOffset - 10  -- Spacing between sections
         
-        -- XP Progress Section
-        local xpData = Deathless.Utils.XP:GetData()
-        local showXP = Deathless.config.showXPProgress ~= false
-        if showXP and not xpData.isMaxLevel then
-            local xpColor = Colors.xpHeader
-            yOffset = CreateSectionHeader("xp", "XP Progress", nil, yOffset, xpColor)
-            
-            if sectionState.xp then
-                -- XP Bar
-                local barFrame = GetFrame("row")
-                barFrame:SetHeight(20)
-                barFrame:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset - 5)
-                barFrame:SetPoint("RIGHT", scrollChild, "RIGHT", -12, 0)
-                
-                -- Background bar
-                if not barFrame.barBg then
-                    barFrame.barBg = barFrame:CreateTexture(nil, "BACKGROUND")
-                    barFrame.barBg:SetAllPoints()
-                    barFrame.barBg:SetColorTexture(Colors.xpTrackBg[1], Colors.xpTrackBg[2], Colors.xpTrackBg[3], Colors.xpTrackBg[4])
-                end
-                barFrame.barBg:Show()
-                
-                -- Rested XP fill (behind normal bar)
-                if not barFrame.restedFill then
-                    barFrame.restedFill = barFrame:CreateTexture(nil, "ARTWORK", nil, 0)
-                    barFrame.restedFill:SetPoint("TOPLEFT", barFrame, "TOPLEFT", 1, -1)
-                    barFrame.restedFill:SetPoint("BOTTOMLEFT", barFrame, "BOTTOMLEFT", 1, 1)
-                end
-                if xpData.restedXP > 0 and xpData.maxXP > 0 then
-                    local restedEnd = math.min(xpData.currentXP + xpData.restedXP, xpData.maxXP)
-                    local restedPct = restedEnd / xpData.maxXP
-                    barFrame.restedFill:SetWidth(math.max(1, (barFrame:GetWidth() - 2) * restedPct))
-                    barFrame.restedFill:SetColorTexture(Colors.xpRested[1], Colors.xpRested[2], Colors.xpRested[3], Colors.xpRested[4])
-                    barFrame.restedFill:Show()
-                else
-                    barFrame.restedFill:Hide()
-                end
-                
-                -- Progress bar
-                if not barFrame.barFill then
-                    barFrame.barFill = barFrame:CreateTexture(nil, "ARTWORK", nil, 1)
-                    barFrame.barFill:SetPoint("TOPLEFT", barFrame, "TOPLEFT", 1, -1)
-                    barFrame.barFill:SetPoint("BOTTOMLEFT", barFrame, "BOTTOMLEFT", 1, 1)
-                end
-                barFrame.barFill:SetWidth(math.max(1, (barFrame:GetWidth() - 2) * (xpData.percent / 100)))
-                barFrame.barFill:SetColorTexture(Colors.xpProgress[1], Colors.xpProgress[2], Colors.xpProgress[3], Colors.xpProgress[4])
-                barFrame.barFill:Show()
-                
-                -- XP text on bar
-                barFrame.name:ClearAllPoints()
-                barFrame.name:SetPoint("CENTER", barFrame, "CENTER", 0, 0)
-                barFrame.name:SetJustifyH("CENTER")
-                barFrame.name:SetText(string.format("%s / %s (%.1f%%)", 
-                    Deathless.Utils.XP:FormatNumber(xpData.currentXP),
-                    Deathless.Utils.XP:FormatNumber(xpData.maxXP),
-                    xpData.percent))
-                barFrame.name:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
-                barFrame.level:SetText("")
-                barFrame.cost:SetText("")
-                barFrame.icon:Hide()
-                
-                yOffset = yOffset - 29
-                
-                -- Session stats row
-                local statsRow = GetFrame("row")
-                statsRow:SetHeight(20)
-                statsRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                statsRow:SetPoint("RIGHT", scrollChild, "RIGHT", -12, 0)
-                statsRow.icon:Hide()
-                statsRow.level:Show()
-                
-                statsRow.name:ClearAllPoints()
-                statsRow.name:SetPoint("LEFT", statsRow, "LEFT", 0, 0)
-                statsRow.name:SetText("+" .. Deathless.Utils.XP:FormatNumber(xpData.xpThisSession) .. " XP")
-                statsRow.name:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                
-                statsRow.level:ClearAllPoints()
-                statsRow.level:SetPoint("LEFT", statsRow.name, "RIGHT", 16, 0)
-                statsRow.level:SetText(Deathless.Utils.XP:FormatNumber(xpData.xpPerHour) .. " XP/hr")
-                statsRow.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                
-                statsRow.cost:ClearAllPoints()
-                statsRow.cost:SetPoint("RIGHT", statsRow, "RIGHT", -4, 0)
-                statsRow.cost:SetText("Next: " .. Deathless.Utils.XP:FormatTime(xpData.timeToLevel))
-                statsRow.cost:SetTextColor(xpColor[1], xpColor[2], xpColor[3], 1)
-                
-                yOffset = yOffset - 24
-                
-            end
-        end
-        
-        yOffset = yOffset - 10  -- Spacing between sections
-        
         -- Abilities sections
         if #available > 0 then
             local availableCost = 0
@@ -484,13 +391,6 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     
     -- Register for automatic refresh when warnings/state changes
     Deathless.Utils.Warnings:RegisterRefresh("summary", function()
-        if container:IsVisible() then
-            Refresh()
-        end
-    end)
-    
-    -- Register for XP changes
-    Deathless.Utils.XP:RegisterRefresh("summary", function()
         if container:IsVisible() then
             Refresh()
         end

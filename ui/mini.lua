@@ -399,9 +399,7 @@ function Deathless.UI.MiniSummary:SetupContent()
             local xpLabel = xpHeader:CreateFontString(nil, "OVERLAY")
             xpLabel:SetFont(Fonts.family, Fonts.body, "")
             xpLabel:SetPoint("LEFT", xpIcon, "RIGHT", 4, 0)
-            xpLabel:SetText(string.format("XP: %.1f%% - TTL: %s", 
-                xpData.percent, 
-                Deathless.Utils.XP:FormatTime(xpData.timeToLevel)))
+            xpLabel:SetText("XP Progress")
             xpLabel:SetTextColor(0.4, 0.8, 1.0, 1)
             
             xpHeader:SetScript("OnClick", function()
@@ -447,31 +445,38 @@ function Deathless.UI.MiniSummary:SetupContent()
                 local barText = barRow:CreateFontString(nil, "OVERLAY")
                 barText:SetFont(Fonts.family, Fonts.small - 1, "")
                 barText:SetPoint("CENTER", barRow, "CENTER", 0, 0)
-                barText:SetText(string.format("%s / %s", 
+                barText:SetText(string.format("%s / %s (%.1f%%)", 
                     Deathless.Utils.XP:FormatNumber(xpData.currentXP),
-                    Deathless.Utils.XP:FormatNumber(xpData.maxXP)))
+                    Deathless.Utils.XP:FormatNumber(xpData.maxXP),
+                    xpData.percent))
                 barText:SetTextColor(1, 1, 1, 1)
                 
                 yOffset = yOffset - 14
                 
                 -- Stats row
                 local statsRow = CreateFrame("Frame", nil, scrollChild)
-                statsRow:SetSize(scrollChild:GetWidth() - 24, 14)
+                statsRow:SetSize(scrollChild:GetWidth() - 24, 16)
                 statsRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
                 
                 local sessionText = statsRow:CreateFontString(nil, "OVERLAY")
                 sessionText:SetFont(Fonts.family, Fonts.small, "")
                 sessionText:SetPoint("LEFT", statsRow, "LEFT", 0, 0)
-                sessionText:SetText("+" .. Deathless.Utils.XP:FormatNumber(xpData.xpThisSession))
+                sessionText:SetText("+" .. Deathless.Utils.XP:FormatNumber(xpData.xpThisSession) .. " XP")
                 sessionText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                 
+                local ttlText = statsRow:CreateFontString(nil, "OVERLAY")
+                ttlText:SetFont(Fonts.family, Fonts.small, "")
+                ttlText:SetPoint("RIGHT", statsRow, "RIGHT", -8, 0)
+                ttlText:SetText("Next: " .. Deathless.Utils.XP:FormatTime(xpData.timeToLevel))
+                ttlText:SetTextColor(0.4, 0.8, 1.0, 1)
+
                 local rateText = statsRow:CreateFontString(nil, "OVERLAY")
                 rateText:SetFont(Fonts.family, Fonts.small, "")
-                rateText:SetPoint("RIGHT", statsRow, "RIGHT", -8, 0)
-                rateText:SetText(Deathless.Utils.XP:FormatNumber(xpData.xpPerHour) .. "/hr")
+                rateText:SetPoint("LEFT", sessionText, "RIGHT", 16, 0)
+                rateText:SetText(Deathless.Utils.XP:FormatNumber(xpData.xpPerHour) .. " XP/hr")
                 rateText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                 
-                yOffset = yOffset - 16
+                yOffset = yOffset - 18
             end
             
             yOffset = yOffset - 4

@@ -252,7 +252,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 -- XP Bar
                 local barFrame = GetFrame("row")
                 barFrame:SetHeight(20)
-                barFrame:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                barFrame:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset - 5)
                 barFrame:SetPoint("RIGHT", scrollChild, "RIGHT", -12, 0)
                 
                 -- Background bar
@@ -290,7 +290,9 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 barFrame.barFill:Show()
                 
                 -- XP text on bar
+                barFrame.name:ClearAllPoints()
                 barFrame.name:SetPoint("CENTER", barFrame, "CENTER", 0, 0)
+                barFrame.name:SetJustifyH("CENTER")
                 barFrame.name:SetText(string.format("%s / %s (%.1f%%)", 
                     Deathless.Utils.XP:FormatNumber(xpData.currentXP),
                     Deathless.Utils.XP:FormatNumber(xpData.maxXP),
@@ -300,7 +302,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 barFrame.cost:SetText("")
                 barFrame.icon:Hide()
                 
-                yOffset = yOffset - 24
+                yOffset = yOffset - 29
                 
                 -- Session stats row
                 local statsRow = GetFrame("row")
@@ -311,27 +313,21 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 
                 statsRow.name:ClearAllPoints()
                 statsRow.name:SetPoint("LEFT", statsRow, "LEFT", 0, 0)
-                statsRow.name:SetText("Session: " .. Deathless.Utils.XP:FormatNumber(xpData.xpThisSession) .. " XP")
-                statsRow.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                statsRow.name:SetText("+" .. Deathless.Utils.XP:FormatNumber(xpData.xpThisSession) .. " XP")
+                statsRow.name:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                 
                 statsRow.level:ClearAllPoints()
-                statsRow.level:SetPoint("RIGHT", statsRow.cost, "LEFT", -12, 0)
+                statsRow.level:SetPoint("LEFT", statsRow.name, "RIGHT", 16, 0)
                 statsRow.level:SetText(Deathless.Utils.XP:FormatNumber(xpData.xpPerHour) .. " XP/hr")
                 statsRow.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                 
-                statsRow.cost:SetText("TTL: " .. Deathless.Utils.XP:FormatTime(xpData.timeToLevel))
+                statsRow.cost:ClearAllPoints()
+                statsRow.cost:SetPoint("RIGHT", statsRow, "RIGHT", -4, 0)
+                statsRow.cost:SetText("Next: " .. Deathless.Utils.XP:FormatTime(xpData.timeToLevel))
                 statsRow.cost:SetTextColor(xpColor[1], xpColor[2], xpColor[3], 1)
                 
                 yOffset = yOffset - 24
                 
-                -- Rested XP (if any)
-                if xpData.restedXP > 0 then
-                    local restedRow = GetFrame("text")
-                    restedRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                    restedRow:SetText("Rested: " .. Deathless.Utils.XP:FormatNumber(xpData.restedXP) .. " XP")
-                    restedRow:SetTextColor(0.4, 0.9, 0.4, 1)
-                    yOffset = yOffset - 20
-                end
             end
         end
         

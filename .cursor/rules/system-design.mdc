@@ -8,6 +8,8 @@ alwaysApply: true
 - Code should be clean, modular, re-usable, and simple
 - Non-trivial code should be documented
 - UI elements should be made standardized and re-usable as much as possible
+- Sort lists of things alphabetically where it is sensible to do so
+- Do not use magic strings: use `core/constants.lua` instead
 
 ## Structure
 
@@ -15,9 +17,7 @@ alwaysApply: true
 - **Core**: `core/` - Initialization, config, events, commands
 - **Modules**: `modules/` - Feature modules (classes, zones, dungeons, etc.) that register via `Deathless:RegisterModule()`
 - **UI**: `ui/` - UI system with views (`ui/views/`: root for home/summary/options etc.; `views/talents/`, `views/abilities/`, `views/gear/` for class views), reusable components (`ui/components/`), and core UI elements
-- **Data**: `data/` - Static data files (classes, zones, abilities, talents, gear) separated from logic
+- **Data**: `data/` - Static data files; `data/source/*.csv` are source-of-truth and `data/gear/*.lua` are generated outputs
+- **Scripts**: `scripts/` - Maintenance and build helpers (CSV->Lua generators, deploy scripts, and all-in-one wrappers)
+- **Gear**: Armor is split by slot files (`armor_head.lua`, `armor_shoulders.lua`, etc.) instead of a single `armor.lua`
 - **Utils**: `utils/` - Shared utility functions (table, ui, chat, icons, warnings)
-
-## Commits
-
-- Keep commit messages very short and not verbose

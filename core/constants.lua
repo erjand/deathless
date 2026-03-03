@@ -81,6 +81,23 @@ Deathless.Constants.Colors = {
     },
 }
 
+Deathless.Constants.Fonts = {
+    -- Font families
+    family = "Fonts\\FRIZQT__.TTF",
+    icons = "Fonts\\ARIALN.TTF", -- For arrows/icons (has Unicode support)
+    code = _G["STANDARD_TEXT_FONT"] or "Fonts\\ARIALN.TTF", -- Locale-aware client font for copy/code text
+
+    -- Size presets
+    titleLarge = 23,
+    title = 19,
+    header = 13,
+    sectionHeader = 12,
+    subtitle = 11,
+    body = 10,
+    small = 9,
+    tiny = 8,
+}
+
 Deathless.Constants.GearTiers = {
     LEVELING = "Leveling",
     PRE_BIS = "Pre-BiS",

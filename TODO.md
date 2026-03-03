@@ -15,9 +15,7 @@
 
 ## UI
 
-- [ ] Allow main window to not be resized horizontally, just vertically (messes up intentional column spacing)?
-- [ ] Window scale?
-- [ ] Accent color?
+- [ ] 
 
 ## Summary
 
@@ -40,7 +38,7 @@
 - [ ] Rings (review)
 - [ ] Trinkets (review)
 - [ ] Neck
-- [ ] Cloack (is there even a section for this yet?)
+- [ ] Back
 - [ ] Armor: Chest
 - [ ] Armor: Feet
 - [ ] Armor: Hands

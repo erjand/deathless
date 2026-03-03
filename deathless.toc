@@ -41,6 +41,7 @@ ui\views\leveling.lua
 ui\views\selffound.lua
 ui\views\professions.lua
 ui\views\commands.lua
+ui\views\macros.lua
 ui\views\options.lua
 ui\views\support.lua
 ui\views\talents\talents_template.lua
@@ -73,6 +74,7 @@ ui\components\tab_bar.lua
 ui\components\button.lua
 ui\components\panel.lua
 ui\components\text.lua
+ui\components\copy_popup.lua
 
 data\classes.lua
 data\zones.lua

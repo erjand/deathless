@@ -34,6 +34,7 @@ local NAV_ITEMS_BOTTOM = {
     { id = "zones", label = "Zones (WIP)", hidden = true },
     { divider = true },
     { id = "commands", label = "Commands" },
+    { id = "macros", label = "Macros" },
     { id = "options", label = "Options" },
     { id = "support", label = "Support" },
 }

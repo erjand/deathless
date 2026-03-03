@@ -21,7 +21,7 @@ Deathless.UI.Views:Register("commands", function(container)
     local Colors = Utils:GetColors()
     local Fonts = Deathless.UI.Fonts
     
-    local title, subtitle, separator = Utils:CreateHeader(container, "Commands", "Available slash commands")
+    local title, subtitle, separator = Utils:CreateHeader(container, "Commands", "Available chat commands")
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
     
     -- Create command list

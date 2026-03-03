@@ -6,25 +6,9 @@ Deathless.UI.Views = Deathless.UI.Views or {}
 -- Shared utilities for views
 Deathless.UI.Views.Utils = {}
 
--- UI Constants
-Deathless.UI.Views.Utils.Fonts = {
-    -- Font families
-    family = "Fonts\\FRIZQT__.TTF",
-    icons = "Fonts\\ARIALN.TTF",  -- For arrows/icons (has Unicode support)
-    
-    -- Size presets
-    titleLarge = 23,
-    title = 19,
-    header = 13,
-    sectionHeader = 12,
-    subtitle = 11,
-    body = 10,
-    small = 9,
-    tiny = 8,
-}
-
 -- Expose Fonts globally for easier access
-Deathless.UI.Fonts = Deathless.UI.Views.Utils.Fonts
+Deathless.UI.Fonts = Deathless.Constants.Fonts
+Deathless.UI.Views.Utils.Fonts = Deathless.UI.Fonts
 
 Deathless.UI.Views.Utils.Layout = {
     rowHeight = 26,

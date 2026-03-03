@@ -10,5 +10,6 @@ For this initial release, let's get:
 4. [x] Save settings
 5. [ ] Dungeons
 6. [ ] Gear
-7. [ ] Macros
-8. [ ] Versioning / tags
+7. [x] HC Macros
+8. [ ] Character Macros
+9. [ ] Versioning / tags

@@ -59,7 +59,7 @@
 - [ ] Rogue
 - [ ] Shaman
 - [ ] Warlock
-- [ ] Warrior
+- [x] Warrior
 
 #### Warrior
 

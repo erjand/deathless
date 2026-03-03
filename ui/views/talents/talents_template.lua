@@ -5,6 +5,13 @@ local Icons = Deathless.Utils.Icons
 -- Store template for reuse
 Deathless.UI.Views.TalentsTemplate = {}
 
+local function ColorizeText(color, text)
+    local r = math.floor((color[1] or 1) * 255 + 0.5)
+    local g = math.floor((color[2] or 1) * 255 + 0.5)
+    local b = math.floor((color[3] or 1) * 255 + 0.5)
+    return string.format("|cff%02x%02x%02x%s|r", r, g, b, text)
+end
+
 --- Create a talents view for a specific class
 ---@param config table Configuration: { viewName, className, classColor }
 function Deathless.UI.Views.TalentsTemplate:Create(config)
@@ -462,6 +469,19 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             
             local builds = Deathless.Data.Talents and Deathless.Data.Talents[className] or {}
             local yOffset = 0
+
+            local introText = GetElement(function()
+                local fs = scrollChild:CreateFontString(nil, "OVERLAY")
+                fs:SetFont(Fonts.family, Fonts.body, "")
+                fs:SetJustifyH("LEFT")
+                return fs
+            end)
+            introText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset - 4)
+            introText:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset - 4)
+            introText:SetText("Generally recommended HC builds for " .. ColorizeText(classColor, className) .. " - adjust as desired")
+            introText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            introText:Show()
+            yOffset = yOffset - (introText:GetStringHeight() or 14) - 17
             
             for _, build in ipairs(builds) do
                 yOffset = CreateBuildSection(build, yOffset)

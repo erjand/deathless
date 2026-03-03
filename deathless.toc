@@ -65,6 +65,7 @@ ui\views\abilities\shaman_abilities.lua
 ui\views\abilities\druid_abilities.lua
 ui\views\abilities\warlock_abilities.lua
 ui\views\gear\gear_template.lua
+ui\views\macros\macros_template.lua
 ui\content.lua
 ui\frame.lua
 ui\mini.lua
@@ -89,6 +90,15 @@ data\talents\rogue.lua
 data\talents\shaman.lua
 data\talents\hunter.lua
 data\talents\druid.lua
+data\macros\druid.lua
+data\macros\hunter.lua
+data\macros\mage.lua
+data\macros\paladin.lua
+data\macros\priest.lua
+data\macros\rogue.lua
+data\macros\shaman.lua
+data\macros\warlock.lua
+data\macros\warrior.lua
 data\abilities\warrior.lua
 data\abilities\paladin.lua
 data\abilities\hunter.lua

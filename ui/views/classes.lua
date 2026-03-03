@@ -43,10 +43,11 @@ local function GetClassTabs(className, displayName)
         end
         if tabs[#tabs] and tabs[#tabs].id == className .. "_gear" then break end
     end
+    table.insert(tabs, { id = className .. "_macros", label = "Macros" })
     return tabs
 end
 
---- Factory: create a tabbed class view with Abilities/Talents/Gear tabs
+--- Factory: create a tabbed class view with Abilities/Talents/Gear/Macros tabs
 ---@param className string Lowercase class name
 ---@param displayName string Display name
 ---@return function View creator

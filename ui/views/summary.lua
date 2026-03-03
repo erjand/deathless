@@ -232,7 +232,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 end
             else
                 local msg = GetFrame("text")
-                msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+                msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset - 5)
                 msg:SetText("No warnings - go adventure!")
                 msg:SetTextColor(Colors.success[1], Colors.success[2], Colors.success[3], Colors.success[4])
                 yOffset = yOffset - 24

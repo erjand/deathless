@@ -28,22 +28,10 @@ end)
 local function GetClassTabs(className, displayName)
     local tabs = {
         { id = className .. "_abilities", label = "Abilities" },
+        { id = className .. "_gear", label = "Gear" },
+        { id = className .. "_macros", label = "Macros" },
         { id = className .. "_talents", label = "Talents" },
     }
-    local gearSections = { "Weapons", "Shields", "Ranged", "Armor", "Misc" }
-    for _, section in ipairs(gearSections) do
-        local items = Deathless.Data.Gear and Deathless.Data.Gear[section]
-        if items then
-            for _, item in ipairs(items) do
-                if item.classes and tContains(item.classes, displayName) then
-                    table.insert(tabs, { id = className .. "_gear", label = "Gear" })
-                    break
-                end
-            end
-        end
-        if tabs[#tabs] and tabs[#tabs].id == className .. "_gear" then break end
-    end
-    table.insert(tabs, { id = className .. "_macros", label = "Macros" })
     return tabs
 end
 

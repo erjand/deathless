@@ -9,6 +9,8 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     Deathless.UI.Views:Register("summary", function(container)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
+        local CONTENT_LEFT = 12
+        local CONTENT_RIGHT = -12
     
     local title, subtitle = Utils:CreateHeader(container, "Summary", "")
     
@@ -94,8 +96,8 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         local section = GetFrame("section")
         local SECTION_HEIGHT = 28
         
-        section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-        section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+        section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+        section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
         
         Utils:ConfigureSection(section, sectionState[sectionKey], label, color, count, costText)
         
@@ -113,8 +115,8 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         local subsection = GetFrame("subsection")
         local SUBSECTION_HEIGHT = 22
         
-        subsection:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-        subsection:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset)
+        subsection:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset)
+        subsection:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, yOffset)
         
         Utils:ConfigureSubSection(subsection, sectionState[sectionKey], label, color)
         
@@ -203,8 +205,8 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
             if hasWarnings then
                 for _, warning in ipairs(activeWarnings) do
                     local row = GetFrame("row")
-                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                    row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
+                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset)
+                    row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, yOffset)
                     
                     if row.icon then
                         row.icon:SetTexture(warning.icon or Icons.DEFAULT)
@@ -232,7 +234,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 end
             else
                 local msg = GetFrame("text")
-                msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset - 5)
+                msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset - 5)
                 msg:SetText("No warnings - go adventure!")
                 msg:SetTextColor(Colors.success[1], Colors.success[2], Colors.success[3], Colors.success[4])
                 yOffset = yOffset - 24
@@ -260,8 +262,8 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
             if sectionState.available then
                 for _, ability in ipairs(available) do
                     local row = GetFrame("row")
-                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                    row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
+                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset)
+                    row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, yOffset)
                     
                     row.icon:SetTexture(Icons:GetIconPath(ability.icon))
                     row.icon:SetDesaturated(false)
@@ -321,8 +323,8 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
             if sectionState.nextAvailable then
                 for _, ability in ipairs(nextAvailable) do
                     local row = GetFrame("row")
-                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                    row:SetPoint("RIGHT", scrollChild, "RIGHT", -12, yOffset)
+                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset)
+                    row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, yOffset)
                     
                     row.icon:SetTexture(Icons:GetIconPath(ability.icon))
                     row.icon:SetDesaturated(true)
@@ -366,7 +368,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         
         if #available == 0 and #nextAvailable == 0 then
             local msg = GetFrame("text")
-            msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
+            msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset)
             msg:SetText("No new abilities available soon.")
             yOffset = yOffset - 20
         end

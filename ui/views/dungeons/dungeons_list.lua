@@ -135,6 +135,8 @@ local ZONE_TERRITORY = {
 Deathless.UI.Views:Register("dungeons", function(container)
     local Colors = Utils:GetColors()
     local Fonts = Deathless.UI.Fonts
+    local CONTENT_LEFT = 12
+    local CONTENT_RIGHT = -12
 
     local title, subtitle = Utils:CreateHeader(container, "Dungeons")
 
@@ -449,7 +451,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
         local LINE_PADDING = 4
         local SECTION_GAP = 10
         local SECTION_HEIGHT = 28
-        local contentWidth = scrollChild:GetWidth() - 48
+        local contentWidth = scrollChild:GetWidth() - 60
 
         local state = sectionState[dungeon.id]
         if not state then
@@ -466,8 +468,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
             local sec = GetSection()
             sec:ClearAllPoints()
-            sec:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
-            sec:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -16, yOffset)
+            sec:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 16, yOffset)
+            sec:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 16, yOffset)
             Utils:ConfigureSection(sec, state.warnings, "Warnings", Colors.yellow, #dungeon.warnings)
             sec:SetScript("OnClick", function()
                 state.warnings = not state.warnings
@@ -480,7 +482,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
                 for _, text in ipairs(warningLines) do
                     local fs = GetText()
                     fs:ClearAllPoints()
-                    fs:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 32, yOffset)
+                    fs:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 32, yOffset)
                     fs:SetWidth(contentWidth)
                     fs:SetJustifyH("LEFT")
                     fs:SetWordWrap(true)
@@ -511,8 +513,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
         do
             local sec = GetSection()
             sec:ClearAllPoints()
-            sec:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
-            sec:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -16, yOffset)
+            sec:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 16, yOffset)
+            sec:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 16, yOffset)
             Utils:ConfigureSection(sec, state.quests, "Quests", QUEST_COLOR, #sortedQuests)
             sec:SetScript("OnClick", function()
                 state.quests = not state.quests
@@ -531,7 +533,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
                 for i, h in ipairs(headers) do
                     local hdr = GetText(Fonts.family, Fonts.small)
                     hdr:ClearAllPoints()
-                    hdr:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", headerX[i], yOffset)
+                    hdr:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", headerX[i] + CONTENT_LEFT, yOffset)
                     hdr:SetWidth(headerW[i])
                     hdr:SetJustifyH(headerJ[i])
                     hdr:SetText(h)
@@ -543,8 +545,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
                 for _, q in ipairs(sortedQuests) do
                     local qr = GetQuestRow()
                     qr:ClearAllPoints()
-                    qr:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-                    qr:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+                    qr:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+                    qr:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
                     qr:Show()
 
                     local nameDisplay = q.name
@@ -659,8 +661,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
         local ROW_HEIGHT = 26
         local isExpanded = (expandedId == dungeon.id)
 
-        row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-        row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+        row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+        row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
         row:SetHeight(ROW_HEIGHT)
         row:Show()
 
@@ -840,19 +842,19 @@ Deathless.UI.Views:Register("dungeons", function(container)
         PopulateRows()
     end
 
-    headers.level = CreateSortableHeader(container, "LEVEL (?)",        16,  50,  "level", sortState, OnSort, {
+    headers.level = CreateSortableHeader(container, "LEVEL (?)",        16 + CONTENT_LEFT,  50,  "level", sortState, OnSort, {
         title = "Dungeon Level Range",
         "Level range where a player can",
         "receive XP from some of the mobs.",
     })
-    headers.name  = CreateSortableHeader(container, "NAME",         75,  170, "name",  sortState, OnSort)
-    headers.zone  = CreateSortableHeader(container, "ZONE (?)",         250, 130, "zone",  sortState, OnSort, {
+    headers.name  = CreateSortableHeader(container, "NAME",         75 + CONTENT_LEFT,  170, "name",  sortState, OnSort)
+    headers.zone  = CreateSortableHeader(container, "ZONE (?)",         250 + CONTENT_LEFT, 130, "zone",  sortState, OnSort, {
         title = "Zone Territory",
         ColorCodes.safe .. "Green|r - Friendly territory",
         ColorCodes.warning .. "Yellow|r - Contested territory",
         ColorCodes.enemy .. "Red|r - Enemy territory",
     })
-    headers.boss  = CreateSortableHeader(container, "END BOSS (?)", 390, 190, "boss",  sortState, OnSort, {
+    headers.boss  = CreateSortableHeader(container, "END BOSS (?)", 390 + CONTENT_LEFT, 190, "boss",  sortState, OnSort, {
         title = "End Boss Level",
         "Recommend all players be within",
         "3 levels of the end boss.",

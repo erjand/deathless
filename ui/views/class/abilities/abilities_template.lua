@@ -105,6 +105,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
         local embedded = options and options.embedded
+        local CONTENT_LEFT = 12
+        local CONTENT_RIGHT = -12
         
         local title, subtitle
         if not embedded then
@@ -353,8 +355,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local row = GetAbilityRow()
             local ROW_HEIGHT = 26
             
-            row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-            row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+            row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
             row:SetHeight(ROW_HEIGHT)
             row:Show()
             
@@ -477,8 +479,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local section = GetSectionHeader()
             local SECTION_HEIGHT = 28
             
-            section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-            section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+            section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
             section:Show()
             
             -- Format cost text if provided
@@ -678,11 +680,11 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             PopulateRows()
         end
         
-        headers.name = CreateSortableHeader(container, "ABILITY", 36, 200, "name", sortState, OnSort, nil, sortHeaderY)
-        headers.level = CreateSortableHeader(container, "LEVEL", 250, 50, "level", sortState, OnSort, nil, sortHeaderY)
-        headers.cost = CreateSortableHeader(container, "COST", 310, 80, "cost", sortState, OnSort, nil, sortHeaderY)
-        headers.source = CreateSortableHeader(container, "SOURCE", 400, 60, "source", sortState, OnSort, nil, sortHeaderY)
-        headers.train = CreateSortableHeader(container, "TRAIN (?)", 470, 50, "train", sortState, OnSort, {
+        headers.name = CreateSortableHeader(container, "ABILITY", 36 + CONTENT_LEFT, 200, "name", sortState, OnSort, nil, sortHeaderY)
+        headers.level = CreateSortableHeader(container, "LEVEL", 250 + CONTENT_LEFT, 50, "level", sortState, OnSort, nil, sortHeaderY)
+        headers.cost = CreateSortableHeader(container, "COST", 310 + CONTENT_LEFT, 80, "cost", sortState, OnSort, nil, sortHeaderY)
+        headers.source = CreateSortableHeader(container, "SOURCE", 400 + CONTENT_LEFT, 60, "source", sortState, OnSort, nil, sortHeaderY)
+        headers.train = CreateSortableHeader(container, "TRAIN (?)", 470 + CONTENT_LEFT, 50, "train", sortState, OnSort, {
             title = "Training Priority",
             ColorCodes.safe .. "Yes|r - Train when available",
             ColorCodes.warning .. "Wait|r - Marginal upgrade",

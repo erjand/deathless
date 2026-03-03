@@ -132,6 +132,8 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
         local embedded = options and options.embedded
+        local CONTENT_LEFT = 12
+        local CONTENT_RIGHT = -12
 
         local title, subtitle
         if not embedded then
@@ -468,8 +470,8 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             local ROW_HEIGHT = 26
             indent = indent or 0
 
-            row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-            row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+            row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
             row:SetHeight(ROW_HEIGHT)
             row:Show()
 
@@ -595,8 +597,8 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             local section = GetSectionHeader()
             local SECTION_HEIGHT = 28
 
-            section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-            section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+            section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
             section:Show()
 
             -- Slot icon on the section header
@@ -652,8 +654,8 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                 div.line:SetColorTexture(Colors.dividerFaint[1], Colors.dividerFaint[2], Colors.dividerFaint[3], Colors.dividerFaint[4])
                 dividerPool[dividerIndex] = div
             end
-            div:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-            div:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            div:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+            div:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
             div:SetHeight(DIVIDER_HEIGHT)
             div:Show()
             return yOffset - DIVIDER_HEIGHT
@@ -731,11 +733,11 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         end
 
         local SCROLL_INSET = 8
-        local hName   = { x = COL.name.x   + SCROLL_INSET + ICON_SIZE + ICON_PAD, w = COL.name.w - ICON_SIZE - ICON_PAD }
-        local hType   = { x = COL.type.x   + SCROLL_INSET, w = COL.type.w }
-        local hLvl    = { x = COL.lvl.x    + SCROLL_INSET, w = COL.lvl.w }
-        local hSource = { x = COL.source.x + SCROLL_INSET, w = COL.source.w }
-        local hPreBis = { x = COL.prebis.x + SCROLL_INSET, w = COL.prebis.w }
+        local hName   = { x = COL.name.x   + SCROLL_INSET + ICON_SIZE + ICON_PAD + CONTENT_LEFT, w = COL.name.w - ICON_SIZE - ICON_PAD }
+        local hType   = { x = COL.type.x   + SCROLL_INSET + CONTENT_LEFT, w = COL.type.w }
+        local hLvl    = { x = COL.lvl.x    + SCROLL_INSET + CONTENT_LEFT, w = COL.lvl.w }
+        local hSource = { x = COL.source.x + SCROLL_INSET + CONTENT_LEFT, w = COL.source.w }
+        local hPreBis = { x = COL.prebis.x + SCROLL_INSET + CONTENT_LEFT, w = COL.prebis.w }
         headers.name   = CreateSortableHeader(container, "NAME",   hName,   "name",   sortState, OnSort, sortHeaderY)
         headers.type   = CreateSortableHeader(container, "TYPE",   hType,   "type",   sortState, OnSort, sortHeaderY)
         headers.lvl    = CreateSortableHeader(container, "LVL",    hLvl,    "lvl",    sortState, OnSort, sortHeaderY)

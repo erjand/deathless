@@ -24,6 +24,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
         local embedded = options and options.embedded
+        local CONTENT_LEFT = 12
+        local CONTENT_RIGHT = -12
         
         local title, subtitle
         if not embedded then
@@ -208,8 +210,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             
             -- Section header
             local section = GetSection()
-            section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-            section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+            section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
             section:Show()
             
             section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.6)
@@ -253,8 +255,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                     fs:SetFont(Fonts.family, Fonts.body, "")
                     return fs
                 end)
-                desc:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset - 4)
-                desc:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset - 4)
+                desc:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 16, yOffset - 4)
+                desc:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset - 4)
                 desc:SetJustifyH("LEFT")
                 desc:SetText(descText)
                 desc:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
@@ -269,8 +271,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 local tex = scrollChild:CreateTexture(nil, "BACKGROUND")
                 return tex
             end)
-            headerBg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-            headerBg:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+            headerBg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+            headerBg:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
             headerBg:SetHeight(20)
             headerBg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.3)
             headerBg:Show()
@@ -280,7 +282,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 fs:SetFont(Fonts.family, Fonts.small, "")
                 return fs
             end)
-            levelHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset - 4)
+            levelHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 16, yOffset - 4)
             levelHeader:SetText("LEVEL")
             levelHeader:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             levelHeader:Show()
@@ -290,7 +292,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 fs:SetFont(Fonts.family, Fonts.small, "")
                 return fs
             end)
-            talentHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 64, yOffset - 4)
+            talentHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 64, yOffset - 4)
             talentHeader:SetText("TALENT")
             talentHeader:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             talentHeader:Show()
@@ -302,8 +304,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             for entryIndex, entry in ipairs(build.progression) do
                 rowNum = rowNum + 1
                 local row = GetRow()
-                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-                row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+                row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
                 row:Show()
                 
                 -- Alternating row background (matching abilities template)
@@ -416,8 +418,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                     
                     for rankIndex, rankData in ipairs(ranks) do
                         local subRow = GetSubRow()
-                        subRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-                        subRow:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+                        subRow:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+                        subRow:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
                         subRow:Show()
                         
                         -- Slightly darker background for sub-rows
@@ -476,8 +478,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 fs:SetJustifyH("LEFT")
                 return fs
             end)
-            introText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset - 4)
-            introText:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset - 4)
+            introText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset - 4)
+            introText:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset - 4)
             introText:SetText("Generally recommended HC builds for " .. ColorizeText(classColor, className) .. " - adjust as desired")
             introText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             introText:Show()

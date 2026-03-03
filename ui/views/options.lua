@@ -5,6 +5,8 @@ local Icons = Deathless.Utils.Icons
 --- Options view content
 Deathless.UI.Views:Register("options", function(container)
     local Colors = Utils:GetColors()
+    local CONTENT_LEFT = 12
+    local CONTENT_RIGHT = -12
     
     local title, subtitle, separator = Utils:CreateHeader(container, "Options", "Addon settings and preferences")
     
@@ -61,8 +63,8 @@ Deathless.UI.Views:Register("options", function(container)
             return Utils:CreateCollapsibleSection(scrollChild)
         end)
         
-        section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
-        section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
+        section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
+        section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
         
         Utils:ConfigureSection(section, sectionState[sectionKey], label, Colors.accent)
         

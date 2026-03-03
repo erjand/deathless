@@ -8,14 +8,14 @@ Deathless.UI.Views:Register("classes", function(container)
     local Colors = Utils:GetColors()
     local Fonts = Deathless.UI.Fonts
     
-    local title, subtitle, separator = Utils:CreateHeader(container, "Classes", "Class guides and tips")
+    local title, subtitle, separator = Utils:CreateHeader(container, "Classes")
     
     local content = container:CreateFontString(nil, "OVERLAY")
     content:SetFont(Fonts.family, Fonts.subtitle, "")
     content:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, -12)
     content:SetWidth(container:GetWidth() - 40)
     content:SetJustifyH("LEFT")
-    content:SetText("Select a class from the menu to view abilities, talent builds, and gear recommendations.")
+    content:SetText("Select a class from the menu to view abilities, gear, macros, and talent builds.\n\nYou can choose which classes are displayed from the Options menu.")
     content:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
     
     return { title = title, subtitle = subtitle, content = content }

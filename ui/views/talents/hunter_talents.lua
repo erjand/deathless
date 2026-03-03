@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
-local CLASS_COLOR = { 0.67, 0.83, 0.45 } -- Hunter green
+local CLASS_COLOR = Deathless.Constants.Colors.Class.hunter
 
 --- Create Hunter Talents view using the template
 Deathless.UI.Views.TalentsTemplate:Create({

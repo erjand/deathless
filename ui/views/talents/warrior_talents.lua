@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
-local CLASS_COLOR = { 0.78, 0.61, 0.43 } -- Warrior tan
+local CLASS_COLOR = Deathless.Constants.Colors.Class.warrior
 
 --- Create Warrior Talents view using the template
 Deathless.UI.Views.TalentsTemplate:Create({

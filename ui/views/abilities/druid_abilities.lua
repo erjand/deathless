@@ -5,6 +5,6 @@ Deathless.UI.Views.AbilitiesTemplate:Create({
     viewName = "druid_abilities",
     className = "Druid",
     classId = "DRUID",
-    classColor = { 1.00, 0.49, 0.04 },  -- Druid orange
+    classColor = Deathless.Constants.Colors.Class.druid,
 })
 

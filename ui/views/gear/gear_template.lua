@@ -4,14 +4,7 @@ local Utils = Deathless.UI.Views.Utils
 Deathless.UI.Views.GearTemplate = {}
 
 -- WoW item rarity colors
-local RARITY_COLORS = {
-    poor      = { 0.62, 0.62, 0.62 },
-    common    = { 1.00, 1.00, 1.00 },
-    uncommon  = { 0.12, 1.00, 0.00 },
-    rare      = { 0.00, 0.44, 0.87 },
-    epic      = { 0.64, 0.21, 0.93 },
-    legendary = { 1.00, 0.50, 0.00 },
-}
+local RARITY_COLORS = Deathless.Constants.Colors.ItemRarity
 
 -- Empty equipment slot textures (match character panel grey icons)
 local SLOT_ICONS = {
@@ -618,12 +611,13 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             return yOffset - SECTION_HEIGHT
         end
 
-        local armorColor = { 0.50, 0.70, 0.90 }
-        local miscColor  = { 0.75, 0.60, 0.85 }
+        local gearColors = Deathless.Constants.Colors.GearSection
+        local armorColor = gearColors.armor
+        local miscColor = gearColors.misc
         local SECTION_DEFS = {
-            { key = "weapons",        label = "Weapon",    color = { 0.90, 0.65, 0.35 } },
-            { key = "shields",        label = "Shield",    color = { 0.72, 0.72, 0.78 } },
-            { key = "ranged",         label = "Ranged",    color = { 0.70, 0.80, 0.60 } },
+            { key = "weapons",        label = "Weapon",    color = gearColors.weapons },
+            { key = "shields",        label = "Shield",    color = gearColors.shields },
+            { key = "ranged",         label = "Ranged",    color = gearColors.ranged },
             { key = "slot:Head",      label = "Head",      color = armorColor, dividerBefore = true, dividerKey = "armor" },
             { key = "slot:Shoulders", label = "Shoulders", color = armorColor, dividerBefore = true, dividerKey = "armor" },
             { key = "slot:Chest",     label = "Chest",     color = armorColor, dividerBefore = true, dividerKey = "armor" },
@@ -647,7 +641,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                 div.line:SetHeight(1)
                 div.line:SetPoint("LEFT", div, "LEFT", 10, 0)
                 div.line:SetPoint("RIGHT", div, "RIGHT", -10, 0)
-                div.line:SetColorTexture(1, 1, 1, 0.08)
+                div.line:SetColorTexture(Colors.dividerFaint[1], Colors.dividerFaint[2], Colors.dividerFaint[3], Colors.dividerFaint[4])
                 dividerPool[dividerIndex] = div
             end
             div:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
@@ -759,15 +753,15 @@ end
 
 -- Auto-register gear views for all classes
 local CLASS_GEAR_CONFIGS = {
-    { viewName = "druid_gear",   className = "Druid",   classColor = { 1.00, 0.49, 0.04 } },
-    { viewName = "hunter_gear",  className = "Hunter",  classColor = { 0.67, 0.83, 0.45 } },
-    { viewName = "mage_gear",    className = "Mage",    classColor = { 0.25, 0.78, 0.92 } },
-    { viewName = "paladin_gear", className = "Paladin", classColor = { 0.96, 0.55, 0.73 } },
-    { viewName = "priest_gear",  className = "Priest",  classColor = { 1.00, 1.00, 1.00 } },
-    { viewName = "rogue_gear",   className = "Rogue",   classColor = { 1.00, 0.96, 0.41 } },
-    { viewName = "shaman_gear",  className = "Shaman",  classColor = { 0.00, 0.44, 0.87 } },
-    { viewName = "warlock_gear", className = "Warlock", classColor = { 0.53, 0.53, 0.93 } },
-    { viewName = "warrior_gear", className = "Warrior", classColor = { 0.78, 0.61, 0.43 } },
+    { viewName = "druid_gear",   className = "Druid",   classColor = Deathless.Constants.Colors.Class.druid },
+    { viewName = "hunter_gear",  className = "Hunter",  classColor = Deathless.Constants.Colors.Class.hunter },
+    { viewName = "mage_gear",    className = "Mage",    classColor = Deathless.Constants.Colors.Class.mage },
+    { viewName = "paladin_gear", className = "Paladin", classColor = Deathless.Constants.Colors.Class.paladin },
+    { viewName = "priest_gear",  className = "Priest",  classColor = Deathless.Constants.Colors.Class.priest },
+    { viewName = "rogue_gear",   className = "Rogue",   classColor = Deathless.Constants.Colors.Class.rogue },
+    { viewName = "shaman_gear",  className = "Shaman",  classColor = Deathless.Constants.Colors.Class.shaman },
+    { viewName = "warlock_gear", className = "Warlock", classColor = Deathless.Constants.Colors.Class.warlock },
+    { viewName = "warrior_gear", className = "Warrior", classColor = Deathless.Constants.Colors.Class.warrior },
 }
 
 for _, cfg in ipairs(CLASS_GEAR_CONFIGS) do

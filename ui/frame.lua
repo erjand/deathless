@@ -8,31 +8,15 @@ local MAIN_DEFAULT_HEIGHT = 600
 local MAIN_MIN_HEIGHT = 400
 local MAIN_MAX_HEIGHT = 800
 
--- Color palette
-local Colors = {
-    bg = { 0.08, 0.08, 0.10, 0.95 },         -- Dark background
-    bgLight = { 0.12, 0.12, 0.14, 1 },       -- Slightly lighter bg
-    border = { 0.3, 0.3, 0.35, 1 },          -- Border color
-    borderLight = { 0.4, 0.4, 0.45, 1 },     -- Hover border
-    accent = { 0.4, 0.8, 0.4, 1 },           -- Green accent (matches print color)
-    text = { 0.9, 0.9, 0.9, 1 },             -- Main text
-    textDim = { 0.6, 0.6, 0.6, 1 },          -- Dimmed text
-    -- Semantic colors (shared across addon)
-    yellow  = { 1.0, 0.8, 0.2 },             -- Warnings, difficulty
-    red     = { 0.8, 0.3, 0.3 },             -- Negative, danger
-    orange  = { 1.0, 0.5, 0.25 },            -- Caution
-    -- Mob/NPC difficulty colors (relative to player level)
-    diffRed    = { 0.8, 0.3, 0.3 },          -- 5+ levels above
-    diffOrange = { 1.0, 0.5, 0.25 },         -- 3-4 levels above
-    diffYellow = { 1.0, 0.8, 0.2 },          -- ±2 levels
-    diffGreen  = { 0.4, 0.8, 0.4 },          -- Below but still gives XP
-    diffGray   = { 0.6, 0.6, 0.6 },          -- No XP
-}
+local Colors = Deathless.Constants.Colors.UI
 
 -- Helper: Create a pixel border around a frame
 local function CreatePixelBorder(parent, thickness, r, g, b, a)
     thickness = thickness or 1
-    r, g, b, a = r or 0.3, g or 0.3, b or 0.35, a or 1
+    r = r or Colors.border[1]
+    g = g or Colors.border[2]
+    b = b or Colors.border[3]
+    a = a or Colors.border[4]
     
     local borders = {}
     
@@ -80,7 +64,7 @@ local function CreateCloseButton(parent, options)
     
     btn.bg = btn:CreateTexture(nil, "BACKGROUND")
     btn.bg:SetAllPoints()
-    btn.bg:SetColorTexture(0, 0, 0, 0)
+    btn.bg:SetColorTexture(Colors.transparent[1], Colors.transparent[2], Colors.transparent[3], Colors.transparent[4])
     
     local Fonts = Deathless.UI.Fonts
     btn.text = btn:CreateFontString(nil, "OVERLAY")
@@ -90,11 +74,11 @@ local function CreateCloseButton(parent, options)
     btn.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
     
     btn:SetScript("OnEnter", function(self)
-        self.bg:SetColorTexture(0.18, 0.18, 0.20, 1)
-        self.text:SetTextColor(1, 1, 1, 1)
+        self.bg:SetColorTexture(Colors.hover[1], Colors.hover[2], Colors.hover[3], Colors.hover[4])
+        self.text:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
     end)
     btn:SetScript("OnLeave", function(self)
-        self.bg:SetColorTexture(0, 0, 0, 0)
+        self.bg:SetColorTexture(Colors.transparent[1], Colors.transparent[2], Colors.transparent[3], Colors.transparent[4])
         self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
     end)
     
@@ -128,8 +112,8 @@ local function CreatePixelButton(parent, width, height, text)
     
     -- Hover effects
     btn:SetScript("OnEnter", function(self)
-        self.bg:SetColorTexture(0.18, 0.18, 0.20, 1)
-        self.text:SetTextColor(1, 1, 1, 1)
+        self.bg:SetColorTexture(Colors.hover[1], Colors.hover[2], Colors.hover[3], Colors.hover[4])
+        self.text:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
     end)
     
     btn:SetScript("OnLeave", function(self)

@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
-local CLASS_COLOR = { 0.58, 0.51, 0.79 } -- Warlock purple
+local CLASS_COLOR = Deathless.Constants.Colors.Class.warlock
 
 --- Create Warlock Talents view using the template
 Deathless.UI.Views.TalentsTemplate:Create({

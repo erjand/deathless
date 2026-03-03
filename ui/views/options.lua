@@ -165,7 +165,7 @@ Deathless.UI.Views:Register("options", function(container)
             -- Make entire frame clickable
             f:EnableMouse(true)
             f:SetScript("OnEnter", function(self)
-                self.label:SetTextColor(1, 1, 1, 1)
+                self.label:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
                 self.hoverBg:Show()
                 if not self.checked then
                     self.btn.bg:SetColorTexture(Colors.bgLight[1] + 0.25, Colors.bgLight[2] + 0.25, Colors.bgLight[3] + 0.25, 1)
@@ -336,7 +336,7 @@ Deathless.UI.Views:Register("options", function(container)
             end)
             xpHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
             xpHeader:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
-            Utils:ConfigureSubSection(xpHeader, sectionState.xpProgress, "XP Progress", { 0.4, 0.8, 1.0 })
+            Utils:ConfigureSubSection(xpHeader, sectionState.xpProgress, "XP Progress", Colors.xpHeader)
             xpHeader.sectionKey = "xpProgress"
             xpHeader:SetScript("OnClick", function(self)
                 sectionState[self.sectionKey] = not sectionState[self.sectionKey]
@@ -362,7 +362,7 @@ Deathless.UI.Views:Register("options", function(container)
             end)
             abilitiesHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 8, yOffset)
             abilitiesHeader:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", 0, yOffset)
-            Utils:ConfigureSubSection(abilitiesHeader, sectionState.abilities, "Abilities", { 0.5, 0.8, 1.0 })
+            Utils:ConfigureSubSection(abilitiesHeader, sectionState.abilities, "Abilities", Colors.info)
             abilitiesHeader.sectionKey = "abilities"
             abilitiesHeader:SetScript("OnClick", function(self)
                 sectionState[self.sectionKey] = not sectionState[self.sectionKey]

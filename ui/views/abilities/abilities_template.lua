@@ -26,6 +26,7 @@ end
 local AbilityUtils = Deathless.Utils.Abilities
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
+local ColorCodes = Deathless.Constants.Colors.Codes
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -343,7 +344,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                 cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], dimmed and 0.6 or 1)
             else
                 cost:SetText(FormatMoneyColored(ability.base_cost))
-                cost:SetTextColor(1, 1, 1, dimmed and 0.6 or 1)
+                cost:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], dimmed and 0.6 or 1)
             end
             row.elements.cost = cost
             
@@ -479,10 +480,10 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local yOffset = 0
             local rowNum = 0
             
-            local learnedColor = { 0.5, 0.5, 0.5 }
+            local learnedColor = Deathless.Constants.Colors.AbilitySection.learned
             local availableColor = Colors.accent
-            local nextAvailableColor = { 0.5, 0.7, 0.9 }
-            local unavailableColor = { 0.6, 0.4, 0.4 }
+            local nextAvailableColor = Deathless.Constants.Colors.AbilitySection.nextAvailable
+            local unavailableColor = Deathless.Constants.Colors.AbilitySection.unavailable
             
             -- Check abilities config for section visibility
             local abilitiesConfig = Deathless.config.abilities or {}
@@ -599,9 +600,9 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         headers.source = CreateSortableHeader(container, "SOURCE", 400, 60, "source", sortState, OnSort, nil, sortHeaderY)
         headers.train = CreateSortableHeader(container, "TRAIN (?)", 470, 50, "train", sortState, OnSort, {
             title = "Training Priority",
-            "|cff66cc66Yes|r - Train when available",
-            "|cffcccc55Wait|r - Marginal upgrade",
-            "|cffcc6666No|r - Not useful for Hardcore",
+            ColorCodes.safe .. "Yes|r - Train when available",
+            ColorCodes.warning .. "Wait|r - Marginal upgrade",
+            ColorCodes.enemy .. "No|r - Not useful for Hardcore",
         }, sortHeaderY)
         
         OnSort()

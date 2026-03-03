@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
-local CLASS_COLOR = { 0.96, 0.55, 0.73 } -- Paladin pink
+local CLASS_COLOR = Deathless.Constants.Colors.Class.paladin
 
 --- Create Paladin Talents view using the template
 Deathless.UI.Views.TalentsTemplate:Create({

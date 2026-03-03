@@ -42,7 +42,7 @@ function Deathless.Utils.UI.CreatePinButton(frame, titleBar, configKey, options)
     
     pinBtn.bg = pinBtn:CreateTexture(nil, "BACKGROUND")
     pinBtn.bg:SetAllPoints()
-    pinBtn.bg:SetColorTexture(0, 0, 0, 0)
+    pinBtn.bg:SetColorTexture(Colors.transparent[1], Colors.transparent[2], Colors.transparent[3], Colors.transparent[4])
     
     local Fonts = Deathless.UI.Fonts
     pinBtn.text = pinBtn:CreateFontString(nil, "OVERLAY")
@@ -77,16 +77,16 @@ function Deathless.Utils.UI.CreatePinButton(frame, titleBar, configKey, options)
     UpdatePinState()
     
     pinBtn:SetScript("OnEnter", function(self)
-        self.bg:SetColorTexture(0.18, 0.18, 0.20, 1)
+        self.bg:SetColorTexture(Colors.hover[1], Colors.hover[2], Colors.hover[3], Colors.hover[4])
         if isPinned then
             self.text:SetTextColor(Colors.accent[1] + 0.2, Colors.accent[2] + 0.1, Colors.accent[3] + 0.2, 1)
         else
-            self.text:SetTextColor(1, 1, 1, 1)
+            self.text:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
         end
     end)
     
     pinBtn:SetScript("OnLeave", function(self)
-        self.bg:SetColorTexture(0, 0, 0, 0)
+        self.bg:SetColorTexture(Colors.transparent[1], Colors.transparent[2], Colors.transparent[3], Colors.transparent[4])
         UpdatePinState()
     end)
     

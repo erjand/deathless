@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local ColorCodes = Deathless.Constants.Colors.Codes
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -285,7 +286,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
     end
 
     local PopulateRows
-    local QUEST_COLOR = { 0.5, 0.7, 0.9 }
+    local QUEST_COLOR = Deathless.Constants.Colors.Dungeon.quest
     local QUEST_ROW_HEIGHT = 20
 
     local MAX_REWARD_ICONS = 5
@@ -772,9 +773,9 @@ Deathless.UI.Views:Register("dungeons", function(container)
     headers.name  = CreateSortableHeader(container, "NAME",         75,  170, "name",  sortState, OnSort)
     headers.zone  = CreateSortableHeader(container, "ZONE (?)",         250, 130, "zone",  sortState, OnSort, {
         title = "Zone Territory",
-        "|cff66cc66Green|r - Friendly territory",
-        "|cffffcc33Yellow|r - Contested territory",
-        "|cffcc4d4dRed|r - Enemy territory",
+        ColorCodes.safe .. "Green|r - Friendly territory",
+        ColorCodes.warning .. "Yellow|r - Contested territory",
+        ColorCodes.enemy .. "Red|r - Enemy territory",
     })
     headers.boss  = CreateSortableHeader(container, "END BOSS (?)", 390, 190, "boss",  sortState, OnSort, {
         title = "End Boss Level",

@@ -118,7 +118,7 @@ local function CreateNavButton(parent, item, depth)
     -- Background (transparent by default, visible when selected/hovered)
     btn.bg = btn:CreateTexture(nil, "BACKGROUND")
     btn.bg:SetAllPoints()
-    btn.bg:SetColorTexture(0, 0, 0, 0)
+    btn.bg:SetColorTexture(Colors.transparent[1], Colors.transparent[2], Colors.transparent[3], Colors.transparent[4])
     
     -- Selection indicator (left accent bar)
     btn.indicator = btn:CreateTexture(nil, "ARTWORK")
@@ -163,7 +163,7 @@ local function CreateNavButton(parent, item, depth)
     
     btn:SetScript("OnLeave", function(self)
         if not self.isSelected then
-            self.bg:SetColorTexture(0, 0, 0, 0)
+            self.bg:SetColorTexture(Colors.transparent[1], Colors.transparent[2], Colors.transparent[3], Colors.transparent[4])
             self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         end
     end)
@@ -181,7 +181,7 @@ local function SetButtonSelected(btn, selected)
         btn.indicator:Show()
         btn.label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
     else
-        btn.bg:SetColorTexture(0, 0, 0, 0)
+        btn.bg:SetColorTexture(Colors.transparent[1], Colors.transparent[2], Colors.transparent[3], Colors.transparent[4])
         btn.indicator:Hide()
         btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
     end

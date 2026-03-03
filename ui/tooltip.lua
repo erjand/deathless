@@ -28,7 +28,7 @@ local function GetTooltip()
         edgeFile = "Interface\\Buttons\\WHITE8x8",
         edgeSize = 1,
     })
-    tooltip:SetBackdropColor(0.08, 0.08, 0.10, 0.95)
+    tooltip:SetBackdropColor(Colors.bg[1], Colors.bg[2], Colors.bg[3], Colors.bg[4])
     tooltip:SetBackdropBorderColor(Colors.border[1], Colors.border[2], Colors.border[3], 0.8)
     
     -- Title text (smaller but still larger than description)
@@ -36,7 +36,7 @@ local function GetTooltip()
     tooltip.title:SetFont(Fonts.family, Fonts.small, "")  -- Was body size, now small
     tooltip.title:SetPoint("TOPLEFT", tooltip, "TOPLEFT", TOOLTIP_PADDING, -TOOLTIP_PADDING)
     tooltip.title:SetJustifyH("LEFT")
-    tooltip.title:SetTextColor(1, 1, 1, 1)
+    tooltip.title:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
     
     -- Icon (optional)
     tooltip.icon = tooltip:CreateTexture(nil, "ARTWORK")
@@ -55,12 +55,13 @@ end
 local function GetLine(index)
     local tt = GetTooltip()
     local Fonts = Deathless.UI.Fonts
+    local Colors = Deathless.UI.Colors
     
     if not tt.lines[index] then
         local line = tt:CreateFontString(nil, "OVERLAY")
         line:SetFont(Fonts.family, Fonts.tiny, "")  -- Smaller than title
         line:SetJustifyH("LEFT")
-        line:SetTextColor(0.8, 0.8, 0.8, 1)
+        line:SetTextColor(Colors.tooltipText[1], Colors.tooltipText[2], Colors.tooltipText[3], Colors.tooltipText[4])
         line:SetWidth(TOOLTIP_MAX_WIDTH - TOOLTIP_PADDING * 2)
         line:SetWordWrap(true)
         tt.lines[index] = line

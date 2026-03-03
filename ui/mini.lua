@@ -332,10 +332,10 @@ function Deathless.UI.MiniSummary:SetupContent()
                 Refresh()
             end)
             warningsHeader:SetScript("OnEnter", function()
-                label:SetTextColor(1, 0.9, 0.4, 1)
+                label:SetTextColor(Colors.warningHover[1], Colors.warningHover[2], Colors.warningHover[3], Colors.warningHover[4])
             end)
             warningsHeader:SetScript("OnLeave", function()
-                label:SetTextColor(1, 0.8, 0.2, 1)
+                label:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], 1)
             end)
             
             yOffset = yOffset - 18
@@ -358,7 +358,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     rowText:SetPoint("LEFT", rowIcon, "RIGHT", 4, 0)
                     rowText:SetPoint("RIGHT", row, "RIGHT", 0, 0)
                     rowText:SetText(warning.text)
-                    rowText:SetTextColor(1, 0.8, 0.2, 1)
+                    rowText:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], 1)
                     rowText:SetJustifyH("LEFT")
                     
                     row:EnableMouse(true)
@@ -400,17 +400,17 @@ function Deathless.UI.MiniSummary:SetupContent()
             xpLabel:SetFont(Fonts.family, Fonts.body, "")
             xpLabel:SetPoint("LEFT", xpIcon, "RIGHT", 4, 0)
             xpLabel:SetText("XP Progress")
-            xpLabel:SetTextColor(0.4, 0.8, 1.0, 1)
+            xpLabel:SetTextColor(Colors.xpHeader[1], Colors.xpHeader[2], Colors.xpHeader[3], Colors.xpHeader[4])
             
             xpHeader:SetScript("OnClick", function()
                 sectionState.xp = not sectionState.xp
                 Refresh()
             end)
             xpHeader:SetScript("OnEnter", function()
-                xpLabel:SetTextColor(0.5, 0.9, 1.0, 1)
+                xpLabel:SetTextColor(Colors.xpHeaderHover[1], Colors.xpHeaderHover[2], Colors.xpHeaderHover[3], Colors.xpHeaderHover[4])
             end)
             xpHeader:SetScript("OnLeave", function()
-                xpLabel:SetTextColor(0.4, 0.8, 1.0, 1)
+                xpLabel:SetTextColor(Colors.xpHeader[1], Colors.xpHeader[2], Colors.xpHeader[3], Colors.xpHeader[4])
             end)
             
             yOffset = yOffset - 18
@@ -423,7 +423,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                 
                 local barBg = barRow:CreateTexture(nil, "BACKGROUND")
                 barBg:SetAllPoints()
-                barBg:SetColorTexture(0.1, 0.1, 0.1, 0.8)
+                barBg:SetColorTexture(Colors.xpTrackBg[1], Colors.xpTrackBg[2], Colors.xpTrackBg[3], Colors.xpTrackBg[4])
                 
                 -- Rested XP fill (behind normal bar, extends past current XP)
                 if xpData.restedXP > 0 and xpData.maxXP > 0 then
@@ -433,14 +433,14 @@ function Deathless.UI.MiniSummary:SetupContent()
                     restedFill:SetPoint("TOPLEFT", barRow, "TOPLEFT", 1, -1)
                     restedFill:SetPoint("BOTTOMLEFT", barRow, "BOTTOMLEFT", 1, 1)
                     restedFill:SetWidth(math.max(1, (barRow:GetWidth() - 2) * restedPct))
-                    restedFill:SetColorTexture(0.0, 0.39, 0.88, 0.8)
+                    restedFill:SetColorTexture(Colors.xpRested[1], Colors.xpRested[2], Colors.xpRested[3], Colors.xpRested[4])
                 end
                 
                 local barFill = barRow:CreateTexture(nil, "ARTWORK", nil, 1)
                 barFill:SetPoint("TOPLEFT", barRow, "TOPLEFT", 1, -1)
                 barFill:SetPoint("BOTTOMLEFT", barRow, "BOTTOMLEFT", 1, 1)
                 barFill:SetWidth(math.max(1, (barRow:GetWidth() - 2) * (xpData.percent / 100)))
-                barFill:SetColorTexture(0.58, 0.0, 0.55, 0.8)
+                barFill:SetColorTexture(Colors.xpProgress[1], Colors.xpProgress[2], Colors.xpProgress[3], Colors.xpProgress[4])
                 
                 local barText = barRow:CreateFontString(nil, "OVERLAY")
                 barText:SetFont(Fonts.family, Fonts.small - 1, "")
@@ -449,7 +449,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     Deathless.Utils.XP:FormatNumber(xpData.currentXP),
                     Deathless.Utils.XP:FormatNumber(xpData.maxXP),
                     xpData.percent))
-                barText:SetTextColor(1, 1, 1, 1)
+                barText:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
                 
                 yOffset = yOffset - 14
                 
@@ -468,7 +468,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                 ttlText:SetFont(Fonts.family, Fonts.small, "")
                 ttlText:SetPoint("RIGHT", statsRow, "RIGHT", -8, 0)
                 ttlText:SetText("Next: " .. Deathless.Utils.XP:FormatTime(xpData.timeToLevel))
-                ttlText:SetTextColor(0.4, 0.8, 1.0, 1)
+                ttlText:SetTextColor(Colors.xpHeader[1], Colors.xpHeader[2], Colors.xpHeader[3], Colors.xpHeader[4])
 
                 local rateText = statsRow:CreateFontString(nil, "OVERLAY")
                 rateText:SetFont(Fonts.family, Fonts.small, "")
@@ -590,17 +590,17 @@ function Deathless.UI.MiniSummary:SetupContent()
             nextLabel:SetFont(Fonts.family, Fonts.body, "")
             nextLabel:SetPoint("LEFT", nextIcon, "RIGHT", 4, 0)
             nextLabel:SetText("Next Available (" .. #nextAvailable .. ") - " .. FormatMoneyColored(nextCost))
-            nextLabel:SetTextColor(0.5, 0.7, 0.9, 1)
+            nextLabel:SetTextColor(Colors.xpNext[1], Colors.xpNext[2], Colors.xpNext[3], Colors.xpNext[4])
             
             nextHeader:SetScript("OnClick", function()
                 sectionState.nextAvailable = not sectionState.nextAvailable
                 Refresh()
             end)
             nextHeader:SetScript("OnEnter", function()
-                nextLabel:SetTextColor(0.6, 0.8, 1.0, 1)
+                nextLabel:SetTextColor(Colors.xpNextHover[1], Colors.xpNextHover[2], Colors.xpNextHover[3], Colors.xpNextHover[4])
             end)
             nextHeader:SetScript("OnLeave", function()
-                nextLabel:SetTextColor(0.5, 0.7, 0.9, 1)
+                nextLabel:SetTextColor(Colors.xpNext[1], Colors.xpNext[2], Colors.xpNext[3], Colors.xpNext[4])
             end)
             
             yOffset = yOffset - 18

@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
-local CLASS_COLOR = { 1.00, 0.49, 0.04 } -- Druid orange
+local CLASS_COLOR = Deathless.Constants.Colors.Class.druid
 
 --- Create Druid Talents view using the template
 Deathless.UI.Views.TalentsTemplate:Create({

@@ -5,5 +5,5 @@ Deathless.UI.Views.AbilitiesTemplate:Create({
     viewName = "rogue_abilities",
     className = "Rogue",
     classId = "ROGUE",
-    classColor = { 1.00, 0.96, 0.41 },  -- Rogue yellow
+    classColor = Deathless.Constants.Colors.Class.rogue,
 })

@@ -204,7 +204,7 @@ function Deathless.UI.Views.Utils:CreateCollapsibleSubSection(parent)
     header.label:SetPoint("LEFT", header.icon, "RIGHT", 6, 0)
     
     header:SetScript("OnEnter", function(self)
-        self.label:SetTextColor(1, 1, 1, 1)
+        self.label:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
     end)
     header:SetScript("OnLeave", function(self)
         local c = self.color or Colors.textDim

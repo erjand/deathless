@@ -126,7 +126,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                     subsection.cost:SetPoint("RIGHT", subsection, "RIGHT", -4, 0)
             end
             subsection.cost:SetText(costText)
-            subsection.cost:SetTextColor(1, 1, 1, 1)
+            subsection.cost:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
             subsection.cost:Show()
         elseif subsection.cost then
             subsection.cost:Hide()
@@ -213,7 +213,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                     end
                     
                     row.name:SetText(warning.text)
-                    row.name:SetTextColor(1, 0.8, 0.2, 1)
+                    row.name:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], 1)
                     row.level:SetText("")
                     row.cost:SetText("")
                     
@@ -234,7 +234,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 local msg = GetFrame("text")
                 msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
                 msg:SetText("No warnings - go adventure!")
-                msg:SetTextColor(0.5, 1, 0.5, 1)
+                msg:SetTextColor(Colors.success[1], Colors.success[2], Colors.success[3], Colors.success[4])
                 yOffset = yOffset - 24
             end
         end
@@ -245,7 +245,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         local xpData = Deathless.Utils.XP:GetData()
         local showXP = Deathless.config.showXPProgress ~= false
         if showXP and not xpData.isMaxLevel then
-            local xpColor = { 0.4, 0.8, 1.0 }
+            local xpColor = Colors.xpHeader
             yOffset = CreateSectionHeader("xp", "XP Progress", nil, yOffset, xpColor)
             
             if sectionState.xp then
@@ -259,7 +259,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 if not barFrame.barBg then
                     barFrame.barBg = barFrame:CreateTexture(nil, "BACKGROUND")
                     barFrame.barBg:SetAllPoints()
-                    barFrame.barBg:SetColorTexture(0.1, 0.1, 0.1, 0.8)
+                    barFrame.barBg:SetColorTexture(Colors.xpTrackBg[1], Colors.xpTrackBg[2], Colors.xpTrackBg[3], Colors.xpTrackBg[4])
                 end
                 barFrame.barBg:Show()
                 
@@ -273,7 +273,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                     local restedEnd = math.min(xpData.currentXP + xpData.restedXP, xpData.maxXP)
                     local restedPct = restedEnd / xpData.maxXP
                     barFrame.restedFill:SetWidth(math.max(1, (barFrame:GetWidth() - 2) * restedPct))
-                    barFrame.restedFill:SetColorTexture(0.0, 0.39, 0.88, 0.8)
+                    barFrame.restedFill:SetColorTexture(Colors.xpRested[1], Colors.xpRested[2], Colors.xpRested[3], Colors.xpRested[4])
                     barFrame.restedFill:Show()
                 else
                     barFrame.restedFill:Hide()
@@ -286,7 +286,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                     barFrame.barFill:SetPoint("BOTTOMLEFT", barFrame, "BOTTOMLEFT", 1, 1)
                 end
                 barFrame.barFill:SetWidth(math.max(1, (barFrame:GetWidth() - 2) * (xpData.percent / 100)))
-                barFrame.barFill:SetColorTexture(0.58, 0.0, 0.55, 0.8)
+                barFrame.barFill:SetColorTexture(Colors.xpProgress[1], Colors.xpProgress[2], Colors.xpProgress[3], Colors.xpProgress[4])
                 barFrame.barFill:Show()
                 
                 -- XP text on bar
@@ -297,7 +297,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                     Deathless.Utils.XP:FormatNumber(xpData.currentXP),
                     Deathless.Utils.XP:FormatNumber(xpData.maxXP),
                     xpData.percent))
-                barFrame.name:SetTextColor(1, 1, 1, 1)
+                barFrame.name:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
                 barFrame.level:SetText("")
                 barFrame.cost:SetText("")
                 barFrame.icon:Hide()
@@ -380,7 +380,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                             row.cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
                         else
                             row.cost:SetText(FormatMoneyColored(ability.base_cost))
-                            row.cost:SetTextColor(1, 1, 1, 1)
+                            row.cost:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
                         end
                         
                         row:SetScript("OnEnter", function(self)
@@ -403,7 +403,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 end
                 
                 local costText = "Total: " .. FormatMoneyColored(nextCost)
-                yOffset = CreateSubSectionHeader("nextAvailable", "Next Available", yOffset, { 0.5, 0.7, 0.9 }, costText)
+                yOffset = CreateSubSectionHeader("nextAvailable", "Next Available", yOffset, Colors.xpNext, costText)
                 
                 if sectionState.nextAvailable then
                     for _, ability in ipairs(nextAvailable) do
@@ -431,7 +431,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                             row.cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.6)
                         else
                             row.cost:SetText(FormatMoneyColored(ability.base_cost))
-                            row.cost:SetTextColor(1, 1, 1, 0.6)
+                            row.cost:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], 0.6)
                         end
                         
                         row:SetScript("OnEnter", function(self)

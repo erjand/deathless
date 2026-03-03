@@ -4,21 +4,22 @@ Deathless.Utils = Deathless.Utils or {}
 Deathless.Utils.Abilities = {}
 
 local Abilities = Deathless.Utils.Abilities
+local ColorCodes = Deathless.Constants.Colors.Codes
 
 --- Format copper amount with colored g/s/c letters
 ---@param copper number Amount in copper
 ---@return string Formatted string with color codes
 function Abilities.FormatMoneyColored(copper)
-    if copper == 0 then return "0|cffb87333c|r" end
+    if copper == 0 then return "0" .. ColorCodes.moneyCopper .. "c|r" end
 
     local gold = math.floor(copper / 10000)
     local silver = math.floor((copper % 10000) / 100)
     local cop = copper % 100
 
     local parts = {}
-    if gold > 0 then table.insert(parts, gold .. "|cffffd700g|r") end
-    if silver > 0 then table.insert(parts, silver .. "|cffc0c0c0s|r") end
-    if cop > 0 then table.insert(parts, cop .. "|cffb87333c|r") end
+    if gold > 0 then table.insert(parts, gold .. ColorCodes.moneyGold .. "g|r") end
+    if silver > 0 then table.insert(parts, silver .. ColorCodes.moneySilver .. "s|r") end
+    if cop > 0 then table.insert(parts, cop .. ColorCodes.moneyCopper .. "c|r") end
 
     return table.concat(parts, " ")
 end

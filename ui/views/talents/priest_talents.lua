@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
-local CLASS_COLOR = { 1.00, 1.00, 1.00 } -- Priest white
+local CLASS_COLOR = Deathless.Constants.Colors.Class.priest
 
 --- Create Priest Talents view using the template
 Deathless.UI.Views.TalentsTemplate:Create({

@@ -16,7 +16,7 @@ alwaysApply: true
 - **Entry**: `deathless.lua` - Main namespace and module registration system
 - **Core**: `core/` - Initialization, config, events, commands
 - **Modules**: `modules/` - Feature modules (classes, zones, dungeons, etc.) that register via `Deathless:RegisterModule()`
-- **UI**: `ui/` - UI system with views (`ui/views/`: root for home/summary/options etc.; `views/talents/`, `views/abilities/`, `views/gear/` for class views), reusable components (`ui/components/`), and core UI elements
+- **UI**: `ui/` - UI system with views (`ui/views/`: root for home/summary/options etc.; `ui/views/class/talents/`, `ui/views/class/abilities/`, `ui/views/class/gear/`, `ui/views/class/macros/` for class tab views), reusable components (`ui/components/`), and core UI elements
 - **Data**: `data/` - Static data files; `data/source/*.csv` are source-of-truth and `data/gear/*.lua` are generated outputs
 - **Scripts**: `scripts/` - Maintenance and build helpers (CSV->Lua generators, deploy scripts, and all-in-one wrappers)
 - **Gear**: Armor is split by slot files (`armor_head.lua`, `armor_shoulders.lua`, etc.) instead of a single `armor.lua`

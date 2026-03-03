@@ -9,7 +9,6 @@
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
 - [ ] Feature: Max level mode to disable leveling stuff?
-- [ ] Feature: Tips and Tricks (macros, quit group timer, petri alt+f4, etc)
 - [ ] Feature: AtlasLoot for dungeons? (AL is soooo bad)
 - [ ] Feature: Equipment swap (Itemrack and Outfiteer are both really bad)
 
@@ -49,6 +48,18 @@
 - [ ] Armor: Wrist
 - [ ] Ranged
 - [ ] Weapons
+
+### Macros
+
+- [ ] Druid
+- [ ] Hunter
+- [ ] Mage
+- [ ] Paladin
+- [ ] Priest
+- [ ] Rogue
+- [ ] Shaman
+- [ ] Warlock
+- [ ] Warrior
 
 #### Warrior
 

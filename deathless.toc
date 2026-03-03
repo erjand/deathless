@@ -109,5 +109,6 @@ data\gear\armor_legs.lua
 data\gear\armor_feet.lua
 data\gear\rings.lua
 data\gear\trinkets.lua
+data\gear\back.lua
 data\gear\amulets.lua
 

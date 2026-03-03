@@ -6,6 +6,11 @@ Deathless.UI.Views.GearTemplate = {}
 -- WoW item rarity colors
 local RARITY_COLORS = Deathless.Constants.Colors.ItemRarity
 
+local function GetEmptySlotTexture(slotName, fallbackTexture)
+    local _, texture = GetInventorySlotInfo(slotName)
+    return texture or fallbackTexture
+end
+
 -- Empty equipment slot textures (match character panel grey icons)
 local SLOT_ICONS = {
     Weapon    = "Interface\\PaperDoll\\UI-PaperDoll-Slot-MainHand",
@@ -16,6 +21,7 @@ local SLOT_ICONS = {
     Head      = "Interface\\PaperDoll\\UI-PaperDoll-Slot-Head",
     Shoulders = "Interface\\PaperDoll\\UI-PaperDoll-Slot-Shoulder",
     Chest     = "Interface\\PaperDoll\\UI-PaperDoll-Slot-Chest",
+    Back      = GetEmptySlotTexture("BackSlot", "Interface\\PaperDoll\\UI-PaperDoll-Slot-Chest"),
     Wrist     = "Interface\\PaperDoll\\UI-PaperDoll-Slot-Wrists",
     Hands     = "Interface\\PaperDoll\\UI-PaperDoll-Slot-Hands",
     Waist     = "Interface\\PaperDoll\\UI-PaperDoll-Slot-Waist",
@@ -305,6 +311,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             { items = Deathless.Data.Gear.ArmorWaist },
             { items = Deathless.Data.Gear.ArmorLegs },
             { items = Deathless.Data.Gear.ArmorFeet },
+            { items = Deathless.Data.Gear.Back },
             { items = Deathless.Data.Gear.Rings },
             { items = Deathless.Data.Gear.Trinkets },
             { items = Deathless.Data.Gear.Amulets },
@@ -626,6 +633,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             { key = "slot:Waist",     label = "Waist",     color = armorColor, dividerBefore = true, dividerKey = "armor" },
             { key = "slot:Legs",      label = "Legs",      color = armorColor, dividerBefore = true, dividerKey = "armor" },
             { key = "slot:Feet",      label = "Feet",      color = armorColor, dividerBefore = true, dividerKey = "armor" },
+            { key = "slot:Back",      label = "Back",      color = miscColor,  dividerBefore = true, dividerKey = "misc" },
             { key = "slot:Neck",      label = "Neck",      color = miscColor,  dividerBefore = true, dividerKey = "misc" },
             { key = "slot:Ring",      label = "Ring",      color = miscColor,  dividerBefore = true, dividerKey = "misc" },
             { key = "slot:Trinket",   label = "Trinket",   color = miscColor,  dividerBefore = true, dividerKey = "misc" },

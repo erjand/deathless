@@ -1,0 +1,2 @@
+name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,faction,pre_bis
+"Placeholder Cloak","Back",20,"Quest - Placeholder","uncommon",1300,true,true,true,true,true,true,true,true,true,"",false

@@ -7,8 +7,9 @@ echo.
 set SCRIPT_DIR=%~dp0
 set EXIT_CODE=0
 
-call :run_ps1 "generate-armor-slots.ps1"
 call :run_ps1 "generate-amulets.ps1"
+call :run_ps1 "generate-armor-slots.ps1"
+call :run_ps1 "generate-back.ps1"
 call :run_ps1 "generate-ranged.ps1"
 call :run_ps1 "generate-rings.ps1"
 call :run_ps1 "generate-shields.ps1"

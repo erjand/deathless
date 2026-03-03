@@ -7,5 +7,5 @@ Deathless.Data.Gear = Deathless.Data.Gear or {}
 -- Source format: "{Dungeon} - {Boss}", "Quest - {Name}", "{Profession} ({Detail})", "Reputation - {Faction} ({Level})", "World Drop", "Vendor"
 
 Deathless.Data.Gear.Amulets = {
-    { name = "Seal of Wrynn",           slot = "Neck",  type = "Neck",  levelReq = 16, source = "Quest - An Audience with the King",        rarity = "rare",      itemId = 2933,  classes = { "Warrior", "Paladin", "Rogue", "Hunter", "Druid" }, faction = "Alliance" },
+    { name = "Placeholder",           slot = "Neck",  type = "Neck",  levelReq = 16, source = "Quest - An Audience with the King",        rarity = "rare",      itemId = 2933,  classes = { "Warrior", "Paladin", "Rogue", "Hunter", "Druid" }, faction = "Alliance" },
 }

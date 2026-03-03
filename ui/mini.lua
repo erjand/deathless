@@ -4,6 +4,7 @@ Deathless.UI.MiniSummary = Deathless.UI.MiniSummary or {}
 local Icons = Deathless.Utils.Icons
 
 local AbilityUtils = Deathless.Utils.Abilities
+local FormatMoney = AbilityUtils.FormatMoney
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
 
@@ -503,8 +504,20 @@ function Deathless.UI.MiniSummary:SetupContent()
             local availLabel = availableHeader:CreateFontString(nil, "OVERLAY")
             availLabel:SetFont(Fonts.family, Fonts.body, "")
             availLabel:SetPoint("LEFT", availIcon, "RIGHT", 4, 0)
-            availLabel:SetText("Available (" .. #available .. ") - " .. FormatMoneyColored(totalCost))
+            availLabel:SetText("Available")
             availLabel:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+
+            local availCount = availableHeader:CreateFontString(nil, "OVERLAY")
+            availCount:SetFont(Fonts.family, Fonts.body, "")
+            availCount:SetPoint("LEFT", availLabel, "RIGHT", 6, 0)
+            availCount:SetText("(" .. #available .. ")")
+            availCount:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
+            local availCost = availableHeader:CreateFontString(nil, "OVERLAY")
+            availCost:SetFont(Fonts.family, Fonts.body, "")
+            availCost:SetPoint("LEFT", availCount, "RIGHT", 8, 0)
+            availCost:SetText("Total: " .. FormatMoneyColored(totalCost))
+            availCost:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
             
             availableHeader:SetScript("OnClick", function()
                 sectionState.available = not sectionState.available
@@ -589,8 +602,20 @@ function Deathless.UI.MiniSummary:SetupContent()
             local nextLabel = nextHeader:CreateFontString(nil, "OVERLAY")
             nextLabel:SetFont(Fonts.family, Fonts.body, "")
             nextLabel:SetPoint("LEFT", nextIcon, "RIGHT", 4, 0)
-            nextLabel:SetText("Next Available (" .. #nextAvailable .. ") - " .. FormatMoneyColored(nextCost))
+            nextLabel:SetText("Next Available")
             nextLabel:SetTextColor(Colors.xpNext[1], Colors.xpNext[2], Colors.xpNext[3], Colors.xpNext[4])
+
+            local nextCount = nextHeader:CreateFontString(nil, "OVERLAY")
+            nextCount:SetFont(Fonts.family, Fonts.body, "")
+            nextCount:SetPoint("LEFT", nextLabel, "RIGHT", 6, 0)
+            nextCount:SetText("(" .. #nextAvailable .. ")")
+            nextCount:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
+            local nextCostText = nextHeader:CreateFontString(nil, "OVERLAY")
+            nextCostText:SetFont(Fonts.family, Fonts.body, "")
+            nextCostText:SetPoint("LEFT", nextCount, "RIGHT", 8, 0)
+            nextCostText:SetText("Total: " .. FormatMoneyColored(nextCost))
+            nextCostText:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
             
             nextHeader:SetScript("OnClick", function()
                 sectionState.nextAvailable = not sectionState.nextAvailable
@@ -627,7 +652,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     local name = row:CreateFontString(nil, "OVERLAY")
                     name:SetFont(Fonts.family, Fonts.small, "")
                     name:SetPoint("LEFT", icon, "RIGHT", 4, 0)
-                    name:SetText("Lvl " .. ability.level .. " - " .. nameText)
+                    name:SetText(nameText)
                     name:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                     
                     local cost = row:CreateFontString(nil, "OVERLAY")

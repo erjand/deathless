@@ -1,8 +1,10 @@
 # TODO
 
-## Features / Ideas
+## General
 
 - [ ] Add release versioning / tags
+
+## Ideas
 
 - [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
 - [ ] Feature: SafeGuard replacement things
@@ -25,10 +27,6 @@
 - [ ] Add key quests not completed
 - [ ] Hunter: missing ammo
 
-## Mini Window
-
-- [ ] 
-
 ## Classes
 
 ### Abilities
@@ -39,6 +37,10 @@
 ### Gear
 
 - [x] Shields
+- [ ] Rings (review)
+- [ ] Trinkets (review)
+- [ ] Neck
+- [ ] Cloack (is there even a section for this yet?)
 - [ ] Armor: Chest
 - [ ] Armor: Feet
 - [ ] Armor: Hands

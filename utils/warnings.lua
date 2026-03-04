@@ -3,6 +3,29 @@ local Deathless = Deathless
 Deathless.Utils = Deathless.Utils or {}
 Deathless.Utils.Warnings = {}
 local Icons = Deathless.Utils.Icons
+local QUEST_ID_MAGE_SUMMONER = 1017
+local QUEST_ID_THIS_IS_GOING_TO_BE_HARD = 778
+local QUEST_ID_A_NEW_PLAGUE = 368
+local QUEST_ID_A_SOLVENT_SPIRIT = 818
+local QUEST_ID_NOGGENFOGGER_ELIXIR = 2662
+local QUEST_ID_SELLING_FISH = 127
+local QUEST_ID_GOLD_DUST_EXCHANGE = 47
+local LEVEL_MAGE_SUMMONER_WARNING = 25
+local LEVEL_THIS_IS_GOING_TO_BE_HARD_WARNING = 42
+local LEVEL_A_NEW_PLAGUE_WARNING = 11
+local LEVEL_A_SOLVENT_SPIRIT_WARNING = 7
+local LEVEL_NOGGENFOGGER_ELIXIR_WARNING = 49
+local LEVEL_SELLING_FISH_WARNING = 21
+local LEVEL_GOLD_DUST_EXCHANGE_WARNING = 7
+local FACTION_ALLIANCE = "Alliance"
+local FACTION_HORDE = "Horde"
+local ITEM_LIGHT_OF_ELUNE = 5816
+local ITEM_NIFTY_STOPWATCH = 2820
+local ITEM_SLUMBER_SAND = 3434
+local ITEM_REALLY_STICKY_GLUE = 4941
+local ITEM_NOGGENFOGGER_ELIXIR = 8529
+local ITEM_FISHLIVER_OIL = 1322
+local ITEM_BAG_OF_MARBLES = 1191
 
 -- Tiered item definitions (highest tier first)
 -- Bandages have skill requirements (req), level requirements (lvl), and spell names
@@ -66,6 +89,32 @@ local MAGE_MANA_GEMS = {
     { req = 38, id = 5513, icon = Icons.ITEM_GEM_EMERALD_02 }, -- Mana Jade
     { req = 28, id = 5514, icon = Icons.ITEM_GEM_EMERALD_01 }, -- Mana Agate
 }
+
+--- Check quest completion status safely
+--- @param questId number
+--- @return boolean
+local function IsQuestCompleted(questId)
+    if C_QuestLog and C_QuestLog.IsQuestFlaggedCompleted then
+        return C_QuestLog.IsQuestFlaggedCompleted(questId)
+    end
+    return false
+end
+
+--- Get icon texture for an item with optional fallback
+--- @param itemId number
+--- @param fallbackIcon string|nil
+--- @return string|number
+local function GetItemIconTexture(itemId, fallbackIcon)
+    local icon = itemId and GetItemIcon(itemId)
+    return icon or fallbackIcon or Icons.DEFAULT
+end
+
+--- Return true for classes that do not use mana in Classic
+--- @param classId string
+--- @return boolean
+local function IsNonCasterClass(classId)
+    return classId == "WARRIOR" or classId == "ROGUE"
+end
 
 --- Get the best tiered item for a given value
 local function GetBestTiered(tiers, value)
@@ -175,7 +224,16 @@ end
 --- @return table[] Array of special warning definitions
 function Deathless.Utils.Warnings:GetSpecialChecks()
     local playerLevel = UnitLevel("player") or 1
+    local playerFaction = UnitFactionGroup("player")
+    local _, classId = UnitClass("player")
     local unspentTalents = UnitCharacterPoints("player") or 0
+    local hasCompletedMageSummoner = IsQuestCompleted(QUEST_ID_MAGE_SUMMONER)
+    local hasCompletedThisIsGoingToBeHard = IsQuestCompleted(QUEST_ID_THIS_IS_GOING_TO_BE_HARD)
+    local hasCompletedANewPlague = IsQuestCompleted(QUEST_ID_A_NEW_PLAGUE)
+    local hasCompletedASolventSpirit = IsQuestCompleted(QUEST_ID_A_SOLVENT_SPIRIT)
+    local hasCompletedNoggenfoggerElixir = IsQuestCompleted(QUEST_ID_NOGGENFOGGER_ELIXIR)
+    local hasCompletedSellingFish = IsQuestCompleted(QUEST_ID_SELLING_FISH)
+    local hasCompletedGoldDustExchange = IsQuestCompleted(QUEST_ID_GOLD_DUST_EXCHANGE)
     
     return {
         {
@@ -184,6 +242,62 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
             condition = playerLevel >= 10 and unspentTalents > 0,
             category = "talents",
             isActive = unspentTalents > 0,
+        },
+        {
+            text = "Quest not completed for Light of Elune",
+            icon = GetItemIconTexture(ITEM_LIGHT_OF_ELUNE, Icons.ITEM_POTION_83),
+            itemId = ITEM_LIGHT_OF_ELUNE,
+            condition = playerFaction == FACTION_ALLIANCE and playerLevel >= LEVEL_MAGE_SUMMONER_WARNING,
+            category = "quests",
+            isActive = not hasCompletedMageSummoner,
+        },
+        {
+            text = "Quest not completed for Nifty Stopwatch",
+            icon = GetItemIconTexture(ITEM_NIFTY_STOPWATCH, Icons.ITEM_MISC_POCKETWATCH_01),
+            itemId = ITEM_NIFTY_STOPWATCH,
+            condition = playerLevel >= LEVEL_THIS_IS_GOING_TO_BE_HARD_WARNING,
+            category = "quests",
+            isActive = not hasCompletedThisIsGoingToBeHard,
+        },
+        {
+            text = "Quest not completed: A New Plague",
+            icon = GetItemIconTexture(ITEM_SLUMBER_SAND),
+            itemId = ITEM_SLUMBER_SAND,
+            condition = playerFaction == FACTION_HORDE and playerLevel >= LEVEL_A_NEW_PLAGUE_WARNING,
+            category = "quests",
+            isActive = not hasCompletedANewPlague,
+        },
+        {
+            text = "Quest not completed: A Solvent Spirit",
+            icon = GetItemIconTexture(ITEM_REALLY_STICKY_GLUE),
+            itemId = ITEM_REALLY_STICKY_GLUE,
+            condition = playerFaction == FACTION_HORDE and playerLevel >= LEVEL_A_SOLVENT_SPIRIT_WARNING,
+            category = "quests",
+            isActive = not hasCompletedASolventSpirit,
+        },
+        {
+            text = "Quest not completed: Gold Dust Exchange",
+            icon = GetItemIconTexture(ITEM_BAG_OF_MARBLES),
+            itemId = ITEM_BAG_OF_MARBLES,
+            condition = playerFaction == FACTION_ALLIANCE and playerLevel >= LEVEL_GOLD_DUST_EXCHANGE_WARNING,
+            category = "quests",
+            isActive = not hasCompletedGoldDustExchange,
+        },
+        {
+            text = "Quest not completed: Noggenfogger Elixir",
+            icon = GetItemIconTexture(ITEM_NOGGENFOGGER_ELIXIR),
+            itemId = ITEM_NOGGENFOGGER_ELIXIR,
+            condition = playerLevel >= LEVEL_NOGGENFOGGER_ELIXIR_WARNING,
+            category = "quests",
+            isActive = not hasCompletedNoggenfoggerElixir,
+        },
+        {
+            text = "Quest not completed: Selling Fish",
+            icon = GetItemIconTexture(ITEM_FISHLIVER_OIL),
+            itemId = ITEM_FISHLIVER_OIL,
+            condition = playerFaction == FACTION_ALLIANCE and IsNonCasterClass(classId) and playerLevel >= LEVEL_SELLING_FISH_WARNING,
+            category = "quests",
+            isActive = not hasCompletedSellingFish,
         },
     }
 end

@@ -18,10 +18,7 @@
 
 ## Summary
 
-- [x] Make section headers collapsible
-- [ ] Add recommended Dungeon(s)
 - [ ] Add recommended Zone(s)
-- [ ] Add key quests not completed
 - [ ] Hunter: missing ammo
 
 ## Classes

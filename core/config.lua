@@ -33,6 +33,7 @@ Deathless.config = Deathless.config or {
         manaPotions = true,
         swiftnessPotions = true,
         lip = true,
+        quests = true,
         flasks = true,
         classReagents = true,
         engineering = true,

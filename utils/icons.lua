@@ -35,6 +35,7 @@ Deathless.Utils.Icons.WARNING_HEARTHSTONE = INTERFACE_ICONS .. "INV_Misc_Rune_01
 Deathless.Utils.Icons.WARNING_LIP = INTERFACE_ICONS .. "INV_Potion_62"
 Deathless.Utils.Icons.WARNING_MAGE_CONJURES = INTERFACE_ICONS .. "INV_Misc_Gem_Ruby_01"
 Deathless.Utils.Icons.WARNING_MANA_POTIONS = INTERFACE_ICONS .. "INV_Potion_76"
+Deathless.Utils.Icons.WARNING_QUESTS = "Interface\\GossipFrame\\AvailableQuestIcon"
 Deathless.Utils.Icons.WARNING_SWIFTNESS_POTIONS = INTERFACE_ICONS .. "INV_Potion_95"
 Deathless.Utils.Icons.WARNING_TALENTS = INTERFACE_ICONS .. "INV_Misc_Book_11"
 
@@ -65,6 +66,7 @@ Deathless.Utils.Icons.ITEM_POTION_71 = INTERFACE_ICONS .. "INV_Potion_71"
 Deathless.Utils.Icons.ITEM_POTION_70 = INTERFACE_ICONS .. "INV_Potion_70"
 
 Deathless.Utils.Icons.ITEM_POTION_62 = INTERFACE_ICONS .. "INV_Potion_62"
+Deathless.Utils.Icons.ITEM_POTION_83 = INTERFACE_ICONS .. "INV_Potion_83"
 Deathless.Utils.Icons.ITEM_POTION_95 = INTERFACE_ICONS .. "INV_Potion_95"
 Deathless.Utils.Icons.ITEM_POTION_26 = INTERFACE_ICONS .. "INV_Potion_26"
 
@@ -99,6 +101,7 @@ Deathless.Utils.Icons.ITEM_CRATE_02 = INTERFACE_ICONS .. "INV_Crate_02"
 Deathless.Utils.Icons.ITEM_CANDLE_01 = INTERFACE_ICONS .. "INV_Misc_Candle_01"
 Deathless.Utils.Icons.ITEM_CANDLE_02 = INTERFACE_ICONS .. "INV_Misc_Candle_02"
 Deathless.Utils.Icons.ITEM_FEATHER_02 = INTERFACE_ICONS .. "INV_Feather_02"
+Deathless.Utils.Icons.ITEM_MISC_POCKETWATCH_01 = INTERFACE_ICONS .. "INV_Misc_PocketWatch_01"
 Deathless.Utils.Icons.ITEM_RUNE_06 = INTERFACE_ICONS .. "INV_Misc_Rune_06"
 Deathless.Utils.Icons.ITEM_RUNE_07 = INTERFACE_ICONS .. "INV_Misc_Rune_07"
 Deathless.Utils.Icons.ITEM_RUNE_01 = INTERFACE_ICONS .. "INV_Misc_Rune_01"

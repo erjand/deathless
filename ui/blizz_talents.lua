@@ -4,20 +4,6 @@ local Deathless = Deathless
 
 Deathless.UI.Talents = Deathless.UI.Talents or {}
 
--- Map class filenames to navigation IDs
-local CLASS_NAV_IDS = {
-    WARRIOR = "warrior_talents",
-    MAGE = "mage_talents",
-    PRIEST = "priest_talents",
-    ROGUE = "rogue_talents",
-    WARLOCK = "warlock_talents",
-    -- Add more as talents are implemented
-    DRUID = "class_druid",
-    HUNTER = "class_hunter",
-    PALADIN = "class_paladin",
-    SHAMAN = "class_shaman",
-}
-
 --- Create the Deathless tab button on the talent frame
 function Deathless.UI.Talents:Initialize()
     if self.initialized then return end
@@ -110,19 +96,21 @@ function Deathless.UI.Talents:ToggleClassTalents()
     
     -- Get player's class
     local _, classFile = UnitClass("player")
-    local navId = CLASS_NAV_IDS[classFile]
-    
-    if not navId then
-        Deathless.Utils.Chat.Print("Talents guide not yet available for " .. classFile)
+    if not classFile then
+        Deathless.Utils.Chat.Print("Could not determine your class.")
         return
     end
+
+    local classKey = classFile:lower()
+    local classViewId = "class_" .. classKey
+    local tabId = classKey .. "_talents"
     
     -- Show the Deathless frame
     if Deathless.UI.Frame then
         Deathless.UI.Frame:Show()
     end
     
-    -- Navigate to the class talents
+    -- Navigate to the class view and force the Talents tab.
     if Deathless.UI.Navigation and Deathless.UI.Navigation.frame then
         local nav = Deathless.UI.Navigation.frame
         
@@ -130,12 +118,19 @@ function Deathless.UI.Talents:ToggleClassTalents()
         nav.expandedSections["classes"] = true
         
         -- Expand the specific class section
-        local classSection = "class_" .. classFile:lower()
+        local classSection = "class_" .. classKey
         nav.expandedSections[classSection] = true
         
         -- Reposition and select
         Deathless.UI.Navigation:RepositionButtons()
-        Deathless.UI.Navigation:Select(navId)
+        Deathless.UI.Navigation:Select(classViewId)
+
+        if Deathless.UI.Content and Deathless.UI.Content.frame then
+            local view = Deathless.UI.Content.frame.views and Deathless.UI.Content.frame.views[classViewId]
+            if view and view.elements and view.elements.tabBar and view.elements.tabBar.containers[tabId] then
+                view.elements.tabBar.SelectTab(tabId)
+            end
+        end
     end
 end
 

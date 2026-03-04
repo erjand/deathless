@@ -235,10 +235,11 @@ Deathless.UI.Views:Register("options", function(container)
         { key = "engineering", label = "Engineering Items", icon = Icons.WARNING_ENGINEERING, tooltip = "Show warnings for engineering items" },
         { key = "flasks", label = "Flasks of Petrification", icon = Icons.WARNING_FLASKS, tooltip = "Show warnings for Flasks of Petrification" },
         { key = "healthPotions", label = "Health Potions", icon = Icons.WARNING_HEALTH_POTIONS, tooltip = "Show warnings for health potions" },
-        { key = "hearthstone", label = "Hearthstone", icon = Icons.WARNING_HEARTHSTONE, tooltip = "Show warnings for hearthstone" },
+        { key = "hearthstone", label = "Hearthstone", icon = Icons.WARNING_HEARTHSTONE, tooltip = "Show warnings for Hearthstone" },
         { key = "lip", label = "LIP", icon = Icons.WARNING_LIP, tooltip = "Show warnings for Limited Invulnerability Potions" },
         { key = "mageConjures", label = "Mage Consumables", icon = Icons.WARNING_MAGE_CONJURES, tooltip = "Show warnings for mage consumables" },
         { key = "manaPotions", label = "Mana Potions", icon = Icons.WARNING_MANA_POTIONS, tooltip = "Show warnings for mana potions" },
+        { key = "quests", label = "Quests", icon = Icons.WARNING_QUESTS, tooltip = "Show warnings for key quest completion" },
         { key = "swiftnessPotions", label = "Swiftness Potions", icon = Icons.WARNING_SWIFTNESS_POTIONS, tooltip = "Show warnings for swiftness potions" },
         { key = "talents", label = "Unspent Talents", icon = Icons.WARNING_TALENTS, tooltip = "Show warnings for unspent talent points" },
     }

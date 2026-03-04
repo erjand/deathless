@@ -1,70 +1,59 @@
 local Deathless = Deathless
 
--- PlayerTalentFrame is a WoW global loaded on demand with Blizzard_TalentUI
+-- MacroFrame is a WoW global loaded on demand with Blizzard_MacroUI
 
-Deathless.UI.Talents = Deathless.UI.Talents or {}
+Deathless.UI.Macros = Deathless.UI.Macros or {}
 
---- Create the Deathless tab button on the talent frame
-function Deathless.UI.Talents:Initialize()
+--- Create the Deathless tab button on the macro frame
+function Deathless.UI.Macros:Initialize()
     if self.initialized then return end
-    
-    -- Wait for PlayerTalentFrame to exist (loaded on demand)
-    if not PlayerTalentFrame then
+
+    -- Wait for MacroFrame to exist (loaded on demand)
+    if not MacroFrame then
         return
     end
-    
+
     self:SetupTab()
     self.initialized = true
 end
 
---- Setup our tab on the talent frame
-function Deathless.UI.Talents:SetupTab()
-    local talentFrame = PlayerTalentFrame
-    if not talentFrame then return end
-    
-    -- Create a tab button similar to spellbook
-    local tabButton = CreateFrame("CheckButton", "DeathlessTalentTab", talentFrame, "SpellBookSkillLineTabTemplate")
-    
+--- Setup our tab on the macro frame
+function Deathless.UI.Macros:SetupTab()
+    local macroFrame = MacroFrame
+    if not macroFrame then return end
+
+    local tabButton = CreateFrame("CheckButton", "DeathlessMacroTab", macroFrame, "SpellBookSkillLineTabTemplate")
     self.tabButton = tabButton
-    
-    -- Set our icon
+
     tabButton:SetNormalTexture(Deathless.Utils.Icons.ADDON)
-    
-    -- Set tooltip
-    tabButton.tooltip = "Deathless - Talent Guide"
-    
-    -- Always keep unchecked
+    tabButton.tooltip = "Deathless - Macro Guide"
     tabButton:SetChecked(false)
-    
-    -- Override click behavior
-    tabButton:SetScript("OnClick", function(self)
-        self:SetChecked(false)
-        Deathless.UI.Talents:ToggleClassTalents()
+
+    tabButton:SetScript("OnClick", function(button)
+        button:SetChecked(false)
+        Deathless.UI.Macros:ToggleClassMacros()
     end)
-    
-    -- Position below any existing right-side buttons
+
     self:UpdateTabPosition()
     tabButton:Show()
 end
 
 --- Find buttons on the right edge and position below the lowest one
-function Deathless.UI.Talents:UpdateTabPosition()
+function Deathless.UI.Macros:UpdateTabPosition()
     local tabButton = self.tabButton
-    local talentFrame = PlayerTalentFrame
-    if not tabButton or not talentFrame then return end
-    
+    local macroFrame = MacroFrame
+    if not tabButton or not macroFrame then return end
+
     local lowestButton = nil
     local lowestY = 0
-    
+
     -- Scan children for right-edge buttons
-    for _, child in pairs({talentFrame:GetChildren()}) do
+    for _, child in pairs({ macroFrame:GetChildren() }) do
         if child ~= tabButton and child:IsShown() and child:GetObjectType() == "CheckButton" then
             local numPoints = child:GetNumPoints()
             for i = 1, numPoints do
                 local point, relativeTo, relativePoint = child:GetPoint(i)
-                -- Check if anchored to top-right area
-                if relativeTo == talentFrame and 
-                   (relativePoint == "TOPRIGHT" or point == "TOPLEFT" and relativePoint == "TOPRIGHT") then
+                if relativeTo == macroFrame and (relativePoint == "TOPRIGHT" or point == "TOPLEFT" and relativePoint == "TOPRIGHT") then
                     local _, _, _, _, y = child:GetPoint(i)
                     local bottom = (y or 0) - (child:GetHeight() or 0)
                     if bottom < lowestY then
@@ -75,26 +64,25 @@ function Deathless.UI.Talents:UpdateTabPosition()
             end
         end
     end
-    
+
     tabButton:ClearAllPoints()
     if lowestButton then
         tabButton:SetPoint("TOPLEFT", lowestButton, "BOTTOMLEFT", 0, -17)
     else
-        tabButton:SetPoint("TOPLEFT", talentFrame, "TOPRIGHT", 0, -36)
+        tabButton:SetPoint("TOPLEFT", macroFrame, "TOPRIGHT", 0, -36)
     end
 end
 
---- Toggle the Deathless UI visibility, navigating to class talents when opening
-function Deathless.UI.Talents:ToggleClassTalents()
+--- Toggle Deathless UI visibility, navigating to class macros when opening
+function Deathless.UI.Macros:ToggleClassMacros()
     local mainFrame = Deathless.UI.Frame and Deathless.UI.Frame.mainFrame
-    
+
     -- If visible, just hide it
     if mainFrame and mainFrame:IsShown() then
         Deathless.UI.Frame:Hide()
         return
     end
-    
-    -- Get player's class
+
     local _, classFile = UnitClass("player")
     if not classFile then
         Deathless.Utils.Chat.Print("Could not determine your class.")
@@ -103,25 +91,18 @@ function Deathless.UI.Talents:ToggleClassTalents()
 
     local classKey = classFile:lower()
     local classViewId = "class_" .. classKey
-    local tabId = classKey .. "_talents"
-    
-    -- Show the Deathless frame
+    local tabId = classKey .. "_macros"
+
     if Deathless.UI.Frame then
         Deathless.UI.Frame:Show()
     end
-    
-    -- Navigate to the class view and force the Talents tab.
+
     if Deathless.UI.Navigation and Deathless.UI.Navigation.frame then
         local nav = Deathless.UI.Navigation.frame
-        
-        -- Expand classes
+
         nav.expandedSections["classes"] = true
-        
-        -- Expand the specific class section
-        local classSection = "class_" .. classKey
-        nav.expandedSections[classSection] = true
-        
-        -- Reposition and select
+        nav.expandedSections[classViewId] = true
+
         Deathless.UI.Navigation:RepositionButtons()
         Deathless.UI.Navigation:Select(classViewId)
 
@@ -134,13 +115,13 @@ function Deathless.UI.Talents:ToggleClassTalents()
     end
 end
 
--- Initialize when talent frame loads (it's loaded on demand)
+-- Initialize when macro frame loads (it is loaded on demand)
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ADDON_LOADED")
-frame:SetScript("OnEvent", function(self, event, addonName)
-    if addonName == "Blizzard_TalentUI" then
+frame:SetScript("OnEvent", function(_, _, addonName)
+    if addonName == "Blizzard_MacroUI" then
         C_Timer.After(0.1, function()
-            Deathless.UI.Talents:Initialize()
+            Deathless.UI.Macros:Initialize()
         end)
     end
 end)

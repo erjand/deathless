@@ -1,2 +1,2 @@
 name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,faction,pre_bis
-Placeholder,2H Mace,18,Deadmines - Mr. Smite,rare,8350,true,true,false,false,false,false,false,false,true,,false
+"Placeholder Weapon","1H",20,"Vendor","uncommon",3023,true,false,true,true,false,false,false,false,false,"",false

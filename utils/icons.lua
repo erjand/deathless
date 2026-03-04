@@ -107,8 +107,11 @@ Deathless.Utils.Icons.ITEM_RUNE_07 = INTERFACE_ICONS .. "INV_Misc_Rune_07"
 Deathless.Utils.Icons.ITEM_RUNE_01 = INTERFACE_ICONS .. "INV_Misc_Rune_01"
 Deathless.Utils.Icons.ITEM_JEWELRY_TRINKETPVP_01 = INTERFACE_ICONS .. "INV_Jewelry_TrinketPVP_01"
 
--- UI component icons
-Deathless.Utils.Icons.SPELLBOOK_TAB = INTERFACE_ICONS .. "INV_Misc_Bone_Skull_01"
+-- Addon icon (single source of truth for branding)
+Deathless.Utils.Icons.ADDON = INTERFACE_ICONS .. "INV_Misc_Bone_Skull_01"
+
+-- Backward-compatible alias for existing tab usage
+Deathless.Utils.Icons.SPELLBOOK_TAB = Deathless.Utils.Icons.ADDON
 
 -- Helper function to get full icon path (for spell icons that may not have Interface\\Icons\\ prefix)
 ---@param iconName string Icon name (with or without Interface\\Icons\\ prefix)

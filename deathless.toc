@@ -71,6 +71,7 @@ ui\frame.lua
 ui\mini.lua
 ui\blizz_spellbook.lua
 ui\blizz_talents.lua
+ui\blizz_macros.lua
 ui\components\tab_bar.lua
 ui\components\button.lua
 ui\components\panel.lua

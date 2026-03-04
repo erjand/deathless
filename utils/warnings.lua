@@ -3,19 +3,50 @@ local Deathless = Deathless
 Deathless.Utils = Deathless.Utils or {}
 Deathless.Utils.Warnings = {}
 local Icons = Deathless.Utils.Icons
+local ClassIds = (Deathless.Constants and Deathless.Constants.ClassIds) or {
+    HUNTER = "HUNTER",
+    MAGE = "MAGE",
+    PALADIN = "PALADIN",
+    PRIEST = "PRIEST",
+    ROGUE = "ROGUE",
+    WARLOCK = "WARLOCK",
+    WARRIOR = "WARRIOR",
+}
+local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
+    BANDAGES = "bandages",
+    CLASS_REAGENTS = "classReagents",
+    ENGINEERING = "engineering",
+    FLASKS = "flasks",
+    HEALTH_POTIONS = "healthPotions",
+    HEARTHSTONE = "hearthstone",
+    LIP = "lip",
+    LOW_EQUIPPED_AMMO = "lowEquippedAmmo",
+    MAGE_CONJURES = "mageConjures",
+    MANA_POTIONS = "manaPotions",
+    MISSING_EQUIPPED_AMMO = "missingEquippedAmmo",
+    QUESTS = "quests",
+    SWIFTNESS_POTIONS = "swiftnessPotions",
+    TALENTS = "talents",
+}
+local AmmoConstants = (Deathless.Constants and Deathless.Constants.Ammo) or {
+    LOW_THRESHOLD_HUNTER = 200,
+    LOW_THRESHOLD_MELEE = 20,
+    WARNING_MIN_LEVEL = 10,
+}
+local AMMO_SLOT_TOKEN = "AMMOSLOT"
+local LEGACY_AMMO_SLOT_TOKEN = "Ammo" .. "Slot"
+local RANGED_SLOT_TOKEN = "RANGEDSLOT"
 local QUEST_ID_MAGE_SUMMONER = 1017
 local QUEST_ID_THIS_IS_GOING_TO_BE_HARD = 778
 local QUEST_ID_A_NEW_PLAGUE = 368
 local QUEST_ID_A_SOLVENT_SPIRIT = 818
 local QUEST_ID_NOGGENFOGGER_ELIXIR = 2662
-local QUEST_ID_SELLING_FISH = 127
 local QUEST_ID_GOLD_DUST_EXCHANGE = 47
 local LEVEL_MAGE_SUMMONER_WARNING = 25
 local LEVEL_THIS_IS_GOING_TO_BE_HARD_WARNING = 42
 local LEVEL_A_NEW_PLAGUE_WARNING = 11
 local LEVEL_A_SOLVENT_SPIRIT_WARNING = 7
 local LEVEL_NOGGENFOGGER_ELIXIR_WARNING = 49
-local LEVEL_SELLING_FISH_WARNING = 21
 local LEVEL_GOLD_DUST_EXCHANGE_WARNING = 7
 local FACTION_ALLIANCE = "Alliance"
 local FACTION_HORDE = "Horde"
@@ -113,7 +144,7 @@ end
 --- @param classId string
 --- @return boolean
 local function IsNonCasterClass(classId)
-    return classId == "WARRIOR" or classId == "ROGUE"
+    return classId == ClassIds.WARRIOR or classId == ClassIds.ROGUE
 end
 
 --- Get the best tiered item for a given value
@@ -164,6 +195,92 @@ local function GetSkillLevels()
     return firstAid, engineering
 end
 
+--- Return true for classes that should receive ammo warnings
+--- @param classId string
+--- @return boolean
+local function IsAmmoWarningClass(classId)
+    return classId == ClassIds.HUNTER or classId == ClassIds.ROGUE or classId == ClassIds.WARRIOR
+end
+
+--- Get low-ammo threshold by class
+--- @param classId string
+--- @return number|nil
+local function GetLowAmmoThreshold(classId)
+    if classId == ClassIds.HUNTER then
+        return AmmoConstants.LOW_THRESHOLD_HUNTER
+    end
+    if classId == ClassIds.ROGUE or classId == ClassIds.WARRIOR then
+        return AmmoConstants.LOW_THRESHOLD_MELEE
+    end
+    return nil
+end
+
+--- Get ammo slot index when available on this client
+--- @return number|nil
+local function GetAmmoSlot()
+    if not GetInventorySlotInfo then
+        return nil
+    end
+
+    local ammoSlot = GetInventorySlotInfo(AMMO_SLOT_TOKEN)
+    if ammoSlot and ammoSlot > 0 then
+        return ammoSlot
+    end
+
+    -- Some clients still resolve the legacy mixed-case token.
+    local ok, legacyAmmoSlot = pcall(GetInventorySlotInfo, LEGACY_AMMO_SLOT_TOKEN)
+    if ok and legacyAmmoSlot and legacyAmmoSlot > 0 then
+        return legacyAmmoSlot
+    end
+
+    return nil
+end
+
+--- Get equipped stack count for a slot (returns 0 if empty)
+--- @param slot number|nil
+--- @return number
+local function GetEquippedSlotStackCount(slot)
+    if not slot then
+        return 0
+    end
+
+    local itemId = GetInventoryItemID and GetInventoryItemID("player", slot)
+    if not itemId then
+        return 0
+    end
+
+    local ammoCount = GetInventoryItemCount and GetInventoryItemCount("player", slot)
+    if ammoCount and ammoCount > 0 then
+        return ammoCount
+    end
+
+    -- If API returns nil/0 but item exists, treat as equipped.
+    return 1
+end
+
+--- Return equipped ammo/throwing stack count by class semantics
+--- Hunter: ammo slot only
+--- Rogue/Warrior: ranged slot stack, with ammo slot fallback for bow/gun loadouts
+--- @param classId string
+--- @return number
+local function GetEquippedAmmoCount(classId)
+    local ammoSlotCount = GetEquippedSlotStackCount(GetAmmoSlot())
+
+    if classId == ClassIds.HUNTER then
+        return ammoSlotCount
+    end
+
+    if classId == ClassIds.ROGUE or classId == ClassIds.WARRIOR then
+        if ammoSlotCount > 0 then
+            return ammoSlotCount
+        end
+        local rangedSlot = GetInventorySlotInfo and GetInventorySlotInfo(RANGED_SLOT_TOKEN)
+        return GetEquippedSlotStackCount(rangedSlot)
+    end
+
+    return 0
+end
+
 --- Build warning check definitions based on player state
 --- @return table[] Array of warning check definitions
 function Deathless.Utils.Warnings:GetChecks()
@@ -180,34 +297,34 @@ function Deathless.Utils.Warnings:GetChecks()
     local bestMageFoodId, bestMageFoodIcon = GetBestTiered(MAGE_FOOD, playerLevel)
     local bestManaGemId, bestManaGemIcon = GetBestTiered(MAGE_MANA_GEMS, playerLevel)
     
-    local isMage = classId == "MAGE"
+    local isMage = classId == ClassIds.MAGE
     
     return {
-        { text = "Not carrying best Bandages", itemId = bestBandageId, icon = bestBandageIcon, condition = firstAidSkill > 0 and bestBandageId, category = "bandages" },
-        { text = "Not carrying Blinding Powder", itemId = 5530, icon = Icons.ITEM_DUST_01, condition = classId == "ROGUE" and playerLevel >= 34, category = "classReagents" },
-        { text = "Not carrying Flash Powder", itemId = 5140, icon = Icons.ITEM_POWDER_BLACK, condition = classId == "ROGUE" and playerLevel >= 22, category = "classReagents" },
-        { text = "Not carrying Flasks of Petrification", itemId = 13506, minCount = 2, icon = Icons.ITEM_POTION_26, condition = playerLevel >= 50, category = "flasks" },
-        { text = "Not carrying Iron Grenades", itemId = 4390, icon = Icons.ITEM_BOMB_08, condition = engineeringSkill >= 175 and engineeringSkill < 260, category = "engineering" },
-        { text = "Not carrying Thorium Grenades", itemId = 15993, icon = Icons.ITEM_BOMB_08, condition = engineeringSkill >= 260, category = "engineering" },
-        { text = "Not carrying Target Dummy", itemId = 4366, icon = Icons.ITEM_CRATE_06, condition = engineeringSkill >= 85 and engineeringSkill < 185, category = "engineering" },
-        { text = "Not carrying Advanced Target Dummy", itemId = 4392, icon = Icons.ITEM_CRATE_05, condition = engineeringSkill >= 185 and engineeringSkill < 275, category = "engineering" },
-        { text = "Not carrying Masterwork Target Dummy", itemId = 16023, icon = Icons.ITEM_CRATE_02, condition = engineeringSkill >= 275, category = "engineering" },
-        { text = "Not carrying best Healing Potions for your level", itemId = bestHealthId, icon = bestHealthIcon, condition = bestHealthId ~= nil, category = "healthPotions" },
-        { text = "Not carrying Hearthstone", itemId = 6948, icon = Icons.ITEM_RUNE_01, condition = true, category = "hearthstone" },
-        { text = "Not carrying Holy Candles", itemId = 17028, icon = Icons.ITEM_CANDLE_01, condition = classId == "PRIEST" and playerLevel >= 48 and playerLevel < 60, category = "classReagents" },
-        { text = "Not carrying Light Feathers (Levitate)", itemId = 17056, icon = Icons.ITEM_FEATHER_02, condition = classId == "PRIEST" and playerLevel >= 34, category = "classReagents" },
-        { text = "Not carrying Light Feathers (Slow Fall)", itemId = 17056, icon = Icons.ITEM_FEATHER_02, condition = classId == "MAGE" and playerLevel >= 12, category = "classReagents" },
-        { text = "Not carrying best Conjured Food", itemId = bestMageFoodId, icon = bestMageFoodIcon, condition = isMage and bestMageFoodId, category = "mageConjures" },
-        { text = "Not carrying best Conjured Water", itemId = bestMageWaterId, icon = bestMageWaterIcon, condition = isMage and bestMageWaterId, category = "mageConjures" },
-        { text = "Not carrying best Mana Gem", itemId = bestManaGemId, icon = bestManaGemIcon, condition = isMage and bestManaGemId, category = "mageConjures" },
-        { text = "Not carrying LIP", itemId = 3387, icon = Icons.ITEM_POTION_62, condition = playerLevel >= 45, category = "lip" },
-        { text = "Not carrying best Mana Potions for your level", itemId = bestManaId, icon = bestManaIcon, condition = powerType == 0 and bestManaId ~= nil, category = "manaPotions" },
-        { text = "Not carrying Rune of Portals", itemId = 17032, icon = Icons.ITEM_RUNE_06, condition = classId == "MAGE" and playerLevel >= 40, category = "classReagents" },
-        { text = "Not carrying Rune of Teleportation", itemId = 17031, icon = Icons.ITEM_RUNE_07, condition = classId == "MAGE" and playerLevel >= 20, category = "classReagents" },
-        { text = "Not carrying Sacred Candles", itemId = 17029, icon = Icons.ITEM_CANDLE_02, condition = classId == "PRIEST" and playerLevel >= 56, category = "classReagents" },
-        { text = "Not carrying Soul Shards", itemId = 6265, icon = Icons.ITEM_GEM_AMETHYST_02, condition = classId == "WARLOCK" and playerLevel >= 10, category = "classReagents" },
-        { text = "Not carrying Swiftness Potions", itemId = 2459, icon = Icons.ITEM_POTION_95, condition = playerLevel >= 5, category = "swiftnessPotions" },
-        { text = "Not carrying Symbol of Kings", itemId = 21177, icon = Icons.ITEM_JEWELRY_TRINKETPVP_01, condition = classId == "PALADIN" and playerLevel >= 52, category = "classReagents" },
+        { text = "Not carrying best Bandages", itemId = bestBandageId, icon = bestBandageIcon, condition = firstAidSkill > 0 and bestBandageId, category = WarningCategories.BANDAGES },
+        { text = "Not carrying Blinding Powder", itemId = 5530, icon = Icons.ITEM_DUST_01, condition = classId == ClassIds.ROGUE and playerLevel >= 34, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying Flash Powder", itemId = 5140, icon = Icons.ITEM_POWDER_BLACK, condition = classId == ClassIds.ROGUE and playerLevel >= 22, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying Flasks of Petrification", itemId = 13506, minCount = 2, icon = Icons.ITEM_POTION_26, condition = playerLevel >= 50, category = WarningCategories.FLASKS },
+        { text = "Not carrying Iron Grenades", itemId = 4390, icon = Icons.ITEM_BOMB_08, condition = engineeringSkill >= 175 and engineeringSkill < 260, category = WarningCategories.ENGINEERING },
+        { text = "Not carrying Thorium Grenades", itemId = 15993, icon = Icons.ITEM_BOMB_08, condition = engineeringSkill >= 260, category = WarningCategories.ENGINEERING },
+        { text = "Not carrying Target Dummy", itemId = 4366, icon = Icons.ITEM_CRATE_06, condition = engineeringSkill >= 85 and engineeringSkill < 185, category = WarningCategories.ENGINEERING },
+        { text = "Not carrying Advanced Target Dummy", itemId = 4392, icon = Icons.ITEM_CRATE_05, condition = engineeringSkill >= 185 and engineeringSkill < 275, category = WarningCategories.ENGINEERING },
+        { text = "Not carrying Masterwork Target Dummy", itemId = 16023, icon = Icons.ITEM_CRATE_02, condition = engineeringSkill >= 275, category = WarningCategories.ENGINEERING },
+        { text = "Not carrying best Healing Potions for your level", itemId = bestHealthId, icon = bestHealthIcon, condition = bestHealthId ~= nil, category = WarningCategories.HEALTH_POTIONS },
+        { text = "Not carrying Hearthstone", itemId = 6948, icon = Icons.ITEM_RUNE_01, condition = true, category = WarningCategories.HEARTHSTONE },
+        { text = "Not carrying Holy Candles", itemId = 17028, icon = Icons.ITEM_CANDLE_01, condition = classId == ClassIds.PRIEST and playerLevel >= 48 and playerLevel < 60, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying Light Feathers (Levitate)", itemId = 17056, icon = Icons.ITEM_FEATHER_02, condition = classId == ClassIds.PRIEST and playerLevel >= 34, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying Light Feathers (Slow Fall)", itemId = 17056, icon = Icons.ITEM_FEATHER_02, condition = classId == ClassIds.MAGE and playerLevel >= 12, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying best Conjured Food", itemId = bestMageFoodId, icon = bestMageFoodIcon, condition = isMage and bestMageFoodId, category = WarningCategories.MAGE_CONJURES },
+        { text = "Not carrying best Conjured Water", itemId = bestMageWaterId, icon = bestMageWaterIcon, condition = isMage and bestMageWaterId, category = WarningCategories.MAGE_CONJURES },
+        { text = "Not carrying best Mana Gem", itemId = bestManaGemId, icon = bestManaGemIcon, condition = isMage and bestManaGemId, category = WarningCategories.MAGE_CONJURES },
+        { text = "Not carrying LIP", itemId = 3387, icon = Icons.ITEM_POTION_62, condition = playerLevel >= 45, category = WarningCategories.LIP },
+        { text = "Not carrying best Mana Potions for your level", itemId = bestManaId, icon = bestManaIcon, condition = powerType == 0 and bestManaId ~= nil, category = WarningCategories.MANA_POTIONS },
+        { text = "Not carrying Rune of Portals", itemId = 17032, icon = Icons.ITEM_RUNE_06, condition = classId == ClassIds.MAGE and playerLevel >= 40, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying Rune of Teleportation", itemId = 17031, icon = Icons.ITEM_RUNE_07, condition = classId == ClassIds.MAGE and playerLevel >= 20, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying Sacred Candles", itemId = 17029, icon = Icons.ITEM_CANDLE_02, condition = classId == ClassIds.PRIEST and playerLevel >= 56, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying Soul Shards", itemId = 6265, icon = Icons.ITEM_GEM_AMETHYST_02, condition = classId == ClassIds.WARLOCK and playerLevel >= 10, category = WarningCategories.CLASS_REAGENTS },
+        { text = "Not carrying Swiftness Potions", itemId = 2459, icon = Icons.ITEM_POTION_95, condition = playerLevel >= 5, category = WarningCategories.SWIFTNESS_POTIONS },
+        { text = "Not carrying Symbol of Kings", itemId = 21177, icon = Icons.ITEM_JEWELRY_TRINKETPVP_01, condition = classId == ClassIds.PALADIN and playerLevel >= 52, category = WarningCategories.CLASS_REAGENTS },
     }
 end
 
@@ -226,13 +343,15 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
     local playerLevel = UnitLevel("player") or 1
     local playerFaction = UnitFactionGroup("player")
     local _, classId = UnitClass("player")
+    local isAmmoClass = IsAmmoWarningClass(classId)
+    local lowAmmoThreshold = GetLowAmmoThreshold(classId)
+    local equippedAmmoCount = GetEquippedAmmoCount(classId)
     local unspentTalents = UnitCharacterPoints("player") or 0
     local hasCompletedMageSummoner = IsQuestCompleted(QUEST_ID_MAGE_SUMMONER)
     local hasCompletedThisIsGoingToBeHard = IsQuestCompleted(QUEST_ID_THIS_IS_GOING_TO_BE_HARD)
     local hasCompletedANewPlague = IsQuestCompleted(QUEST_ID_A_NEW_PLAGUE)
     local hasCompletedASolventSpirit = IsQuestCompleted(QUEST_ID_A_SOLVENT_SPIRIT)
     local hasCompletedNoggenfoggerElixir = IsQuestCompleted(QUEST_ID_NOGGENFOGGER_ELIXIR)
-    local hasCompletedSellingFish = IsQuestCompleted(QUEST_ID_SELLING_FISH)
     local hasCompletedGoldDustExchange = IsQuestCompleted(QUEST_ID_GOLD_DUST_EXCHANGE)
     
     return {
@@ -240,15 +359,29 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
             text = "Unspent Talent Points (" .. unspentTalents .. ")",
             icon = Icons.WARNING_TALENTS,
             condition = playerLevel >= 10 and unspentTalents > 0,
-            category = "talents",
+            category = WarningCategories.TALENTS,
             isActive = unspentTalents > 0,
+        },
+        {
+            text = "No ammo equipped",
+            icon = Icons.WARNING_MISSING_EQUIPPED_AMMO,
+            condition = isAmmoClass and playerLevel >= AmmoConstants.WARNING_MIN_LEVEL,
+            category = WarningCategories.MISSING_EQUIPPED_AMMO,
+            isActive = equippedAmmoCount <= 0,
+        },
+        {
+            text = "Low equipped ammo (" .. equippedAmmoCount .. "/" .. (lowAmmoThreshold or 0) .. ")",
+            icon = Icons.WARNING_LOW_EQUIPPED_AMMO,
+            condition = isAmmoClass and playerLevel >= AmmoConstants.WARNING_MIN_LEVEL and lowAmmoThreshold ~= nil,
+            category = WarningCategories.LOW_EQUIPPED_AMMO,
+            isActive = equippedAmmoCount > 0 and lowAmmoThreshold ~= nil and equippedAmmoCount < lowAmmoThreshold,
         },
         {
             text = "Quest not completed for Light of Elune",
             icon = GetItemIconTexture(ITEM_LIGHT_OF_ELUNE, Icons.ITEM_POTION_83),
             itemId = ITEM_LIGHT_OF_ELUNE,
             condition = playerFaction == FACTION_ALLIANCE and playerLevel >= LEVEL_MAGE_SUMMONER_WARNING,
-            category = "quests",
+            category = WarningCategories.QUESTS,
             isActive = not hasCompletedMageSummoner,
         },
         {
@@ -256,7 +389,7 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
             icon = GetItemIconTexture(ITEM_NIFTY_STOPWATCH, Icons.ITEM_MISC_POCKETWATCH_01),
             itemId = ITEM_NIFTY_STOPWATCH,
             condition = playerLevel >= LEVEL_THIS_IS_GOING_TO_BE_HARD_WARNING,
-            category = "quests",
+            category = WarningCategories.QUESTS,
             isActive = not hasCompletedThisIsGoingToBeHard,
         },
         {
@@ -264,7 +397,7 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
             icon = GetItemIconTexture(ITEM_SLUMBER_SAND),
             itemId = ITEM_SLUMBER_SAND,
             condition = playerFaction == FACTION_HORDE and playerLevel >= LEVEL_A_NEW_PLAGUE_WARNING,
-            category = "quests",
+            category = WarningCategories.QUESTS,
             isActive = not hasCompletedANewPlague,
         },
         {
@@ -272,7 +405,7 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
             icon = GetItemIconTexture(ITEM_REALLY_STICKY_GLUE),
             itemId = ITEM_REALLY_STICKY_GLUE,
             condition = playerFaction == FACTION_HORDE and playerLevel >= LEVEL_A_SOLVENT_SPIRIT_WARNING,
-            category = "quests",
+            category = WarningCategories.QUESTS,
             isActive = not hasCompletedASolventSpirit,
         },
         {
@@ -280,7 +413,7 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
             icon = GetItemIconTexture(ITEM_BAG_OF_MARBLES),
             itemId = ITEM_BAG_OF_MARBLES,
             condition = playerFaction == FACTION_ALLIANCE and playerLevel >= LEVEL_GOLD_DUST_EXCHANGE_WARNING,
-            category = "quests",
+            category = WarningCategories.QUESTS,
             isActive = not hasCompletedGoldDustExchange,
         },
         {
@@ -288,16 +421,8 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
             icon = GetItemIconTexture(ITEM_NOGGENFOGGER_ELIXIR),
             itemId = ITEM_NOGGENFOGGER_ELIXIR,
             condition = playerLevel >= LEVEL_NOGGENFOGGER_ELIXIR_WARNING,
-            category = "quests",
+            category = WarningCategories.QUESTS,
             isActive = not hasCompletedNoggenfoggerElixir,
-        },
-        {
-            text = "Quest not completed: Selling Fish",
-            icon = GetItemIconTexture(ITEM_FISHLIVER_OIL),
-            itemId = ITEM_FISHLIVER_OIL,
-            condition = playerFaction == FACTION_ALLIANCE and IsNonCasterClass(classId) and playerLevel >= LEVEL_SELLING_FISH_WARNING,
-            category = "quests",
-            isActive = not hasCompletedSellingFish,
         },
     }
 end
@@ -392,6 +517,7 @@ eventFrame:RegisterEvent("CHARACTER_POINTS_CHANGED")
 eventFrame:RegisterEvent("SKILL_LINES_CHANGED")
 eventFrame:RegisterEvent("PLAYER_LEVEL_UP")
 eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
+eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 
 eventFrame:SetScript("OnEvent", function(self, event)
     TriggerRefresh()

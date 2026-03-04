@@ -1,6 +1,27 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
+local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
+    BANDAGES = "bandages",
+    CLASS_REAGENTS = "classReagents",
+    ENGINEERING = "engineering",
+    FLASKS = "flasks",
+    HEALTH_POTIONS = "healthPotions",
+    HEARTHSTONE = "hearthstone",
+    LIP = "lip",
+    LOW_EQUIPPED_AMMO = "lowEquippedAmmo",
+    MAGE_CONJURES = "mageConjures",
+    MANA_POTIONS = "manaPotions",
+    MISSING_EQUIPPED_AMMO = "missingEquippedAmmo",
+    QUESTS = "quests",
+    SWIFTNESS_POTIONS = "swiftnessPotions",
+    TALENTS = "talents",
+}
+local AmmoConstants = (Deathless.Constants and Deathless.Constants.Ammo) or {
+    LOW_THRESHOLD_HUNTER = 200,
+    LOW_THRESHOLD_MELEE = 20,
+    WARNING_MIN_LEVEL = 10,
+}
 
 --- Options view content
 Deathless.UI.Views:Register("options", function(container)
@@ -18,7 +39,7 @@ Deathless.UI.Views:Register("options", function(container)
     local COL_GAP = 24
     local ROW_HEIGHT = 24
     local SECTION_HEIGHT = 28
-    local WARNING_ROWS = 4
+    local WARNING_COLUMNS = 3
     local CLASS_ROWS = 3
     
     -- Section collapse state
@@ -230,18 +251,30 @@ Deathless.UI.Views:Register("options", function(container)
     
     -- Warning category definitions
     local WARNING_CATEGORIES = {
-        { key = "bandages", label = "Bandages", icon = Icons.WARNING_BANDAGES, tooltip = "Show warnings for bandages" },
-        { key = "classReagents", label = "Class Reagents", icon = Icons.WARNING_CLASS_REAGENTS, tooltip = "Show warnings for class reagents" },
-        { key = "engineering", label = "Engineering Items", icon = Icons.WARNING_ENGINEERING, tooltip = "Show warnings for engineering items" },
-        { key = "flasks", label = "Flasks of Petrification", icon = Icons.WARNING_FLASKS, tooltip = "Show warnings for Flasks of Petrification" },
-        { key = "healthPotions", label = "Health Potions", icon = Icons.WARNING_HEALTH_POTIONS, tooltip = "Show warnings for health potions" },
-        { key = "hearthstone", label = "Hearthstone", icon = Icons.WARNING_HEARTHSTONE, tooltip = "Show warnings for Hearthstone" },
-        { key = "lip", label = "LIP", icon = Icons.WARNING_LIP, tooltip = "Show warnings for Limited Invulnerability Potions" },
-        { key = "mageConjures", label = "Mage Consumables", icon = Icons.WARNING_MAGE_CONJURES, tooltip = "Show warnings for mage consumables" },
-        { key = "manaPotions", label = "Mana Potions", icon = Icons.WARNING_MANA_POTIONS, tooltip = "Show warnings for mana potions" },
-        { key = "quests", label = "Quests", icon = Icons.WARNING_QUESTS, tooltip = "Show warnings for key quest completion" },
-        { key = "swiftnessPotions", label = "Swiftness Potions", icon = Icons.WARNING_SWIFTNESS_POTIONS, tooltip = "Show warnings for swiftness potions" },
-        { key = "talents", label = "Unspent Talents", icon = Icons.WARNING_TALENTS, tooltip = "Show warnings for unspent talent points" },
+        { key = WarningCategories.BANDAGES, label = "Bandages", icon = Icons.WARNING_BANDAGES, tooltip = "Show warnings for bandages" },
+        { key = WarningCategories.CLASS_REAGENTS, label = "Class Reagents", icon = Icons.WARNING_CLASS_REAGENTS, tooltip = "Show warnings for class reagents" },
+        { key = WarningCategories.ENGINEERING, label = "Engineering Items", icon = Icons.WARNING_ENGINEERING, tooltip = "Show warnings for engineering items" },
+        { key = WarningCategories.FLASKS, label = "Flasks of Petrification", icon = Icons.WARNING_FLASKS, tooltip = "Show warnings for Flasks of Petrification" },
+        { key = WarningCategories.HEALTH_POTIONS, label = "Health Potions", icon = Icons.WARNING_HEALTH_POTIONS, tooltip = "Show warnings for health potions" },
+        { key = WarningCategories.HEARTHSTONE, label = "Hearthstone", icon = Icons.WARNING_HEARTHSTONE, tooltip = "Show warnings for Hearthstone" },
+        { key = WarningCategories.LIP, label = "LIP", icon = Icons.WARNING_LIP, tooltip = "Show warnings for Limited Invulnerability Potions" },
+        {
+            key = WarningCategories.LOW_EQUIPPED_AMMO,
+            label = "Low Equipped Ammo",
+            icon = Icons.WARNING_LOW_EQUIPPED_AMMO,
+            tooltip = "Show warnings when equipped ammo is low (Hunter < " .. AmmoConstants.LOW_THRESHOLD_HUNTER .. ", Warrior/Rogue < " .. AmmoConstants.LOW_THRESHOLD_MELEE .. ")",
+        },
+        { key = WarningCategories.MAGE_CONJURES, label = "Mage Consumables", icon = Icons.WARNING_MAGE_CONJURES, tooltip = "Show warnings for mage consumables" },
+        { key = WarningCategories.MANA_POTIONS, label = "Mana Potions", icon = Icons.WARNING_MANA_POTIONS, tooltip = "Show warnings for mana potions" },
+        {
+            key = WarningCategories.MISSING_EQUIPPED_AMMO,
+            label = "Missing Equipped Ammo",
+            icon = Icons.WARNING_MISSING_EQUIPPED_AMMO,
+            tooltip = "Show warnings when no ammo is equipped for Hunter, Warrior, and Rogue (level " .. AmmoConstants.WARNING_MIN_LEVEL .. "+)",
+        },
+        { key = WarningCategories.QUESTS, label = "Quests", icon = Icons.WARNING_QUESTS, tooltip = "Show warnings for key quest completion" },
+        { key = WarningCategories.SWIFTNESS_POTIONS, label = "Swiftness Potions", icon = Icons.WARNING_SWIFTNESS_POTIONS, tooltip = "Show warnings for swiftness potions" },
+        { key = WarningCategories.TALENTS, label = "Unspent Talents", icon = Icons.WARNING_TALENTS, tooltip = "Show warnings for unspent talent points" },
     }
     
     Refresh = function()
@@ -281,10 +314,11 @@ Deathless.UI.Views:Register("options", function(container)
         if sectionState.warnings then
             -- Ensure warnings config exists
             Deathless.config.warnings = Deathless.config.warnings or {}
+            local warningRows = math.ceil(#WARNING_CATEGORIES / WARNING_COLUMNS)
 
             for i, category in ipairs(WARNING_CATEGORIES) do
-                local col = math.floor((i - 1) / WARNING_ROWS)
-                local row = (i - 1) % WARNING_ROWS
+                local col = math.floor((i - 1) / warningRows)
+                local row = (i - 1) % warningRows
 
                 local checkbox = GetCheckbox(category.label, category.icon, function(checked)
                     Deathless.config.warnings[category.key] = checked
@@ -296,8 +330,7 @@ Deathless.UI.Views:Register("options", function(container)
                 checkbox:SetChecked(Deathless.config.warnings[category.key] ~= false)
             end
 
-            -- WARNING_ROWS is the number of rows (4), not columns
-            yOffset = yOffset - 8 - (WARNING_ROWS * ROW_HEIGHT) - 8
+            yOffset = yOffset - 8 - (warningRows * ROW_HEIGHT) - 8
         end
         
         -- Update scroll child height and scrollbar (match abilities_template behavior)

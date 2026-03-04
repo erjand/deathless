@@ -102,3 +102,36 @@ Deathless.Constants.GearTiers = {
     LEVELING = "Leveling",
     PRE_BIS = "Pre-BiS",
 }
+
+Deathless.Constants.WarningCategories = {
+    BANDAGES = "bandages",
+    CLASS_REAGENTS = "classReagents",
+    ENGINEERING = "engineering",
+    FLASKS = "flasks",
+    HEALTH_POTIONS = "healthPotions",
+    HEARTHSTONE = "hearthstone",
+    LIP = "lip",
+    LOW_EQUIPPED_AMMO = "lowEquippedAmmo",
+    MAGE_CONJURES = "mageConjures",
+    MANA_POTIONS = "manaPotions",
+    MISSING_EQUIPPED_AMMO = "missingEquippedAmmo",
+    QUESTS = "quests",
+    SWIFTNESS_POTIONS = "swiftnessPotions",
+    TALENTS = "talents",
+}
+
+Deathless.Constants.ClassIds = {
+    HUNTER = "HUNTER",
+    MAGE = "MAGE",
+    PALADIN = "PALADIN",
+    PRIEST = "PRIEST",
+    ROGUE = "ROGUE",
+    WARLOCK = "WARLOCK",
+    WARRIOR = "WARRIOR",
+}
+
+Deathless.Constants.Ammo = {
+    LOW_THRESHOLD_HUNTER = 200,
+    LOW_THRESHOLD_MELEE = 20,
+    WARNING_MIN_LEVEL = 10,
+}

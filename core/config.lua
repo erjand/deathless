@@ -3,6 +3,22 @@ local GearTiers = (Deathless.Constants and Deathless.Constants.GearTiers) or {
     LEVELING = "Leveling",
     PRE_BIS = "Pre-BiS",
 }
+local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
+    BANDAGES = "bandages",
+    CLASS_REAGENTS = "classReagents",
+    ENGINEERING = "engineering",
+    FLASKS = "flasks",
+    HEALTH_POTIONS = "healthPotions",
+    HEARTHSTONE = "hearthstone",
+    LIP = "lip",
+    LOW_EQUIPPED_AMMO = "lowEquippedAmmo",
+    MAGE_CONJURES = "mageConjures",
+    MANA_POTIONS = "manaPotions",
+    MISSING_EQUIPPED_AMMO = "missingEquippedAmmo",
+    QUESTS = "quests",
+    SWIFTNESS_POTIONS = "swiftnessPotions",
+    TALENTS = "talents",
+}
 
 Deathless.config = Deathless.config or {
     -- UI settings
@@ -28,17 +44,19 @@ Deathless.config = Deathless.config or {
     includedClasses = nil,
     -- Warning toggles
     warnings = {
-        bandages = true,
-        healthPotions = true,
-        manaPotions = true,
-        swiftnessPotions = true,
-        lip = true,
-        quests = true,
-        flasks = true,
-        classReagents = true,
-        engineering = true,
-        hearthstone = true,
-        talents = true,
+        [WarningCategories.BANDAGES] = true,
+        [WarningCategories.HEALTH_POTIONS] = true,
+        [WarningCategories.MANA_POTIONS] = true,
+        [WarningCategories.SWIFTNESS_POTIONS] = true,
+        [WarningCategories.LIP] = true,
+        [WarningCategories.QUESTS] = true,
+        [WarningCategories.FLASKS] = true,
+        [WarningCategories.CLASS_REAGENTS] = true,
+        [WarningCategories.ENGINEERING] = true,
+        [WarningCategories.HEARTHSTONE] = true,
+        [WarningCategories.TALENTS] = true,
+        [WarningCategories.MISSING_EQUIPPED_AMMO] = true,
+        [WarningCategories.LOW_EQUIPPED_AMMO] = true,
     },
     -- Gear view filter settings
     gear = {

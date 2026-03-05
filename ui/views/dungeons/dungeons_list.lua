@@ -1,6 +1,5 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
-local ColorCodes = Deathless.Constants.Colors.Codes
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -110,26 +109,6 @@ local function GetDifficultyColor(mobLevel, playerLevel)
         return Colors.diffGray
     end
 end
-
--- Zone territory: "Horde", "Alliance", or "Contested"
-local ZONE_TERRITORY = {
-    ["Orgrimmar"]            = "Horde",
-    ["The Barrens"]          = "Horde",
-    ["Silverpine Forest"]    = "Horde",
-    ["Tirisfal Glades"]      = "Horde",
-    ["Westfall"]             = "Alliance",
-    ["Stormwind City"]       = "Alliance",
-    ["Dun Morogh"]           = "Alliance",
-    ["Ashenvale"]            = "Contested",
-    ["Badlands"]             = "Contested",
-    ["Tanaris"]              = "Contested",
-    ["Desolace"]             = "Contested",
-    ["Swamp of Sorrows"]     = "Contested",
-    ["Blackrock Mountain"]   = "Contested",
-    ["Feralas"]              = "Contested",
-    ["Eastern Plaguelands"]  = "Contested",
-    ["Western Plaguelands"]  = "Contested",
-}
 
 --- Dungeons view - sortable/searchable dungeon list with expandable details
 Deathless.UI.Views:Register("dungeons", function(container)
@@ -696,14 +675,9 @@ Deathless.UI.Views:Register("dungeons", function(container)
         expandIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         row.elements.expandIcon = expandIcon
 
-        -- Level Range (each number colored by difficulty)
+        -- Level Range
         local playerLevel = UnitLevel("player") or 60
-        local minC = GetDifficultyColor(dungeon.levelMin, playerLevel)
-        local maxC = GetDifficultyColor(dungeon.levelMax, playerLevel)
-        local dashColor = RGBToEscape(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3])
-        local levelText = RGBToEscape(minC[1], minC[2], minC[3]) .. dungeon.levelMin .. "|r"
-            .. dashColor .. "-|r"
-            .. RGBToEscape(maxC[1], maxC[2], maxC[3]) .. dungeon.levelMax .. "|r"
+        local levelText = dungeon.levelMin .. "-" .. dungeon.levelMax
 
         local level = row:CreateFontString(nil, "OVERLAY")
         level:SetFont(Fonts.family, Fonts.body, "")
@@ -711,6 +685,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
         level:SetWidth(50)
         level:SetJustifyH("CENTER")
         level:SetText(levelText)
+        level:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
         row.elements.level = level
 
         -- Name
@@ -734,17 +709,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
         zone:SetWidth(130)
         zone:SetJustifyH("LEFT")
         zone:SetText(dungeon.zone)
-        local playerFac = UnitFactionGroup("player") or ""
-        local territory = ZONE_TERRITORY[dungeon.zone] or "Contested"
-        local zoneColor
-        if territory == playerFac then
-            zoneColor = Colors.accent
-        elseif territory == "Contested" then
-            zoneColor = Colors.yellow
-        else
-            zoneColor = Colors.red
-        end
-        zone:SetTextColor(zoneColor[1], zoneColor[2], zoneColor[3], 1)
+        zone:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
         row.elements.zone = zone
 
         -- End Boss (Name + level), colored by difficulty
@@ -848,12 +813,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
         "receive XP from some of the mobs.",
     })
     headers.name  = CreateSortableHeader(container, "NAME",         75 + CONTENT_LEFT,  170, "name",  sortState, OnSort)
-    headers.zone  = CreateSortableHeader(container, "ZONE (?)",         250 + CONTENT_LEFT, 130, "zone",  sortState, OnSort, {
-        title = "Zone Territory",
-        ColorCodes.safe .. "Green|r - Friendly territory",
-        ColorCodes.warning .. "Yellow|r - Contested territory",
-        ColorCodes.enemy .. "Red|r - Enemy territory",
-    })
+    headers.zone  = CreateSortableHeader(container, "ZONE",         250 + CONTENT_LEFT, 130, "zone",  sortState, OnSort)
     headers.boss  = CreateSortableHeader(container, "END BOSS (?)", 390 + CONTENT_LEFT, 190, "boss",  sortState, OnSort, {
         title = "End Boss Level",
         "Recommend all players be within",

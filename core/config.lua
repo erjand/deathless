@@ -4,6 +4,7 @@ local GearTiers = (Deathless.Constants and Deathless.Constants.GearTiers) or {
     PRE_BIS = "Pre-BiS",
 }
 local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
+    AMMO = "ammo",
     BANDAGES = "bandages",
     CLASS_REAGENTS = "classReagents",
     ENGINEERING = "engineering",
@@ -11,10 +12,8 @@ local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCa
     HEALTH_POTIONS = "healthPotions",
     HEARTHSTONE = "hearthstone",
     LIP = "lip",
-    LOW_EQUIPPED_AMMO = "lowEquippedAmmo",
     MAGE_CONJURES = "mageConjures",
     MANA_POTIONS = "manaPotions",
-    MISSING_EQUIPPED_AMMO = "missingEquippedAmmo",
     QUESTS = "quests",
     SWIFTNESS_POTIONS = "swiftnessPotions",
     TALENTS = "talents",
@@ -44,6 +43,7 @@ Deathless.config = Deathless.config or {
     includedClasses = nil,
     -- Warning toggles
     warnings = {
+        [WarningCategories.AMMO] = true,
         [WarningCategories.BANDAGES] = true,
         [WarningCategories.HEALTH_POTIONS] = true,
         [WarningCategories.MANA_POTIONS] = true,
@@ -55,8 +55,6 @@ Deathless.config = Deathless.config or {
         [WarningCategories.ENGINEERING] = true,
         [WarningCategories.HEARTHSTONE] = true,
         [WarningCategories.TALENTS] = true,
-        [WarningCategories.MISSING_EQUIPPED_AMMO] = true,
-        [WarningCategories.LOW_EQUIPPED_AMMO] = true,
     },
     -- Gear view filter settings
     gear = {
@@ -108,6 +106,7 @@ local function LoadConfig()
     end
     -- Remove deprecated raid tier filter from older saved variables.
     Deathless.config.gear.tierFilters.Raid = nil
+
 end
 
 -- Save configuration

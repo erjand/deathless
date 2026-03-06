@@ -2,6 +2,7 @@ local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
 local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
+    AMMO = "ammo",
     BANDAGES = "bandages",
     CLASS_REAGENTS = "classReagents",
     ENGINEERING = "engineering",
@@ -9,18 +10,16 @@ local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCa
     HEALTH_POTIONS = "healthPotions",
     HEARTHSTONE = "hearthstone",
     LIP = "lip",
-    LOW_EQUIPPED_AMMO = "lowEquippedAmmo",
     MAGE_CONJURES = "mageConjures",
     MANA_POTIONS = "manaPotions",
-    MISSING_EQUIPPED_AMMO = "missingEquippedAmmo",
     QUESTS = "quests",
     SWIFTNESS_POTIONS = "swiftnessPotions",
     TALENTS = "talents",
 }
 local AmmoConstants = (Deathless.Constants and Deathless.Constants.Ammo) or {
-    LOW_THRESHOLD_HUNTER = 200,
     LOW_THRESHOLD_MELEE = 20,
     WARNING_MIN_LEVEL = 10,
+    WARNING_MIN_LEVEL_MELEE = 10,
 }
 
 --- Options view content
@@ -251,6 +250,7 @@ Deathless.UI.Views:Register("options", function(container)
     
     -- Warning category definitions
     local WARNING_CATEGORIES = {
+        { key = WarningCategories.AMMO, label = "Ammo", icon = Icons.WARNING_MISSING_EQUIPPED_AMMO, tooltip = "Show warnings for low throwing weapons" },
         { key = WarningCategories.BANDAGES, label = "Bandages", icon = Icons.WARNING_BANDAGES, tooltip = "Show warnings for bandages" },
         { key = WarningCategories.CLASS_REAGENTS, label = "Class Reagents", icon = Icons.WARNING_CLASS_REAGENTS, tooltip = "Show warnings for class reagents" },
         { key = WarningCategories.ENGINEERING, label = "Engineering Items", icon = Icons.WARNING_ENGINEERING, tooltip = "Show warnings for engineering items" },
@@ -258,20 +258,8 @@ Deathless.UI.Views:Register("options", function(container)
         { key = WarningCategories.HEALTH_POTIONS, label = "Health Potions", icon = Icons.WARNING_HEALTH_POTIONS, tooltip = "Show warnings for health potions" },
         { key = WarningCategories.HEARTHSTONE, label = "Hearthstone", icon = Icons.WARNING_HEARTHSTONE, tooltip = "Show warnings for Hearthstone" },
         { key = WarningCategories.LIP, label = "LIP", icon = Icons.WARNING_LIP, tooltip = "Show warnings for Limited Invulnerability Potions" },
-        {
-            key = WarningCategories.LOW_EQUIPPED_AMMO,
-            label = "Low Equipped Ammo",
-            icon = Icons.WARNING_LOW_EQUIPPED_AMMO,
-            tooltip = "Show warnings when equipped ammo is low (Hunter < " .. AmmoConstants.LOW_THRESHOLD_HUNTER .. ", Warrior/Rogue < " .. AmmoConstants.LOW_THRESHOLD_MELEE .. ")",
-        },
         { key = WarningCategories.MAGE_CONJURES, label = "Mage Consumables", icon = Icons.WARNING_MAGE_CONJURES, tooltip = "Show warnings for mage consumables" },
         { key = WarningCategories.MANA_POTIONS, label = "Mana Potions", icon = Icons.WARNING_MANA_POTIONS, tooltip = "Show warnings for mana potions" },
-        {
-            key = WarningCategories.MISSING_EQUIPPED_AMMO,
-            label = "Missing Equipped Ammo",
-            icon = Icons.WARNING_MISSING_EQUIPPED_AMMO,
-            tooltip = "Show warnings when no ammo is equipped for Hunter, Warrior, and Rogue (level " .. AmmoConstants.WARNING_MIN_LEVEL .. "+)",
-        },
         { key = WarningCategories.QUESTS, label = "Quests", icon = Icons.WARNING_QUESTS, tooltip = "Show warnings for key quest completion" },
         { key = WarningCategories.SWIFTNESS_POTIONS, label = "Swiftness Potions", icon = Icons.WARNING_SWIFTNESS_POTIONS, tooltip = "Show warnings for swiftness potions" },
         { key = WarningCategories.TALENTS, label = "Unspent Talents", icon = Icons.WARNING_TALENTS, tooltip = "Show warnings for unspent talent points" },

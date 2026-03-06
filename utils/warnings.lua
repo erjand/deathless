@@ -13,6 +13,7 @@ local ClassIds = (Deathless.Constants and Deathless.Constants.ClassIds) or {
     WARRIOR = "WARRIOR",
 }
 local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
+    AMMO = "ammo",
     BANDAGES = "bandages",
     CLASS_REAGENTS = "classReagents",
     ENGINEERING = "engineering",
@@ -20,22 +21,30 @@ local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCa
     HEALTH_POTIONS = "healthPotions",
     HEARTHSTONE = "hearthstone",
     LIP = "lip",
-    LOW_EQUIPPED_AMMO = "lowEquippedAmmo",
     MAGE_CONJURES = "mageConjures",
     MANA_POTIONS = "manaPotions",
-    MISSING_EQUIPPED_AMMO = "missingEquippedAmmo",
     QUESTS = "quests",
     SWIFTNESS_POTIONS = "swiftnessPotions",
     TALENTS = "talents",
 }
 local AmmoConstants = (Deathless.Constants and Deathless.Constants.Ammo) or {
-    LOW_THRESHOLD_HUNTER = 200,
     LOW_THRESHOLD_MELEE = 20,
     WARNING_MIN_LEVEL = 10,
+    WARNING_MIN_LEVEL_MELEE = 10,
+    SLOT_TOKENS = {
+        LEGACY_RANGED = "RangedSlot",
+        RANGED = "RANGEDSLOT",
+    },
+    SLOT_IDS = {
+        RANGED = 18,
+    },
+    RangedWeaponSubclassIds = {
+        THROWN = 16,
+    },
 }
-local AMMO_SLOT_TOKEN = "AMMOSLOT"
-local LEGACY_AMMO_SLOT_TOKEN = "Ammo" .. "Slot"
-local RANGED_SLOT_TOKEN = "RANGEDSLOT"
+local AmmoSlotTokens = AmmoConstants.SLOT_TOKENS
+local AmmoSlotIds = AmmoConstants.SLOT_IDS
+local RangedWeaponSubclassIds = AmmoConstants.RangedWeaponSubclassIds
 local QUEST_ID_MAGE_SUMMONER = 1017
 local QUEST_ID_THIS_IS_GOING_TO_BE_HARD = 778
 local QUEST_ID_A_NEW_PLAGUE = 368
@@ -199,86 +208,100 @@ end
 --- @param classId string
 --- @return boolean
 local function IsAmmoWarningClass(classId)
-    return classId == ClassIds.HUNTER or classId == ClassIds.ROGUE or classId == ClassIds.WARRIOR
+    return classId == ClassIds.ROGUE or classId == ClassIds.WARRIOR
 end
 
 --- Get low-ammo threshold by class
 --- @param classId string
 --- @return number|nil
 local function GetLowAmmoThreshold(classId)
-    if classId == ClassIds.HUNTER then
-        return AmmoConstants.LOW_THRESHOLD_HUNTER
-    end
-    if classId == ClassIds.ROGUE or classId == ClassIds.WARRIOR then
+    if IsAmmoWarningClass(classId) then
         return AmmoConstants.LOW_THRESHOLD_MELEE
     end
     return nil
 end
 
---- Get ammo slot index when available on this client
+--- Get minimum level to show ammo warnings by class
+--- @param classId string
+--- @return number
+local function GetAmmoWarningMinLevel(classId)
+    if IsAmmoWarningClass(classId) then
+        return AmmoConstants.WARNING_MIN_LEVEL_MELEE or AmmoConstants.WARNING_MIN_LEVEL or 10
+    end
+    return AmmoConstants.WARNING_MIN_LEVEL or 10
+end
+
+--- Get ranged slot index when available on this client
 --- @return number|nil
-local function GetAmmoSlot()
+local function GetRangedSlot()
     if not GetInventorySlotInfo then
         return nil
     end
 
-    local ammoSlot = GetInventorySlotInfo(AMMO_SLOT_TOKEN)
-    if ammoSlot and ammoSlot > 0 then
-        return ammoSlot
+    local rangedSlot = GetInventorySlotInfo(AmmoSlotTokens.RANGED)
+    if rangedSlot and rangedSlot > 0 then
+        return rangedSlot
     end
 
-    -- Some clients still resolve the legacy mixed-case token.
-    local ok, legacyAmmoSlot = pcall(GetInventorySlotInfo, LEGACY_AMMO_SLOT_TOKEN)
-    if ok and legacyAmmoSlot and legacyAmmoSlot > 0 then
-        return legacyAmmoSlot
+    local ok, legacyRangedSlot = pcall(GetInventorySlotInfo, AmmoSlotTokens.LEGACY_RANGED)
+    if ok and legacyRangedSlot and legacyRangedSlot > 0 then
+        return legacyRangedSlot
+    end
+
+    if AmmoSlotIds and AmmoSlotIds.RANGED then
+        return AmmoSlotIds.RANGED
     end
 
     return nil
 end
 
---- Get equipped stack count for a slot (returns 0 if empty)
---- @param slot number|nil
---- @return number
-local function GetEquippedSlotStackCount(slot)
-    if not slot then
-        return 0
+--- Return true when a throwing weapon is equipped in ranged slot
+--- @return boolean
+local function HasThrowingWeaponEquipped()
+    local rangedSlot = GetRangedSlot()
+    if not rangedSlot or not GetItemInfoInstant then
+        return false
     end
 
-    local itemId = GetInventoryItemID and GetInventoryItemID("player", slot)
-    if not itemId then
-        return 0
+    local itemLink = GetInventoryItemLink and GetInventoryItemLink("player", rangedSlot)
+    local itemId = GetInventoryItemID and GetInventoryItemID("player", rangedSlot)
+    local itemInfoToken = itemLink or itemId
+    if not itemInfoToken then
+        return false
     end
 
-    local ammoCount = GetInventoryItemCount and GetInventoryItemCount("player", slot)
-    if ammoCount and ammoCount > 0 then
-        return ammoCount
-    end
-
-    -- If API returns nil/0 but item exists, treat as equipped.
-    return 1
+    local _, _, _, equipLoc, _, _, itemSubClassId = GetItemInfoInstant(itemInfoToken)
+    return equipLoc == "INVTYPE_THROWN" or itemSubClassId == RangedWeaponSubclassIds.THROWN
 end
 
---- Return equipped ammo/throwing stack count by class semantics
---- Hunter: ammo slot only
---- Rogue/Warrior: ranged slot stack, with ammo slot fallback for bow/gun loadouts
+--- Get equipped throwing stack count from ranged slot
+--- @return number
+local function GetEquippedThrowingCount()
+    local rangedSlot = GetRangedSlot()
+    if not rangedSlot then
+        return 0
+    end
+
+    local count = GetInventoryItemCount and GetInventoryItemCount("player", rangedSlot)
+    return count or 0
+end
+
+--- Return equipped throwing stack count for rogue/warrior
 --- @param classId string
 --- @return number
 local function GetEquippedAmmoCount(classId)
-    local ammoSlotCount = GetEquippedSlotStackCount(GetAmmoSlot())
-
-    if classId == ClassIds.HUNTER then
-        return ammoSlotCount
-    end
-
-    if classId == ClassIds.ROGUE or classId == ClassIds.WARRIOR then
-        if ammoSlotCount > 0 then
-            return ammoSlotCount
-        end
-        local rangedSlot = GetInventorySlotInfo and GetInventorySlotInfo(RANGED_SLOT_TOKEN)
-        return GetEquippedSlotStackCount(rangedSlot)
+    if IsAmmoWarningClass(classId) and HasThrowingWeaponEquipped() then
+        return GetEquippedThrowingCount()
     end
 
     return 0
+end
+
+--- Return true when class should receive throwing warning checks
+--- @param classId string
+--- @return boolean
+local function HasAmmoRequirement(classId)
+    return IsAmmoWarningClass(classId)
 end
 
 --- Build warning check definitions based on player state
@@ -345,6 +368,9 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
     local _, classId = UnitClass("player")
     local isAmmoClass = IsAmmoWarningClass(classId)
     local lowAmmoThreshold = GetLowAmmoThreshold(classId)
+    local lowAmmoThresholdText = tostring(lowAmmoThreshold or 0)
+    local ammoWarningMinLevel = GetAmmoWarningMinLevel(classId)
+    local hasAmmoRequirement = HasAmmoRequirement(classId)
     local equippedAmmoCount = GetEquippedAmmoCount(classId)
     local unspentTalents = UnitCharacterPoints("player") or 0
     local hasCompletedMageSummoner = IsQuestCompleted(QUEST_ID_MAGE_SUMMONER)
@@ -363,18 +389,11 @@ function Deathless.Utils.Warnings:GetSpecialChecks()
             isActive = unspentTalents > 0,
         },
         {
-            text = "No ammo equipped",
-            icon = Icons.WARNING_MISSING_EQUIPPED_AMMO,
-            condition = isAmmoClass and playerLevel >= AmmoConstants.WARNING_MIN_LEVEL,
-            category = WarningCategories.MISSING_EQUIPPED_AMMO,
-            isActive = equippedAmmoCount <= 0,
-        },
-        {
-            text = "Low equipped ammo (" .. equippedAmmoCount .. "/" .. (lowAmmoThreshold or 0) .. ")",
+            text = "Fewer than " .. lowAmmoThresholdText .. " throwing weapons equipped",
             icon = Icons.WARNING_LOW_EQUIPPED_AMMO,
-            condition = isAmmoClass and playerLevel >= AmmoConstants.WARNING_MIN_LEVEL and lowAmmoThreshold ~= nil,
-            category = WarningCategories.LOW_EQUIPPED_AMMO,
-            isActive = equippedAmmoCount > 0 and lowAmmoThreshold ~= nil and equippedAmmoCount < lowAmmoThreshold,
+            condition = isAmmoClass and hasAmmoRequirement and playerLevel >= ammoWarningMinLevel and lowAmmoThreshold ~= nil,
+            category = WarningCategories.AMMO,
+            isActive = lowAmmoThreshold ~= nil and equippedAmmoCount < lowAmmoThreshold,
         },
         {
             text = "Quest not completed for Light of Elune",

@@ -14,14 +14,15 @@
 
 ## UI
 
-- [ ] 
+- [ ] Add options to toggle display sections for mini viewer (Warnings, XP, Available, Next Available)
 
 ## Summary
 
 - [ ] Add recommended Zone(s)
-- [ ] Hunter: missing ammo
 
 ## Classes
+
+- [ ] Add Stats page for each class, to include: what you get per each stat; important breakpoints; things like hit chance; general stat prio for HC
 
 ### Abilities
 
@@ -58,7 +59,30 @@
 
 ## Dungeons
 
-- [ ] Finish dungeons that are WIP
+- [ ] Deadmines
+- [ ] BFD
+- [ ] Stocks
+- [ ] SFK
+- [ ] Gnomer
+- [ ] SM Gy
+- [ ] SM Lib
+- [ ] SM Arm
+- [ ] SM Cath
+- [ ] RFK
+- [ ] RFD
+- [ ] Ulda
+- [ ] ZF
+- [ ] Mara
+- [ ] BRD
+- [ ] ST
+- [ ] DM:N
+- [ ] DM:W
+- [ ] DM:E
+- [ ] UBRS
+- [ ] LBRS
+- [ ] Strat UD
+- [ ] Strat Live
+- [ ] Scholo
 
 ## Professions
 

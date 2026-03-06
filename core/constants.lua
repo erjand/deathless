@@ -104,6 +104,7 @@ Deathless.Constants.GearTiers = {
 }
 
 Deathless.Constants.WarningCategories = {
+    AMMO = "ammo",
     BANDAGES = "bandages",
     CLASS_REAGENTS = "classReagents",
     ENGINEERING = "engineering",
@@ -111,10 +112,8 @@ Deathless.Constants.WarningCategories = {
     HEALTH_POTIONS = "healthPotions",
     HEARTHSTONE = "hearthstone",
     LIP = "lip",
-    LOW_EQUIPPED_AMMO = "lowEquippedAmmo",
     MAGE_CONJURES = "mageConjures",
     MANA_POTIONS = "manaPotions",
-    MISSING_EQUIPPED_AMMO = "missingEquippedAmmo",
     QUESTS = "quests",
     SWIFTNESS_POTIONS = "swiftnessPotions",
     TALENTS = "talents",
@@ -143,7 +142,17 @@ Deathless.Constants.Urls = {
 }
 
 Deathless.Constants.Ammo = {
-    LOW_THRESHOLD_HUNTER = 200,
     LOW_THRESHOLD_MELEE = 20,
     WARNING_MIN_LEVEL = 10,
+    WARNING_MIN_LEVEL_MELEE = 10,
+    SLOT_TOKENS = {
+        LEGACY_RANGED = "RangedSlot",
+        RANGED = "RANGEDSLOT",
+    },
+    SLOT_IDS = {
+        RANGED = 18,
+    },
+    RangedWeaponSubclassIds = {
+        THROWN = 16,
+    },
 }

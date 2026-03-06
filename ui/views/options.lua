@@ -21,6 +21,12 @@ local AmmoConstants = (Deathless.Constants and Deathless.Constants.Ammo) or {
     WARNING_MIN_LEVEL = 10,
     WARNING_MIN_LEVEL_MELEE = 10,
 }
+local MiniSections = (Deathless.Constants and Deathless.Constants.MiniSections) or {
+    WARNINGS = "warnings",
+    XP_PROGRESS = "xpProgress",
+    AVAILABLE = "available",
+    NEXT_AVAILABLE = "nextAvailable",
+}
 
 --- Options view content
 Deathless.UI.Views:Register("options", function(container)
@@ -39,10 +45,11 @@ Deathless.UI.Views:Register("options", function(container)
     local ROW_HEIGHT = 24
     local SECTION_HEIGHT = 28
     local WARNING_COLUMNS = 3
+    local MINI_COLUMNS = 2
     local CLASS_ROWS = 3
     
     -- Section collapse state
-    local sectionState = { classes = true, warnings = true }
+    local sectionState = { classes = true, mini = true, warnings = true }
     
     -- Element pools
     local pools = { section = {}, checkbox = {} }
@@ -148,6 +155,23 @@ Deathless.UI.Views:Register("options", function(container)
             f.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             
             f.checked = false
+            f.enabled = true
+
+            local function ApplyVisualState(self)
+                if not self.enabled then
+                    self:SetAlpha(0.55)
+                    self.hoverBg:Hide()
+                    self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                    self.btn.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
+                    self.btn.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+                    return
+                end
+
+                self:SetAlpha(1)
+                self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                self.btn.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
+                self.btn.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+            end
             
             function f:SetChecked(checked)
                 self.checked = checked
@@ -156,6 +180,12 @@ Deathless.UI.Views:Register("options", function(container)
                 else
                     self.btn.check:Hide()
                 end
+                ApplyVisualState(self)
+            end
+
+            function f:SetEnabled(enabled)
+                self.enabled = enabled ~= false
+                ApplyVisualState(self)
             end
             
             -- Frame background for hover effect
@@ -167,6 +197,9 @@ Deathless.UI.Views:Register("options", function(container)
             -- Make entire frame clickable
             f:EnableMouse(true)
             f:SetScript("OnEnter", function(self)
+                if not self.enabled then
+                    return
+                end
                 self.label:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], Colors.white[4])
                 self.hoverBg:Show()
                 if not self.checked then
@@ -183,6 +216,11 @@ Deathless.UI.Views:Register("options", function(container)
             end)
             
             f:SetScript("OnLeave", function(self)
+                if not self.enabled then
+                    self.hoverBg:Hide()
+                    Deathless.UI.Tooltip:Hide()
+                    return
+                end
                 self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
                 self.hoverBg:Hide()
                 if not self.checked then
@@ -215,6 +253,9 @@ Deathless.UI.Views:Register("options", function(container)
         
         -- Set click handler on entire frame for larger hit area
         frame:SetScript("OnMouseDown", function(self)
+            if not self.enabled then
+                return
+            end
             self:SetChecked(not self.checked)
             if onClick then onClick(self.checked) end
         end)
@@ -264,6 +305,13 @@ Deathless.UI.Views:Register("options", function(container)
         { key = WarningCategories.SWIFTNESS_POTIONS, label = "Swiftness Potions", icon = Icons.WARNING_SWIFTNESS_POTIONS, tooltip = "Show warnings for swiftness potions" },
         { key = WarningCategories.TALENTS, label = "Unspent Talents", icon = Icons.WARNING_TALENTS, tooltip = "Show warnings for unspent talent points" },
     }
+
+    local MINI_OPTIONS = {
+        { key = MiniSections.WARNINGS, label = "Warnings", tooltip = "Toggle visibility of Warnings in the Mini window" },
+        { key = MiniSections.XP_PROGRESS, label = "XP Progress", tooltip = "Toggle visibility of XP Progress in the Mini window" },
+        { key = MiniSections.AVAILABLE, label = "Available", tooltip = "Toggle visibility of Available Abilities in the Mini window" },
+        { key = MiniSections.NEXT_AVAILABLE, label = "Next Available", tooltip = "Toggle visibility of Next Available Abilities in the Mini window" },
+    }
     
     Refresh = function()
         ClearPools()
@@ -293,6 +341,55 @@ Deathless.UI.Views:Register("options", function(container)
             end
             
             yOffset = yOffset - (CLASS_ROWS * ROW_HEIGHT) - 16
+        end
+
+        -- === Mini Section ===
+        local miniSection
+        miniSection, yOffset = GetSectionHeader("mini", "Mini", yOffset)
+
+        if sectionState.mini then
+            Deathless.config.mini = Deathless.config.mini or {}
+            local miniRows = math.ceil(#MINI_OPTIONS / MINI_COLUMNS)
+            local layout = Deathless.config.layout and Deathless.config.layout.mini
+            local showMiniWindow = layout and layout.shown == true
+
+            local showMiniCheckbox = GetCheckbox("Show Mini window", nil, function(checked)
+                if Deathless.UI and Deathless.UI.MiniSummary then
+                    if checked then
+                        Deathless.UI.MiniSummary:Show()
+                    else
+                        Deathless.UI.MiniSummary:Hide()
+                    end
+                else
+                    Deathless.config.layout = Deathless.config.layout or {}
+                    Deathless.config.layout.mini = Deathless.config.layout.mini or {}
+                    Deathless.config.layout.mini.shown = checked
+                    Deathless:SaveConfig()
+                end
+                Refresh()
+            end, "Toggle visibility of the Mini window")
+            showMiniCheckbox:SetPoint("TOPLEFT", miniSection, "BOTTOMLEFT", 8, -8)
+            showMiniCheckbox:SetChecked(showMiniWindow)
+            showMiniCheckbox:SetEnabled(true)
+
+            for i, option in ipairs(MINI_OPTIONS) do
+                local col = math.floor((i - 1) / miniRows)
+                local row = (i - 1) % miniRows
+
+                local checkbox = GetCheckbox(option.label, nil, function(checked)
+                    Deathless.config.mini[option.key] = checked
+                    Deathless:SaveConfig()
+                    if Deathless.UI and Deathless.UI.MiniSummary and Deathless.UI.MiniSummary.Refresh then
+                        Deathless.UI.MiniSummary:Refresh()
+                    end
+                end, option.tooltip)
+
+                checkbox:SetPoint("TOPLEFT", miniSection, "BOTTOMLEFT", 20 + (col * (COL_WIDTH + COL_GAP)), -8 - ROW_HEIGHT - (row * ROW_HEIGHT))
+                checkbox:SetChecked(Deathless.config.mini[option.key] ~= false)
+                checkbox:SetEnabled(showMiniWindow)
+            end
+
+            yOffset = yOffset - 8 - ROW_HEIGHT - (miniRows * ROW_HEIGHT) - 8
         end
         
         -- === Warnings Section ===

@@ -14,11 +14,12 @@
 
 ## UI
 
-- [ ] Add options to toggle display sections for mini viewer (Warnings, XP, Available, Next Available)
+- [ ] 
 
-## Summary
+## Summary / Warnings
 
 - [ ] Add recommended Zone(s)
+- [ ] I have throwing weapon warning working, but couldn't get ammo for ranged weapons working (March 2026) - revisit
 
 ## Classes
 

@@ -18,6 +18,12 @@ local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCa
     SWIFTNESS_POTIONS = "swiftnessPotions",
     TALENTS = "talents",
 }
+local MiniSections = (Deathless.Constants and Deathless.Constants.MiniSections) or {
+    WARNINGS = "warnings",
+    XP_PROGRESS = "xpProgress",
+    AVAILABLE = "available",
+    NEXT_AVAILABLE = "nextAvailable",
+}
 
 Deathless.config = Deathless.config or {
     -- UI settings
@@ -55,6 +61,13 @@ Deathless.config = Deathless.config or {
         [WarningCategories.ENGINEERING] = true,
         [WarningCategories.HEARTHSTONE] = true,
         [WarningCategories.TALENTS] = true,
+    },
+    -- Mini summary section visibility
+    mini = {
+        [MiniSections.WARNINGS] = true,
+        [MiniSections.XP_PROGRESS] = true,
+        [MiniSections.AVAILABLE] = true,
+        [MiniSections.NEXT_AVAILABLE] = true,
     },
     -- Gear view filter settings
     gear = {
@@ -106,6 +119,21 @@ local function LoadConfig()
     end
     -- Remove deprecated raid tier filter from older saved variables.
     Deathless.config.gear.tierFilters.Raid = nil
+
+    -- Ensure mini section visibility defaults exist for older saved variables
+    Deathless.config.mini = Deathless.config.mini or {}
+    if Deathless.config.mini[MiniSections.WARNINGS] == nil then
+        Deathless.config.mini[MiniSections.WARNINGS] = true
+    end
+    if Deathless.config.mini[MiniSections.XP_PROGRESS] == nil then
+        Deathless.config.mini[MiniSections.XP_PROGRESS] = true
+    end
+    if Deathless.config.mini[MiniSections.AVAILABLE] == nil then
+        Deathless.config.mini[MiniSections.AVAILABLE] = true
+    end
+    if Deathless.config.mini[MiniSections.NEXT_AVAILABLE] == nil then
+        Deathless.config.mini[MiniSections.NEXT_AVAILABLE] = true
+    end
 
 end
 

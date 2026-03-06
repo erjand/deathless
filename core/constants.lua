@@ -119,6 +119,13 @@ Deathless.Constants.WarningCategories = {
     TALENTS = "talents",
 }
 
+Deathless.Constants.MiniSections = {
+    WARNINGS = "warnings",
+    XP_PROGRESS = "xpProgress",
+    AVAILABLE = "available",
+    NEXT_AVAILABLE = "nextAvailable",
+}
+
 Deathless.Constants.ClassIds = {
     HUNTER = "HUNTER",
     MAGE = "MAGE",

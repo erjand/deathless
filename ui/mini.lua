@@ -7,6 +7,12 @@ local AbilityUtils = Deathless.Utils.Abilities
 local FormatMoney = AbilityUtils.FormatMoney
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
+local MiniSections = (Deathless.Constants and Deathless.Constants.MiniSections) or {
+    WARNINGS = "warnings",
+    XP_PROGRESS = "xpProgress",
+    AVAILABLE = "available",
+    NEXT_AVAILABLE = "nextAvailable",
+}
 
 local MINI_DEFAULT_WIDTH = 300
 local MINI_DEFAULT_HEIGHT = 200
@@ -14,6 +20,17 @@ local MINI_MIN_WIDTH = 300
 local MINI_MAX_WIDTH = 300
 local MINI_MIN_HEIGHT = 120
 local MINI_MAX_HEIGHT = 500
+
+local function RefreshOptionsViewIfVisible()
+    if not (Deathless.UI and Deathless.UI.Content and Deathless.UI.Content.frame) then
+        return
+    end
+
+    local content = Deathless.UI.Content.frame
+    if content.currentView == "options" and Deathless.UI.Content.RefreshCurrentView then
+        Deathless.UI.Content:RefreshCurrentView()
+    end
+end
 
 function Deathless.UI.MiniSummary:Create()
     if self.frame then
@@ -299,11 +316,16 @@ function Deathless.UI.MiniSummary:SetupContent()
         -- Get warnings from shared module
         local activeWarnings = Deathless.Utils.Warnings:GetActive()
         local warningCount = #activeWarnings
+        local miniConfig = Deathless.config.mini or {}
+
+        local function IsMiniSectionEnabled(sectionKey)
+            return miniConfig[sectionKey] ~= false
+        end
         
         local yOffset = -4
         
         -- Collapsible warnings section (only if there are warnings)
-        if warningCount > 0 then
+        if IsMiniSectionEnabled(MiniSections.WARNINGS) and warningCount > 0 then
             local warningsHeader = CreateFrame("Button", nil, scrollChild)
             warningsHeader:SetHeight(18)
             warningsHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
@@ -377,7 +399,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         
         -- XP Progress Section (compact for mini view)
         local xpData = Deathless.Utils.XP:GetData()
-        if not xpData.isMaxLevel then
+        if IsMiniSectionEnabled(MiniSections.XP_PROGRESS) and not xpData.isMaxLevel then
             local xpHeader = CreateFrame("Button", nil, scrollChild)
             xpHeader:SetHeight(18)
             xpHeader:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, yOffset)
@@ -478,7 +500,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         end
         
         -- Available abilities (collapsible)
-        if #available > 0 then
+        if IsMiniSectionEnabled(MiniSections.AVAILABLE) and #available > 0 then
             local totalCost = 0
             for _, ab in ipairs(available) do totalCost = totalCost + (ab.base_cost or 0) end
             
@@ -576,7 +598,7 @@ function Deathless.UI.MiniSummary:SetupContent()
         end
         
         -- Next available abilities (collapsible)
-        if #nextAvailable > 0 then
+        if IsMiniSectionEnabled(MiniSections.NEXT_AVAILABLE) and #nextAvailable > 0 then
             local nextCost = 0
             for _, ab in ipairs(nextAvailable) do nextCost = nextCost + (ab.base_cost or 0) end
             
@@ -728,6 +750,7 @@ function Deathless.UI.MiniSummary:Show()
         Deathless.config.layout.mini.shown = true
         Deathless:SaveConfig()
     end
+    RefreshOptionsViewIfVisible()
 end
 
 function Deathless.UI.MiniSummary:Hide()
@@ -740,6 +763,7 @@ function Deathless.UI.MiniSummary:Hide()
         Deathless.config.layout.mini.shown = false
         Deathless:SaveConfig()
     end
+    RefreshOptionsViewIfVisible()
 end
 
 function Deathless.UI.MiniSummary:Toggle()

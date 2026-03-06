@@ -11,6 +11,6 @@ For this initial release, let's get:
 5. [ ] Dungeons
 6. [ ] Gear
 7. [x] HC Macros
-8. [ ] Character Macros
+8. [x] Character Macros
 9. [ ] Versioning / tags
 10. [ ] Support setup / link

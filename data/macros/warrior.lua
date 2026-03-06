@@ -5,7 +5,7 @@ Deathless.Data.Macros = Deathless.Data.Macros or {}
 
 Deathless.Data.Macros.Warrior = {
     {
-        title = "Start Attack",
+        title = "Startattack with Ability",
         description = "Turn on auto-attack whenever you use an ability.",
         code = "#showtooltip\n/startattack\n/cast SomeAbility",
     },

@@ -46,18 +46,6 @@
 - [ ] Ranged
 - [ ] Weapons
 
-### Macros
-
-- [ ] Druid
-- [ ] Hunter
-- [ ] Mage
-- [ ] Paladin
-- [ ] Priest
-- [ ] Rogue
-- [ ] Shaman
-- [ ] Warlock
-- [x] Warrior
-
 #### Warrior
 
 ##### Weapons

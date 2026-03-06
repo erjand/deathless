@@ -82,7 +82,7 @@ function CopyPopup:Create()
     frame.hint:SetPoint("TOPLEFT", titleBar, "BOTTOMLEFT", 8, -6)
     frame.hint:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -28, -26)
     frame.hint:SetJustifyH("LEFT")
-    frame.hint:SetText("Press Ctrl+C to copy. Press Esc to close.")
+    frame.hint:SetText("Press Ctrl+C to copy and close. Press Esc to close.")
     frame.hint:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
 
     CreateCloseButton(titleBar, {
@@ -115,6 +115,14 @@ function CopyPopup:Create()
     end)
     editBox:SetScript("OnEditFocusGained", function(self)
         self:HighlightText()
+    end)
+    editBox:SetScript("OnKeyDown", function(_, key)
+        if key == "C" and IsControlKeyDown() then
+            -- Let the copy happen first, then close the popup.
+            C_Timer.After(0, function()
+                frame:Hide()
+            end)
+        end
     end)
 
     frame.editBox = editBox

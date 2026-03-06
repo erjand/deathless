@@ -1,5 +1,13 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local Factions = Deathless.Constants and Deathless.Constants.Factions or {
+    ALLIANCE = "Alliance",
+    HORDE = "Horde",
+    BOTH = "Both",
+}
+local Urls = Deathless.Constants and Deathless.Constants.Urls or {
+    WOWHEAD_CLASSIC_QUEST_BASE = "https://www.wowhead.com/classic/quest=",
+}
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -79,15 +87,6 @@ local function GetGrayLevel(playerLevel)
     else
         return playerLevel - 9
     end
-end
-
---- Convert RGB floats (0-1) to a WoW color escape string
----@param r number
----@param g number
----@param b number
----@return string Color escape like "|cffRRGGBB"
-local function RGBToEscape(r, g, b)
-    return string.format("|cff%02x%02x%02x", r * 255, g * 255, b * 255)
 end
 
 --- Get difficulty color for a mob level relative to player level
@@ -347,9 +346,9 @@ Deathless.UI.Views:Register("dungeons", function(container)
     local QC = {
         nameX = 28,   nameW = 210,
         lvX   = 243,  lvW   = 30,
-        startX = 278, startW = 110,
-        preX  = 393,  preW  = 45,
-        rewX  = 445,
+        startX = 278, startW = 150,
+        preX  = 423,  preW  = 45,
+        rewX  = 475,
     }
     local QUEST_HEADER_HEIGHT = 16
 
@@ -482,7 +481,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
         local sortedQuests = {}
         if dungeon.quests then
             for _, q in ipairs(dungeon.quests) do
-                if not q.side or q.side == playerFaction then
+                if not q.side or q.side == playerFaction or q.side == Factions.BOTH then
                     table.insert(sortedQuests, q)
                 end
             end
@@ -505,7 +504,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
             if state.quests and #sortedQuests > 0 then
                 yOffset = yOffset - 4
                 -- Column headers
-                local headers = { "NAME", "LVL", "STARTS", "PREREQ", "REWARDS" }
+                local headers = { "NAME", "LVL", "STARTED BY", "PREREQ", "REWARDS" }
                 local headerX = { QC.nameX, QC.lvX, QC.startX, QC.preX, QC.rewX }
                 local headerW = { QC.nameW, QC.lvW, QC.startW, QC.preW, 80 }
                 local headerJ = { "LEFT", "CENTER", "LEFT", "CENTER", "LEFT" }
@@ -528,12 +527,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
                     qr:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
                     qr:Show()
 
-                    local nameDisplay = q.name
-                    if q.chainStep and q.chainTotal then
-                        local dimColor = RGBToEscape(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3])
-                        nameDisplay = nameDisplay .. " " .. dimColor .. "(" .. q.chainStep .. "/" .. q.chainTotal .. ")|r"
-                    end
-                    qr.nameText:SetText(nameDisplay)
+                    qr.nameText:SetText(q.name)
                     qr.nameText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
 
                     -- Quest tooltip on name hover
@@ -541,16 +535,23 @@ Deathless.UI.Views:Register("dungeons", function(container)
                     local questLevel = q.level
                     if questId then
                         qr.nameBtn:SetScript("OnEnter", function(self)
+                            qr.nameText:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
                             GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 4, 0)
                             GameTooltip:SetHyperlink("quest:" .. questId .. ":" .. questLevel)
                             GameTooltip:Show()
                         end)
                         qr.nameBtn:SetScript("OnLeave", function()
+                            qr.nameText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
                             GameTooltip:Hide()
+                        end)
+                        qr.nameBtn:SetScript("OnMouseUp", function()
+                            local questUrl = Urls.WOWHEAD_CLASSIC_QUEST_BASE .. questId
+                            Deathless.UI.Components.CopyPopup:Show("Copy Quest URL: " .. q.name, questUrl)
                         end)
                     else
                         qr.nameBtn:SetScript("OnEnter", nil)
                         qr.nameBtn:SetScript("OnLeave", nil)
+                        qr.nameBtn:SetScript("OnMouseUp", nil)
                     end
 
                     -- Level
@@ -565,22 +566,45 @@ Deathless.UI.Views:Register("dungeons", function(container)
                         if q.startCoords then
                             startTip = startTip .. " (" .. q.startCoords .. ")"
                         end
+                        local startUrl, startCopyTitle
+                        if q.startItemId then
+                            startUrl = Urls.WOWHEAD_CLASSIC_ITEM_BASE .. q.startItemId
+                            startCopyTitle = "Copy Start Item URL: " .. q.startNpc
+                        elseif q.startNpcId then
+                            startUrl = Urls.WOWHEAD_CLASSIC_NPC_BASE .. q.startNpcId
+                            startCopyTitle = "Copy Start NPC URL: " .. q.startNpc
+                        end
                         qr.startsBtn:SetScript("OnEnter", function(self)
+                            if startUrl then
+                                qr.startsText:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+                            end
                             Deathless.UI.Tooltip:Show(self, "ANCHOR_RIGHT", startTip)
                         end)
                         qr.startsBtn:SetScript("OnLeave", function()
+                            qr.startsText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
                             Deathless.UI.Tooltip:Hide()
                         end)
+                        if startUrl then
+                            qr.startsBtn:SetScript("OnMouseUp", function()
+                                Deathless.UI.Components.CopyPopup:Show(startCopyTitle, startUrl)
+                            end)
+                        else
+                            qr.startsBtn:SetScript("OnMouseUp", nil)
+                        end
                     else
                         qr.startsText:SetText("")
                         qr.startsBtn:SetScript("OnEnter", nil)
                         qr.startsBtn:SetScript("OnLeave", nil)
+                        qr.startsBtn:SetScript("OnMouseUp", nil)
                     end
 
                     -- Prereq
-                    if q.prereq then
-                        qr.prereqText:SetText(q.prereq)
+                    if q.prereq == true then
+                        qr.prereqText:SetText("Yes")
                         qr.prereqText:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], 1)
+                    elseif q.prereq == false then
+                        qr.prereqText:SetText("No")
+                        qr.prereqText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                     else
                         qr.prereqText:SetText("-")
                         qr.prereqText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)

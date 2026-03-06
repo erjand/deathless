@@ -130,6 +130,18 @@ Deathless.Constants.ClassIds = {
     WARRIOR = "WARRIOR",
 }
 
+Deathless.Constants.Factions = {
+    ALLIANCE = "Alliance",
+    HORDE = "Horde",
+    BOTH = "Both",
+}
+
+Deathless.Constants.Urls = {
+    WOWHEAD_CLASSIC_ITEM_BASE = "https://www.wowhead.com/classic/item=",
+    WOWHEAD_CLASSIC_NPC_BASE = "https://www.wowhead.com/classic/npc=",
+    WOWHEAD_CLASSIC_QUEST_BASE = "https://www.wowhead.com/classic/quest=",
+}
+
 Deathless.Constants.Ammo = {
     LOW_THRESHOLD_HUNTER = 200,
     LOW_THRESHOLD_MELEE = 20,

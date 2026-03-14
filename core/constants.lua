@@ -78,6 +78,13 @@ Deathless.Constants.Colors = {
         xpRested = { 0.0, 0.39, 0.88, 0.8 },
         xpTrackBg = { 0.1, 0.1, 0.1, 0.8 },
         yellow = { 1.0, 0.8, 0.2 },
+        SectionHeader = {
+            bgAlpha = 0.4,
+            hoverAlpha = 0.6,
+            height = 28,
+            iconOffsetX = 8,
+            labelOffsetX = 6,
+        },
     },
 }
 

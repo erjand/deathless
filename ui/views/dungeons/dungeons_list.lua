@@ -113,6 +113,7 @@ end
 Deathless.UI.Views:Register("dungeons", function(container)
     local Colors = Utils:GetColors()
     local Fonts = Deathless.UI.Fonts
+    local Layout = Utils.Layout
     local CONTENT_LEFT = 12
     local CONTENT_RIGHT = -12
 
@@ -428,7 +429,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
     local function RenderDetail(dungeon, yOffset)
         local LINE_PADDING = 4
         local SECTION_GAP = 10
-        local SECTION_HEIGHT = 28
+        local SECTION_HEIGHT = Layout.sectionHeight
         local contentWidth = scrollChild:GetWidth() - 60
 
         local state = sectionState[dungeon.id]

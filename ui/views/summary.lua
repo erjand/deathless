@@ -9,6 +9,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     Deathless.UI.Views:Register("summary", function(container)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
+    local Layout = Utils.Layout
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
     
@@ -94,7 +95,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     --- Create a collapsible section header
     local function CreateSectionHeader(sectionKey, label, count, yOffset, color, costText)
         local section = GetFrame("section")
-        local SECTION_HEIGHT = 28
+        local SECTION_HEIGHT = Layout.sectionHeight
         
         section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
         section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)

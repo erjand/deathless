@@ -131,6 +131,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
     Deathless.UI.Views:Register(viewName, function(container, options)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
+        local Layout = Utils.Layout
         local embedded = options and options.embedded
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
@@ -595,7 +596,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
 
         local function CreateSectionHeaderAt(sectionKey, label, count, yOffset, color, iconKey)
             local section = GetSectionHeader()
-            local SECTION_HEIGHT = 28
+            local SECTION_HEIGHT = Layout.sectionHeight
 
             section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
             section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)

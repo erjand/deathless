@@ -31,6 +31,7 @@ local MiniSections = (Deathless.Constants and Deathless.Constants.MiniSections) 
 --- Options view content
 Deathless.UI.Views:Register("options", function(container)
     local Colors = Utils:GetColors()
+    local Layout = Utils.Layout
     local CONTENT_LEFT = 12
     local CONTENT_RIGHT = -12
     
@@ -43,7 +44,7 @@ Deathless.UI.Views:Register("options", function(container)
     local COL_WIDTH = 150
     local COL_GAP = 24
     local ROW_HEIGHT = 24
-    local SECTION_HEIGHT = 28
+    local SECTION_HEIGHT = Layout.sectionHeight
     local WARNING_COLUMNS = 3
     local MINI_COLUMNS = 2
     local CLASS_ROWS = 3
@@ -85,7 +86,6 @@ Deathless.UI.Views:Register("options", function(container)
     
     --- Get a pooled collapsible section header
     local function GetSectionHeader(sectionKey, label, yOffset)
-        local Fonts = Deathless.UI.Fonts
         local section = GetPooledElement("section", function()
             return Utils:CreateCollapsibleSection(scrollChild)
         end)
@@ -94,10 +94,6 @@ Deathless.UI.Views:Register("options", function(container)
         section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
         
         Utils:ConfigureSection(section, sectionState[sectionKey], label, Colors.accent)
-        
-        -- Use larger font for main section headers
-        section.label:SetFont(Fonts.family, Fonts.sectionHeader, "")
-        section.icon:SetFont(Fonts.icons, Fonts.sectionHeader, "")
         
         section.sectionKey = sectionKey
         section:SetScript("OnClick", function(self)

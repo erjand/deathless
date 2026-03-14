@@ -9,13 +9,21 @@ Deathless.UI.Views.Utils = {}
 -- Expose Fonts globally for easier access
 Deathless.UI.Fonts = Deathless.Constants.Fonts
 Deathless.UI.Views.Utils.Fonts = Deathless.UI.Fonts
+local SectionHeaderStyle = (Deathless.Constants and Deathless.Constants.UI and Deathless.Constants.UI.SectionHeader) or {
+    bgAlpha = 0.4,
+    hoverAlpha = 0.6,
+    height = 28,
+    iconOffsetX = 8,
+    labelOffsetX = 6,
+}
 
 Deathless.UI.Views.Utils.Layout = {
     rowHeight = 26,
     subRowHeight = 22,
-    sectionHeight = 28,
+    sectionHeight = SectionHeaderStyle.height,
     iconSize = 18,
     iconSizeSmall = 16,
+    introSectionGap = 17,
     padding = 12,
     paddingSmall = 8,
 }
@@ -103,19 +111,19 @@ function Deathless.UI.Views.Utils:CreateCollapsibleSection(parent)
     local Fonts = Deathless.UI.Fonts
     
     local section = CreateFrame("Button", nil, parent)
-    section:SetHeight(28)
+    section:SetHeight(SectionHeaderStyle.height)
     
     section.bg = section:CreateTexture(nil, "BACKGROUND")
     section.bg:SetAllPoints()
-    section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.4)
+    section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], SectionHeaderStyle.bgAlpha)
     
     section.icon = section:CreateFontString(nil, "OVERLAY")
     section.icon:SetFont(Fonts.icons, Fonts.subtitle, "")
-    section.icon:SetPoint("LEFT", section, "LEFT", 8, 0)
+    section.icon:SetPoint("LEFT", section, "LEFT", SectionHeaderStyle.iconOffsetX, 0)
     
     section.label = section:CreateFontString(nil, "OVERLAY")
     section.label:SetFont(Fonts.family, Fonts.subtitle, "")
-    section.label:SetPoint("LEFT", section.icon, "RIGHT", 6, 0)
+    section.label:SetPoint("LEFT", section.icon, "RIGHT", SectionHeaderStyle.labelOffsetX, 0)
     
     section.count = section:CreateFontString(nil, "OVERLAY")
     section.count:SetFont(Fonts.family, Fonts.body, "")
@@ -127,10 +135,10 @@ function Deathless.UI.Views.Utils:CreateCollapsibleSection(parent)
     section.cost:SetPoint("LEFT", section.count, "RIGHT", 8, 0)
     
     section:SetScript("OnEnter", function(self)
-        self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 0.6)
+        self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, SectionHeaderStyle.hoverAlpha)
     end)
     section:SetScript("OnLeave", function(self)
-        self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.4)
+        self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], SectionHeaderStyle.bgAlpha)
     end)
     
     return section

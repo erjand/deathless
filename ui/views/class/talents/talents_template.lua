@@ -1,6 +1,13 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
+local SectionHeaderStyle = (Deathless.Constants and Deathless.Constants.UI and Deathless.Constants.UI.SectionHeader) or {
+    bgAlpha = 0.4,
+    hoverAlpha = 0.6,
+    height = 28,
+    iconOffsetX = 8,
+    labelOffsetX = 6,
+}
 
 -- Store template for reuse
 Deathless.UI.Views.TalentsTemplate = {}
@@ -77,28 +84,28 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             local section = sectionPool[sectionIndex]
             if not section then
                 section = CreateFrame("Button", nil, scrollChild)
-                section:SetHeight(32)
+                section:SetHeight(SectionHeaderStyle.height)
                 
                 section.bg = section:CreateTexture(nil, "BACKGROUND")
                 section.bg:SetAllPoints()
                 
                 section.icon = section:CreateFontString(nil, "OVERLAY")
                 section.icon:SetFont(Fonts.icons, Fonts.subtitle, "")
-                section.icon:SetPoint("LEFT", section, "LEFT", 12, 0)
+                section.icon:SetPoint("LEFT", section, "LEFT", SectionHeaderStyle.iconOffsetX, 0)
                 
                 section.label = section:CreateFontString(nil, "OVERLAY")
-                section.label:SetFont(Fonts.family, Fonts.sectionHeader, "")
-                section.label:SetPoint("LEFT", section.icon, "RIGHT", 6, 0)
+                section.label:SetFont(Fonts.family, Fonts.subtitle, "")
+                section.label:SetPoint("LEFT", section.icon, "RIGHT", SectionHeaderStyle.labelOffsetX, 0)
                 
                 section.points = section:CreateFontString(nil, "OVERLAY")
                 section.points:SetFont(Fonts.family, Fonts.body, "")
                 section.points:SetPoint("LEFT", section.label, "RIGHT", 10, 0)
                 
                 section:SetScript("OnEnter", function(self)
-                    self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 0.8)
+                    self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, SectionHeaderStyle.hoverAlpha)
                 end)
                 section:SetScript("OnLeave", function(self)
-                    self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.6)
+                    self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], SectionHeaderStyle.bgAlpha)
                 end)
                 
                 sectionPool[sectionIndex] = section
@@ -214,7 +221,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
             section:Show()
             
-            section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.6)
+            section.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], SectionHeaderStyle.bgAlpha)
             section.icon:SetText(isExpanded and "▼" or "►")
             section.icon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             
@@ -238,7 +245,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 PopulateContent()
             end)
             
-            yOffset = yOffset - 32
+            yOffset = yOffset - SectionHeaderStyle.height
             
             if not isExpanded then
                 return yOffset - 8
@@ -483,7 +490,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             introText:SetText("Generally recommended HC builds for " .. ColorizeText(classColor, className) .. " - adjust as desired")
             introText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             introText:Show()
-            yOffset = yOffset - (introText:GetStringHeight() or 14) - 17
+            yOffset = yOffset - (introText:GetStringHeight() or 14) - Layout.introSectionGap
             
             for _, build in ipairs(builds) do
                 yOffset = CreateBuildSection(build, yOffset)

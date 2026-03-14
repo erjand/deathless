@@ -108,6 +108,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
     Deathless.UI.Views:Register(viewName, function(container, options)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
+        local Layout = Utils.Layout
         local embedded = options and options.embedded
 
         local title, subtitle
@@ -224,7 +225,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
                 PopulateContent()
             end)
             section:Show()
-            return yOffset - 28
+            return yOffset - Layout.sectionHeight
         end
 
         local function RenderStatsRows(rows, yOffset)
@@ -340,7 +341,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             intro:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             intro:Show()
 
-            local yOffset = -(intro:GetStringHeight() or 14) - 12
+            local yOffset = -(intro:GetStringHeight() or 14) - Layout.introSectionGap
 
             yOffset = AddSection("primary", "Primary", yOffset)
             if sectionState.primary then

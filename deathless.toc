@@ -66,6 +66,7 @@ ui\views\class\abilities\druid_abilities.lua
 ui\views\class\abilities\warlock_abilities.lua
 ui\views\class\gear\gear_template.lua
 ui\views\class\macros\macros_template.lua
+ui\views\class\stats\stats_template.lua
 ui\content.lua
 ui\frame.lua
 ui\mini.lua
@@ -100,6 +101,7 @@ data\macros\rogue.lua
 data\macros\shaman.lua
 data\macros\warlock.lua
 data\macros\warrior.lua
+data\stats\warrior.lua
 data\abilities\warrior.lua
 data\abilities\paladin.lua
 data\abilities\hunter.lua

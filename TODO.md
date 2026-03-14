@@ -11,6 +11,7 @@
 - [ ] Feature: Max level mode to disable leveling stuff?
 - [ ] Feature: AtlasLoot for dungeons? (AL is soooo bad)
 - [ ] Feature: Equipment swap (Itemrack and Outfiteer are both really bad)
+- [ ] Satellite addon pattern (like RestedXP) for individual Talent guides / packages
 
 ## UI
 
@@ -22,8 +23,6 @@
 - [ ] I have throwing weapon warning working, but couldn't get ammo for ranged weapons working (March 2026) - revisit
 
 ## Classes
-
-- [ ] Add Stats page for each class, to include: what you get per each stat; important breakpoints; things like hit chance; general stat prio for HC
 
 ### Abilities
 
@@ -47,6 +46,18 @@
 - [ ] Armor: Wrist
 - [ ] Ranged
 - [ ] Weapons
+
+### Stats
+
+- [ ] Stats: Druid
+- [ ] Stats: Hunter
+- [ ] Stats: Mage
+- [ ] Stats: Paladin
+- [ ] Stats: Priest
+- [ ] Stats: Rogue
+- [ ] Stats: Shaman
+- [ ] Stats: Warlock
+- [ ] Stats: Warrior
 
 #### Warrior
 

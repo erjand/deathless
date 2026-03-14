@@ -7,7 +7,7 @@ Deathless.Data.Talents = Deathless.Data.Talents or {}
 Deathless.Data.Talents.Warrior = {
     {
         name = "Fury (10-30) (0/21/0)",
-        description = "Early leveling fury build for consistent damage.",
+        description = "Early leveling fury build for consistent damage. Use 1h + shield until level 20, then either 2h or dual-wield based on your best weapons.",
         progression = {
             { 
                 levels = "10-14", talent = "Cruelty", points = "5/5", spellId = 12856,
@@ -59,7 +59,7 @@ Deathless.Data.Talents.Warrior = {
     },
     {
         name = "Arms Sweeping Strikes (30-50) (31/10/0)",
-        description = "Respec at 30 for Sweeping Strikes and Mortal Strike.",
+        description = "Respec at 30 for Sweeping Strikes and Mortal Strike. Use your best 2h weapon until around level 50.",
         progression = {
             { 
                 levels = "10-11", talent = "Deflection", points = "2/5", spellId = 16463,
@@ -161,7 +161,7 @@ Deathless.Data.Talents.Warrior = {
     },
     {
         name = "Fury Bloodthirst (50-59) (13/37/0)",
-        description = "Respec at 50 for Bloodthirst dual-wield build.",
+        description = "Respec at 50 for a Bloodthirst dual-wield build once you have two good 1h weapons.",
         progression = {
             { 
                 levels = "10-14", talent = "Cruelty", points = "5/5", spellId = 12856,

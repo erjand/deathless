@@ -30,12 +30,13 @@ local function GetClassTabs(className, displayName)
         { id = className .. "_abilities", label = "Abilities" },
         { id = className .. "_gear", label = "Gear" },
         { id = className .. "_macros", label = "Macros" },
+        { id = className .. "_stats", label = "Stats" },
         { id = className .. "_talents", label = "Talents" },
     }
     return tabs
 end
 
---- Factory: create a tabbed class view with Abilities/Talents/Gear/Macros tabs
+--- Factory: create a tabbed class view with class tabs
 ---@param className string Lowercase class name
 ---@param displayName string Display name
 ---@return function View creator

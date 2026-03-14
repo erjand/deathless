@@ -5,7 +5,7 @@ local function SlashCommandHandler(msg)
     local cmd = msg and msg:lower():trim() or ""
 
     --- Open the player's class view and select a class tab.
-    ---@param suffix string Tab suffix (e.g., "abilities", "talents", "gear")
+    ---@param suffix string Tab suffix (e.g., "abilities", "talents", "gear", "stats")
     local function OpenCurrentClassTab(suffix)
         if Deathless.UI and Deathless.UI.Frame then
             Deathless.UI.Frame:Show()
@@ -46,6 +46,7 @@ local function SlashCommandHandler(msg)
         Deathless.Utils.Chat.Print("/deathless gear (/dls g) - Open your class Gear tab")
         Deathless.Utils.Chat.Print("/deathless mini (/dls m) - Toggle the mini summary")
         Deathless.Utils.Chat.Print("/deathless options (/dls o) - Open the Options view")
+        Deathless.Utils.Chat.Print("/deathless stats (/dls s) - Open your class Stats tab")
         Deathless.Utils.Chat.Print("/deathless talents (/dls t) - Open your class Talents tab")
     end
     
@@ -108,6 +109,12 @@ local function SlashCommandHandler(msg)
     -- /deathless abilities - open main UI to the player's class abilities tab
     if cmd == "abilities" or cmd == "ability" or cmd == "a" then
         OpenCurrentClassTab("abilities")
+        return
+    end
+
+    -- /deathless stats - open main UI to the player's class stats tab
+    if cmd == "stats" or cmd == "stat" or cmd == "s" then
+        OpenCurrentClassTab("stats")
         return
     end
 

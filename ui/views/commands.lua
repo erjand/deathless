@@ -12,6 +12,7 @@ local COMMANDS = {
     { command = "/deathless gear", alias = "/dls g", description = "Open your class Gear tab" },
     { command = "/deathless mini", alias = "/dls m", description = "Toggle the mini summary overlay" },
     { command = "/deathless options", alias = "/dls o", description = "Open the Options view" },
+    { command = "/deathless stats", alias = "/dls s", description = "Open your class Stats tab" },
     { command = "/deathless talents", alias = "/dls t", description = "Open your class Talents tab" },
     
 }

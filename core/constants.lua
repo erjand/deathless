@@ -111,6 +111,26 @@ Deathless.Constants.Colors = {
             sizeMedium = 18,
             sizeLarge = 20,
         },
+        Controls = {
+            checkbox = {
+                borderInset = 1,
+                boxSize = 14,
+                checkInset = 1,
+                controlHeight = 20,
+                labelGap = 6,
+            },
+            search = {
+                clearButtonOffsetX = -2,
+                clearButtonSize = 16,
+                defaultMaxLetters = 50,
+                defaultWidth = 180,
+                height = 20,
+                labelOffsetX = 2,
+                labelOffsetY = 2,
+                textInsetLeft = 4,
+                textInsetRight = 20,
+            },
+        },
         TableLayouts = {
             Abilities = {
                 rowHeight = 26,

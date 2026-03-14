@@ -133,40 +133,11 @@ Deathless.UI.Views:Register("dungeons", function(container)
     filterState.inLevelRange = Deathless.config.dungeons.inLevelRange == true
 
     -- Search bar
-    local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-    searchBox:SetSize(180, 20)
-    searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, ViewOffsets.dungeons.searchY)
-    searchBox:SetFont(Fonts.family, Fonts.body, "")
-    searchBox:SetAutoFocus(false)
-    searchBox:SetMaxLetters(50)
-    searchBox:SetTextInsets(4, 20, 0, 0)
-
-    local searchLabel = container:CreateFontString(nil, "OVERLAY")
-    searchLabel:SetFont(Fonts.family, Fonts.small, "")
-    searchLabel:SetPoint("BOTTOMLEFT", searchBox, "TOPLEFT", 2, 2)
-    searchLabel:SetText("Search")
-    searchLabel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-
-    -- Clear button (X)
-    local clearBtn = CreateFrame("Button", nil, searchBox)
-    clearBtn:SetSize(16, 16)
-    clearBtn:SetPoint("RIGHT", searchBox, "RIGHT", -2, 0)
-    clearBtn.text = clearBtn:CreateFontString(nil, "OVERLAY")
-    clearBtn.text:SetFont(Fonts.family, Fonts.body, "")
-    clearBtn.text:SetPoint("CENTER")
-    clearBtn.text:SetText("×")
-    clearBtn.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-    clearBtn:Hide()
-    clearBtn:SetScript("OnClick", function()
-        searchBox:SetText("")
-        searchBox:ClearFocus()
-    end)
-    clearBtn:SetScript("OnEnter", function(self)
-        self.text:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-    end)
-    clearBtn:SetScript("OnLeave", function(self)
-        self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-    end)
+    local searchBox, searchLabel, clearBtn = Utils:CreateSearchControl(container, {
+        x = 24,
+        y = ViewOffsets.dungeons.searchY,
+        label = "Search",
+    })
 
     local function SaveFilterState()
         Deathless.config.dungeons = Deathless.config.dungeons or {}
@@ -175,41 +146,18 @@ Deathless.UI.Views:Register("dungeons", function(container)
     end
 
     local function UpdateFilterCheckboxVisual(button, checked)
-        if checked then
-            button.check:Show()
-            button.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-        else
-            button.check:Hide()
-            button.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        end
+        Utils:SetFilterCheckboxVisual(button, checked)
     end
 
     local PopulateRows
 
     local function CreateFilterCheckbox()
-        local button = CreateFrame("Button", nil, container)
-        button:SetSize(130, 20)
-        button:SetPoint("LEFT", searchBox, "RIGHT", 16, 0)
-
-        button.box = button:CreateTexture(nil, "BACKGROUND")
-        button.box:SetSize(14, 14)
-        button.box:SetPoint("LEFT", button, "LEFT", 0, 0)
-        button.box:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
-
-        button.border = button:CreateTexture(nil, "BORDER")
-        button.border:SetPoint("TOPLEFT", button.box, "TOPLEFT", -1, 1)
-        button.border:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", 1, -1)
-        button.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
-
-        button.check = button:CreateTexture(nil, "ARTWORK")
-        button.check:SetPoint("TOPLEFT", button.box, "TOPLEFT", 1, -1)
-        button.check:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", -1, 1)
-        button.check:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
-
-        button.label = button:CreateFontString(nil, "OVERLAY")
-        button.label:SetFont(Fonts.family, Fonts.small, "")
-        button.label:SetPoint("LEFT", button.box, "RIGHT", 6, 0)
-        button.label:SetText("In Level Range")
+        local button = Utils:CreateFilterCheckboxControl(container, {
+            width = 130,
+            xOffset = 16,
+            relativeTo = searchBox,
+            label = "In Level Range",
+        })
 
         UpdateFilterCheckboxVisual(button, filterState.inLevelRange)
 

@@ -35,6 +35,7 @@ Deathless.UI.Views:Register("options", function(container)
     local Colors = Utils:GetColors()
     local Layout = Utils.Layout
     local IconStyle = Deathless.Constants.Colors.UI.Icon
+    local ControlStyle = Deathless.Constants.Colors.UI.Controls
     local CONTENT_LEFT = 12
     local CONTENT_RIGHT = -12
     
@@ -119,7 +120,7 @@ Deathless.UI.Views:Register("options", function(container)
             
             -- Checkbox button (visual only, clicks pass to parent)
             f.btn = CreateFrame("Frame", nil, f)
-            f.btn:SetSize(14, 14)
+            f.btn:SetSize(ControlStyle.checkbox.boxSize, ControlStyle.checkbox.boxSize)
             f.btn:SetPoint("LEFT", f, "LEFT", 0, 0)
             f.btn:EnableMouse(false)
             
@@ -130,21 +131,21 @@ Deathless.UI.Views:Register("options", function(container)
             
             -- Checkbox border
             f.btn.border = f.btn:CreateTexture(nil, "BORDER")
-            f.btn.border:SetPoint("TOPLEFT", -1, 1)
-            f.btn.border:SetPoint("BOTTOMRIGHT", 1, -1)
+            f.btn.border:SetPoint("TOPLEFT", -ControlStyle.checkbox.borderInset, ControlStyle.checkbox.borderInset)
+            f.btn.border:SetPoint("BOTTOMRIGHT", ControlStyle.checkbox.borderInset, -ControlStyle.checkbox.borderInset)
             f.btn.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
             
             -- Filled check indicator
             f.btn.check = f.btn:CreateTexture(nil, "ARTWORK")
-            f.btn.check:SetPoint("TOPLEFT", f.btn, "TOPLEFT", 1, -1)
-            f.btn.check:SetPoint("BOTTOMRIGHT", f.btn, "BOTTOMRIGHT", -1, 1)
+            f.btn.check:SetPoint("TOPLEFT", f.btn, "TOPLEFT", ControlStyle.checkbox.checkInset, -ControlStyle.checkbox.checkInset)
+            f.btn.check:SetPoint("BOTTOMRIGHT", f.btn, "BOTTOMRIGHT", -ControlStyle.checkbox.checkInset, ControlStyle.checkbox.checkInset)
             f.btn.check:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
             f.btn.check:Hide()
             
             -- Icon placeholder
             f.icon = f:CreateTexture(nil, "ARTWORK")
             f.icon:SetSize(IconStyle.sizeSmall, IconStyle.sizeSmall)
-            f.icon:SetPoint("LEFT", f.btn, "RIGHT", 6, 0)
+            f.icon:SetPoint("LEFT", f.btn, "RIGHT", ControlStyle.checkbox.labelGap, 0)
             f.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
             
             -- Label
@@ -239,11 +240,11 @@ Deathless.UI.Views:Register("options", function(container)
             frame.icon:SetTexture(icon)
             frame.icon:Show()
             UIUtils.ApplyIconStyle(frame.icon, "normal")
-            frame.label:SetPoint("LEFT", frame.icon, "RIGHT", 4, 0)
+            frame.label:SetPoint("LEFT", frame.icon, "RIGHT", ControlStyle.checkbox.labelGap - 2, 0)
             frame.tooltipIcon = icon
         else
             frame.icon:Hide()
-            frame.label:SetPoint("LEFT", frame.btn, "RIGHT", 6, 0)
+            frame.label:SetPoint("LEFT", frame.btn, "RIGHT", ControlStyle.checkbox.labelGap, 0)
             frame.tooltipIcon = nil
         end
         

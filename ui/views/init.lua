@@ -34,6 +34,112 @@ function Deathless.UI.Views.Utils:GetColors()
     return Deathless.UI.Colors
 end
 
+--- Create a standard search input with label and clear button.
+---@param parent Frame
+---@param opts table { x, y, width, maxLetters, label, onClear }
+---@return table, FontString, Button
+function Deathless.UI.Views.Utils:CreateSearchControl(parent, opts)
+    opts = opts or {}
+    local Colors = self:GetColors()
+    local Fonts = Deathless.UI.Fonts
+    local searchStyle = Deathless.Constants.Colors.UI.Controls.search
+
+    local searchBox = CreateFrame("EditBox", nil, parent, "InputBoxTemplate")
+    searchBox:SetSize(opts.width or searchStyle.defaultWidth, searchStyle.height)
+    searchBox:SetPoint("TOPLEFT", parent, "TOPLEFT", opts.x or 24, opts.y or -60)
+    searchBox:SetFont(Fonts.family, Fonts.body, "")
+    searchBox:SetAutoFocus(false)
+    searchBox:SetMaxLetters(opts.maxLetters or searchStyle.defaultMaxLetters)
+    searchBox:SetTextInsets(searchStyle.textInsetLeft, searchStyle.textInsetRight, 0, 0)
+
+    local searchLabel = parent:CreateFontString(nil, "OVERLAY")
+    searchLabel:SetFont(Fonts.family, Fonts.small, "")
+    searchLabel:SetPoint("BOTTOMLEFT", searchBox, "TOPLEFT", searchStyle.labelOffsetX, searchStyle.labelOffsetY)
+    searchLabel:SetText(opts.label or "Search")
+    searchLabel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
+    local clearBtn = CreateFrame("Button", nil, searchBox)
+    clearBtn:SetSize(searchStyle.clearButtonSize, searchStyle.clearButtonSize)
+    clearBtn:SetPoint("RIGHT", searchBox, "RIGHT", searchStyle.clearButtonOffsetX, 0)
+    clearBtn:SetNormalFontObject("GameFontNormalSmall")
+    clearBtn.text = clearBtn:CreateFontString(nil, "OVERLAY")
+    clearBtn.text:SetFont(Fonts.family, Fonts.body, "")
+    clearBtn.text:SetPoint("CENTER")
+    clearBtn.text:SetText("×")
+    clearBtn.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    clearBtn:Hide()
+    clearBtn:SetScript("OnClick", function()
+        if opts.onClear then
+            opts.onClear()
+        else
+            searchBox:SetText("")
+            searchBox:ClearFocus()
+        end
+    end)
+    clearBtn:SetScript("OnEnter", function(self)
+        self.text:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+    end)
+    clearBtn:SetScript("OnLeave", function(self)
+        self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    end)
+
+    return searchBox, searchLabel, clearBtn
+end
+
+--- Create a standard filter checkbox row (box + check + label).
+---@param parent Frame
+---@param opts table { width, xOffset, relativeTo, label }
+---@return Button
+function Deathless.UI.Views.Utils:CreateFilterCheckboxControl(parent, opts)
+    opts = opts or {}
+    local Colors = self:GetColors()
+    local Fonts = Deathless.UI.Fonts
+    local checkboxStyle = Deathless.Constants.Colors.UI.Controls.checkbox
+
+    local button = CreateFrame("Button", nil, parent)
+    button:SetSize(opts.width or 100, checkboxStyle.controlHeight)
+    button:SetPoint("LEFT", opts.relativeTo, "RIGHT", opts.xOffset or 0, 0)
+
+    button.box = button:CreateTexture(nil, "BACKGROUND")
+    button.box:SetSize(checkboxStyle.boxSize, checkboxStyle.boxSize)
+    button.box:SetPoint("LEFT", button, "LEFT", 0, 0)
+    button.box:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
+
+    button.border = button:CreateTexture(nil, "BORDER")
+    button.border:SetPoint("TOPLEFT", button.box, "TOPLEFT", -checkboxStyle.borderInset, checkboxStyle.borderInset)
+    button.border:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", checkboxStyle.borderInset, -checkboxStyle.borderInset)
+    button.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
+
+    button.check = button:CreateTexture(nil, "ARTWORK")
+    button.check:SetPoint("TOPLEFT", button.box, "TOPLEFT", checkboxStyle.checkInset, -checkboxStyle.checkInset)
+    button.check:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", -checkboxStyle.checkInset, checkboxStyle.checkInset)
+    button.check:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+
+    button.label = button:CreateFontString(nil, "OVERLAY")
+    button.label:SetFont(Fonts.family, Fonts.small, "")
+    button.label:SetPoint("LEFT", button.box, "RIGHT", checkboxStyle.labelGap, 0)
+    button.label:SetText(opts.label or "")
+
+    return button
+end
+
+--- Apply standard visual state to filter checkbox controls.
+---@param button Button
+---@param checked boolean
+function Deathless.UI.Views.Utils:SetFilterCheckboxVisual(button, checked)
+    local Colors = self:GetColors()
+    if not button or not button.check or not button.label then
+        return
+    end
+    if checked then
+        button.check:Show()
+        button.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+    else
+        button.check:Hide()
+        button.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+    end
+end
+
 --- Create a standard view header with title, subtitle, and separator
 ---@param container Frame The container frame
 ---@param title string The title text

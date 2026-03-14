@@ -161,40 +161,11 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         end
 
         -- Search bar
-        local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-        searchBox:SetSize(180, 20)
-        searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, searchBoxY)
-        searchBox:SetFont(Fonts.family, Fonts.body, "")
-        searchBox:SetAutoFocus(false)
-        searchBox:SetMaxLetters(50)
-        searchBox:SetTextInsets(4, 20, 0, 0)
-
-        local searchLabel = container:CreateFontString(nil, "OVERLAY")
-        searchLabel:SetFont(Fonts.family, Fonts.small, "")
-        searchLabel:SetPoint("BOTTOMLEFT", searchBox, "TOPLEFT", 2, 2)
-        searchLabel:SetText("Search")
-        searchLabel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-
-        local clearBtn = CreateFrame("Button", nil, searchBox)
-        clearBtn:SetSize(16, 16)
-        clearBtn:SetPoint("RIGHT", searchBox, "RIGHT", -2, 0)
-        clearBtn:SetNormalFontObject("GameFontNormalSmall")
-        clearBtn.text = clearBtn:CreateFontString(nil, "OVERLAY")
-        clearBtn.text:SetFont(Fonts.family, Fonts.body, "")
-        clearBtn.text:SetPoint("CENTER")
-        clearBtn.text:SetText("×")
-        clearBtn.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        clearBtn:Hide()
-        clearBtn:SetScript("OnClick", function()
-            searchBox:SetText("")
-            searchBox:ClearFocus()
-        end)
-        clearBtn:SetScript("OnEnter", function(self)
-            self.text:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-        end)
-        clearBtn:SetScript("OnLeave", function(self)
-            self.text:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        end)
+        local searchBox, searchLabel, clearBtn = Utils:CreateSearchControl(container, {
+            x = 24,
+            y = searchBoxY,
+            label = "Search",
+        })
 
         local PopulateRows
 
@@ -211,39 +182,16 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         end
 
         local function UpdateTierCheckboxVisual(button, checked)
-            if checked then
-                button.check:Show()
-                button.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-            else
-                button.check:Hide()
-                button.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-            end
+            Utils:SetFilterCheckboxVisual(button, checked)
         end
 
         local function CreateTierCheckbox(tier, displayLabel, xOffset)
-            local button = CreateFrame("Button", nil, container)
-            button:SetSize(108, 20)
-            button:SetPoint("LEFT", searchBox, "RIGHT", xOffset, 0)
-
-            button.box = button:CreateTexture(nil, "BACKGROUND")
-            button.box:SetSize(14, 14)
-            button.box:SetPoint("LEFT", button, "LEFT", 0, 0)
-            button.box:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
-
-            button.border = button:CreateTexture(nil, "BORDER")
-            button.border:SetPoint("TOPLEFT", button.box, "TOPLEFT", -1, 1)
-            button.border:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", 1, -1)
-            button.border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 1)
-
-            button.check = button:CreateTexture(nil, "ARTWORK")
-            button.check:SetPoint("TOPLEFT", button.box, "TOPLEFT", 1, -1)
-            button.check:SetPoint("BOTTOMRIGHT", button.box, "BOTTOMRIGHT", -1, 1)
-            button.check:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
-
-            button.label = button:CreateFontString(nil, "OVERLAY")
-            button.label:SetFont(Fonts.family, Fonts.small, "")
-            button.label:SetPoint("LEFT", button.box, "RIGHT", 6, 0)
-            button.label:SetText(displayLabel)
+            local button = Utils:CreateFilterCheckboxControl(container, {
+                width = 108,
+                xOffset = xOffset,
+                relativeTo = searchBox,
+                label = displayLabel,
+            })
 
             button.tier = tier
             UpdateTierCheckboxVisual(button, tierFilterState[tier] == true)

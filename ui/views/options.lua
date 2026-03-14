@@ -1,6 +1,7 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
+local UIUtils = Deathless.Utils.UI
 local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
     AMMO = "ammo",
     BANDAGES = "bandages",
@@ -32,6 +33,7 @@ local MiniSections = (Deathless.Constants and Deathless.Constants.MiniSections) 
 Deathless.UI.Views:Register("options", function(container)
     local Colors = Utils:GetColors()
     local Layout = Utils.Layout
+    local IconStyle = Deathless.Constants.Colors.UI.Icon
     local CONTENT_LEFT = 12
     local CONTENT_RIGHT = -12
     
@@ -140,7 +142,7 @@ Deathless.UI.Views:Register("options", function(container)
             
             -- Icon placeholder
             f.icon = f:CreateTexture(nil, "ARTWORK")
-            f.icon:SetSize(16, 16)
+            f.icon:SetSize(IconStyle.sizeSmall, IconStyle.sizeSmall)
             f.icon:SetPoint("LEFT", f.btn, "RIGHT", 6, 0)
             f.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
             
@@ -155,7 +157,7 @@ Deathless.UI.Views:Register("options", function(container)
 
             local function ApplyVisualState(self)
                 if not self.enabled then
-                    self:SetAlpha(0.55)
+                    self:SetAlpha(IconStyle.alphaDisabled)
                     self.hoverBg:Hide()
                     self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                     self.btn.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 1)
@@ -235,6 +237,7 @@ Deathless.UI.Views:Register("options", function(container)
         if icon then
             frame.icon:SetTexture(icon)
             frame.icon:Show()
+            UIUtils.ApplyIconStyle(frame.icon, "normal")
             frame.label:SetPoint("LEFT", frame.icon, "RIGHT", 4, 0)
             frame.tooltipIcon = icon
         else

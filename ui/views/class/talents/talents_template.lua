@@ -1,6 +1,7 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
+local UIUtils = Deathless.Utils.UI
 local SectionHeaderStyle = (Deathless.Constants and Deathless.Constants.UI and Deathless.Constants.UI.SectionHeader) or {
     bgAlpha = 0.4,
     hoverAlpha = 0.6,
@@ -30,6 +31,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
+        local RowStyle = Deathless.Constants.Colors.UI.Row
         local embedded = options and options.embedded
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
@@ -317,12 +319,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 
                 -- Alternating row background (matching abilities template)
                 local isEvenRow = rowNum % 2 == 0
-                if isEvenRow then
-                    row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.2)
-                    row.bg:Show()
-                else
-                    row.bg:Hide()
-                end
+                UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
                 
                 -- Handle both old string format and new table format
                 local levels, talentName, talentPoints, spellId, ranks
@@ -400,7 +397,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 end)
                 row:SetScript("OnLeave", function(self)
                     if self.isEvenRow then
-                        self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.2)
+                        self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], RowStyle.stripeAlpha)
                     else
                         self.bg:Hide()
                     end

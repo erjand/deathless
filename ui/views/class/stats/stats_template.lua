@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local UIUtils = Deathless.Utils.UI
 
 Deathless.UI.Views.StatsTemplate = {}
 
@@ -243,12 +244,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
                 local row = GetRow(STAT_ROW_HEIGHT)
                 row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
                 row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset)
-                if i % 2 == 0 then
-                    row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.2)
-                    row.bg:Show()
-                else
-                    row.bg:Hide()
-                end
+                UIUtils.ApplyStripedRowBackground(row, Colors, i)
                 row:Show()
 
                 local values = { data.stat, data.bonus, data.priority, data.note }
@@ -292,12 +288,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
                 local row = GetRow(COMBAT_ROW_HEIGHT)
                 row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
                 row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset)
-                if i % 2 == 0 then
-                    row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.2)
-                    row.bg:Show()
-                else
-                    row.bg:Hide()
-                end
+                UIUtils.ApplyStripedRowBackground(row, Colors, i)
                 row:Show()
 
                 for idx, fieldName in ipairs(fields) do

@@ -1,6 +1,7 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
+local UIUtils = Deathless.Utils.UI
 
 local AbilityUtils = Deathless.Utils.Abilities
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
@@ -10,6 +11,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
     local Layout = Utils.Layout
+    local IconStyle = Deathless.Constants.Colors.UI.Icon
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
     
@@ -59,7 +61,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 frame:SetHeight(26)
                 
                 frame.icon = frame:CreateTexture(nil, "ARTWORK")
-                frame.icon:SetSize(16, 16)
+                frame.icon:SetSize(IconStyle.sizeSmall, IconStyle.sizeSmall)
                 frame.icon:SetPoint("LEFT", frame, "LEFT", 0, 0)
                 frame.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
                 
@@ -211,8 +213,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                     
                     if row.icon then
                         row.icon:SetTexture(warning.icon or Icons.DEFAULT)
-                        row.icon:SetDesaturated(false)
-                        row.icon:SetAlpha(1)
+                        UIUtils.ApplyIconStyle(row.icon, "normal")
                     end
                     
                     row.name:SetText(warning.text)
@@ -267,8 +268,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                     row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, yOffset)
                     
                     row.icon:SetTexture(Icons:GetIconPath(ability.icon))
-                    row.icon:SetDesaturated(false)
-                    row.icon:SetAlpha(1)
+                    UIUtils.ApplyIconStyle(row.icon, "normal")
                     row.level:Hide()
                     
                     local nameText = ability.name
@@ -328,8 +328,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                     row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, yOffset)
                     
                     row.icon:SetTexture(Icons:GetIconPath(ability.icon))
-                    row.icon:SetDesaturated(true)
-                    row.icon:SetAlpha(0.6)
+                    UIUtils.ApplyIconStyle(row.icon, "dimmed")
                     row.level:Hide()
                     
                     local nameText = ability.name

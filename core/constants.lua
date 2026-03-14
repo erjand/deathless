@@ -96,6 +96,21 @@ Deathless.Constants.Colors = {
             smoothSpeed = 0.25,
             smoothThreshold = 0.5,
         },
+        Row = {
+            stripeAlpha = 0.2,
+            expandedAlpha = 0.4,
+        },
+        Icon = {
+            alphaNormal = 1,
+            alphaMuted = 0.8,
+            alphaDimmed = 0.6,
+            alphaFaded = 0.5,
+            alphaDisabled = 0.55,
+            sizeTiny = 14,
+            sizeSmall = 16,
+            sizeMedium = 18,
+            sizeLarge = 20,
+        },
     },
 }
 

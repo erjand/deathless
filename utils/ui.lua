@@ -17,6 +17,76 @@ function Deathless.Utils.UI.CreateFontString(parent, font, size, outline)
     return fs
 end
 
+local function GetUIStyle()
+    local ui = Deathless.Constants and Deathless.Constants.Colors and Deathless.Constants.Colors.UI
+    local row = (ui and ui.Row) or { stripeAlpha = 0.2, expandedAlpha = 0.4 }
+    local icon = (ui and ui.Icon) or {
+        alphaNormal = 1,
+        alphaMuted = 0.8,
+        alphaDimmed = 0.6,
+        alphaFaded = 0.5,
+        alphaDisabled = 0.55,
+        sizeTiny = 14,
+        sizeSmall = 16,
+        sizeMedium = 18,
+        sizeLarge = 20,
+    }
+    return row, icon
+end
+
+local RowBackgroundCache = setmetatable({}, { __mode = "k" })
+
+--- Apply standard striped row background styling.
+---@param row Frame
+---@param colors table
+---@param rowNum number
+---@param isExpanded boolean|nil
+function Deathless.Utils.UI.ApplyStripedRowBackground(row, colors, rowNum, isExpanded)
+    local rowStyle = GetUIStyle()
+    local style = rowStyle
+    local bg = RowBackgroundCache[row]
+    if not bg then
+        bg = row:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints()
+        RowBackgroundCache[row] = bg
+    end
+
+    if isExpanded then
+        bg:SetColorTexture(colors.bgLight[1], colors.bgLight[2], colors.bgLight[3], style.expandedAlpha)
+        bg:Show()
+    elseif rowNum and rowNum % 2 == 0 then
+        bg:SetColorTexture(colors.bgLight[1], colors.bgLight[2], colors.bgLight[3], style.stripeAlpha)
+        bg:Show()
+    else
+        bg:Hide()
+    end
+end
+
+--- Apply standard icon desaturation/alpha mode.
+---@param icon Texture
+---@param mode string|nil normal|muted|dimmed|faded|disabled
+function Deathless.Utils.UI.ApplyIconStyle(icon, mode)
+    local _, iconStyle = GetUIStyle()
+    local preset = mode or "normal"
+
+    if preset == "muted" then
+        icon:SetDesaturated(true)
+        icon:SetAlpha(iconStyle.alphaMuted)
+    elseif preset == "dimmed" then
+        icon:SetDesaturated(true)
+        icon:SetAlpha(iconStyle.alphaDimmed)
+    elseif preset == "faded" then
+        icon:SetDesaturated(true)
+        icon:SetAlpha(iconStyle.alphaFaded)
+    elseif preset == "disabled" then
+        icon:SetDesaturated(true)
+        icon:SetAlpha(iconStyle.alphaDisabled)
+    else
+        icon:SetDesaturated(false)
+        icon:SetAlpha(iconStyle.alphaNormal)
+    end
+end
+
 --- Create a thin auto-hiding scroll indicator for a scroll frame.
 ---@param scrollFrame ScrollFrame
 ---@param scrollChild Frame

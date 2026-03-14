@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local UIUtils = Deathless.Utils.UI
 local Factions = Deathless.Constants and Deathless.Constants.Factions or {
     ALLIANCE = "Alliance",
     HORDE = "Horde",
@@ -114,6 +115,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
     local Colors = Utils:GetColors()
     local Fonts = Deathless.UI.Fonts
     local Layout = Utils.Layout
+    local RowStyle = Deathless.Constants.Colors.UI.Row
     local CONTENT_LEFT = 12
     local CONTENT_RIGHT = -12
 
@@ -671,25 +673,13 @@ Deathless.UI.Views:Register("dungeons", function(container)
         row:Show()
 
         -- Alternating row background
-        if not row.bg then
-            row.bg = row:CreateTexture(nil, "BACKGROUND")
-            row.bg:SetAllPoints()
-        end
-        if isExpanded then
-            row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.4)
-            row.bg:Show()
-        elseif rowNum % 2 == 0 then
-            row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.2)
-            row.bg:Show()
-        else
-            row.bg:Hide()
-        end
+        UIUtils.ApplyStripedRowBackground(row, Colors, rowNum, isExpanded)
 
         -- Hover highlight
         if not row.highlight then
             row.highlight = row:CreateTexture(nil, "HIGHLIGHT")
             row.highlight:SetAllPoints()
-            row.highlight:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.08)
+            row.highlight:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], RowStyle.stripeAlpha * 0.4)
         end
 
         -- Expand indicator

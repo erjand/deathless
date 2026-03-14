@@ -40,6 +40,7 @@ function Deathless.UI.MiniSummary:Create()
     local Colors = Deathless.UI.Colors
     local CreatePixelBorder = Deathless.UI.CreatePixelBorder
     local PinUtils = Deathless.Utils.UI
+    local IconStyle = Deathless.Constants.Colors.UI.Icon
     
     -- Create main frame
     local frame = CreateFrame("Frame", "DeathlessMiniSummary", UIParent, "BackdropTemplate")
@@ -186,6 +187,8 @@ function Deathless.UI.MiniSummary:SetupContent()
     local scrollFrame = frame.scrollFrame
     local Colors = Deathless.UI.Colors
     local Fonts = Deathless.UI.Fonts
+    local IconStyle = Deathless.Constants.Colors.UI.Icon
+    local UIUtils = Deathless.Utils.UI
     
     -- Section collapse state
     local sectionState = { warnings = true, xp = true, available = true, nextAvailable = true }
@@ -290,10 +293,11 @@ function Deathless.UI.MiniSummary:SetupContent()
                     row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
                     
                     local rowIcon = row:CreateTexture(nil, "ARTWORK")
-                    rowIcon:SetSize(14, 14)
+                    rowIcon:SetSize(IconStyle.sizeTiny, IconStyle.sizeTiny)
                     rowIcon:SetPoint("LEFT", row, "LEFT", 0, 0)
                     rowIcon:SetTexture(warning.icon or Icons.DEFAULT)
                     rowIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+                    UIUtils.ApplyIconStyle(rowIcon, "normal")
                     
                     local rowText = row:CreateFontString(nil, "OVERLAY")
                     rowText:SetFont(Fonts.family, Fonts.small, "")
@@ -479,10 +483,11 @@ function Deathless.UI.MiniSummary:SetupContent()
                     row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
                     
                     local icon = row:CreateTexture(nil, "ARTWORK")
-                    icon:SetSize(14, 14)
+                    icon:SetSize(IconStyle.sizeTiny, IconStyle.sizeTiny)
                     icon:SetPoint("LEFT", row, "LEFT", 0, 0)
                     icon:SetTexture(Icons:GetIconPath(ability.icon))
                     icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+                    UIUtils.ApplyIconStyle(icon, "normal")
                     
                     local nameText = ability.name
                     if ability.rank and ability.rank > 1 then
@@ -577,12 +582,11 @@ function Deathless.UI.MiniSummary:SetupContent()
                     row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset)
                     
                     local icon = row:CreateTexture(nil, "ARTWORK")
-                    icon:SetSize(14, 14)
+                    icon:SetSize(IconStyle.sizeTiny, IconStyle.sizeTiny)
                     icon:SetPoint("LEFT", row, "LEFT", 0, 0)
                     icon:SetTexture(Icons:GetIconPath(ability.icon))
                     icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-                    icon:SetDesaturated(true)
-                    icon:SetAlpha(0.6)
+                    UIUtils.ApplyIconStyle(icon, "dimmed")
                     
                     local nameText = ability.name
                     if ability.rank and ability.rank > 1 then

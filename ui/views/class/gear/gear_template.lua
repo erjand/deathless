@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local UIUtils = Deathless.Utils.UI
 
 Deathless.UI.Views.GearTemplate = {}
 
@@ -33,7 +34,7 @@ local SLOT_ICONS = {
 }
 
 -- Column layout
-local ICON_SIZE = 18
+local ICON_SIZE = Deathless.Constants.Colors.UI.Icon.sizeMedium
 local ICON_PAD = 4
 local COL = {
     name   = { x = 16,  w = 190 },
@@ -107,14 +108,14 @@ end
 local function AttachSlotIcon(frame, iconKey)
     if not frame.slotIcon then
         frame.slotIcon = frame:CreateTexture(nil, "ARTWORK")
-        frame.slotIcon:SetSize(20, 20)
+        local iconStyle = Deathless.Constants.Colors.UI.Icon
+        frame.slotIcon:SetSize(iconStyle.sizeLarge, iconStyle.sizeLarge)
     end
 
     local texture = SLOT_ICONS[iconKey]
     if texture then
         frame.slotIcon:SetTexture(texture)
-        frame.slotIcon:SetDesaturated(true)
-        frame.slotIcon:SetAlpha(0.8)
+        UIUtils.ApplyIconStyle(frame.slotIcon, "muted")
         frame.slotIcon:Show()
     else
         frame.slotIcon:Hide()
@@ -132,6 +133,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
+        local IconStyle = Deathless.Constants.Colors.UI.Icon
         local embedded = options and options.embedded
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
@@ -490,23 +492,14 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             end)
 
             -- Alternating row bg
-            if not row.bg then
-                row.bg = row:CreateTexture(nil, "BACKGROUND")
-                row.bg:SetAllPoints()
-            end
-            if rowNum % 2 == 0 then
-                row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.2)
-                row.bg:Show()
-            else
-                row.bg:Hide()
-            end
+            UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
 
             -- Item icon
             local iconX = COL.name.x + indent
             if item.itemId then
                 if not row.itemIcon then
                     row.itemIcon = row:CreateTexture(nil, "ARTWORK")
-                    row.itemIcon:SetSize(ICON_SIZE, ICON_SIZE)
+                    row.itemIcon:SetSize(IconStyle.sizeMedium, IconStyle.sizeMedium)
                 end
                 row.itemIcon:ClearAllPoints()
                 row.itemIcon:SetPoint("LEFT", row, "LEFT", iconX, 0)

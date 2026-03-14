@@ -24,6 +24,7 @@ local function FormatMoney(copper)
 end
 
 local AbilityUtils = Deathless.Utils.Abilities
+local UIUtils = Deathless.Utils.UI
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
 local ColorCodes = Deathless.Constants.Colors.Codes
@@ -105,6 +106,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
+        local IconStyle = Deathless.Constants.Colors.UI.Icon
         local embedded = options and options.embedded
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
@@ -374,28 +376,17 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                 GameTooltip:Hide()
             end)
             
-            if not row.bg then
-                row.bg = row:CreateTexture(nil, "BACKGROUND")
-                row.bg:SetAllPoints()
-            end
-            if rowNum % 2 == 0 then
-                row.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.2)
-                row.bg:Show()
-            else
-                row.bg:Hide()
-            end
+            UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
             
             local icon = row:CreateTexture(nil, "ARTWORK")
-            icon:SetSize(18, 18)
+            icon:SetSize(IconStyle.sizeMedium, IconStyle.sizeMedium)
             icon:SetPoint("LEFT", row, "LEFT", 16, 0)
             icon:SetTexture(Icons:GetIconPath(ability.icon))
             icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
             if dimmed then
-                icon:SetDesaturated(true)
-                icon:SetAlpha(0.5)
+                UIUtils.ApplyIconStyle(icon, "faded")
             else
-                icon:SetDesaturated(false)
-                icon:SetAlpha(1)
+                UIUtils.ApplyIconStyle(icon, "normal")
             end
             row.elements.icon = icon
             

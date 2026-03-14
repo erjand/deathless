@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 local function ColorizeText(color, text)
     local r = math.floor((color[1] or 1) * 255 + 0.5)
@@ -38,7 +39,7 @@ Deathless.UI.Views:Register("macros", function(container)
     local Fonts = Deathless.UI.Fonts
 
     local title, subtitle, separator = Utils:CreateHeader(container, "Macros", "Useful Hardcore macros")
-    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
+    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.simple.scrollTop, ViewOffsets.defaultScrollBottom)
 
     -- Defensive sort in case entries are appended out-of-order later.
     table.sort(MACROS, function(a, b)

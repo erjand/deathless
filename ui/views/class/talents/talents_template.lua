@@ -9,6 +9,7 @@ local SectionHeaderStyle = (Deathless.Constants and Deathless.Constants.UI and D
     iconOffsetX = 8,
     labelOffsetX = 6,
 }
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 -- Store template for reuse
 Deathless.UI.Views.TalentsTemplate = {}
@@ -41,8 +42,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             title, subtitle = Utils:CreateHeader(container, className .. " Talents", "Recommended builds for Hardcore leveling - adjust as desired.", classColor)
         end
         
-        local scrollTopOffset = embedded and -10 or -70
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
+        local scrollTopOffset = embedded and ViewOffsets.classTalents.scrollTopEmbedded or ViewOffsets.classTalents.scrollTopFull
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, ViewOffsets.defaultScrollBottom)
         
         -- Section collapse state (keyed by build name)
         local sectionState = {}

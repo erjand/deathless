@@ -7,6 +7,7 @@ Deathless.UI.Views.GearTemplate = {}
 -- WoW item rarity colors
 local RARITY_COLORS = Deathless.Constants.Colors.ItemRarity
 local TableLayout = Deathless.Constants.Colors.UI.TableLayouts.Gear
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 local function GetEmptySlotTexture(slotName, fallbackTexture)
     local _, texture = GetInventorySlotInfo(slotName)
@@ -138,9 +139,9 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             title, subtitle = Utils:CreateHeader(container, className .. " Gear", "Equipment progression for Hardcore", classColor)
         end
 
-        local searchBoxY = embedded and -16 or -52
-        local sortHeaderY = embedded and -59 or -95
-        local scrollTopOffset = embedded and -79 or -115
+        local searchBoxY = embedded and ViewOffsets.classGearSearch.searchYEmbedded or ViewOffsets.classGearSearch.searchYFull
+        local sortHeaderY = embedded and ViewOffsets.classGearSearch.sortHeaderYEmbedded or ViewOffsets.classGearSearch.sortHeaderYFull
+        local scrollTopOffset = embedded and ViewOffsets.classGearSearch.scrollTopEmbedded or ViewOffsets.classGearSearch.scrollTopFull
 
         -- Search state
         local searchState = { term = "" }
@@ -273,7 +274,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         table.insert(tierCheckboxes, preBisCB)
 
         -- Scroll frame
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, ViewOffsets.defaultScrollBottom)
 
         -- Sort state
         local sortState = { sortKey = "lvl", sortAsc = true }

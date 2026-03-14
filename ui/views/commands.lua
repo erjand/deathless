@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 -- Command definitions with descriptions. Keep sorted alphabetically.
 local COMMANDS = {
@@ -23,7 +24,7 @@ Deathless.UI.Views:Register("commands", function(container)
     local Fonts = Deathless.UI.Fonts
     
     local title, subtitle, separator = Utils:CreateHeader(container, "Commands", "Available chat commands")
-    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
+    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.simple.scrollTop, ViewOffsets.defaultScrollBottom)
     
     -- Create command list
     local yOffset = -16

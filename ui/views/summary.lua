@@ -2,6 +2,7 @@ local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
 local UIUtils = Deathless.Utils.UI
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 local AbilityUtils = Deathless.Utils.Abilities
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
@@ -18,7 +19,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     local title, subtitle = Utils:CreateHeader(container, "Summary", "")
     
     -- Enhanced scroll frame with auto-hiding scrollbar
-    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
+    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.simple.scrollTop, ViewOffsets.defaultScrollBottom)
     
     -- Section collapse state
     local sectionState = { warnings = true, available = true, nextAvailable = true }

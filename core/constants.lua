@@ -193,6 +193,41 @@ Deathless.Constants.Colors = {
                 },
             },
         },
+        ViewOffsets = {
+            defaultScrollBottom = 24,
+            simple = {
+                scrollTop = -60,
+            },
+            classSimple = {
+                scrollTopEmbedded = -10,
+                scrollTopFull = -60,
+            },
+            classTalents = {
+                scrollTopEmbedded = -10,
+                scrollTopFull = -70,
+            },
+            classSearch = {
+                searchYEmbedded = -16,
+                searchYFull = -60,
+                sortHeaderYEmbedded = -59,
+                sortHeaderYFull = -103,
+                scrollTopEmbedded = -79,
+                scrollTopFull = -123,
+            },
+            classGearSearch = {
+                searchYEmbedded = -16,
+                searchYFull = -52,
+                sortHeaderYEmbedded = -59,
+                sortHeaderYFull = -95,
+                scrollTopEmbedded = -79,
+                scrollTopFull = -115,
+            },
+            dungeons = {
+                searchY = -68,
+                sortHeaderY = -111,
+                scrollTop = -131,
+            },
+        },
     },
 }
 

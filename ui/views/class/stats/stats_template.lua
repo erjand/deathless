@@ -5,6 +5,7 @@ local UIUtils = Deathless.Utils.UI
 Deathless.UI.Views.StatsTemplate = {}
 
 local StatsLayout = Deathless.Constants.Colors.UI.TableLayouts.Stats
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 local STATS_COL = StatsLayout.primary
 local HIT_COL = StatsLayout.hit
 local DEF_COL = StatsLayout.defense
@@ -95,8 +96,8 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             title, subtitle = Utils:CreateHeader(container, className .. " Stats", "Hardcore-focused stat guidance", classColor)
         end
 
-        local scrollTopOffset = embedded and -10 or -60
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
+        local scrollTopOffset = embedded and ViewOffsets.classSimple.scrollTopEmbedded or ViewOffsets.classSimple.scrollTopFull
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, ViewOffsets.defaultScrollBottom)
 
         local sectionState = {
             primary = true,

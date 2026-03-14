@@ -11,6 +11,7 @@ local Urls = Deathless.Constants and Deathless.Constants.Urls or {
 }
 local DungeonLayout = Deathless.Constants.Colors.UI.TableLayouts.Dungeons
 local MAIN_COL = DungeonLayout.main
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -27,7 +28,7 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
 
     local btn = CreateFrame("Button", nil, parent)
     btn:SetSize(width, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, -111)
+    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, ViewOffsets.dungeons.sortHeaderY)
 
     local Fonts = Deathless.UI.Fonts
     btn.label = btn:CreateFontString(nil, "OVERLAY")
@@ -134,7 +135,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
     -- Search bar
     local searchBox = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
     searchBox:SetSize(180, 20)
-    searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, -68)
+    searchBox:SetPoint("TOPLEFT", container, "TOPLEFT", 24, ViewOffsets.dungeons.searchY)
     searchBox:SetFont(Fonts.family, Fonts.body, "")
     searchBox:SetAutoFocus(false)
     searchBox:SetMaxLetters(50)
@@ -233,7 +234,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
     local inLevelRangeCheckbox = CreateFilterCheckbox()
 
     -- Scroll frame
-    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -131, 24)
+    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.dungeons.scrollTop, ViewOffsets.defaultScrollBottom)
 
     -- Sort state (default: sort by min level ascending)
     local sortState = { sortKey = "level", sortAsc = true }

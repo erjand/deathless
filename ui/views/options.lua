@@ -2,6 +2,7 @@ local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
 local UIUtils = Deathless.Utils.UI
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
     AMMO = "ammo",
     BANDAGES = "bandages",
@@ -40,7 +41,7 @@ Deathless.UI.Views:Register("options", function(container)
     local title, subtitle, separator = Utils:CreateHeader(container, "Options", "Addon settings and preferences")
     
     -- Enhanced scroll frame with auto-hiding scrollbar
-    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, -60, 24)
+    local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.simple.scrollTop, ViewOffsets.defaultScrollBottom)
     
     -- Layout constants
     local COL_WIDTH = 150

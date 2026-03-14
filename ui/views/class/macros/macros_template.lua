@@ -1,5 +1,6 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 Deathless.UI.Views.MacrosTemplate = {}
 
@@ -40,8 +41,8 @@ function Deathless.UI.Views.MacrosTemplate:Create(config)
             title, subtitle = Utils:CreateHeader(container, className .. " Macros", "Class macro snippets for Hardcore", classColor)
         end
 
-        local scrollTopOffset = embedded and -10 or -60
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
+        local scrollTopOffset = embedded and ViewOffsets.classSimple.scrollTopEmbedded or ViewOffsets.classSimple.scrollTopFull
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, ViewOffsets.defaultScrollBottom)
 
         local elementPool = {}
         local elementIndex = 0

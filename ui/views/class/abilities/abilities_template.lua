@@ -29,6 +29,7 @@ local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
 local ColorCodes = Deathless.Constants.Colors.Codes
 local TableLayout = Deathless.Constants.Colors.UI.TableLayouts.Abilities
+local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -45,7 +46,7 @@ local function CreateSortableHeader(parent, label, xOffset, width, sortKey, stat
     
     local btn = CreateFrame("Button", nil, parent)
     btn:SetSize(width, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, headerY or -95)
+    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, headerY or ViewOffsets.classSearch.sortHeaderYFull)
     
     local Fonts = Deathless.UI.Fonts
     btn.label = btn:CreateFontString(nil, "OVERLAY")
@@ -118,9 +119,9 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             title, subtitle = Utils:CreateHeader(container, className .. " Abilities", "", classColor)
         end
         
-        local searchBoxY = embedded and -16 or -60
-        local sortHeaderY = embedded and -59 or -103
-        local scrollTopOffset = embedded and -79 or -123
+        local searchBoxY = embedded and ViewOffsets.classSearch.searchYEmbedded or ViewOffsets.classSearch.searchYFull
+        local sortHeaderY = embedded and ViewOffsets.classSearch.sortHeaderYEmbedded or ViewOffsets.classSearch.sortHeaderYFull
+        local scrollTopOffset = embedded and ViewOffsets.classSearch.scrollTopEmbedded or ViewOffsets.classSearch.scrollTopFull
         
         -- Search state
         local searchState = { term = "" }
@@ -256,7 +257,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         table.insert(filterCheckboxes, CreateFilterCheckbox("unavailable", 310, 96))
         
         -- Enhanced scroll frame with auto-hiding scrollbar
-        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, 24)
+        local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, scrollTopOffset, ViewOffsets.defaultScrollBottom)
         
         -- Sort state
         local sortState = { sortKey = "level", sortAsc = true }

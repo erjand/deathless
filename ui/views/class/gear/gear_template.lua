@@ -6,6 +6,7 @@ Deathless.UI.Views.GearTemplate = {}
 
 -- WoW item rarity colors
 local RARITY_COLORS = Deathless.Constants.Colors.ItemRarity
+local TableLayout = Deathless.Constants.Colors.UI.TableLayouts.Gear
 
 local function GetEmptySlotTexture(slotName, fallbackTexture)
     local _, texture = GetInventorySlotInfo(slotName)
@@ -34,15 +35,9 @@ local SLOT_ICONS = {
 }
 
 -- Column layout
-local ICON_SIZE = Deathless.Constants.Colors.UI.Icon.sizeMedium
-local ICON_PAD = 4
-local COL = {
-    name   = { x = 16,  w = 190 },
-    type   = { x = 210, w = 65 },
-    lvl    = { x = 280, w = 36 },
-    source = { x = 322, w = 170 },
-    prebis = { x = 496, w = 64 },
-}
+local ICON_SIZE = TableLayout.iconSize
+local ICON_PAD = TableLayout.iconPad
+local COL = TableLayout.columns
 
 local GEAR_TIER = (Deathless.Constants and Deathless.Constants.GearTiers) or {
     LEVELING = "Leveling",
@@ -726,7 +721,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             PopulateRows()
         end
 
-        local SCROLL_INSET = 8
+        local SCROLL_INSET = TableLayout.scrollInset
         local hName   = { x = COL.name.x   + SCROLL_INSET + ICON_SIZE + ICON_PAD + CONTENT_LEFT, w = COL.name.w - ICON_SIZE - ICON_PAD }
         local hType   = { x = COL.type.x   + SCROLL_INSET + CONTENT_LEFT, w = COL.type.w }
         local hLvl    = { x = COL.lvl.x    + SCROLL_INSET + CONTENT_LEFT, w = COL.lvl.w }

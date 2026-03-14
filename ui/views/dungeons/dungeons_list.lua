@@ -9,6 +9,8 @@ local Factions = Deathless.Constants and Deathless.Constants.Factions or {
 local Urls = Deathless.Constants and Deathless.Constants.Urls or {
     WOWHEAD_CLASSIC_QUEST_BASE = "https://www.wowhead.com/classic/quest=",
 }
+local DungeonLayout = Deathless.Constants.Colors.UI.TableLayouts.Dungeons
+local MAIN_COL = DungeonLayout.main
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -339,21 +341,22 @@ Deathless.UI.Views:Register("dungeons", function(container)
     end
 
     local QUEST_COLOR = Deathless.Constants.Colors.Dungeon.quest
-    local QUEST_ROW_HEIGHT = 20
+    local QUEST_ROW_HEIGHT = DungeonLayout.quests.rowHeight
 
-    local MAX_REWARD_ICONS = 5
-    local ICON_SIZE = 18
-    local ICON_SPACING = 2
+    local MAX_REWARD_ICONS = DungeonLayout.quests.maxRewardIcons
+    local ICON_SIZE = DungeonLayout.quests.iconSize
+    local ICON_SPACING = DungeonLayout.quests.iconSpacing
 
     -- Quest sub-table column layout
+    local questCols = DungeonLayout.quests.columns
     local QC = {
-        nameX = 28,   nameW = 210,
-        lvX   = 243,  lvW   = 30,
-        startX = 278, startW = 150,
-        preX  = 423,  preW  = 45,
-        rewX  = 475,
+        nameX = questCols.name.x,      nameW = questCols.name.w,
+        lvX   = questCols.level.x,     lvW   = questCols.level.w,
+        startX = questCols.startedBy.x, startW = questCols.startedBy.w,
+        preX  = questCols.prereq.x,    preW  = questCols.prereq.w,
+        rewX  = questCols.rewards.x,
     }
-    local QUEST_HEADER_HEIGHT = 16
+    local QUEST_HEADER_HEIGHT = DungeonLayout.quests.headerHeight
 
     local function GetQuestRow()
         questRowIndex = questRowIndex + 1
@@ -664,7 +667,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
     local function CreateRowAt(dungeon, yOffset, rowNum)
         local row = GetRow()
-        local ROW_HEIGHT = 26
+        local ROW_HEIGHT = DungeonLayout.rowHeight
         local isExpanded = (expandedId == dungeon.id)
 
         row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
@@ -685,7 +688,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
         -- Expand indicator
         local expandIcon = row:CreateFontString(nil, "OVERLAY")
         expandIcon:SetFont(Fonts.icons, Fonts.small, "")
-        expandIcon:SetPoint("LEFT", row, "LEFT", 4, 0)
+        expandIcon:SetPoint("LEFT", row, "LEFT", MAIN_COL.expand.x, 0)
         expandIcon:SetText(isExpanded and "▼" or "►")
         expandIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
         row.elements.expandIcon = expandIcon
@@ -696,8 +699,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
         local level = row:CreateFontString(nil, "OVERLAY")
         level:SetFont(Fonts.family, Fonts.body, "")
-        level:SetPoint("LEFT", row, "LEFT", 16, 0)
-        level:SetWidth(50)
+        level:SetPoint("LEFT", row, "LEFT", MAIN_COL.level.x, 0)
+        level:SetWidth(MAIN_COL.level.w)
         level:SetJustifyH("CENTER")
         level:SetText(levelText)
         level:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
@@ -706,8 +709,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
         -- Name
         local name = row:CreateFontString(nil, "OVERLAY")
         name:SetFont(Fonts.family, Fonts.body, "")
-        name:SetPoint("LEFT", row, "LEFT", 75, 0)
-        name:SetWidth(170)
+        name:SetPoint("LEFT", row, "LEFT", MAIN_COL.name.x, 0)
+        name:SetWidth(MAIN_COL.name.w)
         name:SetJustifyH("LEFT")
         name:SetText(dungeon.name)
         if isExpanded then
@@ -720,8 +723,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
         -- Zone
         local zone = row:CreateFontString(nil, "OVERLAY")
         zone:SetFont(Fonts.family, Fonts.body, "")
-        zone:SetPoint("LEFT", row, "LEFT", 250, 0)
-        zone:SetWidth(130)
+        zone:SetPoint("LEFT", row, "LEFT", MAIN_COL.zone.x, 0)
+        zone:SetWidth(MAIN_COL.zone.w)
         zone:SetJustifyH("LEFT")
         zone:SetText(dungeon.zone)
         zone:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
@@ -731,8 +734,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
         local bossC = GetDifficultyColor(dungeon.bossLevel, playerLevel)
         local boss = row:CreateFontString(nil, "OVERLAY")
         boss:SetFont(Fonts.family, Fonts.body, "")
-        boss:SetPoint("LEFT", row, "LEFT", 390, 0)
-        boss:SetWidth(190)
+        boss:SetPoint("LEFT", row, "LEFT", MAIN_COL.boss.x, 0)
+        boss:SetWidth(MAIN_COL.boss.w)
         boss:SetJustifyH("LEFT")
         boss:SetText(dungeon.endBoss .. " (" .. dungeon.bossLevel .. ")")
         boss:SetTextColor(bossC[1], bossC[2], bossC[3], 1)
@@ -822,14 +825,14 @@ Deathless.UI.Views:Register("dungeons", function(container)
         PopulateRows()
     end
 
-    headers.level = CreateSortableHeader(container, "LEVEL (?)",        16 + CONTENT_LEFT,  50,  "level", sortState, OnSort, {
+    headers.level = CreateSortableHeader(container, "LEVEL (?)",        MAIN_COL.level.x + CONTENT_LEFT,  MAIN_COL.level.w,  "level", sortState, OnSort, {
         title = "Dungeon Level Range",
         "Level range where a player can",
         "receive XP from some of the mobs.",
     })
-    headers.name  = CreateSortableHeader(container, "NAME",         75 + CONTENT_LEFT,  170, "name",  sortState, OnSort)
-    headers.zone  = CreateSortableHeader(container, "ZONE",         250 + CONTENT_LEFT, 130, "zone",  sortState, OnSort)
-    headers.boss  = CreateSortableHeader(container, "END BOSS (?)", 390 + CONTENT_LEFT, 190, "boss",  sortState, OnSort, {
+    headers.name  = CreateSortableHeader(container, "NAME",         MAIN_COL.name.x + CONTENT_LEFT,  MAIN_COL.name.w, "name",  sortState, OnSort)
+    headers.zone  = CreateSortableHeader(container, "ZONE",         MAIN_COL.zone.x + CONTENT_LEFT, MAIN_COL.zone.w, "zone",  sortState, OnSort)
+    headers.boss  = CreateSortableHeader(container, "END BOSS (?)", MAIN_COL.boss.x + CONTENT_LEFT, MAIN_COL.boss.w, "boss",  sortState, OnSort, {
         title = "End Boss Level",
         "Recommend all players be within",
         "3 levels of the end boss.",

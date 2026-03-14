@@ -28,6 +28,7 @@ local UIUtils = Deathless.Utils.UI
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
 local ColorCodes = Deathless.Constants.Colors.Codes
+local TableLayout = Deathless.Constants.Colors.UI.TableLayouts.Abilities
 
 --- Create a sortable column header button
 ---@param parent Frame Parent frame
@@ -106,7 +107,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
-        local IconStyle = Deathless.Constants.Colors.UI.Icon
+        local Col = TableLayout.columns
+        local Row = TableLayout.row
         local embedded = options and options.embedded
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
@@ -356,7 +358,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         
         local function CreateAbilityRowAt(ability, yOffset, rowNum, dimmed)
             local row = GetAbilityRow()
-            local ROW_HEIGHT = 26
+            local ROW_HEIGHT = TableLayout.rowHeight
             
             row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
             row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
@@ -379,8 +381,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
             
             local icon = row:CreateTexture(nil, "ARTWORK")
-            icon:SetSize(IconStyle.sizeMedium, IconStyle.sizeMedium)
-            icon:SetPoint("LEFT", row, "LEFT", 16, 0)
+            icon:SetSize(Row.iconSize, Row.iconSize)
+            icon:SetPoint("LEFT", row, "LEFT", Row.iconX, 0)
             icon:SetTexture(Icons:GetIconPath(ability.icon))
             icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
             if dimmed then
@@ -398,7 +400,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             local name = row:CreateFontString(nil, "OVERLAY")
             name:SetFont(Fonts.family, Fonts.body, "")
             name:SetPoint("LEFT", icon, "RIGHT", 8, 0)
-            name:SetWidth(190)
+            name:SetWidth(Row.nameWidth)
             name:SetJustifyH("LEFT")
             name:SetText(nameText)
             if dimmed then
@@ -410,8 +412,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             
             local level = row:CreateFontString(nil, "OVERLAY")
             level:SetFont(Fonts.family, Fonts.body, "")
-            level:SetPoint("LEFT", row, "LEFT", 250, 0)
-            level:SetWidth(50)
+            level:SetPoint("LEFT", row, "LEFT", Col.level.x, 0)
+            level:SetWidth(Col.level.w)
             level:SetJustifyH("CENTER")
             level:SetText("Lv " .. ability.level)
             if dimmed then
@@ -423,8 +425,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             
             local cost = row:CreateFontString(nil, "OVERLAY")
             cost:SetFont(Fonts.family, Fonts.body, "")
-            cost:SetPoint("LEFT", row, "LEFT", 310, 0)
-            cost:SetWidth(80)
+            cost:SetPoint("LEFT", row, "LEFT", Col.cost.x, 0)
+            cost:SetWidth(Col.cost.w)
             cost:SetJustifyH("RIGHT")
             if ability.base_cost == 0 then
                 cost:SetText("Free")
@@ -437,8 +439,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             
             local source = row:CreateFontString(nil, "OVERLAY")
             source:SetFont(Fonts.family, Fonts.body, "")
-            source:SetPoint("LEFT", row, "LEFT", 400, 0)
-            source:SetWidth(60)
+            source:SetPoint("LEFT", row, "LEFT", Col.source.x, 0)
+            source:SetWidth(Col.source.w)
             source:SetJustifyH("LEFT")
             local sourceText = ability.source:sub(1, 1):upper() .. ability.source:sub(2)
             source:SetText(sourceText)
@@ -448,8 +450,8 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             -- Train column
             local train = row:CreateFontString(nil, "OVERLAY")
             train:SetFont(Fonts.family, Fonts.body, "")
-            train:SetPoint("LEFT", row, "LEFT", 470, 0)
-            train:SetWidth(50)
+            train:SetPoint("LEFT", row, "LEFT", Col.train.x, 0)
+            train:SetWidth(Col.train.w)
             train:SetJustifyH("CENTER")
             local trainValue = ability.train or "yes"
             local trainText = trainValue:sub(1, 1):upper() .. trainValue:sub(2)
@@ -672,11 +674,11 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             PopulateRows()
         end
         
-        headers.name = CreateSortableHeader(container, "ABILITY", 36 + CONTENT_LEFT, 200, "name", sortState, OnSort, nil, sortHeaderY)
-        headers.level = CreateSortableHeader(container, "LEVEL", 250 + CONTENT_LEFT, 50, "level", sortState, OnSort, nil, sortHeaderY)
-        headers.cost = CreateSortableHeader(container, "COST", 310 + CONTENT_LEFT, 80, "cost", sortState, OnSort, nil, sortHeaderY)
-        headers.source = CreateSortableHeader(container, "SOURCE", 400 + CONTENT_LEFT, 60, "source", sortState, OnSort, nil, sortHeaderY)
-        headers.train = CreateSortableHeader(container, "TRAIN (?)", 470 + CONTENT_LEFT, 50, "train", sortState, OnSort, {
+        headers.name = CreateSortableHeader(container, "ABILITY", Col.name.x + CONTENT_LEFT, Col.name.w, "name", sortState, OnSort, nil, sortHeaderY)
+        headers.level = CreateSortableHeader(container, "LEVEL", Col.level.x + CONTENT_LEFT, Col.level.w, "level", sortState, OnSort, nil, sortHeaderY)
+        headers.cost = CreateSortableHeader(container, "COST", Col.cost.x + CONTENT_LEFT, Col.cost.w, "cost", sortState, OnSort, nil, sortHeaderY)
+        headers.source = CreateSortableHeader(container, "SOURCE", Col.source.x + CONTENT_LEFT, Col.source.w, "source", sortState, OnSort, nil, sortHeaderY)
+        headers.train = CreateSortableHeader(container, "TRAIN (?)", Col.train.x + CONTENT_LEFT, Col.train.w, "train", sortState, OnSort, {
             title = "Training Priority",
             ColorCodes.safe .. "Yes|r - Train when available",
             ColorCodes.warning .. "Wait|r - Marginal upgrade",

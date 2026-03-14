@@ -160,8 +160,8 @@ Deathless.Data.Abilities["Warrior"] = {
 
     -- Shield Bash
     { name = "Shield Bash", level = 12, rank = 1, base_cost = 1000, icon = "Ability_Warrior_ShieldBash", source = "trainer", train = "yes", spellId = 72 },
-    { name = "Shield Bash", level = 32, rank = 2, base_cost = 14000, icon = "Ability_Warrior_ShieldBash", source = "trainer", train = "wait", spellId = 1671 },
-    { name = "Shield Bash", level = 52, rank = 3, base_cost = 54000, icon = "Ability_Warrior_ShieldBash", source = "trainer", train = "wait", spellId = 1672 },
+    { name = "Shield Bash", level = 32, rank = 2, base_cost = 14000, icon = "Ability_Warrior_ShieldBash", source = "trainer", train = "yes", spellId = 1671 },
+    { name = "Shield Bash", level = 52, rank = 3, base_cost = 54000, icon = "Ability_Warrior_ShieldBash", source = "trainer", train = "yes", spellId = 1672 },
 
     -- Shield Block
     { name = "Shield Block", level = 16, rank = 1, base_cost = 2000, icon = "Ability_Defend", source = "trainer", train = "yes", spellId = 2565 },
@@ -176,10 +176,10 @@ Deathless.Data.Abilities["Warrior"] = {
     { name = "Shield Wall", level = 28, rank = 1, base_cost = 11000, icon = "Ability_Warrior_ShieldWall", source = "trainer", train = "yes", spellId = 871 },
 
     -- Slam
-    { name = "Slam", level = 30, rank = 1, base_cost = 12000, icon = "Ability_Warrior_DecisiveStrike", source = "trainer", train = "no", spellId = 1464 },
-    { name = "Slam", level = 38, rank = 2, base_cost = 20000, icon = "Ability_Warrior_DecisiveStrike", source = "trainer", train = "no", spellId = 8820 },
-    { name = "Slam", level = 46, rank = 3, base_cost = 36000, icon = "Ability_Warrior_DecisiveStrike", source = "trainer", train = "no", spellId = 11604 },
-    { name = "Slam", level = 54, rank = 4, base_cost = 56000, icon = "Ability_Warrior_DecisiveStrike", source = "trainer", train = "no", spellId = 11605 },
+    { name = "Slam", level = 30, rank = 1, base_cost = 12000, icon = "Ability_Warrior_DecisiveStrike", source = "trainer", train = "wait", spellId = 1464 },
+    { name = "Slam", level = 38, rank = 2, base_cost = 20000, icon = "Ability_Warrior_DecisiveStrike", source = "trainer", train = "wait", spellId = 8820 },
+    { name = "Slam", level = 46, rank = 3, base_cost = 36000, icon = "Ability_Warrior_DecisiveStrike", source = "trainer", train = "wait", spellId = 11604 },
+    { name = "Slam", level = 54, rank = 4, base_cost = 56000, icon = "Ability_Warrior_DecisiveStrike", source = "trainer", train = "wait", spellId = 11605 },
 
     -- Sunder Armor
     { name = "Sunder Armor", level = 10, rank = 1, base_cost = 0, icon = "Ability_Warrior_Sunder", source = "quest", train = "yes", spellId = 7386 },

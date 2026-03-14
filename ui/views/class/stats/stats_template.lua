@@ -4,36 +4,14 @@ local UIUtils = Deathless.Utils.UI
 
 Deathless.UI.Views.StatsTemplate = {}
 
-local STATS_COL = {
-    stat = { x = 16, w = 90 },
-    bonus = { x = 112, w = 190 },
-    priority = { x = 308, w = 66 },
-    note = { x = 380, w = 168 },
-}
+local StatsLayout = Deathless.Constants.Colors.UI.TableLayouts.Stats
+local STATS_COL = StatsLayout.primary
+local HIT_COL = StatsLayout.hit
+local DEF_COL = StatsLayout.defense
 
-local HIT_COL = {
-    weaponSkill = { x = 16, w = 80 },
-    enemyLevel = { x = 102, w = 70 },
-    hand = { x = 178, w = 62 },
-    hit = { x = 246, w = 45 },
-    crit = { x = 297, w = 45 },
-    miss = { x = 348, w = 45 },
-    dodge = { x = 399, w = 55 },
-    parry = { x = 460, w = 55 },
-}
-
-local DEF_COL = {
-    defense = { x = 16, w = 65 },
-    characterLevel = { x = 87, w = 78 },
-    attackerLevel = { x = 171, w = 78 },
-    hit = { x = 255, w = 55 },
-    crit = { x = 316, w = 55 },
-    crushing = { x = 377, w = 90 },
-}
-
-local HEADER_X_SHIFT = 0
-local STAT_ROW_HEIGHT = 44
-local COMBAT_ROW_HEIGHT = 24
+local HEADER_X_SHIFT = StatsLayout.headerXShift
+local STAT_ROW_HEIGHT = StatsLayout.statRowHeight
+local COMBAT_ROW_HEIGHT = StatsLayout.combatRowHeight
 
 local function ColorizeText(color, text)
     local r = math.floor((color[1] or 1) * 255 + 0.5)

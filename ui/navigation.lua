@@ -418,123 +418,21 @@ function Deathless.UI.Navigation:Create(parent)
     local scrollChild = CreateFrame("Frame", nil, scrollFrame)
     scrollChild:SetSize(NAV_WIDTH, 1)
     scrollFrame:SetScrollChild(scrollChild)
-    
-    -- Custom scroll indicator (thin bar on right side)
-    local scrollIndicator = CreateFrame("Frame", nil, nav)
-    scrollIndicator:SetWidth(3)
-    scrollIndicator:SetPoint("TOPRIGHT", nav, "TOPRIGHT", -1, 0)
-    scrollIndicator:SetPoint("BOTTOMRIGHT", nav, "BOTTOMRIGHT", -1, 0)
-    scrollIndicator:SetFrameLevel(nav:GetFrameLevel() + 5)
-    scrollIndicator:SetAlpha(0)
-    
-    local scrollThumb = scrollIndicator:CreateTexture(nil, "OVERLAY")
-    scrollThumb:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.7)
-    scrollThumb:SetPoint("TOP", scrollIndicator, "TOP", 0, 0)
-    scrollThumb:SetWidth(3)
-    scrollThumb:SetHeight(20)
-    
-    -- Scrollbar auto-hide state
-    local isHovered = false
-    local isScrollable = false
-    local hideTimer = nil
-    local targetAlpha = 0
-    
-    local function UpdateScrollbarAlpha()
-        if isScrollable and isHovered then
-            targetAlpha = 1
-            if hideTimer then hideTimer:Cancel() hideTimer = nil end
-        else
-            if not hideTimer then
-                hideTimer = C_Timer.NewTimer(1.0, function()
-                    targetAlpha = 0
-                    hideTimer = nil
-                end)
-            end
-        end
-    end
-    
-    local function UpdateScrollThumb()
-        local contentHeight = scrollChild:GetHeight()
-        local viewHeight = scrollFrame:GetHeight()
-        local maxScroll = contentHeight - viewHeight
-        
-        isScrollable = maxScroll > 1
-        
-        if isScrollable then
-            local trackHeight = scrollIndicator:GetHeight()
-            local thumbRatio = viewHeight / contentHeight
-            local thumbHeight = math.max(12, trackHeight * thumbRatio)
-            scrollThumb:SetHeight(thumbHeight)
-            
-            local scrollPos = scrollFrame:GetVerticalScroll()
-            local thumbOffset = (scrollPos / maxScroll) * (trackHeight - thumbHeight)
-            scrollThumb:ClearAllPoints()
-            scrollThumb:SetPoint("TOP", scrollIndicator, "TOP", 0, -thumbOffset)
-        end
-        
-        UpdateScrollbarAlpha()
-    end
-    
-    -- Store reference for external updates
-    scrollFrame.UpdateScrollbar = UpdateScrollThumb
-    
-    -- Smooth scroll tracking
-    local targetScroll = 0
-    local SCROLL_SPEED = 0.25
-    local SCROLL_STEP = 40
-    
-    -- Combined OnUpdate: hover detection + smooth fade + scroll animation
-    scrollFrame:SetScript("OnUpdate", function(self, elapsed)
-        -- Check hover state
-        local wasHovered = isHovered
-        isHovered = nav:IsMouseOver()
-        if isHovered ~= wasHovered then
-            UpdateScrollbarAlpha()
-        end
-        
-        -- Smooth fade animation for scroll indicator
-        local current = scrollIndicator:GetAlpha()
-        if math.abs(current - targetAlpha) > 0.01 then
-            local speed = 5 * elapsed
-            scrollIndicator:SetAlpha(current + (targetAlpha - current) * math.min(speed, 1))
-        elseif current ~= targetAlpha then
-            scrollIndicator:SetAlpha(targetAlpha)
-        end
-        
-        -- Smooth scroll animation
-        local currentScroll = self:GetVerticalScroll()
-        if math.abs(currentScroll - targetScroll) > 0.5 then
-            local newScroll = currentScroll + (targetScroll - currentScroll) * SCROLL_SPEED
-            self:SetVerticalScroll(newScroll)
-            UpdateScrollThumb()
-        elseif currentScroll ~= targetScroll then
-            self:SetVerticalScroll(targetScroll)
-            UpdateScrollThumb()
-        end
-    end)
-    
-    -- Mouse wheel handling
-    scrollFrame:EnableMouseWheel(true)
-    scrollFrame:SetScript("OnMouseWheel", function(self, delta)
-        local maxScroll = scrollChild:GetHeight() - scrollFrame:GetHeight()
-        if maxScroll < 0 then maxScroll = 0 end
-        targetScroll = targetScroll - (delta * SCROLL_STEP)
-        targetScroll = math.max(0, math.min(targetScroll, maxScroll))
-        
-        -- Flash scrollbar on wheel
-        if isScrollable then
-            targetAlpha = 1
-            if hideTimer then hideTimer:Cancel() end
-            hideTimer = C_Timer.NewTimer(1.0, function()
-                if not isHovered then targetAlpha = 0 end
-                hideTimer = nil
-            end)
-        end
-    end)
+
+    local controller = Deathless.Utils.UI.CreateAutoHideScrollIndicator(scrollFrame, scrollChild, {
+        parent = nav,
+        hoverFrame = nav,
+        topRight = { -1, 0 },
+        bottomRight = { -1, 0 },
+        frameLevelParent = nav,
+        updateFrame = scrollFrame,
+        smoothScroll = true,
+    })
+    scrollFrame.UpdateScrollbar = controller.UpdateScrollThumb
     
     nav.scrollFrame = scrollFrame
     nav.scrollChild = scrollChild
-    nav.scrollIndicator = scrollIndicator
+    nav.scrollIndicator = controller.indicator
     
     -- Track expanded sections
     nav.expandedSections = {}

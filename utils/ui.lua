@@ -17,6 +17,176 @@ function Deathless.Utils.UI.CreateFontString(parent, font, size, outline)
     return fs
 end
 
+--- Create a thin auto-hiding scroll indicator for a scroll frame.
+---@param scrollFrame ScrollFrame
+---@param scrollChild Frame
+---@param options table { parent, hoverFrame, topRight, bottomRight, frameLevelParent, updateFrame, smoothScroll, wheelStep }
+---@return table controller { UpdateScrollThumb, ResetScroll, indicator }
+function Deathless.Utils.UI.CreateAutoHideScrollIndicator(scrollFrame, scrollChild, options)
+    options = options or {}
+
+    local Colors = Deathless.UI.Colors
+    local cfg = (
+        Deathless.Constants
+        and Deathless.Constants.Colors
+        and Deathless.Constants.Colors.UI
+        and Deathless.Constants.Colors.UI.ScrollIndicator
+    ) or {
+        fadeDelay = 1.0,
+        fadeSpeed = 5,
+        thumbAlpha = 0.7,
+        thumbDefaultHeight = 20,
+        thumbMinHeight = 12,
+        trackWidth = 3,
+        wheelStep = 40,
+        smoothSpeed = 0.25,
+        smoothThreshold = 0.5,
+    }
+    local parent = options.parent
+    local hoverFrame = options.hoverFrame or parent
+    local frameLevelParent = options.frameLevelParent or parent
+    local updateFrame = options.updateFrame or scrollFrame
+    local smoothScroll = options.smoothScroll ~= false
+    local wheelStep = options.wheelStep or cfg.wheelStep
+
+    local topRight = options.topRight or { -4, -4 }
+    local bottomRight = options.bottomRight or { -4, 4 }
+
+    local scrollIndicator = CreateFrame("Frame", nil, parent)
+    scrollIndicator:SetWidth(cfg.trackWidth)
+    scrollIndicator:SetPoint("TOPRIGHT", parent, "TOPRIGHT", topRight[1], topRight[2])
+    scrollIndicator:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", bottomRight[1], bottomRight[2])
+    scrollIndicator:SetFrameLevel(frameLevelParent:GetFrameLevel() + 5)
+    scrollIndicator:SetAlpha(0)
+
+    local scrollThumb = scrollIndicator:CreateTexture(nil, "OVERLAY")
+    scrollThumb:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], cfg.thumbAlpha)
+    scrollThumb:SetPoint("TOP", scrollIndicator, "TOP", 0, 0)
+    scrollThumb:SetWidth(cfg.trackWidth)
+    scrollThumb:SetHeight(cfg.thumbDefaultHeight)
+
+    local isHovered = false
+    local isScrollable = false
+    local hideTimer = nil
+    local targetAlpha = 0
+    local targetScroll = 0
+
+    local function UpdateScrollbarAlpha()
+        if isScrollable and isHovered then
+            targetAlpha = 1
+            if hideTimer then
+                hideTimer:Cancel()
+                hideTimer = nil
+            end
+        else
+            if not hideTimer then
+                hideTimer = C_Timer.NewTimer(cfg.fadeDelay, function()
+                    targetAlpha = 0
+                    hideTimer = nil
+                end)
+            end
+        end
+    end
+
+    local function UpdateScrollThumb()
+        local contentHeight = scrollChild:GetHeight()
+        local viewHeight = scrollFrame:GetHeight()
+        local maxScroll = contentHeight - viewHeight
+
+        isScrollable = maxScroll > 1
+
+        if isScrollable then
+            local trackHeight = scrollIndicator:GetHeight()
+            local thumbRatio = viewHeight / contentHeight
+            local thumbHeight = math.max(cfg.thumbMinHeight, trackHeight * thumbRatio)
+            scrollThumb:SetHeight(thumbHeight)
+
+            local scrollPos = scrollFrame:GetVerticalScroll()
+            local thumbOffset = (scrollPos / maxScroll) * (trackHeight - thumbHeight)
+            scrollThumb:ClearAllPoints()
+            scrollThumb:SetPoint("TOP", scrollIndicator, "TOP", 0, -thumbOffset)
+        end
+
+        UpdateScrollbarAlpha()
+    end
+
+    local function FlashScrollbar()
+        if isScrollable then
+            targetAlpha = 1
+            if hideTimer then
+                hideTimer:Cancel()
+            end
+            hideTimer = C_Timer.NewTimer(cfg.fadeDelay, function()
+                if not isHovered then
+                    targetAlpha = 0
+                end
+                hideTimer = nil
+            end)
+        end
+    end
+
+    updateFrame:HookScript("OnUpdate", function(_, elapsed)
+        local wasHovered = isHovered
+        isHovered = hoverFrame:IsMouseOver()
+        if isHovered ~= wasHovered then
+            UpdateScrollbarAlpha()
+        end
+
+        local currentAlpha = scrollIndicator:GetAlpha()
+        if math.abs(currentAlpha - targetAlpha) > 0.01 then
+            local speed = cfg.fadeSpeed * elapsed
+            scrollIndicator:SetAlpha(currentAlpha + (targetAlpha - currentAlpha) * math.min(speed, 1))
+        elseif currentAlpha ~= targetAlpha then
+            scrollIndicator:SetAlpha(targetAlpha)
+        end
+
+        if smoothScroll then
+            local currentScroll = scrollFrame:GetVerticalScroll()
+            if math.abs(currentScroll - targetScroll) > cfg.smoothThreshold then
+                local newScroll = currentScroll + (targetScroll - currentScroll) * cfg.smoothSpeed
+                scrollFrame:SetVerticalScroll(newScroll)
+                UpdateScrollThumb()
+            elseif currentScroll ~= targetScroll then
+                scrollFrame:SetVerticalScroll(targetScroll)
+                UpdateScrollThumb()
+            end
+        end
+    end)
+
+    scrollFrame:EnableMouseWheel(true)
+    scrollFrame:SetScript("OnMouseWheel", function(self, delta)
+        local maxScroll = scrollChild:GetHeight() - scrollFrame:GetHeight()
+        if maxScroll < 0 then
+            maxScroll = 0
+        end
+
+        if smoothScroll then
+            targetScroll = targetScroll - (delta * wheelStep)
+            targetScroll = math.max(0, math.min(targetScroll, maxScroll))
+        else
+            local currentScroll = self:GetVerticalScroll()
+            local newScroll = currentScroll - (delta * wheelStep)
+            targetScroll = math.max(0, math.min(newScroll, maxScroll))
+            self:SetVerticalScroll(targetScroll)
+            UpdateScrollThumb()
+        end
+
+        FlashScrollbar()
+    end)
+
+    local function ResetScroll()
+        targetScroll = 0
+        scrollFrame:SetVerticalScroll(0)
+        UpdateScrollThumb()
+    end
+
+    return {
+        UpdateScrollThumb = UpdateScrollThumb,
+        ResetScroll = ResetScroll,
+        indicator = scrollIndicator,
+    }
+end
+
 ---
 -- Pin system for locking frame position/size
 ---

@@ -85,6 +85,17 @@ Deathless.Constants.Colors = {
             iconOffsetX = 8,
             labelOffsetX = 6,
         },
+        ScrollIndicator = {
+            fadeDelay = 1.0,
+            fadeSpeed = 5,
+            thumbAlpha = 0.7,
+            thumbDefaultHeight = 20,
+            thumbMinHeight = 12,
+            trackWidth = 3,
+            wheelStep = 40,
+            smoothSpeed = 0.25,
+            smoothThreshold = 0.5,
+        },
     },
 }
 

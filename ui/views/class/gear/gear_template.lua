@@ -440,6 +440,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
 
             -- Item icon
             local iconX = COL.name.x + indent
+            row.itemIconLoadToken = (row.itemIconLoadToken or 0) + 1
             if item.itemId then
                 if not row.itemIcon then
                     row.itemIcon = row:CreateTexture(nil, "ARTWORK")
@@ -451,14 +452,22 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                 row.itemIcon:Show()
 
                 local iconBtn = row.itemIcon
+                local expectedItemId = item.itemId
+                local expectedToken = row.itemIconLoadToken
+                row.itemIconItemId = expectedItemId
                 local itemObj = Item:CreateFromItemID(item.itemId)
                 itemObj:ContinueOnItemLoad(function()
-                    local _, _, _, _, _, _, _, _, _, tex = GetItemInfo(item.itemId)
+                    if row.itemIconLoadToken ~= expectedToken or row.itemIconItemId ~= expectedItemId then
+                        return
+                    end
+
+                    local tex = C_Item.GetItemIconByID(expectedItemId)
                     if tex and iconBtn then
                         iconBtn:SetTexture(tex)
                     end
                 end)
             elseif row.itemIcon then
+                row.itemIconItemId = nil
                 row.itemIcon:Hide()
             end
 

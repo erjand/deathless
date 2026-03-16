@@ -190,8 +190,8 @@ Deathless.UI.Views:Register("dungeons", function(container)
     -- Raw data
     local rawDungeons = Deathless.Data.Dungeons or {}
 
-    -- Expand state: which dungeon is expanded (only one at a time)
-    local expandedId = nil
+    -- Expand state per dungeon id (supports multiple expanded rows)
+    local expandedState = {}
 
     -- Section collapse state per dungeon: sectionState[dungeonId][sectionKey] = bool
     local sectionState = {}
@@ -567,7 +567,10 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
                     -- Rewards: item icons or money
                     for i = 1, MAX_REWARD_ICONS do
-                        qr.rewardIcons[i]:Hide()
+                        local rewardIcon = qr.rewardIcons[i]
+                        rewardIcon:Hide()
+                        rewardIcon.itemLoadToken = (rewardIcon.itemLoadToken or 0) + 1
+                        rewardIcon.boundItemId = nil
                     end
                     qr.moneyText:SetText("")
                     qr.moneyText:Hide()
@@ -578,11 +581,16 @@ Deathless.UI.Views:Register("dungeons", function(container)
                             local icon = qr.rewardIcons[i]
                             local itemId = r.itemId
 
+                            icon.boundItemId = itemId
+                            local expectedToken = icon.itemLoadToken
                             icon.tex:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
 
                             local item = Item:CreateFromItemID(itemId)
                             item:ContinueOnItemLoad(function()
-                                local _, _, _, _, _, _, _, _, _, itemTexture = GetItemInfo(itemId)
+                                if icon.itemLoadToken ~= expectedToken or icon.boundItemId ~= itemId then
+                                    return
+                                end
+                                local itemTexture = C_Item.GetItemIconByID(itemId)
                                 if itemTexture then
                                     icon.tex:SetTexture(itemTexture)
                                 end
@@ -617,7 +625,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
     local function CreateRowAt(dungeon, yOffset, rowNum)
         local row = GetRow()
         local ROW_HEIGHT = DungeonLayout.rowHeight
-        local isExpanded = (expandedId == dungeon.id)
+        local isExpanded = expandedState[dungeon.id] == true
 
         row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
         row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
@@ -692,11 +700,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
         -- Click toggles expand
         row:SetScript("OnClick", function()
-            if expandedId == dungeon.id then
-                expandedId = nil
-            else
-                expandedId = dungeon.id
-            end
+            expandedState[dungeon.id] = not expandedState[dungeon.id]
             PopulateRows()
         end)
 

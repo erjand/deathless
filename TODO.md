@@ -98,8 +98,6 @@
 - [ ] Strat Live
 - [ ] Scholo
 
-## Professions
-
 ## Quests / Leveling
 
 - [ ] Light of Elune https://www.wowhead.com/classic/quest=1017/mage-summoner (Alliance)

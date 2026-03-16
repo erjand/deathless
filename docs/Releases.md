@@ -14,3 +14,4 @@ For this initial release, let's get:
 8. [x] Character Macros
 9. [ ] Versioning / tags
 10. [ ] Support setup / link
+11. [ ] Stats

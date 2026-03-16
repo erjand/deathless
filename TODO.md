@@ -15,7 +15,7 @@
 
 ## UI
 
-- [ ] 
+- [ ] Have Search box in Dungeons view filter for "SM" when typing in "Scarlet", etc - lots of edge cases like this where aliases would help
 
 ## Summary / Warnings
 
@@ -71,7 +71,9 @@
 
 ## Dungeons
 
-- [ ] Deadmines
+- [x] RFC
+- [x] WC
+- [x] Deadmines
 - [ ] BFD
 - [ ] Stocks
 - [ ] SFK

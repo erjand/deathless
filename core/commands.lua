@@ -2,7 +2,7 @@ local Deathless = Deathless
 
 -- Slash command handler
 local function SlashCommandHandler(msg)
-    local cmd = msg and msg:lower():trim() or ""
+    local cmd = msg and strtrim(msg:lower()) or ""
 
     --- Open the player's class view and select a class tab.
     ---@param suffix string Tab suffix (e.g., "abilities", "talents", "gear", "stats")

@@ -15,6 +15,7 @@
 
 ## UI
 
+- [ ] Consider either removing the Home tab and consolidating into Summary; or adding something meaningful there (maybe the quote carousel?)
 - [ ] Have Search box in Dungeons view filter for "SM" when typing in "Scarlet", etc - lots of edge cases like this where aliases would help
 
 ## Summary / Warnings

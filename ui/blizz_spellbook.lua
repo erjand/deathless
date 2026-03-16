@@ -2,20 +2,6 @@ local Deathless = Deathless
 
 Deathless.UI.Spellbook = Deathless.UI.Spellbook or {}
 
--- Map class filenames to navigation IDs
-local CLASS_NAV_IDS = {
-    WARRIOR = "warrior_abilities",
-    MAGE = "mage_abilities",
-    PRIEST = "priest_abilities",
-    ROGUE = "rogue_abilities",
-    -- Add more as abilities are implemented
-    DRUID = "class_druid",
-    HUNTER = "class_hunter",
-    PALADIN = "class_paladin",
-    SHAMAN = "class_shaman",
-    WARLOCK = "class_warlock",
-}
-
 -- Use one of the reserved spellbook tab slots (last available)
 local DEATHLESS_TAB_INDEX = MAX_SKILLLINE_TABS
 
@@ -109,35 +95,10 @@ function Deathless.UI.Spellbook:ToggleClassAbilities()
         return
     end
     
-    -- Get player's class
-    local _, classFile = UnitClass("player")
-    local navId = CLASS_NAV_IDS[classFile]
-    
-    if not navId then
-        Deathless.Utils.Chat.Print("Abilities guide not yet available for " .. classFile)
-        return
-    end
-    
-    -- Show the Deathless frame
-    if Deathless.UI.Frame then
-        Deathless.UI.Frame:Show()
-    end
-    
-    -- Navigate to the class abilities
-    -- First expand the classes section, then the specific class
-    if Deathless.UI.Navigation and Deathless.UI.Navigation.frame then
-        local nav = Deathless.UI.Navigation.frame
-        
-        -- Expand classes
-        nav.expandedSections["classes"] = true
-        
-        -- Expand the specific class section (e.g., "class_warrior")
-        local classSection = "class_" .. classFile:lower()
-        nav.expandedSections[classSection] = true
-        
-        -- Reposition and select
-        Deathless.UI.Navigation:RepositionButtons()
-        Deathless.UI.Navigation:Select(navId)
+    if Deathless.UI.Navigation and Deathless.UI.Navigation.OpenPlayerClassTab then
+        Deathless.UI.Navigation:OpenPlayerClassTab("abilities", { notifyMissingTab = true })
+    else
+        Deathless.Utils.Chat.Print("UI not initialized.")
     end
 end
 

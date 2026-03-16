@@ -484,6 +484,69 @@ function Deathless.UI.Navigation:Select(navId)
     end
 end
 
+--- Open a class view and optionally select a tab.
+---@param classFile string Class token from UnitClass (e.g. "WARRIOR")
+---@param tabSuffix string|nil Optional class tab suffix (e.g. "abilities")
+---@param opts table|nil Optional behavior flags
+---@return boolean success True when class view opened and requested tab (if any) selected
+function Deathless.UI.Navigation:OpenClassTab(classFile, tabSuffix, opts)
+    opts = opts or {}
+
+    if not classFile then
+        Deathless.Utils.Chat.Print("Could not determine your class.")
+        return false
+    end
+
+    local classKey = classFile:lower()
+    local classViewId = "class_" .. classKey
+    local tabId = tabSuffix and (classKey .. "_" .. tabSuffix) or nil
+
+    if Deathless.UI and Deathless.UI.Frame then
+        Deathless.UI.Frame:Show()
+    else
+        Deathless.Utils.Chat.Print("UI not initialized.")
+        return false
+    end
+
+    if not self.frame then
+        Deathless.Utils.Chat.Print("Navigation not initialized.")
+        return false
+    end
+
+    local nav = self.frame
+    nav.expandedSections["classes"] = true
+    nav.expandedSections[classViewId] = true
+    self:RepositionButtons()
+    self:Select(classViewId)
+
+    if not tabId then
+        return true
+    end
+
+    if Deathless.UI.Content and Deathless.UI.Content.frame then
+        local view = Deathless.UI.Content.frame.views and Deathless.UI.Content.frame.views[classViewId]
+        if view and view.elements and view.elements.tabBar and view.elements.tabBar.containers[tabId] then
+            view.elements.tabBar.SelectTab(tabId)
+            return true
+        end
+    end
+
+    if opts.notifyMissingTab then
+        local label = opts.tabLabel or tabSuffix:gsub("^%l", string.upper)
+        Deathless.Utils.Chat.Print(string.format("%s tab not available for your class.", label))
+    end
+    return false
+end
+
+--- Open the player's class view and optionally select a tab.
+---@param tabSuffix string|nil Optional class tab suffix (e.g. "abilities")
+---@param opts table|nil Optional behavior flags
+---@return boolean success
+function Deathless.UI.Navigation:OpenPlayerClassTab(tabSuffix, opts)
+    local _, classFile = UnitClass("player")
+    return self:OpenClassTab(classFile, tabSuffix, opts)
+end
+
 --- Get the current selection
 ---@return string|nil The current selection id
 function Deathless.UI.Navigation:GetSelection()

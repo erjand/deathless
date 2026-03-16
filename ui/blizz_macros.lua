@@ -83,35 +83,10 @@ function Deathless.UI.Macros:ToggleClassMacros()
         return
     end
 
-    local _, classFile = UnitClass("player")
-    if not classFile then
-        Deathless.Utils.Chat.Print("Could not determine your class.")
-        return
-    end
-
-    local classKey = classFile:lower()
-    local classViewId = "class_" .. classKey
-    local tabId = classKey .. "_macros"
-
-    if Deathless.UI.Frame then
-        Deathless.UI.Frame:Show()
-    end
-
-    if Deathless.UI.Navigation and Deathless.UI.Navigation.frame then
-        local nav = Deathless.UI.Navigation.frame
-
-        nav.expandedSections["classes"] = true
-        nav.expandedSections[classViewId] = true
-
-        Deathless.UI.Navigation:RepositionButtons()
-        Deathless.UI.Navigation:Select(classViewId)
-
-        if Deathless.UI.Content and Deathless.UI.Content.frame then
-            local view = Deathless.UI.Content.frame.views and Deathless.UI.Content.frame.views[classViewId]
-            if view and view.elements and view.elements.tabBar and view.elements.tabBar.containers[tabId] then
-                view.elements.tabBar.SelectTab(tabId)
-            end
-        end
+    if Deathless.UI.Navigation and Deathless.UI.Navigation.OpenPlayerClassTab then
+        Deathless.UI.Navigation:OpenPlayerClassTab("macros")
+    else
+        Deathless.Utils.Chat.Print("UI not initialized.")
     end
 end
 

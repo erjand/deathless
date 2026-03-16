@@ -7,30 +7,8 @@ local function SlashCommandHandler(msg)
     --- Open the player's class view and select a class tab.
     ---@param suffix string Tab suffix (e.g., "abilities", "talents", "gear", "stats")
     local function OpenCurrentClassTab(suffix)
-        if Deathless.UI and Deathless.UI.Frame then
-            Deathless.UI.Frame:Show()
-            if Deathless.UI.Navigation and Deathless.UI.Navigation.Select then
-                local _, classFile = UnitClass("player")
-                if classFile then
-                    local classKey = classFile:lower()
-                    local classViewId = "class_" .. classKey
-                    local tabId = classKey .. "_" .. suffix
-
-                    Deathless.UI.Navigation:Select(classViewId)
-
-                    -- Class views are tabbed; switch to requested tab if it exists.
-                    if Deathless.UI.Content and Deathless.UI.Content.frame then
-                        local view = Deathless.UI.Content.frame.views and Deathless.UI.Content.frame.views[classViewId]
-                        if view and view.elements and view.elements.tabBar and view.elements.tabBar.containers[tabId] then
-                            view.elements.tabBar.SelectTab(tabId)
-                        else
-                            Deathless.Utils.Chat.Print(string.format("%s tab not available for your class.", suffix:gsub("^%l", string.upper)))
-                        end
-                    end
-                else
-                    Deathless.Utils.Chat.Print("Could not determine your class.")
-                end
-            end
+        if Deathless.UI and Deathless.UI.Navigation and Deathless.UI.Navigation.OpenPlayerClassTab then
+            Deathless.UI.Navigation:OpenPlayerClassTab(suffix, { notifyMissingTab = true })
         else
             Deathless.Utils.Chat.Print("UI not initialized.")
         end

@@ -81,8 +81,8 @@
 - [ ] Gnomer
 - [x] SM Gy
 - [x] SM Lib
-- [ ] SM Arm
-- [ ] SM Cath
+- [x] SM Arm
+- [x] SM Cath
 - [x] RFK
 - [x] RFD
 - [ ] Ulda

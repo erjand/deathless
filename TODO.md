@@ -84,7 +84,7 @@
 - [ ] SM Arm
 - [ ] SM Cath
 - [x] RFK
-- [ ] RFD
+- [x] RFD
 - [ ] Ulda
 - [ ] ZF
 - [ ] Mara

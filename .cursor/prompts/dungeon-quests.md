@@ -37,3 +37,5 @@ The schema for each quest:
 - rewards: a collection of any items rewarded from the quest
     - itemId: the unique id of the reward item (found in the Wowhead URL)
     - name: the exact human-friendly name of the reward item
+
+For your data sources, you should use well-known sites such as Wowhead, icy-veins, wowdb, wowclassicdb, and classicdb

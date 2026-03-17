@@ -5,9 +5,10 @@ We have completed quests for these dungeons, and they can be referenced as examp
 - Wailing Caverns
 - Deadmines
 - Stockades
+- Blackfathom Deeps
 
 For this task, we will complete the quests for:
-- Blackfathom Deeps
+- Razorfen Kraul
 
 1. All of the data you need should be available from Wowhead, and in particular you will find https://www.wowhead.com/classic/guide/dungeon-quests-wow-classic extremely useful. You will likely need to follow the links on each quest to get detailed information for the quest rewards and quest giver.
 2. When you cannot find the information you need from a definitive source, do not guess - put a comment in the code for me to review.

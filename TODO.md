@@ -75,15 +75,15 @@
 - [x] RFC
 - [x] WC
 - [x] Deadmines
-- [ ] BFD
-- [ ] Stocks
-- [ ] SFK
+- [x] BFD
+- [x] Stocks
+- [x] SFK
 - [ ] Gnomer
 - [ ] SM Gy
 - [ ] SM Lib
 - [ ] SM Arm
 - [ ] SM Cath
-- [ ] RFK
+- [x] RFK
 - [ ] RFD
 - [ ] Ulda
 - [ ] ZF

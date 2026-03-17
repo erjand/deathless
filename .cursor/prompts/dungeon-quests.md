@@ -1,14 +1,9 @@
 We are going to finish filling out the quest information for each dungeon in @data/dungeons.lua . The basic dungeon information is correct for each dungeon already - do not change these, or the Warnings (these will be handled in a separate task).
 
-We have completed quests for these dungeons, and they can be referenced as examples.
-- Ragefire Chasm
-- Wailing Caverns
-- Deadmines
-- Stockades
-- Blackfathom Deeps
+Look at the dungeons for which quests have been completed as examples.
 
 For this task, we will complete the quests for:
-- Razorfen Kraul
+- { }
 
 1. All of the data you need should be available from Wowhead, and in particular you will find https://www.wowhead.com/classic/guide/dungeon-quests-wow-classic extremely useful. You will likely need to follow the links on each quest to get detailed information for the quest rewards and quest giver.
 2. When you cannot find the information you need from a definitive source, do not guess - put a comment in the code for me to review.
@@ -27,7 +22,7 @@ For this task, we will complete the quests for:
 The schema for each quest:
 - name: the exact human-friendly name of the quest
 - questId: the unique id of the quest, found in the Wowhead URL
-- level: the level of the quest (not the minimum level to accept it)
+- level: the level of the quest (NOT the minimum level to accept it)
 - side: Alliance, Horde, or Both
 - prereq: true or false (does the quest have any prerequisites)
 - startNpc: the exact human-friendly name of the quest giver (or item)

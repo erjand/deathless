@@ -558,7 +558,7 @@ Deathless.Data.Dungeons = {
             {
                 name = "Blueleaf Tubers",
                 questId = 1221,
-                level = 20,
+                level = 26,
                 side = "Both",
                 prereq = false,
                 startNpc = "Mebok Mizzyrix", startNpcId = 3446, startLoc = "Ratchet", startCoords = "62.4, 37.6",
@@ -606,7 +606,7 @@ Deathless.Data.Dungeons = {
             {
                 name = "Willix the Importer",
                 questId = 1144,
-                level = 22,
+                level = 30,
                 side = "Both",
                 prereq = false,
                 startNpc = "Willix the Importer", startNpcId = 4508, startLoc = "Inside the dungeon, behind the hut near Charlga Razorflank",
@@ -621,16 +621,40 @@ Deathless.Data.Dungeons = {
     },
     {
         id = "sm_graveyard",
-        name = "SM: Graveyard (WIP)",
+        name = "SM: Graveyard",
         zone = "Tirisfal Glades",
         endBoss = "Bloodmage Thalnos",
         bossLevel = 34,
         levelMin = 26,
         levelMax = 36,
         warnings = {
-            "Bloodmage Thalnos casts Flame Spike and Fire Nova — interrupt when possible.",
+            "Pull carefully inside the crypt before the final boss to avoid multiple packs of enemies.",
         },
-        quests = {},
+        quests = {
+            {
+                name = "Hearts of Zeal",
+                questId = 1113,
+                level = 33,
+                side = "Horde",
+                prereq = true,
+                startNpc = "Master Apothecary Faranell", startNpcId = 2055, startLoc = "Undercity", startCoords = "48.0, 69.0",
+                money = 0,
+            },
+            {
+                name = "Vorrel's Revenge",
+                questId = 1051,
+                level = 33,
+                side = "Horde",
+                prereq = false,
+                startNpc = "Vorrel Sengutz", startNpcId = 3981, startLoc = "Inside the dungeon, in the torture room after killing Interrogator Vishas",
+                money = 0,
+                rewards = {
+                    { itemId = 4643, name = "Grimsteel Cape" },
+                    { itemId = 7750, name = "Mantle of Woe" },
+                    { itemId = 7751, name = "Vorrel's Boots" },
+                },
+            },
+        },
     },
     {
         id = "sm_library",
@@ -682,8 +706,8 @@ Deathless.Data.Dungeons = {
         levelMax = 45,
         warnings = {
             "Roaches can social aggro nearby packs of enemies",
-            "Amnennar the Coldbringer is immune to Frost damage.",
-            "Amnennar the Coldbringer summons adds, which will need to be killed, CC'ed, or handled by burning the boss quickly.",
+            "Amnennar is immune to Frost damage.",
+            "Amnennar summons adds, which will need to be killed, CC'ed, or handled by burning the boss quickly.",
         },
         quests = {
             {
@@ -738,7 +762,7 @@ Deathless.Data.Dungeons = {
             {
                 name = "Extinguishing the Idol",
                 questId = 3525,
-                level = 32,
+                level = 37,
                 side = "Both",
                 prereq = true,
                 startNpc = "Belnistrasz", startNpcId = 8516, startLoc = "Inside the dungeon, before the spiral",
@@ -750,7 +774,7 @@ Deathless.Data.Dungeons = {
             {
                 name = "Scourge of the Downs",
                 questId = 3523,
-                level = 32,
+                level = 37,
                 side = "Both",
                 prereq = false,
                 startNpc = "Belnistrasz", startNpcId = 8516, startLoc = "Inside the dungeon, before the spiral",

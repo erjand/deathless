@@ -79,7 +79,7 @@
 - [x] Stocks
 - [x] SFK
 - [ ] Gnomer
-- [ ] SM Gy
+- [x] SM Gy
 - [ ] SM Lib
 - [ ] SM Arm
 - [ ] SM Cath

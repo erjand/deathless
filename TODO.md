@@ -78,7 +78,7 @@
 - [x] BFD
 - [x] Stocks
 - [x] SFK
-- [ ] Gnomer
+- [x] Gnomer
 - [x] SM Gy
 - [x] SM Lib
 - [x] SM Arm

@@ -86,7 +86,7 @@
 - [x] RFK
 - [x] RFD
 - [ ] Ulda
-- [ ] ZF
+- [x] ZF
 - [ ] Mara
 - [ ] BRD
 - [ ] ST

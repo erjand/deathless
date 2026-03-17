@@ -4,9 +4,10 @@ We have completed quests for these dungeons, and they can be referenced as examp
 - Ragefire Chasm
 - Wailing Caverns
 - Deadmines
+- Stockades
 
 For this task, we will complete the quests for:
-- Shadowfang Keep
+- Blackfathom Deeps
 
 1. All of the data you need should be available from Wowhead, and in particular you will find https://www.wowhead.com/classic/guide/dungeon-quests-wow-classic extremely useful. You will likely need to follow the links on each quest to get detailed information for the quest rewards and quest giver.
 2. When you cannot find the information you need from a definitive source, do not guess - put a comment in the code for me to review.

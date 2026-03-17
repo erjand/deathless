@@ -262,7 +262,43 @@ Deathless.Data.Dungeons = {
             "Archmage Arugal casts Void Bolt which hits very hard. Stay at high HP.",
             "Commander Springvale and his adds can overwhelm an unprepared group.",
         },
-        quests = {},
+        quests = {
+            {
+                name = "Arugal Must Die",
+                questId = 1014,
+                level = 27,
+                side = "Horde",
+                prereq = false,
+                startNpc = "Dalar Dawnweaver", startNpcId = 1938, startLoc = "Silverpine Forest", startCoords = "44.2, 39.8",
+                rewards = {
+                    { itemId = 6414, name = "Seal of Sylvanas" },
+                },
+            },
+            {
+                name = "Deathstalkers in Shadowfang",
+                questId = 1098,
+                level = 25,
+                side = "Horde",
+                prereq = false,
+                startNpc = "High Executor Hadrec", startNpcId = 1952, startLoc = "Silverpine Forest", startCoords = "43.4, 40.9",
+                money = 1800,
+                rewards = {
+                    { itemId = 3324, name = "Ghostly Mantle" },
+                },
+            },
+            {
+                name = "The Book of Ur",
+                questId = 1013,
+                level = 26,
+                side = "Horde",
+                prereq = false,
+                startNpc = "Keeper Bel'dugur", startNpcId = 2934, startLoc = "Undercity", startCoords = "53.7, 54.5",
+                rewards = {
+                    { itemId = 6335, name = "Grizzled Boots" },
+                    { itemId = 4534, name = "Steel-clasped Bracers" },
+                },
+            },
+        },
     },
     {
         id = "the_stockade",

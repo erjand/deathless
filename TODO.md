@@ -6,17 +6,17 @@
 
 ## Ideas
 
-- [ ] Feature: UnitScan Hardcore replacement things (because it's bad)
-- [ ] Feature: SafeGuard replacement things
+- [ ] Separate Addon: UnitScan Hardcore replacement things (because it's bad)
+- [ ] Separate Addon: SafeGuard replacement things
 - [ ] Feature: Max level mode to disable leveling stuff?
-- [ ] Feature: AtlasLoot for dungeons? (AL is soooo bad)
-- [ ] Feature: Equipment swap (Itemrack and Outfiteer are both really bad)
+- [ ] Feature: AtlasLoot for dungeons? (AL is soooo bad). Could fold Quests / Dungeon view into this and make it more comprehensive
+    - Could make Dungeons each have their own view to give them more room to breath; show warnings, quests, boss drops, trash drops, etc.
+- [ ] Separate Addon: Equipment swap (Itemrack and Outfiteer are both really bad)
 - [ ] Satellite addon pattern (like RestedXP) for individual Talent guides / packages
 
 ## UI
 
 - [ ] Consider either removing the Home tab and consolidating into Summary; or adding something meaningful there (maybe the quote carousel?)
-- [ ] Have Search box in Dungeons view filter for "SM" when typing in "Scarlet", etc - lots of edge cases like this where aliases would help
 
 ## Summary / Warnings
 
@@ -80,7 +80,7 @@
 - [x] SFK
 - [ ] Gnomer
 - [x] SM Gy
-- [ ] SM Lib
+- [x] SM Lib
 - [ ] SM Arm
 - [ ] SM Cath
 - [x] RFK
@@ -98,6 +98,9 @@
 - [ ] Strat UD
 - [ ] Strat Live
 - [ ] Scholo
+
+- [ ] Consider going back to add class specific quests
+- [ ] Have Search box view filter for "SM" when typing in "Scarlet", etc - lots of edge cases like this where aliases would help. Could just hardcode common ones
 
 ## Quests / Leveling
 

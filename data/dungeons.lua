@@ -629,6 +629,7 @@ Deathless.Data.Dungeons = {
         levelMax = 36,
         warnings = {
             "Pull carefully inside the crypt before the final boss to avoid multiple packs of enemies.",
+            "Keep an eye out for three rare spawns: Azshir the Sleepless, Fallen Champion, and Ironspine."
         },
         quests = {
             {
@@ -658,16 +659,83 @@ Deathless.Data.Dungeons = {
     },
     {
         id = "sm_library",
-        name = "SM: Library (WIP)",
+        name = "SM: Library",
         zone = "Tirisfal Glades",
         endBoss = "Arcanist Doan",
         bossLevel = 37,
         levelMin = 29,
         levelMax = 39,
         warnings = {
-            "Arcanist Doan casts Detonation — a large AoE. Run to the edges of the room when he bubbles.",
+            "Scarlet Chaplains can Heal themselves, and should be interrupted.",
+            "Scarlet Diviners cast a damaging Fireball, and should be interrupted.",
+            "Arcanist Doan casts Detonation, a large AoE spell - run outside the door to LoS.",
         },
-        quests = {},
+        quests = {
+            {
+                name = "Compendium of the Fallen",
+                questId = 1049,
+                level = 38,
+                side = "Horde",
+                prereq = false,
+                startNpc = "Sage Truthseeker", startNpcId = 3978, startLoc = "Thunder Bluff", startCoords = "34.8, 47.8",
+                money = 0,
+                rewards = {
+                    { itemId = 17508, name = "Forcestone Buckler" },
+                    { itemId = 7749, name = "Omega Orb" },
+                    { itemId = 7747, name = "Vile Protector" },
+                },
+            },
+            {
+                name = "In the Name of the Light",
+                questId = 1053,
+                level = 40,
+                side = "Alliance",
+                prereq = true,
+                startNpc = "Raleigh the Devout", startNpcId = 3980, startLoc = "Hillsbrad Foothills, Southshore",
+                money = 0,
+                rewards = {
+                    { itemId = 6831, name = "Black Menace" },
+                    { itemId = 6830, name = "Bonebiter" },
+                    { itemId = 11262, name = "Orb of Lorica" },
+                    { itemId = 6829, name = "Sword of Serenity" },
+                },
+            },
+            {
+                name = "Into The Scarlet Monastery",
+                questId = 1048,
+                level = 42,
+                side = "Horde",
+                prereq = false,
+                startNpc = "Varimathras", startNpcId = 2425, startLoc = "Undercity", startCoords = "56.2, 92.4",
+                money = 0,
+                rewards = {
+                    { itemId = 10711, name = "Dragon's Blood Necklace" },
+                    { itemId = 6803, name = "Prophetic Cane" },
+                    { itemId = 6802, name = "Sword of Omen" },
+                },
+            },
+            {
+                name = "Mythology of the Titans",
+                questId = 1050,
+                level = 38,
+                side = "Alliance",
+                prereq = false,
+                startNpc = "Librarian Mae Paledust", startNpcId = 3979, startLoc = "Ironforge", startCoords = "74.6, 12.6",
+                money = 0,
+                rewards = {
+                    { itemId = 7746, name = "Explorers' League Commendation" },
+                },
+            },
+            {
+                name = "Test of Lore",
+                questId = 1160,
+                level = 36,
+                side = "Horde",
+                prereq = true,
+                startNpc = "Parqual Fintallas", startNpcId = 4488, startLoc = "Undercity", startCoords = "57.8, 65",
+                money = 0,
+            },
+        },
     },
     {
         id = "sm_armory",

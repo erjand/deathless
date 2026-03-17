@@ -565,7 +565,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
                         qr.prereqText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                     end
 
-                    -- Rewards: item icons or money
+                    -- Rewards: item icons and/or money
                     for i = 1, MAX_REWARD_ICONS do
                         local rewardIcon = qr.rewardIcons[i]
                         rewardIcon:Hide()
@@ -575,11 +575,13 @@ Deathless.UI.Views:Register("dungeons", function(container)
                     qr.moneyText:SetText("")
                     qr.moneyText:Hide()
 
+                    local rewardIconCount = 0
                     if q.rewards and #q.rewards > 0 then
                         for i, r in ipairs(q.rewards) do
                             if i > MAX_REWARD_ICONS then break end
                             local icon = qr.rewardIcons[i]
                             local itemId = r.itemId
+                            rewardIconCount = i
 
                             icon.boundItemId = itemId
                             local expectedToken = icon.itemLoadToken
@@ -606,8 +608,16 @@ Deathless.UI.Views:Register("dungeons", function(container)
                             end)
                             icon:Show()
                         end
-                    elseif q.money and q.money > 0 then
+                    end
+
+                    if q.money and q.money > 0 then
                         local FormatMoney = Deathless.Utils.Abilities.FormatMoneyColored
+                        local moneyX = QC.rewX
+                        if rewardIconCount > 0 then
+                            moneyX = QC.rewX + (rewardIconCount * (ICON_SIZE + ICON_SPACING)) + 4
+                        end
+                        qr.moneyText:ClearAllPoints()
+                        qr.moneyText:SetPoint("LEFT", qr, "LEFT", moneyX, 0)
                         qr.moneyText:SetText(FormatMoney(q.money))
                         qr.moneyText:Show()
                     end

@@ -252,15 +252,15 @@ Deathless.Data.Dungeons = {
     },
     {
         id = "shadowfang_keep",
-        name = "Shadowfang Keep (WIP)",
+        name = "Shadowfang Keep",
         zone = "Silverpine Forest",
         endBoss = "Archmage Arugal",
         bossLevel = 26,
         levelMin = 22,
         levelMax = 30,
         warnings = {
-            "Archmage Arugal casts Void Bolt which hits very hard. Stay at high HP.",
-            "Commander Springvale and his adds can overwhelm an unprepared group.",
+            "Low-level players can accidentally body pull when climbing the wooden stairs in the middle of the instance.",
+            "Arugal casts Void Bolt which hits very hard, but can be avoided by using LoS at the base of the stairs.",
         },
         quests = {
             {

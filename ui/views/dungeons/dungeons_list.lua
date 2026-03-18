@@ -113,6 +113,13 @@ local function GetDifficultyColor(mobLevel, playerLevel)
     end
 end
 
+--- Escape Lua pattern metacharacters so plain text can be safely used in gsub.
+---@param text string
+---@return string
+local function EscapeLuaPattern(text)
+    return (text:gsub("([%(%)%.%%%+%-%*%?%[%]%^%$])", "%%%1"))
+end
+
 --- Dungeons view - sortable/searchable dungeon list with expandable details
 Deathless.UI.Views:Register("dungeons", function(container)
     local Colors = Utils:GetColors()
@@ -307,6 +314,41 @@ Deathless.UI.Views:Register("dungeons", function(container)
     }
     local QUEST_HEADER_HEIGHT = DungeonLayout.quests.headerHeight
 
+    --- Convert {r,g,b} color table to WoW color code.
+    ---@param color table|nil
+    ---@return string
+    local function ColorCodeFromRGB(color)
+        local r = math.floor(((color and color[1]) or 1) * 255 + 0.5)
+        local g = math.floor(((color and color[2]) or 1) * 255 + 0.5)
+        local b = math.floor(((color and color[3]) or 1) * 255 + 0.5)
+        return string.format("|cff%02x%02x%02x", r, g, b)
+    end
+
+    local warningNameColorCode = ColorCodeFromRGB(Colors.xpHeader)
+
+    --- Highlight warning names in XP blue.
+    --- Supports explicit name tags in data text via [[Name Here]].
+    --- Also highlights the current dungeon end boss name when present.
+    ---@param dungeon table
+    ---@param warning string
+    ---@return string
+    local function FormatWarningText(dungeon, warning)
+        local result = warning or ""
+
+        -- Explicit tagging for names authored in data/dungeons.lua.
+        result = result:gsub("%[%[(.-)%]%]", function(name)
+            return warningNameColorCode .. name .. "|r"
+        end)
+
+        -- Automatic boss-name highlight so this works immediately.
+        if dungeon and dungeon.endBoss and dungeon.endBoss ~= "" then
+            local bossPattern = EscapeLuaPattern(dungeon.endBoss)
+            result = result:gsub(bossPattern, warningNameColorCode .. dungeon.endBoss .. "|r")
+        end
+
+        return result
+    end
+
     local function GetQuestRow()
         questRowIndex = questRowIndex + 1
         local row = questRowPool[questRowIndex]
@@ -396,7 +438,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
         if dungeon.warnings and #dungeon.warnings > 0 then
             local warningLines = {}
             for _, w in ipairs(dungeon.warnings) do
-                table.insert(warningLines, "•  " .. w)
+                table.insert(warningLines, "•  " .. FormatWarningText(dungeon, w))
             end
 
             local sec = GetSection()

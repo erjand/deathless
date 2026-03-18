@@ -12,8 +12,8 @@ Deathless.Data.Dungeons = {
         levelMin = 13,
         levelMax = 18,
         warnings = {
-            "Taragaman the Hungerer casts a knockback - do not stand next to the lava.",
-            "Taragaman the Hungerer casts a Fire Nova AoE.",
+            "[[Taragaman the Hungerer]] casts a knockback - do not stand next to the lava.",
+            "[[Taragaman the Hungerer]] casts a Fire Nova AoE.",
         },
         quests = {
             {
@@ -83,7 +83,7 @@ Deathless.Data.Dungeons = {
         warnings = {
             "Deviate Guardian will call nearby raptors when their health is low.",
             "Deviate Dreadfang casts a fear effect.",
-            "Verdan the Everliving hits the tank for very high melee damage.",
+            "[[Verdan the Everliving]] hits the tank for very high melee damage.",
         },
         quests = {
             {
@@ -184,7 +184,7 @@ Deathless.Data.Dungeons = {
         warnings = {
             "Patrols of Defias mobs roam the mine tunnels. Watch for them during pulls and after boss fights.",
             "Low-level players can accidentally body pull enemies on the upper levels of the pirate ship.",
-            "Edwin VanCleef summons 2 adds at 50% and 25% HP. Burn them fast or they will overwhelm the healer.",
+            "[[Edwin VanCleef]] summons 2 adds at 50% and 25% HP. Burn them fast or they will overwhelm the healer.",
         },
         quests = {
             {
@@ -260,7 +260,7 @@ Deathless.Data.Dungeons = {
         levelMax = 30,
         warnings = {
             "Low-level players can accidentally body pull when climbing the wooden stairs in the middle of the instance.",
-            "Arugal casts Void Bolt which hits very hard, but can be avoided by using LoS at the base of the stairs.",
+            "[[Arugal]] casts Void Bolt which hits very hard, but can be avoided by using LoS at the base of the stairs.",
         },
         quests = {
             {
@@ -310,7 +310,7 @@ Deathless.Data.Dungeons = {
         levelMax = 30,
         warnings = {
             "Defias Prisoners will repeatedly disarm the tank.",
-            "Dextren Ward casts Intimidating Shout, which can fear players into nearby mobs."
+            "[[Dextren Ward]] casts Intimidating Shout, which can fear players into nearby mobs."
         },
         quests = {
             {
@@ -388,8 +388,8 @@ Deathless.Data.Dungeons = {
         levelMin = 20,
         levelMax = 30,
         warnings = {
-            "The ranged murlocs before Gelihast should be LoS pulled carefully.",
-            "The candles in the room with Twilight Lord Kelris should be lit one at a time by a single player",
+            "The ranged murlocs before [[Gelihast]] should be LoS pulled carefully.",
+            "The candles in the room with [[Twilight Lord Kelris]] should be lit one at a time by a single player",
         },
         quests = {
             {
@@ -513,8 +513,8 @@ Deathless.Data.Dungeons = {
         levelMin = 24,
         levelMax = 34,
         warnings = {  -- TODO: Verify these (I never do Gnomer)
-            "After killing Grubbis, the cave over his corpse will collapse, killing players underneath it.",
-            "Low-level players or pets can body pull huge numbers of mobs in the two-tiered tunnel leading up to Mekgineer Thermaplugg.",
+            "After killing [[Grubbis]], the cave over his corpse will collapse, killing players underneath it.",
+            "Low-level players or pets can body pull huge numbers of mobs in the two-tiered tunnel leading up to [[Mekgineer Thermaplugg]].",
         },
         quests = {
             {
@@ -633,7 +633,7 @@ Deathless.Data.Dungeons = {
         levelMin = 30,
         levelMax = 40,
         warnings = {
-            "Death Speaker Jargba will cast Mind Control on a random player.",
+            "[[Death Speaker Jargba]] will cast Mind Control on a random player.",
             "Bats will cast an AoE Silence - casters should stay outside melee range.",
         },
         quests = {
@@ -736,7 +736,7 @@ Deathless.Data.Dungeons = {
         levelMax = 36,
         warnings = {
             "Pull carefully inside the crypt before the final boss to avoid multiple packs of enemies.",
-            "Keep an eye out for three rare spawns: Azshir the Sleepless, Fallen Champion, and Ironspine."
+            "Keep an eye out for three rare spawns: [[Azshir the Sleepless]], [[Fallen Champion]], and [[Ironspine]]."
         },
         quests = {
             {
@@ -775,7 +775,7 @@ Deathless.Data.Dungeons = {
         warnings = {
             "Scarlet Chaplains can Heal themselves, and should be interrupted.",
             "Scarlet Diviners cast a damaging Fireball, and should be interrupted.",
-            "Arcanist Doan casts Detonation, a large AoE spell - run outside the door to LoS.",
+            "[[Arcanist Doan]] casts Detonation, a large AoE spell - run outside the door to LoS.",
         },
         quests = {
             {
@@ -857,7 +857,7 @@ Deathless.Data.Dungeons = {
             "Scarlet Protectors cast Heal, and should be interrupted.",
             "Scarlet Myrmidons hit hard and enrage at low health.",
             "Scarlet Guardsman will disarm the tank.",
-            "Any totems or dummies left in the hallway when Herod is engaged will aggro multiple elites during his fight.",
+            "Any totems or dummies left in the hallway when [[Herod]] is engaged will aggro multiple elites during his fight.",
         },
         quests = {
             {
@@ -901,7 +901,7 @@ Deathless.Data.Dungeons = {
         levelMax = 45,
         warnings = {
             "Scaret Abbot can cast Heal and Renew, and should be interrupted and prioritized as a kill target.",
-            "All enemies inside the cathedral must be cleared, or they will aggro when Whitemane is engaged.",
+            "All enemies inside the cathedral must be cleared, or they will aggro when [[Whitemane]] is engaged.",
         },
         quests = {
             {
@@ -945,8 +945,8 @@ Deathless.Data.Dungeons = {
         levelMax = 45,
         warnings = {
             "Roaches can social aggro nearby packs of enemies",
-            "Amnennar is immune to Frost damage.",
-            "Amnennar summons adds, which will need to be killed, CC'ed, or handled by burning the boss quickly.",
+            "[[Amnennar]] is immune to Frost damage.",
+            "[[Amnennar]] summons adds, which will need to be killed, CC'ed, or handled by burning the boss quickly.",
         },
         quests = {
             {
@@ -1030,9 +1030,9 @@ Deathless.Data.Dungeons = {
         levelMin = 42,
         levelMax = 52,
         warnings = {
-            "The large Trogg rooms before Grimlok are densely packed and enemies will flee into nearby packsat low health.",
-            "Shadowforge dwarves near Galgann Firehammer can heal and cast from range; use line of sight to pull them safely.",
-            "Archaedas summons numerous adds throughout the fight, including elite stone golems. Burn him quickly or have a plan to control the adds.",
+            "The Trogg rooms before [[Grimlok]] are densely packed and enemies will flee at low health.",
+            "Shadowforge dwarves near [[Galgann Firehammer]] can heal and cast from range; use LoS to pull them safely.",
+            "[[Archaedas]] summons adds throughout the fight; burn him quickly or have a plan to control the adds.",
         },
         quests = {
             {
@@ -1211,7 +1211,7 @@ Deathless.Data.Dungeons = {
         warnings = {
             "Sandfury Shadowhunter casts Hex, which will polymorph a member of the group for 10 seconds.",
             "Pulling extra enemies during the stairs event can overwhelm the party.",
-            "Packs of enemies surrounding Gahz'rilla and Hydromancer Velratha should be cleared before engaging them."
+            "Packs of enemies surrounding [[Gahz'rilla]] and [[Hydromancer Velratha]] should be cleared before engaging them."
         },
         quests = {
             {
@@ -1308,7 +1308,7 @@ Deathless.Data.Dungeons = {
         levelMin = 46,
         levelMax = 55,
         warnings = {
-            "Princess Theradras has a knockback and dust cloud. Tank against a wall.",
+            "[[Princess Theradras]] has a knockback and dust cloud. Tank against a wall.",
         },
         quests = {},
     },
@@ -1323,15 +1323,15 @@ Deathless.Data.Dungeons = {
         warnings = {
             "Sunken Temple represents a significant step up in difficulty from previous dungeons!",
             "It is recommended to make your way through the outer dungeon to the instance as a group.",
-            "Atal'alarion can aggro reset, and will knock players high into the air, causing them to take fall damage.",
-            "The Atal'ai Deathwalkers prior to Jammal'an cast Fear, and turn into an unkillable ghost after dying which should be kited.",
-            "During the Jammal'an the Prophet fight, kill Ogom the Wretched first.",
-            "Jammal'an casts Hex to turn a party member into a powerful Atal'ai Berserker - spread out and do not kill them.",
-            "Weaver, Dreamscythe, Hazzas, and Morphaz all have a frontal breath and knockback ability.",
-            "Shade of Eranikus will summon any unkilled dragonkin when the fight begins.",
-            "Shade of Eranikus will cast a 15 second sleep on the target with the highest threat.",
-            "Set party loot rules to Free-for-all for the Avatar of Hakkar fight - adds will drop Hakkari Blood, which must be used to extinguish the braziers.",
-            "Avatar of Hakker will cast a 6 second mind control on a random party member, causing them to enrage and attack a nearby ally.",
+            "[[Atal'alarion]] can aggro reset, and will knock players high into the air, causing them to take fall damage.",
+            "The Atal'ai Deathwalkers prior to [[Jammal'an]] cast Fear, and turn into an unkillable ghost after dying which should be kited.",
+            "During the [[Jammal'an the Prophet]] fight, kill [[Ogom the Wretched]] first.",
+            "[[Jammal'an]] casts Hex to turn a party member into a powerful Atal'ai Berserker - spread out and do not kill them.",
+            "[[Weaver]], [[Dreamscythe]], [[Hazzas]], and [[Morphaz]] all have a frontal breath and knockback ability.",
+            "[[Shade of Eranikus]] will summon any unkilled dragonkin when the fight begins.",
+            "[[Shade of Eranikus]] will cast a 15 second sleep on the target with the highest threat.",
+            "Set party loot rules to Free-for-all for the [[Avatar of Hakkar]] fight - adds will drop Hakkari Blood, which must be used to extinguish the braziers.",
+            "[[Avatar of Hakker]] will cast a 6 second mind control on a random party member, causing them to enrage and attack a nearby ally.",
         },
         quests = {
             {
@@ -1450,7 +1450,7 @@ Deathless.Data.Dungeons = {
         levelMax = 60,
         warnings = {
             "The bar area can chain-pull. Be very careful with patrols.",
-            "Emperor Thaurissan hits hard and is accompanied by Princess Moira — do not kill her.",
+            "[[Emperor Thaurissan]] hits hard and is accompanied by [[Princess Moira]] — do not kill her.",
         },
         quests = {},
     },
@@ -1463,7 +1463,7 @@ Deathless.Data.Dungeons = {
         levelMin = 55,
         levelMax = 60,
         warnings = {
-            "Overlord Wyrmthalak summons whelps. Burn them down quickly.",
+            "[[Overlord Wyrmthalak]] summons whelps. Burn them down quickly.",
         },
         quests = {},
     },
@@ -1476,8 +1476,8 @@ Deathless.Data.Dungeons = {
         levelMin = 55,
         levelMax = 60,
         warnings = {
-            "General Drakkisath has two guards — CC or off-tank them.",
-            "The Beast can fear the group into additional packs.",
+            "[[General Drakkisath]] has two guards — CC or off-tank them.",
+            "[[The Beast]] can fear the group into additional packs.",
         },
         quests = {},
     },
@@ -1490,7 +1490,7 @@ Deathless.Data.Dungeons = {
         levelMin = 54,
         levelMax = 60,
         warnings = {
-            "Alzzin shapeshifts and summons imps. AoE the imps down.",
+            "[[Alzzin]] shapeshifts and summons imps. AoE the imps down.",
         },
         quests = {},
     },
@@ -1503,7 +1503,7 @@ Deathless.Data.Dungeons = {
         levelMin = 54,
         levelMax = 60,
         warnings = {
-            "Prince Tortheldrin hits very hard in melee. Keep the tank topped.",
+            "[[Prince Tortheldrin]] hits very hard in melee. Keep the tank topped.",
         },
         quests = {},
     },
@@ -1516,7 +1516,7 @@ Deathless.Data.Dungeons = {
         levelMin = 54,
         levelMax = 60,
         warnings = {
-            "King Gordok enrages at low HP. Save cooldowns for the end.",
+            "[[King Gordok]] enrages at low HP. Save cooldowns for the end.",
         },
         quests = {},
     },
@@ -1529,7 +1529,7 @@ Deathless.Data.Dungeons = {
         levelMin = 58,
         levelMax = 60,
         warnings = {
-            "Balnazzar (disguised as Grand Crusader Dathrohan) hits very hard and has a Mind Control.",
+            "[[Balnazzar]] (disguised as [[Grand Crusader Dathrohan]]) hits very hard and has a Mind Control.",
         },
         quests = {},
     },
@@ -1542,7 +1542,7 @@ Deathless.Data.Dungeons = {
         levelMin = 58,
         levelMax = 60,
         warnings = {
-            "Baron Rivendare casts Shadow Bolt and summons skeletons. Stay spread.",
+            "[[Baron Rivendare]] casts Shadow Bolt and summons skeletons. Stay spread.",
         },
         quests = {},
     },
@@ -1555,7 +1555,7 @@ Deathless.Data.Dungeons = {
         levelMin = 58,
         levelMax = 60,
         warnings = {
-            "Darkmaster Gandling teleports random players into side rooms. Kill the mobs to escape.",
+            "[[Darkmaster Gandling]] teleports random players into side rooms. Kill the mobs to escape.",
         },
         quests = {},
     },

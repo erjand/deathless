@@ -85,7 +85,7 @@
 - [x] SM Cath
 - [x] RFK
 - [x] RFD
-- [ ] Ulda
+- [x] Ulda
 - [x] ZF
 - [ ] Mara
 - [ ] BRD

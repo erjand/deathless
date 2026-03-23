@@ -100,24 +100,7 @@
 - [ ] LBRS
 - [ ] Strat UD
 - [ ] Strat Live
-- [ ] Scholo
+- [x] Scholo
 
 - [ ] Consider going back to add class specific quests
 - [ ] Have Search box view filter for "SM" when typing in "Scarlet", etc - lots of edge cases like this where aliases would help. Could just hardcode common ones
-
-## Quests / Leveling
-
-- [ ] Light of Elune https://www.wowhead.com/classic/quest=1017/mage-summoner (Alliance)
-- [ ] Seal of Wrynn https://www.wowhead.com/classic/item=2933/seal-of-wrynn (Alliance)
-- [ ] That good Horde ring quest in Dustwallow (Horde)
-- [ ] Alliance: DM main quest rewards
-
-- [ ] Nifty Stopwatch (~40 Badlands)
-
-## Zones
-
-- [ ] Open Zones from Map
-
-### Elwynn Forest
-
-- [ ] Danger: Murlocs; Princess

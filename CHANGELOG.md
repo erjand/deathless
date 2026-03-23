@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.5
+
+1. Added Warnings and Quests for Scholomance
+
 ## 0.6.4
 
 1. Added Warnings and Quests for Dire Maul: East

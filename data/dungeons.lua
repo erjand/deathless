@@ -2104,15 +2104,124 @@ Deathless.Data.Dungeons = {
     },
     {
         id = "scholomance",
-        name = "Scholomance (WIP)",
+        name = "Scholomance",
         zone = "Western Plaguelands",
         endBoss = "Darkmaster Gandling",
         bossLevel = 61,
         levelMin = 58,
         levelMax = 60,
         warnings = {
-            "[[Darkmaster Gandling]] teleports random players into side rooms. Kill the mobs to escape.",
+            "[[Kirtonos the Herald]] has a knockback and should be tanked in front of a wall.",
+            "[[Jandice Barov]] summons illusions of herself, either burn the boss or handle the adds.",
+            "[[Rattlegore]] hits very hard, has a knockback, and cleaves.",
+            "[[Ras Frostwhisper]] casts Fear and Chill Nova - ranged stay at max range. Interrupt as much as possible.",
+            "[[Doctor Theolen Krastinov]] enrages at 50% and hits very hard - save defensive cooldowns.",
+            "[[The Ravenian]] has a tank knockback and cleave.",
+            "[[Lord Alexei Barov]] is a very tough fight - his unholy aura deals constant AoE damage, and his Veil of Shadow reduces healing on the target by 75%.",
+            "[[Lady Illucia Barov]] will mind control a random player, and has an AoE silence.",
+            "[[Darkmaster Gandling]] teleports random players (including the tank or healer) into side rooms.",
         },
-        quests = {},
+        quests = {
+            {
+                -- https://www.wowhead.com/classic/quest=5343/barov-family-fortune
+                name = "Barov Family Fortune",
+                questId = 5343,
+                level = 60,
+                side = "Alliance",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=11023/weldon-barov
+                startNpc = "Weldon Barov", startNpcId = 11023, startLoc = "Western Plaguelands, Chillwind Camp", startCoords = "43.5, 83.7",
+                money = 18000,
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5341/barov-family-fortune
+                name = "Barov Family Fortune",
+                questId = 5341,
+                level = 60,
+                side = "Horde",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=11022/alexi-barov
+                startNpc = "Alexi Barov", startNpcId = 11022, startLoc = "Tirisfal Glades, The Bulwark", startCoords = "83.1, 71.6",
+                money = 18000,
+            },
+            {
+                name = "Dawn's Gambit",
+                questId = 4771,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                startNpc = "Betina Bigglezink", startNpcId = 11035, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.5, 59.7",
+                money = 27000,
+                rewards = {
+                    { itemId = 15854, name = "Dancing Sliver" },
+                    { itemId = 15853, name = "Windreaper" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5382/doctor-theolen-krastinov-the-butcher
+                name = "Doctor Theolen Krastinov, the Butcher",
+                questId = 5382,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=11216/eva-sarkhoff
+                startNpc = "Eva Sarkhoff", startNpcId = 11216, startLoc = "Western Plaguelands, Caer Darrow (ghost)", startCoords = "70.2, 73.7",
+                money = 39600,
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5384/kirtonos-the-herald
+                name = "Kirtonos the Herald",
+                questId = 5384,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=11216/eva-sarkhoff
+                startNpc = "Eva Sarkhoff", startNpcId = 11216, startLoc = "Western Plaguelands, Caer Darrow (ghost)", startCoords = "70.2, 73.7",
+                money = 49800,
+                rewards = {
+                    { itemId = 15806, name = "Mirah's Song" },
+                    { itemId = 15805, name = "Penelope's Rose" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5515/krastinovs-bag-of-horrors
+                name = "Krastinov's Bag of Horrors",
+                questId = 5515,
+                level = 60,
+                side = "Both",
+                --https://www.wowhead.com/classic/npc=11216/eva-sarkhoff
+                prereq = true,
+                startNpc = "Eva Sarkhoff", startNpcId = 11216, startLoc = "Western Plaguelands, Caer Darrow (ghost)", startCoords = "70.2, 73.7",
+                money = 39600,
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5529/plagued-hatchlings
+                name = "Plagued Hatchlings",
+                questId = 5529,
+                level = 58,
+                side = "Both",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=11035/betina-bigglezink
+                startNpc = "Betina Bigglezink", startNpcId = 11035, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.5, 59.7",
+                money = 9000,
+            },
+            {
+                --https://www.wowhead.com/classic/quest=5466/the-lich-ras-frostwhisper
+                name = "The Lich, Ras Frostwhisper",
+                questId = 5466,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=11286/magistrate-marduke
+                startNpc = "Magistrate Marduke", startNpcId = 11286, startLoc = "Western Plaguelands, Caer Darrow (ghost, requires Spectral Essence)", startCoords = "70.6, 74.1",
+                money = 59700,
+                rewards = {
+                    { itemId = 13986, name = "Crown of Caer Darrow" },
+                    { itemId = 13984, name = "Darrowspike" },
+                    { itemId = 13982, name = "Warblade of Caer Darrow" },
+                    { itemId = 14002, name = "Darrowshire Strongguard" },
+                },
+            },
+        },
     },
 }

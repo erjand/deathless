@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.2
+
+1. Added Warnings and Quests for Dire Maul: North
+
 ## 0.6.1
 
 1. Added Warnings and Quests for BRD

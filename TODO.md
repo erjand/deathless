@@ -1,8 +1,11 @@
 # TODO
 
-## General
+## Feature Roadmap
 
-- [ ] Add release versioning / tags
+- [ ] 0.7: Dungeons Complete
+- [ ] 0.8: Stats Complete
+- [ ] 0.9: Gear Complete
+- [ ] 1.0: Support links and release to addon platforms
 
 ## Ideas
 
@@ -88,7 +91,7 @@
 - [x] Ulda
 - [x] ZF
 - [x] Mara
-- [ ] BRD
+- [x] BRD
 - [x] ST
 - [ ] DM:N
 - [ ] DM:W

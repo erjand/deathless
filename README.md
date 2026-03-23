@@ -39,6 +39,11 @@ Data should be maintained in CSV and generated into Lua:
 - Generated Lua: `data/gear/*.lua`
 - Generator script: `scripts/generate-all-csv.bat`
 
+## Versioning
+
+- Use SemVer
+- When updating the version, ensure that `deathless.toc` and `core/constants.lua` always match:
+
 ## Features 
 
 ### Detailed Class Information

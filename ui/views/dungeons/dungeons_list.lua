@@ -619,36 +619,37 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
                     local rewardIconCount = 0
                     if q.rewards and #q.rewards > 0 then
-                        for i, r in ipairs(q.rewards) do
-                            if i > MAX_REWARD_ICONS then break end
-                            local icon = qr.rewardIcons[i]
-                            local itemId = r.itemId
-                            rewardIconCount = i
+                        local shownRewardIcons = 0
+                        for _, r in ipairs(q.rewards) do
+                            if shownRewardIcons >= MAX_REWARD_ICONS then break end
 
-                            icon.boundItemId = itemId
-                            local expectedToken = icon.itemLoadToken
-                            icon.tex:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+                            local itemId = r and r.itemId
+                            if type(itemId) == "number" and itemId > 0 then
+                                shownRewardIcons = shownRewardIcons + 1
+                                local icon = qr.rewardIcons[shownRewardIcons]
+                                rewardIconCount = shownRewardIcons
 
-                            local item = Item:CreateFromItemID(itemId)
-                            item:ContinueOnItemLoad(function()
-                                if icon.itemLoadToken ~= expectedToken or icon.boundItemId ~= itemId then
-                                    return
-                                end
+                                icon.boundItemId = itemId
+                                icon.tex:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
                                 local itemTexture = C_Item.GetItemIconByID(itemId)
+                                if not itemTexture and C_Item.GetItemInfoInstant then
+                                    local _, _, _, _, iconFileID = C_Item.GetItemInfoInstant(itemId)
+                                    itemTexture = iconFileID
+                                end
                                 if itemTexture then
                                     icon.tex:SetTexture(itemTexture)
                                 end
-                            end)
 
-                            icon:SetScript("OnEnter", function(self)
-                                GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 4, 0)
-                                GameTooltip:SetItemByID(itemId)
-                                GameTooltip:Show()
-                            end)
-                            icon:SetScript("OnLeave", function()
-                                GameTooltip:Hide()
-                            end)
-                            icon:Show()
+                                icon:SetScript("OnEnter", function(self)
+                                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 4, 0)
+                                    GameTooltip:SetItemByID(itemId)
+                                    GameTooltip:Show()
+                                end)
+                                icon:SetScript("OnLeave", function()
+                                    GameTooltip:Hide()
+                                end)
+                                icon:Show()
+                            end
                         end
                     end
 

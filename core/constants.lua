@@ -2,6 +2,11 @@ local Deathless = Deathless
 
 Deathless.Constants = Deathless.Constants or {}
 
+Deathless.Constants.Metadata = {
+    ADDON_NAME = "Deathless",
+    VERSION = "0.6.1",
+}
+
 Deathless.Constants.Colors = {
     Codes = {
         enemy = "|cffcc4d4d",

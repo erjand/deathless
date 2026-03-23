@@ -95,7 +95,7 @@
 - [x] ST
 - [x] DM:N
 - [x] DM:W
-- [ ] DM:E
+- [x] DM:E
 - [ ] UBRS
 - [ ] LBRS
 - [ ] Strat UD

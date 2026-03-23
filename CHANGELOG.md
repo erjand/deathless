@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.4
+
+1. Added Warnings and Quests for Dire Maul: East
+
 ## 0.6.3
 
 1. Added Warnings and Quests for Dire Maul: West

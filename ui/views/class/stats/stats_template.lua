@@ -317,7 +317,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             if sectionState.primary then
                 yOffset = PlaceHeaders(yOffset, STATS_COL, {
                     { key = "stat", label = "STAT" },
-                    { key = "bonus", label = "BONUS" },
+                    { key = "bonus", label = "BONUS PER POINT" },
                     { key = "priority", label = "PRIORITY" },
                     { key = "note", label = "NOTE" },
                 })

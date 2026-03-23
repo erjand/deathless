@@ -3,7 +3,7 @@ We are going to finish filling out the quest information for each dungeon in @da
 Look at the dungeons for which quests have been completed as examples.
 
 For this task, we will complete the quests for:
-- Gnomeregan
+- Dire Maul: North
 
 1. All of the data you need should be available from Wowhead, and in particular you will find https://www.wowhead.com/classic/guide/dungeon-quests-wow-classic extremely useful. You will likely need to follow the links on each quest to get detailed information for the quest rewards and quest giver.
 2. When you cannot find the information you need from a definitive source, do not guess - put a comment in the code for me to review.

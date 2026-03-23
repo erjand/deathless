@@ -120,6 +120,28 @@ local function EscapeLuaPattern(text)
     return (text:gsub("([%(%)%.%%%+%-%*%?%[%]%^%$])", "%%%1"))
 end
 
+local LegacyIsQuestFlaggedCompleted = rawget(_G, "IsQuestFlaggedCompleted")
+local CQuestLog = rawget(_G, "C_QuestLog")
+
+--- Check whether a quest is completed for the current character.
+---@param questId number|nil
+---@return boolean
+local function IsQuestCompleted(questId)
+    if type(questId) ~= "number" or questId <= 0 then
+        return false
+    end
+
+    if type(CQuestLog) == "table" and type(CQuestLog.IsQuestFlaggedCompleted) == "function" then
+        return CQuestLog.IsQuestFlaggedCompleted(questId) == true
+    end
+
+    if LegacyIsQuestFlaggedCompleted then
+        return LegacyIsQuestFlaggedCompleted(questId) == true
+    end
+
+    return false
+end
+
 --- Dungeons view - sortable/searchable dungeon list with expandable details
 Deathless.UI.Views:Register("dungeons", function(container)
     local Colors = Utils:GetColors()
@@ -524,11 +546,17 @@ Deathless.UI.Views:Register("dungeons", function(container)
                     qr:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
                     qr:Show()
 
+                    local questId = q.questId
+                    local isCompleted = IsQuestCompleted(questId)
+                    local questNameColor = isCompleted and Colors.textDim or Colors.text
+                    local questSubtleColor = Colors.textDim
+                    local prereqYesColor = isCompleted and Colors.textDim or Colors.yellow
+                    local moneyTextColor = isCompleted and Colors.textDim or Colors.text
+
                     qr.nameText:SetText(q.name)
-                    qr.nameText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                    qr.nameText:SetTextColor(questNameColor[1], questNameColor[2], questNameColor[3], 1)
 
                     -- Quest tooltip on name hover
-                    local questId = q.questId
                     local questLevel = q.level
                     if questId then
                         qr.nameBtn:SetScript("OnEnter", function(self)
@@ -538,7 +566,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
                             GameTooltip:Show()
                         end)
                         qr.nameBtn:SetScript("OnLeave", function()
-                            qr.nameText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                            qr.nameText:SetTextColor(questNameColor[1], questNameColor[2], questNameColor[3], 1)
                             GameTooltip:Hide()
                         end)
                         qr.nameBtn:SetScript("OnMouseUp", function()
@@ -553,12 +581,12 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
                     -- Level
                     qr.levelText:SetText("Lv " .. q.level)
-                    qr.levelText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                    qr.levelText:SetTextColor(questSubtleColor[1], questSubtleColor[2], questSubtleColor[3], 1)
 
                     -- Starts (NPC name with tooltip)
                     if q.startNpc then
                         qr.startsText:SetText(q.startNpc)
-                        qr.startsText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                        qr.startsText:SetTextColor(questNameColor[1], questNameColor[2], questNameColor[3], 1)
                         local startTip = q.startLoc or ""
                         if q.startCoords then
                             startTip = startTip .. " (" .. q.startCoords .. ")"
@@ -578,7 +606,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
                             Deathless.UI.Tooltip:Show(self, "ANCHOR_RIGHT", startTip)
                         end)
                         qr.startsBtn:SetScript("OnLeave", function()
-                            qr.startsText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                            qr.startsText:SetTextColor(questNameColor[1], questNameColor[2], questNameColor[3], 1)
                             Deathless.UI.Tooltip:Hide()
                         end)
                         if startUrl then
@@ -598,13 +626,13 @@ Deathless.UI.Views:Register("dungeons", function(container)
                     -- Prereq
                     if q.prereq == true then
                         qr.prereqText:SetText("Yes")
-                        qr.prereqText:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], 1)
+                        qr.prereqText:SetTextColor(prereqYesColor[1], prereqYesColor[2], prereqYesColor[3], 1)
                     elseif q.prereq == false then
                         qr.prereqText:SetText("No")
-                        qr.prereqText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                        qr.prereqText:SetTextColor(questSubtleColor[1], questSubtleColor[2], questSubtleColor[3], 1)
                     else
                         qr.prereqText:SetText("-")
-                        qr.prereqText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                        qr.prereqText:SetTextColor(questSubtleColor[1], questSubtleColor[2], questSubtleColor[3], 1)
                     end
 
                     -- Rewards: item icons and/or money
@@ -662,6 +690,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
                         qr.moneyText:ClearAllPoints()
                         qr.moneyText:SetPoint("LEFT", qr, "LEFT", moneyX, 0)
                         qr.moneyText:SetText(FormatMoney(q.money))
+                        qr.moneyText:SetTextColor(moneyTextColor[1], moneyTextColor[2], moneyTextColor[3], 1)
                         qr.moneyText:Show()
                     end
 

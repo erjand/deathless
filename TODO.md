@@ -94,7 +94,7 @@
 - [x] BRD
 - [x] ST
 - [x] DM:N
-- [ ] DM:W
+- [x] DM:W
 - [ ] DM:E
 - [ ] UBRS
 - [ ] LBRS

@@ -1854,9 +1854,188 @@ Deathless.Data.Dungeons = {
         levelMin = 55,
         levelMax = 60,
         warnings = {
-            "[[Overlord Wyrmthalak]] summons whelps. Burn them down quickly.",
+            "LBRS is densely packed with elite groups which should be pulled carefully.",
+            "[[Highlord Omokk]] has two adds and enrages at low HP. CC the adds and tank him against a wall to avoid his cleave and knockback.",
+            "[[Shadow Hunter Vosh'gajin]] casts Hex on multiple players and Curse of Blood - decurse immediately and CC the adds.",
+            "[[War Master Voone]] hits extremely hard and casts Cleave.",
+            "[[Mother Smolderweb]] casts a frontal stun and Mother's Milk (dangerous AoE poison stun).",
+            "The [[Urok Doomhowl]] fight is a challenging gauntlet; and the boss will cast Fear.",
+            "[[Gizrul the Slavener]] charges in immediately after [[Halycon]] dies; eat and drink quickly between the two fights.",
+            "[[Overlord Wyrmthalak]] summons two elite adds at 50% HP. He casts Cleave and Sweeping Slam - stay behind and at range.",
         },
-        quests = {},
+        quests = {
+            {
+                -- https://www.wowhead.com/classic/quest=5001/bijous-belongings
+                name = "Bijou's Belongings",
+                questId = 5001,
+                level = 59,
+                side = "Alliance",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=10257/bijou
+                startNpc = "Bijou", startNpcId = 10257, startLoc = "Lower Blackrock Spire, on a ledge overlooking Hordemar City",
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=4982/bijous-belongings
+                name = "Bijou's Belongings",
+                questId = 4982,
+                level = 59,
+                side = "Horde",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=10257/bijou
+                startNpc = "Bijou", startNpcId = 10257, startLoc = "Lower Blackrock Spire, on a ledge overlooking Hordemar City",
+            },
+            {
+                name = "En-Ay-Es-Tee-Why",
+                questId = 4862,
+                level = 59,
+                side = "Both",
+                prereq = false,
+                startNpc = "Kibler", startNpcId = 10260, startLoc = "Burning Steppes, Flame Crest", startCoords = "65.9, 21.9",
+                money = 9000,
+                rewards = {
+                    { itemId = 12529, name = "Smolderweb Carrier" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5089/general-drakkisaths-command
+                name = "General Drakkisath's Command",
+                questId = 5089,
+                level = 60,
+                side = "Alliance",
+                prereq = false,
+                startNpc = "General Drakkisath's Command", startItemId = 12780, startLoc = "Drops from Overlord Wyrmthalak",
+                money = 39600,
+            },
+            {
+                name = "Kibler's Exotic Pets",
+                questId = 4729,
+                level = 59,
+                side = "Both",
+                prereq = false,
+                startNpc = "Kibler", startNpcId = 10260, startLoc = "Burning Steppes, Flame Crest", startCoords = "65.9, 21.9",
+                money = 9000,
+                rewards = {
+                    { itemId = 12264, name = "Worg Carrier" },
+                },
+            },
+            {
+                name = "Maxwell's Mission",
+                questId = 5081,
+                level = 60,
+                side = "Alliance",
+                prereq = true,
+                startNpc = "Marshal Maxwell", startNpcId = 9560, startLoc = "Burning Steppes, Morgan's Vigil", startCoords = "84.7, 69.0",
+                money = 18000,
+                rewards = {
+                    { itemId = 13961, name = "Halycon's Muzzle" },
+                    { itemId = 13959, name = "Omokk's Girth Restrainer" },
+                    { itemId = 13962, name = "Vosh'gajin's Strand" },
+                    { itemId = 13963, name = "Voone's Vice Grips" },
+                    { itemId = 13958, name = "Wyrmthalak's Shackles" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=4866/mothers-milk
+                name = "Mother's Milk",
+                questId = 4866,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=9563/ragged-john
+                startNpc = "Ragged John", startNpcId = 9563, startLoc = "Burning Steppes, Flame Crest", startCoords = "65.0, 23.8",
+                money = 18000,
+                rewards = {
+                    { itemId = 15873, name = "Ragged John's Neverending Cup" },
+                },
+            },
+            {
+                name = "Operative Bijou",
+                questId = 4981,
+                level = 59,
+                side = "Horde",
+                prereq = false,
+                startNpc = "Lexlort", startNpcId = 9080, startLoc = "Badlands, Kargath", startCoords = "5.9, 47.6",
+            },
+            {
+                name = "Put Her Down",
+                questId = 4701,
+                level = 59,
+                side = "Alliance",
+                prereq = false,
+                startNpc = "Helendis Riverhorn", startNpcId = 9562, startLoc = "Burning Steppes, Morgan's Vigil", startCoords = "85.8, 69.0",
+                money = 18000,
+                rewards = {
+                    { itemId = 15824, name = "Astoria Robes" },
+                    { itemId = 15827, name = "Jadescale Breastplate" },
+                    { itemId = 15825, name = "Traphook Jerkin" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=4742/seal-of-ascension
+                name = "Seal of Ascension",
+                questId = 4742,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- Vaelan is inside the dungeon, disguised as a Scarshield Infiltrator; no world coordinates
+                -- https://www.wowhead.com/classic/npc=10296/vaelan
+                startNpc = "Vaelan", startNpcId = 10296, startLoc = "Lower Blackrock Spire, disguised as Scarshield Infiltrator on a ledge in Hordemar City",
+                money = 49800,
+            },
+            {
+                name = "The Final Tablets",
+                questId = 4788,
+                level = 58,
+                side = "Both",
+                prereq = true,
+                startNpc = "Prospector Ironboot", startNpcId = 10460, startLoc = "Tanaris, Steamwheedle Port", startCoords = "66.9, 24.0",
+            },
+            {
+                name = "The Pack Mistress",
+                questId = 4724,
+                level = 59,
+                side = "Horde",
+                prereq = false,
+                startNpc = "Galamav the Marksman", startNpcId = 9081, startLoc = "Badlands, Kargath", startCoords = "6.0, 47.7",
+                money = 18000,
+                rewards = {
+                    { itemId = 15824, name = "Astoria Robes" },
+                    { itemId = 15827, name = "Jadescale Breastplate" },
+                    { itemId = 15825, name = "Traphook Jerkin" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=4867/urok-doomhowl
+                name = "Urok Doomhowl",
+                questId = 4867,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- Warosh is inside the dungeon instance; no world coordinates
+                -- https://www.wowhead.com/classic/npc=10799/warosh
+                startNpc = "Warosh", startNpcId = 10799, startLoc = "Lower Blackrock Spire, wandering in Hordemar City",
+                money = 59700,
+                rewards = {
+                    { itemId = 15867, name = "Prismcharm" },
+                },
+            },
+            {
+                name = "Warlord's Command",
+                questId = 4903,
+                level = 60,
+                side = "Horde",
+                prereq = false,
+                startNpc = "Warlord Goretooth", startNpcId = 9077, startLoc = "Badlands, Kargath", startCoords = "5.8, 47.5",
+                money = 18000,
+                rewards = {
+                    { itemId = 13961, name = "Halycon's Muzzle" },
+                    { itemId = 13959, name = "Omokk's Girth Restrainer" },
+                    { itemId = 13962, name = "Vosh'gajin's Strand" },
+                    { itemId = 13963, name = "Voone's Vice Grips" },
+                    { itemId = 13958, name = "Wyrmthalak's Shackles" },
+                },
+            },
+        },
     },
     {
         id = "upper_blackrock_spire",

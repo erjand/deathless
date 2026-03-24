@@ -62,6 +62,8 @@
 - [ ] Stats: Shaman
 - [ ] Stats: Warlock
 - [ ] Stats: Warrior
+    - [ ] Add actual bonus per stat
+    - [ ] Finish combat tables
 
 #### Warrior
 
@@ -97,7 +99,7 @@
 - [x] DM:W
 - [x] DM:E
 - [ ] UBRS
-- [ ] LBRS
+- [x] LBRS
 - [ ] Strat UD
 - [ ] Strat Live
 - [x] Scholo

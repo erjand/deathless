@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.6
+
+1. Added Warnings and Quests for LBRS
+
 ## 0.6.5
 
 1. Added Warnings and Quests for Scholomance

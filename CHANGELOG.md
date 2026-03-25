@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+
+1. Added Warnings and Quests for Strat Living - all dungeons now complete
+
 ## 0.6.8
 
 1. Added Warnings and Quests for Strat UD

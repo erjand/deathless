@@ -2,7 +2,7 @@
 ## Title: Deathless
 ## Notes: A Hardcore Classic WoW companion addon
 ## Author: YourName
-## Version: 0.6.8
+## Version: 0.7.0
 ## SavedVariablesPerCharacter: DeathlessDB
 
 deathless.lua

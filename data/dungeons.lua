@@ -2353,16 +2353,90 @@ Deathless.Data.Dungeons = {
     },
     {
         id = "stratholme_living",
-        name = "Stratholme: Living (WIP)",
+        name = "Stratholme: Living",
         zone = "Eastern Plaguelands",
         endBoss = "Balnazzar",
         bossLevel = 62,
         levelMin = 58,
         levelMax = 60,
         warnings = {
-            "[[Balnazzar]] (disguised as [[Grand Crusader Dathrohan]]) hits very hard and has a Mind Control.",
+            "Scarlet Crusade mobs in the Living wing call for help. Pull carefully to avoid chain-pulling entire rooms.",
+            "[[Timmy the Cruel]] enrages at low HP - save defensive cooldowns for the burn phase.",
+            "[[Cannon Master Willey]] continuously spawns Crimson Rifleman. Use the cannons in the room against them, or they will overwhelm the group.",
+            "[[Archivist Galford]] casts Burning Winds, which can cause him to swap targets. Loot quest items from the library BEFORE burning the archive.",
+            "[[Balnazzar]] (disguised as [[Grand Crusader Dathrohan]]) transforms into demon form at 40% HP. He casts Psychic Scream - ranged stay at max range to outrange it.",
+            "[[Balnazzar]] casts Deep Sleep on random players - dispel it immediately.",
         },
-        quests = {},
+        quests = {
+            {
+                -- https://www.wowhead.com/classic/quest=5848/of-love-and-family
+                name = "Of Love and Family",
+                questId = 5848,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=11936/artist-renfray
+                startNpc = "Artist Renfray", startNpcId = 11936, startLoc = "Western Plaguelands, Caer Darrow", startCoords = "65.8, 75.4",
+                money = 39600,
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5251/the-archivist
+                name = "The Archivist",
+                questId = 5251,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=11039/duke-nicholas-zverenhoff
+                startNpc = "Duke Nicholas Zverenhoff", startNpcId = 11039, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.4, 59.8",
+                money = 18000,
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5214/the-great-ezra-grimm
+                name = "The Great Ezra Grimm",
+                questId = 5214,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                startNpc = "Smokey LaRue", startNpcId = 11033, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "80.6, 58.0",
+                rewards = {
+                    { itemId = 13171, name = "Smokey's Lighter" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5122/the-medallion-of-faith
+                name = "The Medallion of Faith",
+                questId = 5122,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- Aurius is inside the dungeon at the chapel near the Undead wing entrance; no world coordinates
+                startNpc = "Aurius", startNpcId = 10917, startLoc = "Stratholme, at the chapel near the entrance to the Undead wing",
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5282/the-restless-souls
+                name = "The Restless Souls",
+                questId = 5282,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=11140/egan
+                startNpc = "Egan", startNpcId = 11140, startLoc = "Eastern Plaguelands, Terrordale", startCoords = "14.5, 33.7",
+                money = 18000,
+                rewards = {
+                    { itemId = 13315, name = "Testament of Hope" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5262/the-truth-comes-crashing-down
+                name = "The Truth Comes Crashing Down",
+                questId = 5262,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                startNpc = "Head of Balnazzar", startItemId = 13250, startLoc = "Drops from Balnazzar in Stratholme Living",
+                money = 49800,
+            },
+        },
     },
     {
         id = "stratholme_undead",
@@ -2393,19 +2467,6 @@ Deathless.Data.Dungeons = {
                 -- https://www.wowhead.com/classic/npc=11039/duke-nicholas-zverenhoff
                 startNpc = "Duke Nicholas Zverenhoff", startNpcId = 11039, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.4, 59.8",
                 money = 49800,
-            },
-            {
-                name = "Aurius' Reckoning",
-                questId = 5125,
-                level = 60,
-                side = "Both",
-                prereq = true,
-                -- Aurius is inside the dungeon instance; no world coordinates
-                startNpc = "Aurius", startNpcId = 10917, startLoc = "Stratholme Undead, near the start of the Undead wing",
-                rewards = {
-                    { itemId = 17045, name = "Blood of the Martyr" },
-                    { itemId = 17044, name = "Will of the Martyr" },
-                },
             },
             {
                 -- https://www.wowhead.com/classic/quest=8945/dead-mans-plea

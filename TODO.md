@@ -77,32 +77,5 @@
 
 ## Dungeons
 
-- [x] RFC
-- [x] WC
-- [x] Deadmines
-- [x] BFD
-- [x] Stocks
-- [x] SFK
-- [x] Gnomer
-- [x] SM Gy
-- [x] SM Lib
-- [x] SM Arm
-- [x] SM Cath
-- [x] RFK
-- [x] RFD
-- [x] Ulda
-- [x] ZF
-- [x] Mara
-- [x] BRD
-- [x] ST
-- [x] DM:N
-- [x] DM:W
-- [x] DM:E
-- [x] UBRS
-- [x] LBRS
-- [x] Strat UD
-- [ ] Strat Live
-- [x] Scholo
-
-- [ ] Consider going back to add class specific quests
+- [ ] Consider going back to add dynamically-displayed class / profession specific quests
 - [ ] Have Search box view filter for "SM" when typing in "Scarlet", etc - lots of edge cases like this where aliases would help. Could just hardcode common ones

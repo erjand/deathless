@@ -4,7 +4,7 @@ Deathless.Constants = Deathless.Constants or {}
 
 Deathless.Constants.Metadata = {
     ADDON_NAME = "Deathless",
-    VERSION = "0.6.6",
+    VERSION = "0.6.7",
 }
 
 Deathless.Constants.Colors = {

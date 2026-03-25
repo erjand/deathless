@@ -1847,7 +1847,7 @@ Deathless.Data.Dungeons = {
     },
     {
         id = "lower_blackrock_spire",
-        name = "Lower Blackrock Spire (WIP)",
+        name = "Lower Blackrock Spire",
         zone = "Blackrock Mountain",
         endBoss = "Overlord Wyrmthalak",
         bossLevel = 60,
@@ -2039,17 +2039,113 @@ Deathless.Data.Dungeons = {
     },
     {
         id = "upper_blackrock_spire",
-        name = "Upper Blackrock Spire (WIP)",
+        name = "Upper Blackrock Spire",
         zone = "Blackrock Mountain",
         endBoss = "General Drakkisath",
         bossLevel = 62,
         levelMin = 55,
         levelMax = 60,
         warnings = {
-            "[[General Drakkisath]] has two guards — CC or off-tank them.",
-            "[[The Beast]] can fear the group into additional packs.",
+            "UBRS mobs hit significantly harder than standard 5-man dungeons.",
+            "The Rookery is full of dragon eggs that hatch whelps on contact.",
+            "[[Warchief Rend Blackhand]] arrives mounted on [[Gyth]] after waves of dragonkin. Kill Gyth first. Avoid Rend's Whirlwind and Thunderclap.",
+            "[[The Beast]] casts Fear and Flamebreak (knockback + fire AoE). Tank against a wall. Ranged stay at max range to outrange both.",
+            "Clear all stealthed Blackhand Assassins near [[The Beast]]'s room before engaging — they will ambush during the fight.",
+            "[[General Drakkisath]] has two Chromatic Elite Guard adds - CC or off-tank them. Kill both guards before engaging the General.",
+            "[[General Drakkisath]] casts Conflagration on the tank, incapacitating them. An off-tank must taunt immediately.",
         },
-        quests = {},
+        quests = {
+            {
+                -- https://www.wowhead.com/classic/quest=7761/blackhands-command
+                name = "Blackhand's Command",
+                questId = 7761,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                startNpc = "Blackhand's Command", startItemId = 18987, startLoc = "Drops from Scarshield Quartermaster outside Blackrock Spire entrance",
+                money = 39600,
+            },
+            {
+                --https://www.wowhead.com/classic/quest=4764/doomriggers-clasp
+                name = "Doomrigger's Clasp",
+                questId = 4764,
+                level = 60,
+                side = "Alliance",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=9565/mayara-brightwing
+                startNpc = "Mayara Brightwing", startNpcId = 9565, startLoc = "Burning Steppes, Morgan's Vigil", startCoords = "84.8, 69.1",
+                money = 9900,
+            },
+            {
+                --https://www.wowhead.com/classic/quest=6821/eye-of-the-emberseer
+                name = "Eye of the Emberseer",
+                questId = 6821,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=13278/duke-hydraxis
+                startNpc = "Duke Hydraxis", startNpcId = 13278, startLoc = "Azshara, Bay of Storms island", startCoords = "79.3, 73.7",
+                money = 49800,
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=4974/for-the-horde
+                name = "For The Horde!",
+                questId = 4974,
+                level = 60,
+                side = "Horde",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=4949/thrall
+                startNpc = "Thrall", startNpcId = 4949, startLoc = "Orgrimmar, Grommash Hold", startCoords = "31.6, 37.8",
+                money = 27000,
+                rewards = {
+                    { itemId = 13965, name = "Blackhand's Breadth" },
+                    { itemId = 13968, name = "Eye of the Beast" },
+                    { itemId = 13966, name = "Mark of Tyranny" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5102/general-drakkisaths-demise
+                name = "General Drakkisath's Demise",
+                questId = 5102,
+                level = 60,
+                side = "Alliance",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=9560/marshal-maxwell
+                startNpc = "Marshal Maxwell", startNpcId = 9560, startLoc = "Burning Steppes, Morgan's Vigil", startCoords = "84.7, 69.0",
+                money = 27000,
+                rewards = {
+                    { itemId = 13965, name = "Blackhand's Breadth" },
+                    { itemId = 13968, name = "Eye of the Beast" },
+                    { itemId = 13966, name = "Mark of Tyranny" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=4768/the-darkstone-tablet
+                name = "The Darkstone Tablet",
+                questId = 4768,
+                level = 60,
+                side = "Horde",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=9078/shadowmage-vivian-lagrave
+                startNpc = "Shadowmage Vivian Lagrave", startNpcId = 9078, startLoc = "Badlands, Kargath", startCoords = "2.9, 47.8",
+                money = 27000,
+                rewards = {
+                    { itemId = 15860, name = "Blinkstrike Armguards" },
+                    { itemId = 15861, name = "Swiftfoot Treads" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5160/the-matron-protectorate
+                name = "The Matron Protectorate",
+                questId = 5160,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- Awbee is inside the dungeon instance; no world coordinates
+                startNpc = "Awbee", startNpcId = 10740, startLoc = "Upper Blackrock Spire, blue dragon whelpling found after The Beast's room",
+                money = 39600,
+            },
+        },
     },
     {
         id = "dire_maul_east",

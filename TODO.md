@@ -98,7 +98,7 @@
 - [x] DM:N
 - [x] DM:W
 - [x] DM:E
-- [ ] UBRS
+- [x] UBRS
 - [x] LBRS
 - [ ] Strat UD
 - [ ] Strat Live

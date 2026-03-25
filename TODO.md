@@ -100,7 +100,7 @@
 - [x] DM:E
 - [x] UBRS
 - [x] LBRS
-- [ ] Strat UD
+- [x] Strat UD
 - [ ] Strat Live
 - [x] Scholo
 

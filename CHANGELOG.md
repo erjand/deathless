@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.8
+
+1. Added Warnings and Quests for Strat UD
+
 ## 0.6.7
 
 1. Added Warnings and Quests for UBRS

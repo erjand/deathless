@@ -2366,16 +2366,130 @@ Deathless.Data.Dungeons = {
     },
     {
         id = "stratholme_undead",
-        name = "Stratholme: Undead (WIP)",
+        name = "Stratholme: Undead",
         zone = "Eastern Plaguelands",
         endBoss = "Baron Rivendare",
         bossLevel = 62,
         levelMin = 58,
         levelMax = 60,
         warnings = {
-            "[[Baron Rivendare]] casts Shadow Bolt and summons skeletons. Stay spread.",
+            "Undead packs in Stratholme chain-pull easily - clear carefully and watch for patrols.",
+            "[[Baroness Anastari]] casts Possess (mind control) on a player - damage them to 50% HP to break it. She also casts Silence.",
+            "[[Maleki the Pallid]] casts Ice Tomb on the tank, freezing them and switching targets. Be ready to off-tank or kite until freed.",
+            "[[Magistrate Barthilas]] casts Mighty Blow - tank against a wall to avoid being knocked into other packs.",
+            "[[Ramstein the Gorger]] casts Knockout, dropping the tank's threat. Watch threat - the next-highest player will be targeted.",
+            "After [[Ramstein the Gorger]] dies, a large wave of Mindless Undead spawns. AoE them down before the Black Guard Sentries emerge.",
+            "The door to [[Baron Rivendare]]'s room closes on engage. Make sure everyone is inside before pulling.",
+            "[[Baron Rivendare]] casts Mortal Strike on the tank and summons skeletons. His Unholy Aura damages all nearby players - ranged stay at max range.",
         },
-        quests = {},
+        quests = {
+            {
+                -- https://www.wowhead.com/classic/quest=5263/above-and-beyond
+                name = "Above and Beyond",
+                questId = 5263,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=11039/duke-nicholas-zverenhoff
+                startNpc = "Duke Nicholas Zverenhoff", startNpcId = 11039, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.4, 59.8",
+                money = 49800,
+            },
+            {
+                name = "Aurius' Reckoning",
+                questId = 5125,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- Aurius is inside the dungeon instance; no world coordinates
+                startNpc = "Aurius", startNpcId = 10917, startLoc = "Stratholme Undead, near the start of the Undead wing",
+                rewards = {
+                    { itemId = 17045, name = "Blood of the Martyr" },
+                    { itemId = 17044, name = "Will of the Martyr" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=8945/dead-mans-plea
+                name = "Dead Man's Plea",
+                questId = 8945,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=16016/anthion-harmon
+                startNpc = "Anthion Harmon", startNpcId = 16016, startLoc = "Eastern Plaguelands, outside Stratholme main entrance (requires Extra-Dimensional Ghost Revealer)", startCoords = "30.9, 16.8",
+                rewards = {
+                    { itemId = 22137, name = "Ysida's Satchel" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5243/houses-of-the-holy
+                name = "Houses of the Holy",
+                questId = 5243,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=11036/leonid-barthalomew-the-revered
+                startNpc = "Leonid Barthalomew the Revered", startNpcId = 11036, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.7, 57.8",
+                money = 18000,
+                rewards = {
+                    { itemId = 13217, name = "Band of the Penitent" },
+                    { itemId = 13216, name = "Crown of the Penitent" },
+                    { itemId = 3928, name = "Superior Healing Potion" },
+                    { itemId = 6149, name = "Greater Mana Potion" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5463/menethils-gift
+                name = "Menethil's Gift",
+                questId = 5463,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=11036/leonid-barthalomew-the-revered
+                startNpc = "Leonid Barthalomew the Revered", startNpcId = 11036, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.7, 57.8",
+                money = 39600,
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=6163/ramstein
+                name = "Ramstein",
+                questId = 6163,
+                level = 60,
+                side = "Horde",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=11878/nathanos-blightcaller
+                startNpc = "Nathanos Blightcaller", startNpcId = 11878, startLoc = "Eastern Plaguelands, The Marris Stead", startCoords = "26.5, 74.7",
+                money = 18000,
+                rewards = {
+                    { itemId = 17001, name = "Elemental Circle" },
+                    { itemId = 18022, name = "Royal Seal of Alexis" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5213/the-active-agent
+                name = "The Active Agent",
+                questId = 5213,
+                level = 60,
+                side = "Both",
+                prereq = true,
+                -- https://www.wowhead.com/classic/npc=11035/betina-bigglezink
+                startNpc = "Betina Bigglezink", startNpcId = 11035, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.5, 59.7",
+                money = 39600,
+                rewards = {
+                    { itemId = 19812, name = "Rune of the Dawn" },
+                    { itemId = 13209, name = "Seal of the Dawn" },
+                },
+            },
+            {
+                -- https://www.wowhead.com/classic/quest=5212/the-flesh-does-not-lie
+                name = "The Flesh Does Not Lie",
+                questId = 5212,
+                level = 60,
+                side = "Both",
+                prereq = false,
+                -- https://www.wowhead.com/classic/npc=11035/betina-bigglezink
+                startNpc = "Betina Bigglezink", startNpcId = 11035, startLoc = "Eastern Plaguelands, Light's Hope Chapel", startCoords = "81.5, 59.7",
+                money = 18000,
+            },
+        },
     },
     {
         id = "scholomance",

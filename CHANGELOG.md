@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.2
+
+1. Finished Stats for Priest
+
 ## 0.7.1
 
 1. Finished Stats for Warrior

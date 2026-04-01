@@ -2,7 +2,7 @@
 ## Title: Deathless
 ## Notes: A Hardcore Classic WoW companion addon
 ## Author: YourName
-## Version: 0.7.1
+## Version: 0.7.2
 ## SavedVariablesPerCharacter: DeathlessDB
 
 deathless.lua
@@ -98,6 +98,14 @@ data\macros\rogue.lua
 data\macros\shaman.lua
 data\macros\warlock.lua
 data\macros\warrior.lua
+data\stats\druid.lua
+data\stats\hunter.lua
+data\stats\mage.lua
+data\stats\paladin.lua
+data\stats\priest.lua
+data\stats\rogue.lua
+data\stats\shaman.lua
+data\stats\warlock.lua
 data\stats\warrior.lua
 data\abilities\warrior.lua
 data\abilities\paladin.lua

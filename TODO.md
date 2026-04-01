@@ -57,7 +57,7 @@
 - [ ] Stats: Hunter
 - [ ] Stats: Mage
 - [ ] Stats: Paladin
-- [ ] Stats: Priest
+- [x] Stats: Priest
 - [ ] Stats: Rogue
 - [ ] Stats: Shaman
 - [ ] Stats: Warlock

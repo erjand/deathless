@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8
+
+1. Finished Stats for all remaining classes
+
 ## 0.7.3
 
 1. Added Stats for Mage and Warlock

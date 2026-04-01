@@ -8,7 +8,7 @@ Deathless.Data.Stats.Warrior = {
     primary = {
         {
             stat = "Agility",
-            bonus = "1% critical strike chance per 20 Agility, and 2 Armor per 1 Agility.",
+            bonus = "1% critical strike chance per 20 Agility, 2 Armor per 1 Agility, and 1% dodge per 20 Agility",
             priority = "Medium",
             note = "Good for defense and threat, but usually behind Stamina and Strength.",
         },
@@ -32,7 +32,7 @@ Deathless.Data.Stats.Warrior = {
         },
         {
             stat = "Strength",
-            bonus = "2 melee Attack Power per 1 Strength, and chance to block 1 damage per 20 Strength.",
+            bonus = "2 melee AP per 1 Strength, and chance to block 1 damage per 20 Strength.",
             priority = "High",
             note = "Core stat for threat, rage generation, and DPS.",
         },

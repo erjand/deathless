@@ -8,9 +8,9 @@ Deathless.Data.Stats.Mage = {
     primary = {
         {
             stat = "Agility",
-            bonus = "None.",
+            bonus = "2 Armor per 1 Agility, 1% dodge per 20 Agility",
             priority = "None",
-            note = "Not used for Mages.",
+            note = "No practical use case for Mages.",
         },
         {
             stat = "Intellect",
@@ -32,7 +32,7 @@ Deathless.Data.Stats.Mage = {
         },
         {
             stat = "Strength",
-            bonus = "1 melee Attack Power per 1 Strength.",
+            bonus = "1 melee AP per 1 Strength.",
             priority = "None",
             note = "No practical use case for Mages.",
         },
@@ -43,6 +43,12 @@ Deathless.Data.Stats.Mage = {
             bonus = "Mana restored every 5 seconds, including while casting (stacks with other regen).",
             priority = "Low",
             note = "Less important due to Evocation and conjured water, but still helpful for long fights.",
+        },
+        {
+            stat = "Movement Speed",
+            bonus = "Improves character run and walk speed.",
+            priority = "Medium",
+            note = "Great for quality-of-life and survivability while leveling.",
         },
         {
             stat = "Spell Critical Strike Chance",

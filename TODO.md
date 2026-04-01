@@ -3,7 +3,7 @@
 ## Feature Roadmap
 
 - [x] 0.7: Dungeons Complete
-- [/] 0.8: Stats Complete
+- [x] 0.8: Stats Complete
 - [ ] 0.9: Gear Complete
 - [ ] 1.0: Support links and release to addon platforms
 
@@ -50,18 +50,6 @@
 - [ ] Armor: Wrist
 - [ ] Ranged
 - [ ] Weapons
-
-### Stats
-
-- [ ] Stats: Druid
-- [ ] Stats: Hunter
-- [x] Stats: Mage
-- [ ] Stats: Paladin
-- [x] Stats: Priest
-- [ ] Stats: Rogue
-- [ ] Stats: Shaman
-- [x] Stats: Warlock
-- [x] Stats: Warrior
 
 #### Warrior
 

@@ -8,9 +8,9 @@ Deathless.Data.Stats.Warlock = {
     primary = {
         {
             stat = "Agility",
-            bonus = "None.",
+            bonus = "2 Armor per 1 Agility, 1% dodge per 20 Agility.",
             priority = "None",
-            note = "Not used for Warlocks.",
+            note = "No practical use case for Warlocks.",
         },
         {
             stat = "Intellect",
@@ -32,7 +32,7 @@ Deathless.Data.Stats.Warlock = {
         },
         {
             stat = "Strength",
-            bonus = "1 melee Attack Power per 1 Strength.",
+            bonus = "1 melee AP per 1 Strength.",
             priority = "None",
             note = "No practical use case for Warlocks.",
         },

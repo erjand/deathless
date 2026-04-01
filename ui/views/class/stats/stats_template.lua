@@ -7,12 +7,8 @@ Deathless.UI.Views.StatsTemplate = {}
 local StatsLayout = Deathless.Constants.Colors.UI.TableLayouts.Stats
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 local STATS_COL = StatsLayout.primary
-local HIT_COL = StatsLayout.hit
-local DEF_COL = StatsLayout.defense
-
 local HEADER_X_SHIFT = StatsLayout.headerXShift
 local STAT_ROW_HEIGHT = StatsLayout.statRowHeight
-local COMBAT_ROW_HEIGHT = StatsLayout.combatRowHeight
 
 local function ColorizeText(color, text)
     local r = math.floor((color[1] or 1) * 255 + 0.5)
@@ -28,54 +24,6 @@ local function SortByStat(rows)
     end
     table.sort(sorted, function(a, b)
         return (a.stat or ""):lower() < (b.stat or ""):lower()
-    end)
-    return sorted
-end
-
-local function SortHitRows(rows)
-    local sorted = {}
-    for _, row in ipairs(rows or {}) do
-        table.insert(sorted, row)
-    end
-    table.sort(sorted, function(a, b)
-        local aSkill = tonumber(a.weaponSkill) or 0
-        local bSkill = tonumber(b.weaponSkill) or 0
-        if aSkill ~= bSkill then
-            return aSkill < bSkill
-        end
-
-        local aEnemy = tonumber(a.enemyLevel) or 0
-        local bEnemy = tonumber(b.enemyLevel) or 0
-        if aEnemy ~= bEnemy then
-            return aEnemy < bEnemy
-        end
-
-        return (a.hand or ""):lower() < (b.hand or ""):lower()
-    end)
-    return sorted
-end
-
-local function SortDefenseRows(rows)
-    local sorted = {}
-    for _, row in ipairs(rows or {}) do
-        table.insert(sorted, row)
-    end
-    table.sort(sorted, function(a, b)
-        local aDefense = tonumber(a.defense) or 0
-        local bDefense = tonumber(b.defense) or 0
-        if aDefense ~= bDefense then
-            return aDefense < bDefense
-        end
-
-        local aChar = tonumber(a.characterLevel) or 0
-        local bChar = tonumber(b.characterLevel) or 0
-        if aChar ~= bChar then
-            return aChar < bChar
-        end
-
-        local aAttacker = tonumber(a.attackerLevel) or 0
-        local bAttacker = tonumber(b.attackerLevel) or 0
-        return aAttacker < bAttacker
     end)
     return sorted
 end
@@ -102,8 +50,6 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
         local sectionState = {
             primary = true,
             secondary = false,
-            hit = false,
-            defense = false,
         }
 
         local sectionPool = {}
@@ -196,8 +142,6 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             local sectionColor = Colors.accent
             if sectionKey == "secondary" then
                 sectionColor = Colors.yellow
-            elseif sectionKey == "hit" or sectionKey == "defense" then
-                sectionColor = Colors.xpHeader
             end
             Utils:ConfigureSection(section, sectionState[sectionKey], label, sectionColor)
             section:SetScript("OnClick", function()
@@ -252,47 +196,6 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             return yOffset - 8
         end
 
-        local function RenderSimpleRows(rows, yOffset, cols, fields, emptyMessage)
-            if #rows == 0 then
-                local empty = GetText()
-                empty:SetFont(Fonts.family, Fonts.body, "")
-                empty:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset - 2)
-                empty:SetText(emptyMessage)
-                empty:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                empty:Show()
-                return yOffset - 20
-            end
-
-            for i, data in ipairs(rows) do
-                local row = GetRow(COMBAT_ROW_HEIGHT)
-                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset)
-                UIUtils.ApplyStripedRowBackground(row, Colors, i)
-                row:Show()
-
-                for idx, fieldName in ipairs(fields) do
-                    local fs = row.cells[idx]
-                    fs:ClearAllPoints()
-                    fs:SetPoint("TOPLEFT", row, "TOPLEFT", cols[fieldName].x, -4)
-                    fs:SetWidth(cols[fieldName].w)
-                    if fieldName == "crushing" then
-                        fs:SetText(tostring(data.crushing or data.crushingBlow or ""))
-                    else
-                        fs:SetText(tostring(data[fieldName] or ""))
-                    end
-                    fs:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                    fs:Show()
-                end
-                for idx = (#fields + 1), 8 do
-                    row.cells[idx]:Hide()
-                end
-
-                yOffset = yOffset - COMBAT_ROW_HEIGHT
-            end
-
-            return yOffset - 8
-        end
-
         PopulateContent = function()
             ClearElements()
 
@@ -300,9 +203,6 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             local classStats = (statsData and statsData[className]) or {}
             local primaryRows = SortByStat(classStats.primary or classStats.statBonuses)
             local secondaryRows = SortByStat(classStats.secondary)
-            local hitRows = SortHitRows(classStats.combatHitTable or classStats.combatTable)
-            local defenseRows = SortDefenseRows(classStats.combatDefenseTable)
-
             local intro = GetText()
             intro:SetFont(Fonts.family, Fonts.body, "")
             intro:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, -4)
@@ -335,58 +235,6 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
                     { key = "note", label = "NOTE" },
                 })
                 yOffset = RenderStatsRows(secondaryRows, yOffset)
-            else
-                yOffset = yOffset - 8
-            end
-
-            yOffset = AddSection("hit", "Combat Hit Table", yOffset)
-            if sectionState.hit then
-                if classStats.combatHitTldr and classStats.combatHitTldr ~= "" then
-                    local tldr = GetText()
-                    tldr:SetFont(Fonts.family, Fonts.body, "")
-                    tldr:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset - 2)
-                    tldr:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -16, yOffset - 2)
-                    tldr:SetText(classStats.combatHitTldr)
-                    tldr:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                    tldr:Show()
-                    yOffset = yOffset - (tldr:GetStringHeight() or 14) - 8
-                end
-
-                yOffset = PlaceHeaders(yOffset, HIT_COL, {
-                    { key = "weaponSkill", label = "WEAPON SKILL" },
-                    { key = "enemyLevel", label = "ENEMY LVL" },
-                    { key = "hand", label = "HAND" },
-                    { key = "hit", label = "HIT %" },
-                    { key = "crit", label = "CRIT %" },
-                    { key = "miss", label = "MISS %" },
-                    { key = "dodge", label = "DODGE %" },
-                    { key = "parry", label = "PARRY %" },
-                })
-                yOffset = RenderSimpleRows(hitRows, yOffset, HIT_COL, { "weaponSkill", "enemyLevel", "hand", "hit", "crit", "miss", "dodge", "parry" }, "No combat hit table entries yet.")
-            else
-                yOffset = yOffset - 8
-            end
-
-            yOffset = AddSection("defense", "Combat Defense Table", yOffset)
-            if sectionState.defense then
-                yOffset = PlaceHeaders(yOffset, DEF_COL, {
-                    { key = "defense", label = "DEFENSE" },
-                    { key = "characterLevel", label = "CHAR LVL" },
-                    { key = "attackerLevel", label = "ATKR LVL" },
-                    { key = "hit", label = "HIT %" },
-                    { key = "crit", label = "CRIT %" },
-                    { key = "crushing", label = "CRUSHING %" },
-                })
-                yOffset = RenderSimpleRows(defenseRows, yOffset, DEF_COL, { "defense", "characterLevel", "attackerLevel", "hit", "crit", "crushing" }, "No combat defense table entries yet.")
-
-                local note = GetText()
-                note:SetFont(Fonts.family, Fonts.small, "")
-                note:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset - 2)
-                note:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -16, yOffset - 2)
-                note:SetText("Note: In Classic, Defense skill gives tiny per-point avoidance and crit suppression value (~0.04% per point).")
-                note:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-                note:Show()
-                yOffset = yOffset - (note:GetStringHeight() or 14) - 8
             else
                 yOffset = yOffset - 8
             end

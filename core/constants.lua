@@ -4,7 +4,7 @@ Deathless.Constants = Deathless.Constants or {}
 
 Deathless.Constants.Metadata = {
     ADDON_NAME = "Deathless",
-    VERSION = "0.7.0",
+    VERSION = "0.7.1",
 }
 
 Deathless.Constants.Colors = {
@@ -166,31 +166,12 @@ Deathless.Constants.Colors = {
             },
             Stats = {
                 headerXShift = 0,
-                statRowHeight = 44,
-                combatRowHeight = 24,
+                statRowHeight = 56,
                 primary = {
                     stat = { x = 16, w = 90 },
                     bonus = { x = 112, w = 190 },
                     priority = { x = 308, w = 66 },
                     note = { x = 380, w = 168 },
-                },
-                hit = {
-                    weaponSkill = { x = 16, w = 80 },
-                    enemyLevel = { x = 102, w = 70 },
-                    hand = { x = 178, w = 62 },
-                    hit = { x = 246, w = 45 },
-                    crit = { x = 297, w = 45 },
-                    miss = { x = 348, w = 45 },
-                    dodge = { x = 399, w = 55 },
-                    parry = { x = 460, w = 55 },
-                },
-                defense = {
-                    defense = { x = 16, w = 65 },
-                    characterLevel = { x = 87, w = 78 },
-                    attackerLevel = { x = 171, w = 78 },
-                    hit = { x = 255, w = 55 },
-                    crit = { x = 316, w = 55 },
-                    crushing = { x = 377, w = 90 },
                 },
             },
             Dungeons = {

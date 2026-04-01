@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+1. Finished Stats for Warrior
+
 ## 0.7.0
 
 1. Added Warnings and Quests for Strat Living - all dungeons now complete

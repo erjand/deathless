@@ -2,8 +2,8 @@
 
 ## Feature Roadmap
 
-- [ ] 0.7: Dungeons Complete
-- [ ] 0.8: Stats Complete
+- [x] 0.7: Dungeons Complete
+- [/] 0.8: Stats Complete
 - [ ] 0.9: Gear Complete
 - [ ] 1.0: Support links and release to addon platforms
 
@@ -61,9 +61,7 @@
 - [ ] Stats: Rogue
 - [ ] Stats: Shaman
 - [ ] Stats: Warlock
-- [ ] Stats: Warrior
-    - [ ] Add actual bonus per stat
-    - [ ] Finish combat tables
+- [x] Stats: Warrior
 
 #### Warrior
 

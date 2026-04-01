@@ -130,16 +130,31 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
         local IconStyle = Deathless.Constants.Colors.UI.Icon
+        local searchStyle = Deathless.Constants.Colors.UI.Controls.search
         local embedded = options and options.embedded
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
 
-        local title, subtitle
+        local title, subtitle, headerSeparator
         if not embedded then
-            title, subtitle = Utils:CreateHeader(container, className .. " Gear", "Equipment progression for Hardcore", classColor)
+            title, subtitle, headerSeparator = Utils:CreateHeader(container, className .. " Gear", "Equipment progression for Hardcore", classColor)
         end
 
-        local searchBoxY = embedded and ViewOffsets.classGearSearch.searchYEmbedded or ViewOffsets.classGearSearch.searchYFull
+        local introDesc = container:CreateFontString(nil, "OVERLAY")
+        introDesc:SetFont(Fonts.family, Fonts.body, "")
+        introDesc:SetJustifyH("LEFT")
+        introDesc:SetWordWrap(true)
+        introDesc:SetText("Selected gear options.")
+        introDesc:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        if embedded then
+            introDesc:SetPoint("TOPLEFT", container, "TOPLEFT", 24, -8)
+            introDesc:SetPoint("TOPRIGHT", container, "TOPRIGHT", -24, -8)
+        else
+            introDesc:SetPoint("TOPLEFT", headerSeparator, "BOTTOMLEFT", 0, -12)
+            introDesc:SetPoint("TOPRIGHT", headerSeparator, "BOTTOMRIGHT", 0, -12)
+        end
+        introDesc:Show()
+
         local sortHeaderY = embedded and ViewOffsets.classGearSearch.sortHeaderYEmbedded or ViewOffsets.classGearSearch.sortHeaderYFull
         local scrollTopOffset = embedded and ViewOffsets.classGearSearch.scrollTopEmbedded or ViewOffsets.classGearSearch.scrollTopFull
 
@@ -160,12 +175,17 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             Deathless:SaveConfig()
         end
 
-        -- Search bar
+        -- Search bar (below intro; label re-anchored after position)
         local searchBox, searchLabel, clearBtn = Utils:CreateSearchControl(container, {
             x = 24,
-            y = searchBoxY,
+            y = -400,
             label = "Search",
         })
+        searchBox:ClearAllPoints()
+        searchLabel:ClearAllPoints()
+        -- Gap below intro + "Search" label above the edit box (matches CreateSearchControl label placement)
+        searchBox:SetPoint("TOPLEFT", introDesc, "BOTTOMLEFT", 0, -(Layout.introSectionGap + 10))
+        searchLabel:SetPoint("BOTTOMLEFT", searchBox, "TOPLEFT", searchStyle.labelOffsetX, searchStyle.labelOffsetY)
 
         local PopulateRows
 

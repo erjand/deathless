@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+1. Added notable gear drops from Deadmines, and early Warrior leveling weapons from Vendors
+
 ## 0.8
 
 1. Finished Stats for all remaining classes

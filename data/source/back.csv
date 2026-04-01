@@ -1,2 +1,2 @@
 name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,faction,pre_bis
-"Placeholder Cloak","Back",20,"Quest - Placeholder","uncommon",1300,true,true,true,true,true,true,true,true,true,"",false
+"Cape of the Brotherhood","Back",20,"Deadmines - VanCleef","rare",5193,true,true,true,true,false,false,false,true,true,"",false

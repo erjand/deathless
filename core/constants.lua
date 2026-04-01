@@ -4,7 +4,7 @@ Deathless.Constants = Deathless.Constants or {}
 
 Deathless.Constants.Metadata = {
     ADDON_NAME = "Deathless",
-    VERSION = "0.8",
+    VERSION = "0.8.1",
 }
 
 Deathless.Constants.Colors = {
@@ -221,12 +221,13 @@ Deathless.Constants.Colors = {
                 scrollTopFull = -123,
             },
             classGearSearch = {
+                -- Search is anchored below intro; offsets position sort row + scroll (embedded vs full header height)
                 searchYEmbedded = -16,
                 searchYFull = -52,
-                sortHeaderYEmbedded = -59,
-                sortHeaderYFull = -95,
-                scrollTopEmbedded = -79,
-                scrollTopFull = -115,
+                sortHeaderYEmbedded = -91,
+                sortHeaderYFull = -168,
+                scrollTopEmbedded = -111,
+                scrollTopFull = -188,
             },
             dungeons = {
                 searchY = -68,

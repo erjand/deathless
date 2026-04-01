@@ -485,7 +485,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             end)
             introText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset - 4)
             introText:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset - 4)
-            introText:SetText("Generally recommended HC builds for " .. ColorizeText(classColor, className) .. " - adjust as desired")
+            introText:SetText("Generally recommended HC builds for " .. ColorizeText(classColor, className) .. " - adjust as desired.")
             introText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             introText:Show()
             yOffset = yOffset - (introText:GetStringHeight() or 14) - Layout.introSectionGap

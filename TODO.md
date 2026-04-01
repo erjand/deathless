@@ -5,7 +5,7 @@
 - [x] 0.7: Dungeons Complete
 - [x] 0.8: Stats Complete
 - [ ] 0.9: Gear Complete
-- [ ] 1.0: Support links and release to addon platforms
+- [ ] 1.0: Release to addon platforms / CI pipeline / bundled prod code
 
 ## Ideas
 
@@ -35,6 +35,10 @@
 
 ### Gear
 
+Dungeon Drops:
+- [x] Deadmines
+- [ ] 
+
 - [x] Shields
 - [ ] Rings (review)
 - [ ] Trinkets (review)
@@ -55,8 +59,6 @@
 
 ##### Weapons
 
-- [ ] White weapons from the Youtube video https://www.youtube.com/watch?v=IoImsJ1fvnM
-- [ ] Executioner's Sword
 - [ ] Corpsemaker (RFK drop)
 - [ ] Whirlwind Axe
 - [ ] SM Quest Chain - "In the Name of the Light" (~lvl 40ish) https://www.wowhead.com/classic/quest=1053/in-the-name-of-the-light

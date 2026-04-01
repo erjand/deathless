@@ -85,7 +85,7 @@ function Deathless.UI.Views.MacrosTemplate:Create(config)
             end)
             introText:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset - 4)
             introText:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset - 4)
-            introText:SetText("Generally recommended HC macros for " .. ColorizeText(classColor, className) .. " - adjust as desired")
+            introText:SetText("Generally recommended HC macros for " .. ColorizeText(classColor, className) .. " - adjust as desired.")
             introText:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             introText:Show()
             yOffset = yOffset - (introText:GetStringHeight() or 14) - 24

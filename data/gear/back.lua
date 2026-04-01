@@ -7,5 +7,5 @@ Deathless.Data.Gear = Deathless.Data.Gear or {}
 -- GENERATED FROM data/source/back.csv. DO NOT EDIT MANUALLY.
 
 Deathless.Data.Gear.Back = {
-    { name = "Placeholder Cloak", slot = "Back", type = "Back", levelReq = 20, source = "Quest - Placeholder", rarity = "uncommon", itemId = 1300, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Mage", "Warlock", "Druid", "Shaman" } },
+    { name = "Cape of the Brotherhood", slot = "Back", type = "Back", levelReq = 20, source = "Deadmines - VanCleef", rarity = "rare", itemId = 5193, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Druid", "Shaman" } },
 }

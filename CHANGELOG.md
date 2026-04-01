@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.3
+
+1. Added Stats for Mage and Warlock
+
 ## 0.7.2
 
 1. Finished Stats for Priest

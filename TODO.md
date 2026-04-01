@@ -55,12 +55,12 @@
 
 - [ ] Stats: Druid
 - [ ] Stats: Hunter
-- [ ] Stats: Mage
+- [x] Stats: Mage
 - [ ] Stats: Paladin
 - [x] Stats: Priest
 - [ ] Stats: Rogue
 - [ ] Stats: Shaman
-- [ ] Stats: Warlock
+- [x] Stats: Warlock
 - [x] Stats: Warrior
 
 #### Warrior

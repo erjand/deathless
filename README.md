@@ -8,7 +8,7 @@ A Hardcore Classic WoW addon.
 
 It tries to provide recommendations and guidance to the player by being opinionated but not obnoxious or unnecessarily prescriptive.
 
-![Deathless main window](docs/images/deathless-home.png)
+<img width="1348" height="1193" alt="image" src="https://github.com/user-attachments/assets/0d66f943-920d-4688-b502-01627a8cf36b" />
 
 ### Key Capabilities
 
@@ -34,26 +34,26 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 - Shows Abilities for each class: Learned, Available, Next Available, and Unavailable.
 - Includes level available, price, source, and a recommendation as to train, wait to train, or not train each ability.
 
-![Deathless warrior abilities](docs/images/deathless-warrior-abilities.png)
+<img width="1347" height="918" alt="image" src="https://github.com/user-attachments/assets/26622d3e-bc28-4df2-8dbb-8fe9f3b15124" />
 
 #### Macros
 
 - Commonly used macros and macro-patterns for each class.
 
-![Deathless warlock macros](docs/images/deathless-warlock-macros.png)
+<img width="1348" height="1107" alt="image" src="https://github.com/user-attachments/assets/93df1c6b-a758-4b8b-ba5b-2bcd54fe7035" />
 
 #### Stats
 
 - Bonuses provided per point of primary stat for each class.
 - Stat priority guidance for each class.
 
-![Deathless rogue stats](docs/images/deathless-rogue-stats.png)
+<img width="1349" height="1108" alt="image" src="https://github.com/user-attachments/assets/635b6b3a-5aee-4a3c-bf55-6a0a8fc16419" />
 
 #### Talents
 
 - Shows one or more generally viable HC leveling talent trees for each class.
 
-![Deathless priest talents](docs/images/deathless-priest-talents.png)
+<img width="1350" height="1107" alt="image" src="https://github.com/user-attachments/assets/dc5aacee-2d60-4051-97a7-427a3c2780a5" />
 
 ### Detailed Dungeon Information
 
@@ -62,13 +62,13 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 - For each dungeon, provides a brief Warnings section for notable dangers.
 - For each dungeon, provides a full list of available quests, and their rewards.
 
-![Deathless dungeons](docs/images/deathless-dungeons.png)
+<img width="1349" height="1106" alt="image" src="https://github.com/user-attachments/assets/fbed0dd3-7085-4fb9-a7c9-ab9759c350e1" />
 
 ### Summary Tab / Mini Viewer
 
 - Displays dynamic Warnings to the player for things like: missing consumables, unspent Talent points, or under-leveled First Aid.
 - Available in the `Summary` tab in the main addon, or as a mini viewer.
 
-![Deathless summary](docs/images/deathless-summary.png)
+<img width="1347" height="1011" alt="image" src="https://github.com/user-attachments/assets/0b2e8c35-bf21-4b6f-bb09-7643efb3e5c3" />
 
-![Deathless mini](docs/images/deathless-mini.png)
+<img width="503" height="535" alt="image" src="https://github.com/user-attachments/assets/7218e49d-97ec-4435-b66b-a822c16f42c9" />

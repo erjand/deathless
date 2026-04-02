@@ -86,11 +86,17 @@ function Deathless.UI.MiniSummary:Create()
     titleBorder:SetHeight(1)
     titleBorder:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], Colors.border[4])
     
+    -- Title icon
+    local titleIcon = titleBar:CreateTexture(nil, "ARTWORK")
+    titleIcon:SetSize(18, 18)
+    titleIcon:SetPoint("LEFT", titleBar, "LEFT", 3, 0)
+    titleIcon:SetTexture("Interface\\AddOns\\Deathless\\textures\\deathless-icon-transparent")
+    
     -- Title text
     local Fonts = Deathless.UI.Fonts
     local title = titleBar:CreateFontString(nil, "OVERLAY")
     title:SetFont(Fonts.family, Fonts.body, "")
-    title:SetPoint("LEFT", titleBar, "LEFT", 6, 0)
+    title:SetPoint("LEFT", titleIcon, "RIGHT", 3, 0)
     title:SetText("DEATHLESS")
     title:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
     

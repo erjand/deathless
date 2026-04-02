@@ -40,7 +40,7 @@ Get-ChildItem -Path $SourceDir -Filter "*.lua" | ForEach-Object {
 }
 
 # Copy directories (core, modules, ui, data, utils)
-$DirectoriesToCopy = @("core", "modules", "ui", "data", "utils")
+$DirectoriesToCopy = @("core", "data", "modules", "textures", "ui", "utils")
 
 foreach ($Dir in $DirectoriesToCopy) {
     $SourcePath = Join-Path $SourceDir $Dir

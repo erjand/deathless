@@ -8,7 +8,7 @@ A Hardcore Classic WoW addon.
 
 It tries to provide recommendations and guidance to the player by being opinionated but not obnoxious or unnecessarily prescriptive.
 
-![Deathless main window](docs/images/deathless-home.png)
+<img width="1348" height="1193" alt="image" src="https://github.com/user-attachments/assets/0d66f943-920d-4688-b502-01627a8cf36b" />
 
 ### Key Capabilities
 

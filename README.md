@@ -71,4 +71,4 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 <img width="1347" height="1011" alt="image" src="https://github.com/user-attachments/assets/0b2e8c35-bf21-4b6f-bb09-7643efb3e5c3" />
 
-![Deathless mini](docs/images/deathless-mini.png)
+<img width="503" height="535" alt="image" src="https://github.com/user-attachments/assets/7218e49d-97ec-4435-b66b-a822c16f42c9" />

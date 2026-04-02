@@ -34,7 +34,8 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 - Shows Abilities for each class: Learned, Available, Next Available, and Unavailable.
 - Includes level available, price, source, and a recommendation as to train, wait to train, or not train each ability.
 
-![Deathless warrior abilities](docs/images/deathless-warrior-abilities.png)
+<img width="1347" height="918" alt="image" src="https://github.com/user-attachments/assets/26622d3e-bc28-4df2-8dbb-8fe9f3b15124" />
+
 
 #### Macros
 

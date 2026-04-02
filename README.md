@@ -41,7 +41,7 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 - Commonly used macros and macro-patterns for each class.
 
-![Deathless warlock macros](docs/images/deathless-warlock-macros.png)
+<img width="1348" height="1109" alt="image" src="https://github.com/user-attachments/assets/70a6d28c-a667-4de4-bd4e-cbb820f3af33" />
 
 #### Stats
 

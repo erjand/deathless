@@ -36,7 +36,6 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 <img width="1347" height="918" alt="image" src="https://github.com/user-attachments/assets/26622d3e-bc28-4df2-8dbb-8fe9f3b15124" />
 
-
 #### Macros
 
 - Commonly used macros and macro-patterns for each class.
@@ -48,7 +47,7 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 - Bonuses provided per point of primary stat for each class.
 - Stat priority guidance for each class.
 
-![Deathless rogue stats](docs/images/deathless-rogue-stats.png)
+<img width="1349" height="1108" alt="image" src="https://github.com/user-attachments/assets/635b6b3a-5aee-4a3c-bf55-6a0a8fc16419" />
 
 #### Talents
 

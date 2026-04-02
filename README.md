@@ -19,7 +19,7 @@ It tries to provide recommendations and guidance to the player by being opiniona
 
 ## Installation
 
-Install via [CurseForge](https://www.curseforge.com/wow/addons), [Wago](https://addons.wago.io/), or [WoWInterface](https://www.wowinterface.com/). You can also manually copy the addon folder to your `Interface\AddOns\` directory.
+Install via [CurseForge](https://www.curseforge.com/wow/addons) or [Wago](https://addons.wago.io/addons/deathless). You can also manually copy the addon folder to your `Interface\AddOns\` directory.
 
 ## Usage
 

@@ -69,6 +69,6 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 - Displays dynamic Warnings to the player for things like: missing consumables, unspent Talent points, or under-leveled First Aid.
 - Available in the `Summary` tab in the main addon, or as a mini viewer.
 
-![Deathless summary](docs/images/deathless-summary.png)
+<img width="1347" height="1011" alt="image" src="https://github.com/user-attachments/assets/0b2e8c35-bf21-4b6f-bb09-7643efb3e5c3" />
 
 ![Deathless mini](docs/images/deathless-mini.png)

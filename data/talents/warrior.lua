@@ -54,7 +54,7 @@ Deathless.Data.Talents.Warrior = {
                     { level = 29, spellId = 13045 },
                 }
             },
-            { levels = "30", talent = "Death Wish", points = "1/1", spellId = 12292 },
+            { levels = "30", talent = "Death Wish", points = "1/1", spellId = 12328 },
         }
     },
     {
@@ -116,7 +116,7 @@ Deathless.Data.Talents.Warrior = {
                     { level = 29, spellId = 16494 },
                 }
             },
-            { levels = "30", talent = "Sweeping Strikes", points = "1/1", spellId = 12328 },
+            { levels = "30", talent = "Sweeping Strikes", points = "1/1", spellId = 12292 },
             { 
                 levels = "31-34", talent = "Axe Specialization", points = "4/5", spellId = 12784,
                 ranks = {
@@ -208,7 +208,7 @@ Deathless.Data.Talents.Warrior = {
                     { level = 29, spellId = 13045 },
                 }
             },
-            { levels = "30", talent = "Death Wish", points = "1/1", spellId = 12292 },
+            { levels = "30", talent = "Death Wish", points = "1/1", spellId = 12328 },
             { 
                 levels = "31-33", talent = "Enrage", points = "5/5", spellId = 13048,
                 ranks = {

@@ -142,7 +142,7 @@ Deathless.Data.Abilities["Warrior"] = {
     { name = "Rend", level = 4, rank = 1, base_cost = 100, icon = "Ability_Gouge", source = "trainer", train = "yes", spellId = 772 },
     { name = "Rend", level = 10, rank = 2, base_cost = 600, icon = "Ability_Gouge", source = "trainer", train = "yes", spellId = 6546 },
     { name = "Rend", level = 20, rank = 3, base_cost = 4000, icon = "Ability_Gouge", source = "trainer", train = "yes", spellId = 6547 },
-    { name = "Rend", level = 30, rank = 4, base_cost = 12000, icon = "Ability_Gouge", source = "trainer", train = "yes", spellId = 6548 },
+    { name = "Rend", level = 30, rank = 4, base_cost = 12000, icon = "Ability_Gouge", source = "trainer", train = "wait", spellId = 6548 },
     { name = "Rend", level = 40, rank = 5, base_cost = 22000, icon = "Ability_Gouge", source = "trainer", train = "wait", spellId = 11572 },
     { name = "Rend", level = 50, rank = 6, base_cost = 42000, icon = "Ability_Gouge", source = "trainer", train = "wait", spellId = 11573 },
     { name = "Rend", level = 60, rank = 7, base_cost = 62000, icon = "Ability_Gouge", source = "trainer", train = "wait", spellId = 11574 },

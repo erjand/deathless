@@ -37,7 +37,17 @@
 
 Dungeon Drops:
 - [x] Deadmines
-- [ ] 
+- [ ] SFK
+- [ ] Stockades
+- [ ] SM
+- [ ] Gnomer
+- [ ] Ulda
+- [ ] ST
+- [ ] BRD
+- [ ] LBRS
+- [ ] UBRS
+- [ ] Strat
+- [ ] Scholo
 
 - [x] Shields
 - [ ] Rings (review)

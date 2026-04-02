@@ -9,11 +9,6 @@ local INTERFACE_ICONS = "Interface\\Icons\\"
 -- Default/Fallback icons
 Deathless.Utils.Icons.DEFAULT = INTERFACE_ICONS .. "INV_Misc_QuestionMark"
 
--- Navigation icons
-Deathless.Utils.Icons.NAV_ABILITIES = INTERFACE_ICONS .. "INV_Misc_Book_07"
-Deathless.Utils.Icons.NAV_TALENTS = INTERFACE_ICONS .. "Ability_Marksmanship"
-Deathless.Utils.Icons.NAV_GEAR = INTERFACE_ICONS .. "INV_Gauntlets_04"
-
 -- Class icons
 Deathless.Utils.Icons.CLASS_DRUID = INTERFACE_ICONS .. "ClassIcon_Druid"
 Deathless.Utils.Icons.CLASS_HUNTER = INTERFACE_ICONS .. "ClassIcon_Hunter"
@@ -111,9 +106,6 @@ Deathless.Utils.Icons.ITEM_JEWELRY_TRINKETPVP_01 = INTERFACE_ICONS .. "INV_Jewel
 
 -- Addon icon (single source of truth for branding)
 Deathless.Utils.Icons.ADDON = INTERFACE_ICONS .. "INV_Misc_Bone_Skull_01"
-
--- Backward-compatible alias for existing tab usage
-Deathless.Utils.Icons.SPELLBOOK_TAB = Deathless.Utils.Icons.ADDON
 
 -- Helper function to get full icon path (for spell icons that may not have Interface\\Icons\\ prefix)
 ---@param iconName string Icon name (with or without Interface\\Icons\\ prefix)

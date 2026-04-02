@@ -28,10 +28,6 @@ local NAV_ITEMS_TOP = {
 
 local NAV_ITEMS_BOTTOM = {
     { id = "dungeons", label = "Dungeons" },
-    { id = "leveling", label = "Leveling (WIP)", hidden = true },
-    { id = "professions", label = "Professions (WIP)", hidden = true },
-    { id = "selffound", label = "Self-Found (WIP)", hidden = true },
-    { id = "zones", label = "Zones (WIP)", hidden = true },
     { divider = true },
     { id = "commands", label = "Commands" },
     { id = "macros", label = "Macros" },

@@ -22,11 +22,7 @@ utils\xp.lua
 utils\abilities.lua
 
 modules\classes\init.lua
-modules\zones\init.lua
 modules\dungeons\init.lua
-modules\professions\init.lua
-modules\skills\init.lua
-modules\selffound\init.lua
 
 ui\init.lua
 ui\tooltip.lua
@@ -35,11 +31,7 @@ ui\views\init.lua
 ui\views\home.lua
 ui\views\summary.lua
 ui\views\classes.lua
-ui\views\zones.lua
 ui\views\dungeons\dungeons_list.lua
-ui\views\leveling.lua
-ui\views\selffound.lua
-ui\views\professions.lua
 ui\views\commands.lua
 ui\views\macros.lua
 ui\views\options.lua

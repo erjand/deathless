@@ -6,6 +6,7 @@ Deathless.Data.Dungeons = {
     {
         id = "ragefire_chasm",
         name = "Ragefire Chasm",
+        aliases = { "RFC" },
         zone = "Orgrimmar",
         endBoss = "Bazzalan",
         bossLevel = 16,
@@ -75,6 +76,7 @@ Deathless.Data.Dungeons = {
     {
         id = "wailing_caverns",
         name = "Wailing Caverns",
+        aliases = { "WC" },
         zone = "The Barrens",
         endBoss = "Mutanus the Devourer",
         bossLevel = 22,
@@ -176,6 +178,7 @@ Deathless.Data.Dungeons = {
     {
         id = "deadmines",
         name = "The Deadmines",
+        aliases = { "DM", "VC" },
         zone = "Westfall",
         endBoss = "Edwin VanCleef",
         bossLevel = 21,
@@ -253,6 +256,7 @@ Deathless.Data.Dungeons = {
     {
         id = "shadowfang_keep",
         name = "Shadowfang Keep",
+        aliases = { "SFK" },
         zone = "Silverpine Forest",
         endBoss = "Archmage Arugal",
         bossLevel = 26,
@@ -303,6 +307,7 @@ Deathless.Data.Dungeons = {
     {
         id = "the_stockade",
         name = "The Stockade",
+        aliases = { "Stocks" },
         zone = "Stormwind City",
         endBoss = "Bazil Thredd",
         bossLevel = 29,
@@ -382,6 +387,7 @@ Deathless.Data.Dungeons = {
     {
         id = "blackfathom_deeps",
         name = "Blackfathom Deeps",
+        aliases = { "BFD" },
         zone = "Ashenvale",
         endBoss = "Aku'mai",
         bossLevel = 28,
@@ -507,6 +513,7 @@ Deathless.Data.Dungeons = {
     {
         id = "gnomeregan",
         name = "Gnomeregan",
+        aliases = { "Gnomer" },
         zone = "Dun Morogh",
         endBoss = "Mekgineer Thermaplugg",
         bossLevel = 34,
@@ -627,6 +634,7 @@ Deathless.Data.Dungeons = {
     {
         id = "razorfen_kraul",
         name = "Razorfen Kraul",
+        aliases = { "RFK" },
         zone = "The Barrens",
         endBoss = "Charlga Razorflank",
         bossLevel = 33,
@@ -729,6 +737,7 @@ Deathless.Data.Dungeons = {
     {
         id = "sm_graveyard",
         name = "Scarlet Monastery: Graveyard",
+        aliases = { "SM", "SM GY", "SMGY" },
         zone = "Tirisfal Glades",
         endBoss = "Bloodmage Thalnos",
         bossLevel = 34,
@@ -767,6 +776,7 @@ Deathless.Data.Dungeons = {
     {
         id = "sm_library",
         name = "Scarlet Monastery: Library",
+        aliases = { "SM", "SM Lib", "SMLib" },
         zone = "Tirisfal Glades",
         endBoss = "Arcanist Doan",
         bossLevel = 37,
@@ -847,6 +857,7 @@ Deathless.Data.Dungeons = {
     {
         id = "sm_armory",
         name = "Scarlet Monastery: Armory",
+        aliases = { "SM", "SM Arm", "SMArm" },
         zone = "Tirisfal Glades",
         endBoss = "Herod",
         bossLevel = 40,
@@ -894,6 +905,7 @@ Deathless.Data.Dungeons = {
     {
         id = "sm_cathedral",
         name = "Scarlet Monastery: Cathedral",
+        aliases = { "SM", "SM Cath", "SMCath" },
         zone = "Tirisfal Glades",
         endBoss = "High Inquisitor Whitemane",
         bossLevel = 42,
@@ -938,6 +950,7 @@ Deathless.Data.Dungeons = {
     {
         id = "razorfen_downs",
         name = "Razorfen Downs",
+        aliases = { "RFD" },
         zone = "The Barrens",
         endBoss = "Amnennar the Coldbringer",
         bossLevel = 41,
@@ -1024,6 +1037,7 @@ Deathless.Data.Dungeons = {
     {
         id = "uldaman",
         name = "Uldaman",
+        aliases = { "Ulda" },
         zone = "Badlands",
         endBoss = "Archaedas",
         bossLevel = 47,
@@ -1203,6 +1217,7 @@ Deathless.Data.Dungeons = {
     {
         id = "zul_farrak",
         name = "Zul'Farrak",
+        aliases = { "ZF" },
         zone = "Tanaris",
         endBoss = "Chief Ukorz Sandscalp",
         bossLevel = 48,
@@ -1302,6 +1317,7 @@ Deathless.Data.Dungeons = {
     {
         id = "maraudon",
         name = "Maraudon",
+        aliases = { "Mara" },
         zone = "Desolace",
         endBoss = "Princess Theradras",
         bossLevel = 51,
@@ -1448,6 +1464,7 @@ Deathless.Data.Dungeons = {
     {
         id = "sunken_temple",
         name = "Temple of Atal'Hakkar",
+        aliases = { "ST", "Sunken Temple", "Sunken" },
         zone = "Swamp of Sorrows",
         endBoss = "Shade of Eranikus",
         bossLevel = 55,
@@ -1576,6 +1593,7 @@ Deathless.Data.Dungeons = {
     {
         id = "blackrock_depths",
         name = "Blackrock Depths",
+        aliases = { "BRD" },
         zone = "Blackrock Mountain",
         endBoss = "Emperor Dagran Thaurissan",
         bossLevel = 56,
@@ -1848,6 +1866,7 @@ Deathless.Data.Dungeons = {
     {
         id = "lower_blackrock_spire",
         name = "Lower Blackrock Spire",
+        aliases = { "LBRS" },
         zone = "Blackrock Mountain",
         endBoss = "Overlord Wyrmthalak",
         bossLevel = 60,
@@ -2040,6 +2059,7 @@ Deathless.Data.Dungeons = {
     {
         id = "upper_blackrock_spire",
         name = "Upper Blackrock Spire",
+        aliases = { "UBRS" },
         zone = "Blackrock Mountain",
         endBoss = "General Drakkisath",
         bossLevel = 62,
@@ -2150,6 +2170,7 @@ Deathless.Data.Dungeons = {
     {
         id = "dire_maul_east",
         name = "Dire Maul: East",
+        aliases = { "DM", "DME", "DM:E" },
         zone = "Feralas",
         endBoss = "Alzzin the Wildshaper",
         bossLevel = 58,
@@ -2219,6 +2240,7 @@ Deathless.Data.Dungeons = {
     {
         id = "dire_maul_west",
         name = "Dire Maul: West",
+        aliases = { "DM", "DMW", "DM:W" },
         zone = "Feralas",
         endBoss = "Prince Tortheldrin",
         bossLevel = 61,
@@ -2297,6 +2319,7 @@ Deathless.Data.Dungeons = {
     {
         id = "dire_maul_north",
         name = "Dire Maul: North",
+        aliases = { "DM", "DMN", "DM:N" },
         zone = "Feralas",
         endBoss = "King Gordok",
         bossLevel = 61,
@@ -2354,6 +2377,7 @@ Deathless.Data.Dungeons = {
     {
         id = "stratholme_living",
         name = "Stratholme: Living",
+        aliases = { "Strat", "Strat Live" },
         zone = "Eastern Plaguelands",
         endBoss = "Balnazzar",
         bossLevel = 62,
@@ -2441,6 +2465,7 @@ Deathless.Data.Dungeons = {
     {
         id = "stratholme_undead",
         name = "Stratholme: Undead",
+        aliases = { "Strat", "Strat UD" },
         zone = "Eastern Plaguelands",
         endBoss = "Baron Rivendare",
         bossLevel = 62,
@@ -2555,6 +2580,7 @@ Deathless.Data.Dungeons = {
     {
         id = "scholomance",
         name = "Scholomance",
+        aliases = { "Scholo" },
         zone = "Western Plaguelands",
         endBoss = "Darkmaster Gandling",
         bossLevel = 61,

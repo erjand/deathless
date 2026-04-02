@@ -58,6 +58,20 @@ function Deathless.UI.Views.Utils:CreateSearchControl(parent, opts)
     searchLabel:SetText(opts.label or "Search")
     searchLabel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
 
+    if opts.tooltip then
+        local hitFrame = CreateFrame("Frame", nil, parent)
+        hitFrame:SetAllPoints(searchLabel)
+        hitFrame:EnableMouse(true)
+        hitFrame:SetScript("OnEnter", function(self)
+            searchLabel:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            Deathless.UI.Tooltip:Show(self, "ANCHOR_TOP", opts.tooltip.title or (opts.label or "Search"), opts.tooltip)
+        end)
+        hitFrame:SetScript("OnLeave", function()
+            searchLabel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            Deathless.UI.Tooltip:Hide()
+        end)
+    end
+
     local clearBtn = CreateFrame("Button", nil, searchBox)
     clearBtn:SetSize(searchStyle.clearButtonSize, searchStyle.clearButtonSize)
     clearBtn:SetPoint("RIGHT", searchBox, "RIGHT", searchStyle.clearButtonOffsetX, 0)

@@ -113,6 +113,18 @@ local function GetDifficultyColor(mobLevel, playerLevel)
     end
 end
 
+--- Check whether any alias matches the search term (case-insensitive substring).
+---@param aliases table|nil
+---@param term string Lower-cased search term
+---@return boolean
+local function MatchesAlias(aliases, term)
+    if not aliases then return false end
+    for _, alias in ipairs(aliases) do
+        if alias:lower():find(term, 1, true) then return true end
+    end
+    return false
+end
+
 --- Escape Lua pattern metacharacters so plain text can be safely used in gsub.
 ---@param text string
 ---@return string
@@ -165,7 +177,12 @@ Deathless.UI.Views:Register("dungeons", function(container)
     local searchBox, searchLabel, clearBtn = Utils:CreateSearchControl(container, {
         x = 24,
         y = ViewOffsets.dungeons.searchY,
-        label = "Search",
+        label = "Search (?)",
+        tooltip = {
+            title = "Search Dungeons",
+            "Search by dungeon name, zone, end boss,",
+            "or common abbreviation (e.g. SM, BRD, UBRS).",
+        },
     })
 
     local function SaveFilterState()
@@ -814,6 +831,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
                 or dungeon.name:lower():find(searchTerm, 1, true)
                 or dungeon.zone:lower():find(searchTerm, 1, true)
                 or dungeon.endBoss:lower():find(searchTerm, 1, true)
+                or MatchesAlias(dungeon.aliases, searchTerm)
             ) then
                 table.insert(filtered, dungeon)
             end

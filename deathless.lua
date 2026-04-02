@@ -1,6 +1,6 @@
 -- Deathless: A Hardcore Classic WoW companion addon
 Deathless = Deathless or {}
-Deathless.version = "0.1.0"
+Deathless.version = "0.8.1"
 Deathless.modules = {}
 
 -- Module registration system

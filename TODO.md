@@ -4,7 +4,6 @@
 
 - [x] 0.7: Dungeons Complete
 - [x] 0.8: Stats Complete
-- [ ] 0.9: Gear Complete
 - [ ] 1.0: Release to addon platforms / CI pipeline / bundled prod code
 
 ## Ideas

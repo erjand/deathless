@@ -1,7 +1,7 @@
 ## Interface: 11405
 ## Title: Deathless
 ## Notes: A Hardcore Classic WoW companion addon
-## Author: YourName
+## Author: erjand
 ## Version: 0.8.1
 ## SavedVariablesPerCharacter: DeathlessDB
 

@@ -15,20 +15,19 @@ Deathless.UI.Views:Register("classes", function(container)
     content:SetPoint("TOPLEFT", separator, "BOTTOMLEFT", 0, -12)
     content:SetWidth(container:GetWidth() - 40)
     content:SetJustifyH("LEFT")
-    content:SetText("Select a class from the menu to view abilities, gear, macros, and talent builds.\n\nYou can choose which classes are displayed from the Options menu.")
+    content:SetText("Select a class from the menu to view abilities, macros, and talent builds.\n\nYou can choose which classes are displayed from the Options menu.")
     content:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
     
     return { title = title, subtitle = subtitle, content = content }
 end)
 
---- Build tab definitions for a class (auto-discovers gear data)
+--- Build tab definitions for a class
 ---@param className string Lowercase class name
 ---@param displayName string Display name (e.g., "Rogue")
 ---@return table Array of { id, label } tab definitions
 local function GetClassTabs(className, displayName)
     local tabs = {
         { id = className .. "_abilities", label = "Abilities" },
-        { id = className .. "_gear", label = "Gear" },
         { id = className .. "_macros", label = "Macros" },
         { id = className .. "_stats", label = "Stats" },
         { id = className .. "_talents", label = "Talents" },

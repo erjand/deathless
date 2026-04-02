@@ -5,7 +5,7 @@
 ## Version: @project-version@
 ## SavedVariablesPerCharacter: DeathlessDB
 
-## X-Curse-Project-ID: <your-curse-id>
+## X-Curse-Project-ID: 1502672
 ## X-WoWI-ID: <your-wowi-id>
 ## X-Wago-ID: <your-wago-id>
 

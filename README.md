@@ -62,7 +62,7 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 - For each dungeon, provides a brief Warnings section for notable dangers.
 - For each dungeon, provides a full list of available quests, and their rewards.
 
-![Deathless dungeons](docs/images/deathless-dungeons.png)
+<img width="1349" height="1106" alt="image" src="https://github.com/user-attachments/assets/fbed0dd3-7085-4fb9-a7c9-ab9759c350e1" />
 
 ### Summary Tab / Mini Viewer
 

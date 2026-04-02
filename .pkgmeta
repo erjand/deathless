@@ -5,7 +5,6 @@ ignore:
   - .cursor
   - .gitignore
   - .vscode
-  - CHANGELOG.md
   - CONTRIBUTING.md
   - data/source
   - docs

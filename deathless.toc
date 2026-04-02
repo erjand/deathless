@@ -1,4 +1,4 @@
-## Interface: 11405
+## Interface: 11508
 ## Title: Deathless
 ## Notes: A Hardcore Classic WoW companion addon
 ## Author: erjand

@@ -1,13 +1,14 @@
 package-as: deathless
 
 ignore:
-  - scripts
-  - data/source
-  - docs
-  - CONTRIBUTING.md
-  - README.md
-  - LICENSE
   - .claude
   - .cursor
   - .gitignore
   - .vscode
+  - CHANGELOG.md
+  - CONTRIBUTING.md
+  - data/source
+  - docs
+  - LICENSE
+  - README.md
+  - scripts/

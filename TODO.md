@@ -35,7 +35,8 @@
 
 ### Gear
 
-Dungeon Drops:
+Dungeon Items:
+
 - [x] Deadmines
 - [ ] SFK
 - [ ] Stockades
@@ -48,6 +49,16 @@ Dungeon Drops:
 - [ ] UBRS
 - [ ] Strat
 - [ ] Scholo
+- [ ] RFC
+- [ ] WC
+- [ ] BFD
+- [ ] RFD
+- [ ] RFK
+- [ ] ZF
+- [ ] Mara
+- [ ] DM:E
+- [ ] DM:W
+- [ ] DM:N
 
 - [x] Shields
 - [ ] Rings (review)

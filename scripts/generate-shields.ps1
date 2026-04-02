@@ -115,30 +115,25 @@ function Get-ClassesList {
     return $classes
 }
 
-function Get-PreBisFlag {
+function Get-Tiers {
     param(
         [pscustomobject]$Row,
         [int]$RowNumber
     )
 
-    if (-not ($Row.PSObject.Properties.Name -contains "pre_bis")) {
-        return $false
+    $isPreBis = ConvertTo-BoolFlag -Row $Row -RowNumber $RowNumber -FieldName "pre_bis" -DefaultValue $false
+    $hasLevelingColumn = $Row.PSObject.Properties.Name -contains "leveling"
+    $isLeveling = ConvertTo-BoolFlag -Row $Row -RowNumber $RowNumber -FieldName "leveling" -DefaultValue $false
+
+    if ($hasLevelingColumn) {
+        if ($isLeveling -and $isPreBis) { return @("Leveling", "Pre-BiS") }
+        if ($isLeveling) { return @("Leveling") }
+        if ($isPreBis) { return @("Pre-BiS") }
+        return @()
     }
 
-    $rawValue = "$($Row.pre_bis)".Trim().ToLowerInvariant()
-    if ([string]::IsNullOrWhiteSpace($rawValue)) {
-        return $false
-    }
-
-    if ($rawValue -in @("1", "true", "yes", "y")) {
-        return $true
-    }
-
-    if ($rawValue -in @("0", "false", "no", "n")) {
-        return $false
-    }
-
-    throw "Row ${RowNumber}: invalid pre_bis value '$rawValue'. Allowed: true/false, 1/0, yes/no, y/n, or empty."
+    if ($isPreBis) { return @("Pre-BiS") }
+    return @("Leveling")
 }
 
 if (-not (Test-Path -LiteralPath $CsvPath)) {
@@ -182,7 +177,7 @@ foreach ($row in $rows) {
     $rarity = "$($row.rarity)".Trim().ToLowerInvariant()
     $itemId = Get-IntField -Row $row -RowNumber $rowNumber -FieldName "itemId"
     $classes = Get-ClassesList -Row $row -RowNumber $rowNumber
-    $isPreBis = Get-PreBisFlag -Row $row -RowNumber $rowNumber
+    $tiers = @(Get-Tiers -Row $row -RowNumber $rowNumber)
     $faction = "$($row.faction)".Trim()
 
     if ($allowedRarities -notcontains $rarity) {
@@ -205,8 +200,9 @@ foreach ($row in $rows) {
         "itemId = $itemId"
     )
 
-    if ($isPreBis) {
-        $itemFields += "tiers = { `"Pre-BiS`" }"
+    if ($tiers.Count -gt 0) {
+        $tierValues = $tiers | ForEach-Object { "`"$(ConvertTo-LuaString $_)`"" }
+        $itemFields += "tiers = { " + ($tierValues -join ", ") + " }"
     }
 
     $itemFields += "classes = $classList"

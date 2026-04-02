@@ -7,5 +7,5 @@ Deathless.Data.Gear = Deathless.Data.Gear or {}
 -- GENERATED FROM data/source/armor_shoulders.csv. DO NOT EDIT MANUALLY.
 
 Deathless.Data.Gear.ArmorShoulders = {
-    { name = "Placeholder Shoulders", slot = "Shoulders", type = "Mail", levelReq = 20, source = "Quest - Placeholder", rarity = "uncommon", itemId = 1302, classes = { "Warrior", "Paladin", "Hunter", "Druid", "Shaman" } },
+    { name = "Placeholder Shoulders", slot = "Shoulders", type = "Mail", levelReq = 20, source = "Quest - Placeholder", rarity = "uncommon", itemId = 1302, tiers = { "Leveling" }, classes = { "Warrior", "Paladin", "Hunter", "Druid", "Shaman" } },
 }

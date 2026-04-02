@@ -7,6 +7,6 @@ Deathless.Data.Gear = Deathless.Data.Gear or {}
 -- GENERATED FROM data/source/armor_chest.csv. DO NOT EDIT MANUALLY.
 
 Deathless.Data.Gear.ArmorChest = {
-    { name = "Corsair's Overshirt", slot = "Chest", type = "Cloth", levelReq = 19, source = "Deadmines - VanCleef", rarity = "rare", itemId = 5202, classes = { "Warrior", "Priest", "Mage", "Warlock", "Druid", "Shaman" } },
-    { name = "Blackened Defias Armor", slot = "Chest", type = "Leather", levelReq = 19, source = "Deadmines - VanCleef", rarity = "rare", itemId = 10399, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Druid", "Shaman" } },
+    { name = "Corsair's Overshirt", slot = "Chest", type = "Cloth", levelReq = 19, source = "Deadmines - VanCleef", rarity = "rare", itemId = 5202, tiers = { "Leveling" }, classes = { "Warrior", "Priest", "Mage", "Warlock", "Druid", "Shaman" } },
+    { name = "Blackened Defias Armor", slot = "Chest", type = "Leather", levelReq = 19, source = "Deadmines - VanCleef", rarity = "rare", itemId = 10399, tiers = { "Leveling" }, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Druid", "Shaman" } },
 }

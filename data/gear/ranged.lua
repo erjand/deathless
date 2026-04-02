@@ -7,5 +7,5 @@ Deathless.Data.Gear = Deathless.Data.Gear or {}
 -- GENERATED FROM data/source/ranged.csv. DO NOT EDIT MANUALLY.
 
 Deathless.Data.Gear.Ranged = {
-    { name = "Placeholder Ranged", type = "Gun", levelReq = 20, source = "Vendor", rarity = "uncommon", itemId = 3023, classes = { "Warrior", "Hunter", "Rogue" } },
+    { name = "Placeholder Ranged", type = "Gun", levelReq = 20, source = "Vendor", rarity = "uncommon", itemId = 3023, tiers = { "Leveling" }, classes = { "Warrior", "Hunter", "Rogue" } },
 }

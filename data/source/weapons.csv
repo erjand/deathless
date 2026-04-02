@@ -1,20 +1,20 @@
-name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,faction,pre_bis
-Stiletto,1H Dagger,3,Vendor,common,2494,true,false,false,true,false,false,false,false,false,,false
-Tomahawk,1H Axe,4,Vendor,common,2490,true,false,false,false,false,false,false,false,false,,false
-Gladius,1H Sword,4,Vendor,common,2488,true,false,false,true,false,false,false,false,false,,false
-Jambiya,1H Dagger,11,Vendor,common,2207,true,false,false,true,false,false,false,false,false,,false
-Poniard,1H Dagger,14,Vendor,common,2208,true,false,false,true,false,false,false,false,false,,false
-Kris,1H Dagger,19,Vendor,common,2209,true,false,false,true,false,false,false,false,false,,false
-Marauder Axe,1H Axe,21,Vendor (limited supply),uncommon,4826,true,false,false,false,false,false,false,false,false,,false
-Blurred Axe,1H Axe,22,Vendor (limited supply),uncommon,4824,true,false,false,false,false,false,false,false,false,,false
-Callous Axe,1H Axe,24,Vendor (limited supply),uncommon,4825,true,false,false,false,false,false,false,false,false,,false
-Broad Bladed Knife,1H Dagger,27,Vendor (limited supply),uncommon,12247,true,false,false,true,false,false,false,false,false,,false
-Daring Dirk,1H Dagger,29,Vendor (limited supply),uncommon,12248,true,false,false,true,false,false,false,false,false,,false
-Executioner's Sword,2H Sword,19,Vendor (limited supply),uncommon,4818,true,true,false,false,false,false,false,false,false,,false
-Merciless Axe,2H Axe,26,Vendor (limited supply),uncommon,12249,true,true,false,false,false,false,false,false,true,,false
-Midnight Axe,2H Axe,29,Vendor (limited supply),uncommon,12250,true,true,false,false,false,false,false,false,true,,false
-Smite's Mighty Hammer,2H Mace,18,Deadmines - Mr. Smite,rare,7230,true,true,false,false,false,false,false,false,false,,false
-Cruel Barb,1H Sword,19,Deadmines - VanCleef,rare,5191,true,true,false,true,false,false,false,false,false,,false
-Cookie's Tenderizer,1H Mace,16,Deadmines - Cookie,uncommon,5197,true,true,false,false,false,false,false,false,false,,false
-Taskmaster Axe,2H Axe,18,Deadmines - Sneed,rare,5194,true,true,false,false,false,false,false,false,false,,false
-Emberstone Staff,2H Staff,18,Deadmines - Captain Greenskin,rare,5201,false,false,false,false,true,true,true,true,false,,false
+name,type,levelReq,source,rarity,itemId,warrior,paladin,hunter,rogue,priest,mage,warlock,druid,shaman,faction,pre_bis,leveling
+Stiletto,1H Dagger,3,Vendor,common,2494,true,false,false,true,false,false,false,false,false,,false,true
+Tomahawk,1H Axe,4,Vendor,common,2490,true,false,false,false,false,false,false,false,false,,false,true
+Gladius,1H Sword,4,Vendor,common,2488,true,false,false,true,false,false,false,false,false,,false,true
+Jambiya,1H Dagger,11,Vendor,common,2207,true,false,false,true,false,false,false,false,false,,false,true
+Poniard,1H Dagger,14,Vendor,common,2208,true,false,false,true,false,false,false,false,false,,false,true
+Kris,1H Dagger,19,Vendor,common,2209,true,false,false,true,false,false,false,false,false,,false,true
+Marauder Axe,1H Axe,21,Vendor (limited supply),uncommon,4826,true,false,false,false,false,false,false,false,false,,false,true
+Blurred Axe,1H Axe,22,Vendor (limited supply),uncommon,4824,true,false,false,false,false,false,false,false,false,,false,true
+Callous Axe,1H Axe,24,Vendor (limited supply),uncommon,4825,true,false,false,false,false,false,false,false,false,,false,true
+Broad Bladed Knife,1H Dagger,27,Vendor (limited supply),uncommon,12247,true,false,false,true,false,false,false,false,false,,false,true
+Daring Dirk,1H Dagger,29,Vendor (limited supply),uncommon,12248,true,false,false,true,false,false,false,false,false,,false,true
+Executioner's Sword,2H Sword,19,Vendor (limited supply),uncommon,4818,true,true,false,false,false,false,false,false,false,,false,true
+Merciless Axe,2H Axe,26,Vendor (limited supply),uncommon,12249,true,true,false,false,false,false,false,false,true,,false,true
+Midnight Axe,2H Axe,29,Vendor (limited supply),uncommon,12250,true,true,false,false,false,false,false,false,true,,false,true
+Smite's Mighty Hammer,2H Mace,18,Deadmines - Mr. Smite,rare,7230,true,true,false,false,false,false,false,false,false,,false,true
+Cruel Barb,1H Sword,19,Deadmines - VanCleef,rare,5191,true,true,false,true,false,false,false,false,false,,false,true
+Cookie's Tenderizer,1H Mace,16,Deadmines - Cookie,uncommon,5197,true,true,false,false,false,false,false,false,false,,false,true
+Taskmaster Axe,2H Axe,18,Deadmines - Sneed,rare,5194,true,true,false,false,false,false,false,false,false,,false,true
+Emberstone Staff,2H Staff,18,Deadmines - Captain Greenskin,rare,5201,false,false,false,false,true,true,true,true,false,,false,true

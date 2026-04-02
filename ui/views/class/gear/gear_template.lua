@@ -414,7 +414,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
                             end
                         end
                     else
-                        -- Backward compatibility: items without explicit tiers are leveling items.
+                        -- Fallback: items without explicit tiers default to leveling.
                         tierMatch = tierFilterState[GEAR_TIER.LEVELING] == true
                     end
 

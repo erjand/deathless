@@ -133,7 +133,7 @@ function Get-Tiers {
     }
 
     if ($isPreBis) { return @("Pre-BiS") }
-    return @()
+    return @("Leveling")
 }
 
 if (-not (Test-Path -LiteralPath $CsvPath)) {

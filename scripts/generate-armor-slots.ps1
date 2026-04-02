@@ -70,9 +70,25 @@ function Get-ClassesList {
     return $classes
 }
 
-function Get-PreBisFlag {
-    param([pscustomobject]$Row, [int]$RowNumber)
-    return ConvertTo-BoolFlag -Row $Row -RowNumber $RowNumber -FieldName "pre_bis" -DefaultValue $false
+function Get-Tiers {
+    param(
+        [pscustomobject]$Row,
+        [int]$RowNumber
+    )
+
+    $isPreBis = ConvertTo-BoolFlag -Row $Row -RowNumber $RowNumber -FieldName "pre_bis" -DefaultValue $false
+    $hasLevelingColumn = $Row.PSObject.Properties.Name -contains "leveling"
+    $isLeveling = ConvertTo-BoolFlag -Row $Row -RowNumber $RowNumber -FieldName "leveling" -DefaultValue $false
+
+    if ($hasLevelingColumn) {
+        if ($isLeveling -and $isPreBis) { return @("Leveling", "Pre-BiS") }
+        if ($isLeveling) { return @("Leveling") }
+        if ($isPreBis) { return @("Pre-BiS") }
+        return @()
+    }
+
+    if ($isPreBis) { return @("Pre-BiS") }
+    return @("Leveling")
 }
 
 function New-ArmorSlotData {
@@ -126,7 +142,7 @@ function New-ArmorSlotData {
         $rarity = "$($row.rarity)".Trim().ToLowerInvariant()
         $itemId = Get-IntField -Row $row -RowNumber $rowNumber -FieldName "itemId"
         $classes = Get-ClassesList -Row $row -RowNumber $rowNumber
-        $isPreBis = Get-PreBisFlag -Row $row -RowNumber $rowNumber
+        $tiers = @(Get-Tiers -Row $row -RowNumber $rowNumber)
         $faction = "$($row.faction)".Trim()
 
         if ($allowedRarities -notcontains $rarity) {
@@ -149,7 +165,10 @@ function New-ArmorSlotData {
             "itemId = $itemId"
         )
 
-        if ($isPreBis) { $itemFields += "tiers = { `"Pre-BiS`" }" }
+        if ($tiers.Count -gt 0) {
+            $tierValues = $tiers | ForEach-Object { "`"$(ConvertTo-LuaString $_)`"" }
+            $itemFields += "tiers = { " + ($tierValues -join ", ") + " }"
+        }
         $itemFields += "classes = $classList"
         if (-not [string]::IsNullOrWhiteSpace($faction)) {
             $itemFields += "faction = `"$(ConvertTo-LuaString $faction)`""

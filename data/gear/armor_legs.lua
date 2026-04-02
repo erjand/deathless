@@ -7,5 +7,5 @@ Deathless.Data.Gear = Deathless.Data.Gear or {}
 -- GENERATED FROM data/source/armor_legs.csv. DO NOT EDIT MANUALLY.
 
 Deathless.Data.Gear.ArmorLegs = {
-    { name = "Placeholder Legs", slot = "Legs", type = "Mail", levelReq = 20, source = "Quest - Placeholder", rarity = "uncommon", itemId = 1307, classes = { "Warrior", "Paladin", "Hunter", "Druid", "Shaman" } },
+    { name = "Placeholder Legs", slot = "Legs", type = "Mail", levelReq = 20, source = "Quest - Placeholder", rarity = "uncommon", itemId = 1307, tiers = { "Leveling" }, classes = { "Warrior", "Paladin", "Hunter", "Druid", "Shaman" } },
 }

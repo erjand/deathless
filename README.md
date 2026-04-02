@@ -53,7 +53,7 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 - Shows one or more generally viable HC leveling talent trees for each class.
 
-![Deathless priest talents](docs/images/deathless-priest-talents.png)
+<img width="1350" height="1107" alt="image" src="https://github.com/user-attachments/assets/dc5aacee-2d60-4051-97a7-427a3c2780a5" />
 
 ### Detailed Dungeon Information
 

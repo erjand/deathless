@@ -4,45 +4,26 @@
 
 A Hardcore Classic WoW addon.
 
-`deathless` is a multi-purpose / AIO companion addon for the HC player on their 1-60 journey. 
+`deathless` is a multi-purpose / all-in-one companion addon for the HC player on their 1-60 journey. 
 
-It tries to provide recommendations and best practices to the player by being opinionated but not obnoxious or unnecessarily 
-prescriptive. "What is the generally regarded community of the HC community about `x`" instead of "What is my hot take about `x`".
+It tries to provide recommendations and guidance to the player by being opinionated but not obnoxious or unnecessarily prescriptive.
 
-1. Replace `RestedXP` or other leveling guides with a more high-level and generalized flow through leveling without being overly hand-holding.
-2. Replace the need for `WeakAuras` or other tools to show warnings when important buffs or items are missing.
-3. Reduce / eliminate the need for 3rd-party references for quests, talents, abilities, zones, dungeons, and professions.
+![Deathless main window](docs/images/deathless-home.png)
 
 ### Key Capabilities
 
-- Class guides, ability lists, talent builds, and gear
+- Class guides, ability lists, talent builds, and class-specific macros
 - Dungeon guides and quest rewards
-- Leveling quests and suggested routes
-- Profession guides
-- Self-found information and guide
-- Zone overview, hot spots, and important quests
+- Warnings for things such as: missing important items, unspent talent points, uncompleted important HC quests, and under-leveled consumables.
+- General-purpose Hardcore macros
 
-## Getting Started Without an Addon Manager
+## Installation
 
-1. Clone the repo
-2. If your WoW installation is in the standard location (`C:\Program Files (x86)\World of Warcraft\_classic_era_\Interface\AddOns`), and you are on Windows, run `scripts\deploy.bat`. You will likely have to give Admin permission to the script to run.
-    1. If your WoW installation is not in the standard location, manually copy the `deathless` directory to your `\Addons\` directory; or update the `scripts\deploy.ps1` script for your path.
-    2. If you are not on Windows, then manually move the addon files or write your own shell script.
-3. Run the addon in game with the command `/deathless` or `/dls`. Run `/dls h` in-game for all available commands.
-4. When making changes, run `scripts\deploy.bat` again, then `/reload` in game.
+Install via [CurseForge](https://www.curseforge.com/wow/addons), [Wago](https://addons.wago.io/), or [WoWInterface](https://www.wowinterface.com/). You can also manually copy the addon folder to your `Interface\AddOns\` directory.
 
-## Data Source Workflow
+## Usage
 
-Data should be maintained in CSV and generated into Lua:
-
-- Source CSV: `data/source/*.csv`
-- Generated Lua: `data/gear/*.lua`
-- Generator script: `scripts/generate-all-csv.bat`
-
-## Versioning
-
-- Use SemVer
-- When updating the version, ensure that `deathless.toc` and `core/constants.lua` always match:
+Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all available commands.
 
 ## Features 
 
@@ -50,35 +31,44 @@ Data should be maintained in CSV and generated into Lua:
 
 #### Abilities
 
-> Currently 100% implemented
-
 - Shows Abilities for each class: Learned, Available, Next Available, and Unavailable.
 - Includes level available, price, source, and a recommendation as to train, wait to train, or not train each ability.
 
-#### Gear
+![Deathless warrior abilities](docs/images/deathless-warrior-abilities.png)
 
-> Heavily in progress
+#### Macros
 
-- Shows notable gear for leveling, Pre-BiS, and Raids
+- Commonly used macros and macro-patterns for each class.
+
+![Deathless warlock macros](docs/images/deathless-warlock-macros.png)
+
+#### Stats
+
+- Bonuses provided per point of primary stat for each class.
+- Stat priority guidance for each class.
+
+![Deathless rogue stats](docs/images/deathless-rogue-stats.png)
 
 #### Talents
 
-> Currently 100% implemented
+- Shows one or more generally viable HC leveling talent trees for each class.
 
-- Shows at least one generally viable HC leveling talent tree for each class
+![Deathless priest talents](docs/images/deathless-priest-talents.png)
 
-### Dungeons
+### Detailed Dungeon Information
 
-> Currently implemented for top-level table but not yet all individual dungeons
+- Shows overview of all dungeons and their appropriate level ranges.
+- Allows filtering to only show dungeons for the current character level.
+- For each dungeon, provides a brief Warnings section for notable dangers.
+- For each dungeon, provides a full list of available quests, and their rewards.
 
-- Shows overview of all dungeons and their appropriate level ranges
-- For each dungeon, provides a brief Warnings section for notable dangers
-- For each dungeon, provides a full list of available quests, and their rewards
+![Deathless dungeons](docs/images/deathless-dungeons.png)
 
 ### Summary Tab / Mini Viewer
 
-> 100% implemented
+- Displays dynamic Warnings to the player for things like: missing consumables, unspent Talent points, or under-leveled First Aid.
+- Available in the `Summary` tab in the main addon, or as a mini viewer.
 
-- Displays dynamic Warnings to the player for things like: missing health potions, unspent Talent points, or under-leveled First Aid
-- Available in the `Summary` tab in the main addon, or as a mini viewer
+![Deathless summary](docs/images/deathless-summary.png)
 
+![Deathless mini](docs/images/deathless-mini.png)

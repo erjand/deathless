@@ -2,8 +2,12 @@
 ## Title: Deathless
 ## Notes: A Hardcore Classic WoW companion addon
 ## Author: erjand
-## Version: 0.8.1
+## Version: @project-version@
 ## SavedVariablesPerCharacter: DeathlessDB
+
+## X-Curse-Project-ID: <your-curse-id>
+## X-WoWI-ID: <your-wowi-id>
+## X-Wago-ID: <your-wago-id>
 
 deathless.lua
 
@@ -21,8 +25,6 @@ utils\warnings.lua
 utils\xp.lua
 utils\abilities.lua
 
-modules\classes\init.lua
-modules\dungeons\init.lua
 
 ui\init.lua
 ui\tooltip.lua

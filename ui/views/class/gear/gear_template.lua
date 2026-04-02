@@ -3,6 +3,8 @@ local Utils = Deathless.UI.Views.Utils
 local UIUtils = Deathless.Utils.UI
 local Urls = Deathless.Constants.Urls
 
+-- Note: Currently disabled, but leaving stub in case we want to add it back later
+
 Deathless.UI.Views.GearTemplate = {}
 
 -- WoW item rarity colors

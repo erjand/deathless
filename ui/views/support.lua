@@ -1,6 +1,8 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 
+-- Note: Currently disabled, but leaving stub in case we want to add it back later
+
 --- Support view content
 Deathless.UI.Views:Register("support", function(container)
     local Colors = Utils:GetColors()

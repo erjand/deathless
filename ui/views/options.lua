@@ -308,10 +308,10 @@ Deathless.UI.Views:Register("options", function(container)
     }
 
     local MINI_OPTIONS = {
-        { key = MiniSections.WARNINGS, label = "Warnings", tooltip = "Toggle visibility of Warnings in the Mini window" },
-        { key = MiniSections.XP_PROGRESS, label = "XP Progress", tooltip = "Toggle visibility of XP Progress in the Mini window" },
-        { key = MiniSections.AVAILABLE, label = "Available", tooltip = "Toggle visibility of Available Abilities in the Mini window" },
-        { key = MiniSections.NEXT_AVAILABLE, label = "Next Available", tooltip = "Toggle visibility of Next Available Abilities in the Mini window" },
+        { key = MiniSections.WARNINGS, label = "Warnings", tooltip = "Toggle visibility of Warnings" },
+        { key = MiniSections.XP_PROGRESS, label = "XP Progress", tooltip = "Toggle visibility of XP Progress" },
+        { key = MiniSections.AVAILABLE, label = "Available", tooltip = "Toggle visibility of Available Abilities" },
+        { key = MiniSections.NEXT_AVAILABLE, label = "Next Available", tooltip = "Toggle visibility of Next Available Abilities" },
     }
     
     Refresh = function()

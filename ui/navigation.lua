@@ -36,7 +36,6 @@ local NAV_ITEMS_BOTTOM = {
     { id = "commands", label = "Commands" },
     { id = "macros", label = "Macros" },
     { id = "options", label = "Options" },
-    { id = "support", label = "Support" },
 }
 
 --- Get the count and single class item if only one is included

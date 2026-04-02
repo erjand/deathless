@@ -7,7 +7,7 @@
 
 ## X-Curse-Project-ID: 1502672
 ## X-WoWI-ID: <your-wowi-id>
-## X-Wago-ID: <your-wago-id>
+## X-Wago-ID: v633Yn6b
 
 deathless.lua
 

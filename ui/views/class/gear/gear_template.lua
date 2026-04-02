@@ -1,6 +1,7 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local UIUtils = Deathless.Utils.UI
+local Urls = Deathless.Constants.Urls
 
 Deathless.UI.Views.GearTemplate = {}
 
@@ -442,21 +443,36 @@ function Deathless.UI.Views.GearTemplate:Create(config)
             row:SetHeight(ROW_HEIGHT)
             row:Show()
 
-            -- Item tooltip on hover
+            -- Alternating row bg
+            UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
+
+            -- Item tooltip on hover + highlight
             row:EnableMouse(true)
             row:SetScript("OnEnter", function(self)
+                if self._rowBg then
+                    self._rowBg:SetColorTexture(Colors.hover[1], Colors.hover[2], Colors.hover[3], Colors.hover[4])
+                    self._rowBg:Show()
+                end
                 if item.itemId then
                     GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 8, 0)
                     GameTooltip:SetItemByID(item.itemId)
                     GameTooltip:Show()
                 end
             end)
-            row:SetScript("OnLeave", function()
+            row:SetScript("OnLeave", function(self)
+                UIUtils.ApplyStripedRowBackground(self, Colors, rowNum)
                 GameTooltip:Hide()
             end)
 
-            -- Alternating row bg
-            UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
+            -- Click to copy Wowhead link
+            if item.itemId then
+                row:SetScript("OnMouseUp", function()
+                    local url = Urls.WOWHEAD_CLASSIC_ITEM_BASE .. item.itemId
+                    Deathless.UI.Components.CopyPopup:Show("Copy Item URL: " .. item.name, url)
+                end)
+            else
+                row:SetScript("OnMouseUp", nil)
+            end
 
             -- Item icon
             local iconX = COL.name.x + indent

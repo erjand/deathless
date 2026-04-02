@@ -50,6 +50,7 @@ function Deathless.Utils.UI.ApplyStripedRowBackground(row, colors, rowNum, isExp
         bg:SetAllPoints()
         RowBackgroundCache[row] = bg
     end
+    row._rowBg = bg ---@diagnostic disable-line: inject-field
 
     if isExpanded then
         bg:SetColorTexture(colors.bgLight[1], colors.bgLight[2], colors.bgLight[3], style.expandedAlpha)

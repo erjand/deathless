@@ -8,7 +8,6 @@ Deathless.Data.Gear = Deathless.Data.Gear or {}
 
 Deathless.Data.Gear.Trinkets = {
     { name = "Nifty Stopwatch", slot = "Trinket", type = "Trinket", levelReq = 36, source = "Quest - This Is Going to Be Hard", rarity = "uncommon", itemId = 2820, tiers = { "Leveling" }, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Mage", "Warlock", "Druid", "Shaman" } },
-    { name = "Tidal Charm", slot = "Trinket", type = "Trinket", levelReq = 36, source = "Arathi Highlands - Prince Nazjak (Rare)", rarity = "uncommon", itemId = 1404, tiers = { "Leveling" }, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Mage", "Warlock", "Druid", "Shaman" } },
     { name = "Mark of the Chosen", slot = "Trinket", type = "Trinket", levelReq = 39, source = "Quest - The Pariah's Instructions", rarity = "uncommon", itemId = 17774, tiers = { "Leveling", "Pre-BiS" }, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Druid", "Shaman" } },
     { name = "Carrot on a Stick", slot = "Trinket", type = "Trinket", levelReq = 40, source = "Quest - Gahz'rilla", rarity = "uncommon", itemId = 11122, tiers = { "Leveling" }, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Mage", "Warlock", "Druid", "Shaman" } },
     { name = "Linken's Boomerang", slot = "Trinket", type = "Trinket", levelReq = 47, source = "Quest - It's Dangerous to Go Alone", rarity = "uncommon", itemId = 11905, tiers = { "Leveling" }, classes = { "Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Mage", "Warlock", "Druid", "Shaman" } },

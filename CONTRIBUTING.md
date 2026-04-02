@@ -22,7 +22,7 @@ Data should be maintained in CSV and generated into Lua:
 ### Versioning
 
 - Use SemVer
-- Versions are managed automatically via git tags and the BigWigs packager (`@project-version@` token replacement)
+- Versions are managed automatically via git tags and the [BigWigs packager](https://github.com/BigWigsMods/packager) (`@project-version@` token replacement)
 
 ```shell
 git add .

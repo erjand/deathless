@@ -1,17 +1,11 @@
 package-as: Deathless
 
-manual-changelog:
-  filename: CHANGELOG.md
-  markup-type: markdown
-
 ignore:
   - scripts
   - data/source
   - docs
   - CONTRIBUTING.md
   - README.md
-  - TODO.md
-  - CHANGELOG.md
   - LICENSE
   - .cursor
   - .gitignore

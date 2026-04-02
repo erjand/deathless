@@ -36,3 +36,7 @@ SavedVariables/
 # Lua bytecode (if compiled)
 *.luac
 
+# Personal dev files
+TODO.md
+CHANGELOG.md
+

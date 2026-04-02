@@ -8,7 +8,7 @@ A Hardcore Classic WoW addon.
 
 It tries to provide recommendations and guidance to the player by being opinionated but not obnoxious or unnecessarily prescriptive.
 
-<img width="1346" height="1193" alt="image" src="https://github.com/user-attachments/assets/d8985547-4f1a-445c-a577-842e9a5783be" />
+<img width="1345" height="1192" alt="image" src="https://github.com/user-attachments/assets/bdd697e5-cb6c-4edc-9cbb-36e08d0bf749" />
 
 ### Key Capabilities
 

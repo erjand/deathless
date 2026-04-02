@@ -9,6 +9,8 @@ Thumbs.db
 desktop.ini
 
 # Editor-specific files
+.cursor/
+.claude/
 .vscode/
 .idea/
 *.swp
@@ -19,7 +21,7 @@ desktop.ini
 .settings/
 
 # WoW addon specific
-# Saved variables (if stored in repo)
+# Saved variables
 *.lua.bak
 SavedVariables/
 
@@ -33,10 +35,9 @@ SavedVariables/
 *.log
 *.cache
 
-# Lua bytecode (if compiled)
+# Lua bytecode
 *.luac
 
 # Personal dev files
-TODO.md
 CHANGELOG.md
-
+TODO.md

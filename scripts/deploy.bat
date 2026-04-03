@@ -2,7 +2,7 @@
 REM Deploy script wrapper for Deathless WoW addon
 REM Runs with admin privileges to write to Program Files
 
-echo Deploying Deathless addon...
+echo Deploying Deathless (Dev) addon...
 echo.
 
 REM Check for admin rights and request if needed

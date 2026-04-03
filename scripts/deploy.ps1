@@ -1,41 +1,46 @@
-# Deploy script for Deathless WoW addon
-# Copies addon files to WoW Classic Era AddOns directory
+# Deploy script for Deathless WoW addon (local dev build)
+# Deploys to "deathless-dev" so the CurseForge-managed "deathless" folder is untouched.
+# Only enable one of the two in-game at a time (they share the same global namespace).
 
 $ScriptDir = $PSScriptRoot
 $SourceDir = Split-Path -Parent $ScriptDir
-$TargetDir = "C:\Program Files (x86)\World of Warcraft\_classic_era_\Interface\AddOns\deathless"
+$AddOnsDir = "C:\Program Files (x86)\World of Warcraft\_classic_era_\Interface\AddOns"
+$TargetDir = Join-Path $AddOnsDir "deathless-dev"
 
-Write-Host "Deploying Deathless addon..." -ForegroundColor Green
+Write-Host "Deploying Deathless (Dev) addon..." -ForegroundColor Green
 Write-Host "Source: $SourceDir" -ForegroundColor Cyan
 Write-Host "Target: $TargetDir" -ForegroundColor Cyan
 Write-Host ""
 
-# Check if source directory exists
 if (-not (Test-Path $SourceDir)) {
     Write-Host "Error: Source directory not found!" -ForegroundColor Red
     exit 1
 }
 
-# Remove existing addon folder if it exists
 if (Test-Path $TargetDir) {
-    Write-Host "Removing existing addon folder..." -ForegroundColor Yellow
+    Write-Host "Removing existing dev addon folder..." -ForegroundColor Yellow
     Remove-Item -Path $TargetDir -Recurse -Force -ErrorAction Stop
 }
 
-# Create target directory
 Write-Host "Creating target directory..." -ForegroundColor Yellow
 New-Item -ItemType Directory -Path $TargetDir -Force | Out-Null
 
-# Copy .toc and .lua files from root
 Write-Host "Copying addon files..." -ForegroundColor Yellow
 
-Get-ChildItem -Path $SourceDir -Filter "*.toc" | ForEach-Object {
-    Copy-Item -Path $_.FullName -Destination $TargetDir -Force
-    Write-Host "  Copied: $($_.Name)" -ForegroundColor Gray
-}
+# Generate deathless-dev.toc from deathless.toc with dev-specific overrides
+$TocSource = Join-Path $SourceDir "deathless.toc"
+$TocTarget = Join-Path $TargetDir "deathless-dev.toc"
+(Get-Content $TocSource -Raw) `
+    -replace '## Title: Deathless', '## Title: Deathless (Dev)' `
+    -replace '@project-version@', 'dev' |
+    Set-Content $TocTarget -NoNewline
+Write-Host "  Generated: deathless-dev.toc" -ForegroundColor Gray
 
+# Copy root .lua files (replacing version token)
 Get-ChildItem -Path $SourceDir -Filter "*.lua" | ForEach-Object {
-    Copy-Item -Path $_.FullName -Destination $TargetDir -Force
+    $content = Get-Content $_.FullName -Raw
+    $content = $content -replace '@project-version@', 'dev'
+    Set-Content -Path (Join-Path $TargetDir $_.Name) -Value $content -NoNewline
     Write-Host "  Copied: $($_.Name)" -ForegroundColor Gray
 }
 
@@ -78,4 +83,5 @@ $fileCount = (Get-ChildItem -Path $TargetDir -Recurse -File).Count
 Write-Host "Files deployed: $fileCount" -ForegroundColor Cyan
 Write-Host "Addon installed to: $TargetDir" -ForegroundColor Cyan
 Write-Host ""
+Write-Host "Remember: disable 'Deathless' (CurseForge) and enable 'Deathless (Dev)' in the addon list." -ForegroundColor Yellow
 Write-Host "Reload your UI in WoW (/reload) to test." -ForegroundColor Yellow

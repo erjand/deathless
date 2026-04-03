@@ -19,7 +19,7 @@ end
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ADDON_LOADED")
 frame:SetScript("OnEvent", function(self, event, addonName)
-    if addonName == "deathless" then
+    if addonName == Deathless.addonName then
         C_Timer.After(0.1, function()
             Deathless.UI:Initialize()
         end)

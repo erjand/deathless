@@ -12,10 +12,10 @@ It tries to provide recommendations and guidance to the player by being opiniona
 
 ### Key Capabilities
 
-- Class guides, ability lists, talent builds, and class-specific macros
-- Dungeon guides and quest rewards
-- Warnings for things such as: missing important items, unspent talent points, uncompleted important HC quests, and under-leveled consumables.
-- General-purpose Hardcore macros
+- Class guides, ability lists, talent builds, and class-specific macros.
+- Dungeon guides and quest rewards.
+- Warnings for missing important items, unspent talent points, uncompleted important HC quests, under-leveled consumables, and more.
+- General-purpose Hardcore macros.
 
 ## Installation
 
@@ -44,8 +44,9 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 #### Stats
 
-- Bonuses provided per point of primary stat for each class.
-- Stat priority guidance for each class.
+- Displays any bonuses provided per point of primary stat for each class.
+- Shows relevant information for secondary stats for each class.
+- Gives recommended stat priority guidance for each class.
 
 <img width="1349" height="1108" alt="image" src="https://github.com/user-attachments/assets/635b6b3a-5aee-4a3c-bf55-6a0a8fc16419" />
 
@@ -57,10 +58,10 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 ### Detailed Dungeon Information
 
-- Shows overview of all dungeons and their appropriate level ranges.
+- Shows an overview of all dungeons, their appropriate level ranges, mob levels, and end boss level.
 - Allows filtering to only show dungeons for the current character level.
-- For each dungeon, provides a brief Warnings section for notable dangers.
-- For each dungeon, provides a full list of available quests, and their rewards.
+- For each dungeon, provides a brief warnings section for notable dangers.
+- For each dungeon, provides a full list of available quests and their rewards.
 
 <img width="1349" height="1106" alt="image" src="https://github.com/user-attachments/assets/fbed0dd3-7085-4fb9-a7c9-ab9759c350e1" />
 

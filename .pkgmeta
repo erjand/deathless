@@ -10,4 +10,4 @@ ignore:
   - docs
   - LICENSE
   - README.md
-  - scripts/
+  - scripts

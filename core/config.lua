@@ -69,6 +69,11 @@ Deathless.config = Deathless.config or {
         [MiniSections.AVAILABLE] = true,
         [MiniSections.NEXT_AVAILABLE] = true,
     },
+    -- Minimap button settings (consumed by LibDBIcon)
+    minimap = {
+        hide = false,
+        minimapPos = 195,
+    },
     -- Gear view filter settings
     gear = {
         tierFilters = {
@@ -119,6 +124,12 @@ local function LoadConfig()
     end
     -- Remove deprecated raid tier filter from older saved variables.
     Deathless.config.gear.tierFilters.Raid = nil
+
+    -- Ensure minimap button defaults exist for older saved variables
+    Deathless.config.minimap = Deathless.config.minimap or {}
+    if Deathless.config.minimap.hide == nil then
+        Deathless.config.minimap.hide = false
+    end
 
     -- Ensure mini section visibility defaults exist for older saved variables
     Deathless.config.mini = Deathless.config.mini or {}

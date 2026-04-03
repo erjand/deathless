@@ -17,6 +17,10 @@ It tries to provide recommendations and guidance to the player by being opiniona
 - Warnings for missing important items, unspent talent points, uncompleted important HC quests, under-leveled consumables, and more.
 - General-purpose Hardcore macros.
 
+## Feedback
+
+The best place to submit suggestions, comments, or feedback is at https://github.com/erjand/deathless/issues. Due to the unavoidably subjective nature of some of the content in this project, I anticipate many players will have helpful corrective insights for me.
+
 ## Installation
 
 Install via [CurseForge](https://www.curseforge.com/wow/addons) or [Wago](https://addons.wago.io/addons/deathless). You can also manually copy the addon folder to your `Interface\AddOns\` directory.

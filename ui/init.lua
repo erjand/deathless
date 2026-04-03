@@ -13,6 +13,11 @@ function Deathless.UI:Initialize()
         Deathless.UI.MiniSummary:Create()
         Deathless.UI.MiniSummary:Show()
     end
+
+    -- Register minimap button via LibDBIcon
+    if Deathless.UI.InitializeMinimap then
+        Deathless.UI:InitializeMinimap()
+    end
 end
 
 -- Initialize UI after core is ready

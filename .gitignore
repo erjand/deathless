@@ -38,5 +38,8 @@ SavedVariables/
 # Lua bytecode
 *.luac
 
+# External libraries
+libs/*/
+
 # Personal dev files
 TODO.md

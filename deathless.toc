@@ -9,6 +9,8 @@
 ## X-WoWI-ID: <your-wowi-id>
 ## X-Wago-ID: v633Yn6b
 
+libs\libs.xml
+
 deathless.lua
 
 core\init.lua
@@ -64,6 +66,7 @@ ui\views\class\stats\stats_template.lua
 ui\content.lua
 ui\frame.lua
 ui\mini.lua
+ui\minimap.lua
 ui\blizz_spellbook.lua
 ui\blizz_talents.lua
 ui\blizz_macros.lua

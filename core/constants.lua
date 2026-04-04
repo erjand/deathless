@@ -116,7 +116,7 @@ Deathless.Constants.Colors = {
             expandedAlpha = 0.4,
             hoverAlpha = 0.35,
             headerBorderAlpha = 0.3,
-            columnDividerAlpha = 0.15,
+            columnDividerAlpha = 0.3,
         },
         Icon = {
             alphaNormal = 1,
@@ -181,9 +181,9 @@ Deathless.Constants.Colors = {
                 headerXShift = 0,
                 statRowHeight = 56,
                 primary = {
-                    stat = { x = 16, w = 90 },
-                    bonus = { x = 112, w = 190 },
-                    priority = { x = 308, w = 66 },
+                    stat = { x = 16, w = 78 },
+                    bonus = { x = 112, w = 178 },
+                    priority = { x = 308, w = 54 },
                     note = { x = 380, w = 168 },
                 },
             },

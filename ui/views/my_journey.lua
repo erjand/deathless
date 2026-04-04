@@ -83,7 +83,7 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
     -- Forward declare Refresh for section click handlers
     local Refresh
     local levelHeaders, levelHeaderBorder, levelHeaderBg, levelDividers, levelHeaderDefs
-    local levelBorderTop, levelBorderLeft, levelBorderRight, levelBorderBottom
+    local levelBorders
     local totalTimeValue = nil
     local currentLevelTimeValue = nil
     
@@ -242,6 +242,8 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
         return yOffset - SUBSECTION_HEIGHT
     end
     
+    local TableComp = Deathless.UI.Components.Table
+
     local function ClearFrames()
         for type, pool in pairs(pools) do
             for _, frame in ipairs(pool) do
@@ -254,14 +256,10 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
         levelHeaderBg:Hide()
         levelHeaderBorder:Hide()
         for _, d in ipairs(levelDividers) do d:Hide() end
-        levelBorderTop:Hide()
-        levelBorderLeft:Hide()
-        levelBorderRight:Hide()
-        levelBorderBottom:Hide()
+        TableComp:HideBorders(levelBorders)
     end
     
     -- Level column headers, border, and dividers (persistent, repositioned each Refresh)
-    local TableComp = Deathless.UI.Components.Table
     levelHeaderDefs = {
         { label = "LEVEL",          x = LevelCols.level.x },
         { label = "TIME FOR LEVEL", x = LevelCols.timeForLevel.x },
@@ -286,21 +284,7 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
     )
     for _, d in ipairs(levelDividers) do d:Hide() end
 
-    local RowStyle = Deathless.Constants.Colors.UI.Row
-    local function MakeBorderLine()
-        local t = scrollChild:CreateTexture(nil, "ARTWORK")
-        t:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], RowStyle.headerBorderAlpha)
-        t:Hide()
-        return t
-    end
-    levelBorderTop = MakeBorderLine()
-    levelBorderTop:SetHeight(1)
-    levelBorderLeft = MakeBorderLine()
-    levelBorderLeft:SetWidth(1)
-    levelBorderRight = MakeBorderLine()
-    levelBorderRight:SetWidth(1)
-    levelBorderBottom = MakeBorderLine()
-    levelBorderBottom:SetHeight(1)
+    levelBorders = TableComp:CreateBorderGroup(scrollChild)
 
     Refresh = function()
         UpdateJourneyTitle()
@@ -478,26 +462,7 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
                 end
             end
 
-            -- Outer border around table body
-            levelBorderTop:ClearAllPoints()
-            levelBorderTop:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, levelTableTop)
-            levelBorderTop:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, levelTableTop)
-            levelBorderTop:Show()
-
-            levelBorderLeft:ClearAllPoints()
-            levelBorderLeft:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, levelTableTop)
-            levelBorderLeft:SetPoint("BOTTOMLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
-            levelBorderLeft:Show()
-
-            levelBorderRight:ClearAllPoints()
-            levelBorderRight:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, levelTableTop)
-            levelBorderRight:SetPoint("BOTTOMRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, yOffset)
-            levelBorderRight:Show()
-
-            levelBorderBottom:ClearAllPoints()
-            levelBorderBottom:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
-            levelBorderBottom:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, yOffset)
-            levelBorderBottom:Show()
+            TableComp:PositionBorders(levelBorders, scrollChild, levelTableTop, yOffset, SECTION_LEFT, CONTENT_RIGHT - 12)
         end
 
         yOffset = yOffset - 10

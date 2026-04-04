@@ -46,12 +46,16 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             secondary = false,
         }
 
+        local TableComp = Deathless.UI.Components.Table
+
         local sectionPool = {}
         local textPool = {}
         local rowPool = {}
+        local texPool = {}
         local sectionIndex = 0
         local textIndex = 0
         local rowIndex = 0
+        local texIndex = 0
 
         local PopulateContent
 
@@ -68,9 +72,14 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
                 row:Hide()
                 row:ClearAllPoints()
             end
+            for _, tex in ipairs(texPool) do
+                tex:Hide()
+                tex:ClearAllPoints()
+            end
             sectionIndex = 0
             textIndex = 0
             rowIndex = 0
+            texIndex = 0
         end
 
         local function GetSectionHeader()
@@ -99,7 +108,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             rowIndex = rowIndex + 1
             local row = rowPool[rowIndex]
             if not row then
-                row = CreateFrame("Frame", nil, scrollChild)
+                row = CreateFrame("Button", nil, scrollChild)
                 row.bg = row:CreateTexture(nil, "BACKGROUND")
                 row.bg:SetAllPoints()
                 row.cells = {}
@@ -114,19 +123,72 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
                 rowPool[rowIndex] = row
             end
             row:SetHeight(height)
+            TableComp:ApplyRowHover(row)
             return row
         end
 
+        local RowStyle = Deathless.Constants.Colors.UI.Row
+
+        local function GetTex()
+            texIndex = texIndex + 1
+            local tex = texPool[texIndex]
+            if not tex then
+                tex = scrollChild:CreateTexture(nil, "ARTWORK")
+                texPool[texIndex] = tex
+            end
+            return tex
+        end
+
+        local TABLE_LEFT = 24
+        local TABLE_RIGHT = -24
+
         local function PlaceHeaders(yOffset, cols, defs)
+            yOffset = yOffset - 8
+            local tableTop = yOffset
+
+            -- Header background bar
+            local bg = GetTex()
+            bg:SetDrawLayer("BACKGROUND")
+            bg:SetHeight(20)
+            bg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", TABLE_LEFT, yOffset)
+            bg:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", TABLE_RIGHT, yOffset)
+            bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], 0.3)
+            bg:Show()
+
+            -- Header labels
             for _, def in ipairs(defs) do
                 local header = GetText()
-                header:SetFont(Fonts.family, Fonts.small, "")
-                header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12 + cols[def.key].x + HEADER_X_SHIFT, yOffset - 2)
+                header:SetFont(Fonts.icons, Fonts.small, "")
+                header:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", TABLE_LEFT + cols[def.key].x + HEADER_X_SHIFT, yOffset - 5)
                 header:SetText(def.label)
                 header:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                 header:Show()
             end
-            return yOffset - 20
+
+            -- Column dividers (10px left of each column start)
+            for i = 2, #defs do
+                local currCol = cols[defs[i].key]
+                local div = GetTex()
+                div:SetDrawLayer("ARTWORK")
+                div:SetWidth(1)
+                div:SetHeight(14)
+                div:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", TABLE_LEFT + currCol.x - 10, yOffset - 3)
+                div:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], RowStyle.columnDividerAlpha)
+                div:Show()
+            end
+
+            yOffset = yOffset - 20
+
+            -- Border line under header
+            local border = GetTex()
+            border:SetDrawLayer("ARTWORK")
+            border:SetHeight(1)
+            border:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", TABLE_LEFT, yOffset)
+            border:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", TABLE_RIGHT, yOffset)
+            border:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], RowStyle.headerBorderAlpha)
+            border:Show()
+
+            return yOffset - 2, tableTop
         end
 
         local function AddSection(sectionKey, label, yOffset)
@@ -150,7 +212,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
             if #rows == 0 then
                 local empty = GetText()
                 empty:SetFont(Fonts.family, Fonts.body, "")
-                empty:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 16, yOffset - 2)
+                empty:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", TABLE_LEFT + 4, yOffset - 2)
                 empty:SetText("No entries yet.")
                 empty:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
                 empty:Show()
@@ -159,8 +221,8 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
 
             for i, data in ipairs(rows) do
                 local row = GetRow(STAT_ROW_HEIGHT)
-                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 12, yOffset)
-                row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", -12, yOffset)
+                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", TABLE_LEFT, yOffset)
+                row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", TABLE_RIGHT, yOffset)
                 UIUtils.ApplyStripedRowBackground(row, Colors, i)
                 row:Show()
 
@@ -187,7 +249,7 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
                 yOffset = yOffset - STAT_ROW_HEIGHT
             end
 
-            return yOffset - 8
+            return yOffset
         end
 
         PopulateContent = function()
@@ -209,26 +271,33 @@ function Deathless.UI.Views.StatsTemplate:Create(config)
 
             yOffset = AddSection("primary", "Primary", yOffset)
             if sectionState.primary then
-                yOffset = PlaceHeaders(yOffset, STATS_COL, {
+                local tableTop
+                yOffset, tableTop = PlaceHeaders(yOffset, STATS_COL, {
                     { key = "stat", label = "STAT" },
                     { key = "bonus", label = "BONUS PER POINT" },
                     { key = "priority", label = "PRIORITY" },
                     { key = "note", label = "NOTE" },
                 })
                 yOffset = RenderStatsRows(primaryRows, yOffset)
+                local borders = TableComp:CreateBorderGroup(scrollChild, { createTex = GetTex })
+                TableComp:PositionBorders(borders, scrollChild, tableTop, yOffset, TABLE_LEFT, TABLE_RIGHT)
+                yOffset = yOffset - 10
             else
                 yOffset = yOffset - 8
             end
 
             yOffset = AddSection("secondary", "Secondary", yOffset)
             if sectionState.secondary then
-                yOffset = PlaceHeaders(yOffset, STATS_COL, {
+                local tableTop
+                yOffset, tableTop = PlaceHeaders(yOffset, STATS_COL, {
                     { key = "stat", label = "STAT" },
                     { key = "bonus", label = "BONUS" },
                     { key = "priority", label = "PRIORITY" },
                     { key = "note", label = "NOTE" },
                 })
                 yOffset = RenderStatsRows(secondaryRows, yOffset)
+                local borders = TableComp:CreateBorderGroup(scrollChild, { createTex = GetTex })
+                TableComp:PositionBorders(borders, scrollChild, tableTop, yOffset, TABLE_LEFT, TABLE_RIGHT)
             else
                 yOffset = yOffset - 8
             end

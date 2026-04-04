@@ -152,48 +152,71 @@ function Table:ApplyRowHover(row, opts)
 end
 
 -- ---------------------------------------------------------------------------
--- Outer border (optional frame around entire table body)
+-- Table border group (reusable 4-edge border)
 -- ---------------------------------------------------------------------------
 
---- Draw a 1px rectangular border around a region.
+--- Create a group of 4 border-line textures (hidden by default).
+--- Use `PositionBorders` to show and position them each refresh.
 ---@param parent Frame
----@param opts table|nil { xLeft?, xRight?, yTop?, yBottom?, alpha? }
----@return table borders { top, bottom, left, right } Texture references
-function Table:CreateOuterBorder(parent, opts)
+---@param opts table|nil { alpha?, createTex? } createTex is an optional factory for pooled textures
+---@return table borders { top, bottom, left, right }
+function Table:CreateBorderGroup(parent, opts)
     opts = opts or {}
     local Colors = Deathless.UI.Views.Utils:GetColors()
     local RowStyle = Deathless.Constants.Colors.UI.Row
-    local alpha = opts.alpha or RowStyle.columnDividerAlpha
-    local xL = opts.xLeft or 0
-    local xR = opts.xRight or 0
-    local yT = opts.yTop or 0
-    local yB = opts.yBottom or 0
+    local alpha = opts.alpha or RowStyle.headerBorderAlpha
 
     local function MakeLine()
-        local t = parent:CreateTexture(nil, "ARTWORK")
+        local t = opts.createTex and opts.createTex() or parent:CreateTexture(nil, "ARTWORK")
+        t:SetDrawLayer("ARTWORK")
         t:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], alpha)
+        t:Hide()
         return t
     end
 
     local top = MakeLine()
     top:SetHeight(1)
-    top:SetPoint("TOPLEFT", parent, "TOPLEFT", xL, yT)
-    top:SetPoint("TOPRIGHT", parent, "TOPRIGHT", xR, yT)
-
     local bottom = MakeLine()
     bottom:SetHeight(1)
-    bottom:SetPoint("BOTTOMLEFT", parent, "BOTTOMLEFT", xL, yB)
-    bottom:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", xR, yB)
-
     local left = MakeLine()
     left:SetWidth(1)
-    left:SetPoint("TOPLEFT", parent, "TOPLEFT", xL, yT)
-    left:SetPoint("BOTTOMLEFT", parent, "BOTTOMLEFT", xL, yB)
-
     local right = MakeLine()
     right:SetWidth(1)
-    right:SetPoint("TOPRIGHT", parent, "TOPRIGHT", xR, yT)
-    right:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", xR, yB)
 
     return { top = top, bottom = bottom, left = left, right = right }
+end
+
+--- Position and show a border group around a table region.
+---@param borders table { top, bottom, left, right } from CreateBorderGroup
+---@param parent Frame The anchor parent (typically scrollChild)
+---@param yTop number Top edge Y offset
+---@param yBottom number Bottom edge Y offset
+---@param xLeft number Left edge X offset
+---@param xRight number Right edge X offset (negative)
+function Table:PositionBorders(borders, parent, yTop, yBottom, xLeft, xRight)
+    borders.top:ClearAllPoints()
+    borders.top:SetPoint("TOPLEFT", parent, "TOPLEFT", xLeft, yTop)
+    borders.top:SetPoint("TOPRIGHT", parent, "TOPRIGHT", xRight, yTop)
+    borders.top:Show()
+
+    borders.bottom:ClearAllPoints()
+    borders.bottom:SetPoint("TOPLEFT", parent, "TOPLEFT", xLeft, yBottom)
+    borders.bottom:SetPoint("TOPRIGHT", parent, "TOPRIGHT", xRight, yBottom)
+    borders.bottom:Show()
+
+    borders.left:ClearAllPoints()
+    borders.left:SetPoint("TOPLEFT", parent, "TOPLEFT", xLeft, yTop)
+    borders.left:SetPoint("BOTTOMLEFT", parent, "TOPLEFT", xLeft, yBottom)
+    borders.left:Show()
+
+    borders.right:ClearAllPoints()
+    borders.right:SetPoint("TOPRIGHT", parent, "TOPRIGHT", xRight, yTop)
+    borders.right:SetPoint("BOTTOMRIGHT", parent, "TOPRIGHT", xRight, yBottom)
+    borders.right:Show()
+end
+
+--- Hide all borders in a group.
+---@param borders table { top, bottom, left, right }
+function Table:HideBorders(borders)
+    for _, tex in pairs(borders) do tex:Hide() end
 end

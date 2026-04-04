@@ -13,7 +13,7 @@ The following statements guide the development of this addon:
 3. Deathless should give the player the tools they need to be successful rather than holding their hand step-by-step.
 4. Deathless should be prescriptive about commonly-held truths in the HC community without being overly opinionated.
 
-<img width="1345" height="1192" alt="image" src="https://github.com/user-attachments/assets/bdd697e5-cb6c-4edc-9cbb-36e08d0bf749" />
+<img width="1348" height="1194" alt="image" src="https://github.com/user-attachments/assets/540989f4-a811-4039-a500-701e14eb3c93" />
 
 ### Key Capabilities
 

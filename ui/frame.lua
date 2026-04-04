@@ -188,12 +188,6 @@ function Deathless.UI.Frame:Create()
     title:SetText("DEATHLESS")
     title:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], Colors.accent[4])
     
-    local titleVersion = titleBar:CreateFontString(nil, "OVERLAY")
-    titleVersion:SetFont(Fonts.family, Fonts.small, "")
-    titleVersion:SetPoint("LEFT", title, "RIGHT", 4, -1)
-    titleVersion:SetText("(" .. Deathless.Constants.Metadata.VERSION .. ")")
-    titleVersion:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], Colors.textDim[4])
-    
     -- Pin button (using shared utility)
     local pinBtn = PinUtils.CreatePinButton(frame, titleBar, "mainPinned", { offsetX = -28, Colors = Colors })
     

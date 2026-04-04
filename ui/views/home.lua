@@ -37,19 +37,25 @@ Deathless.UI.Views:Register("home", function(container)
     desc:SetText("Select a content area from the left to get started.")
     desc:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
 
+    local versionLabel = container:CreateFontString(nil, "OVERLAY")
+    versionLabel:SetFont(Fonts.family, Fonts.small, "")
+    versionLabel:SetPoint("BOTTOMRIGHT", container, "BOTTOMRIGHT", -12, 10)
+    versionLabel:SetText(Deathless.Constants.Metadata.VERSION)
+    versionLabel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
     -- Decorative divider between description and quote
     local dividerWidth = 120
     local dividerLeft = container:CreateTexture(nil, "ARTWORK")
     dividerLeft:SetHeight(1)
     dividerLeft:SetWidth(dividerWidth)
     dividerLeft:SetPoint("RIGHT", container, "CENTER", -22, 0)
-    dividerLeft:SetPoint("TOP", desc, "BOTTOM", 0, -20)
+    dividerLeft:SetPoint("TOP", desc, "BOTTOM", 0, -23)
     dividerLeft:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.3)
 
     local dividerIcon = container:CreateTexture(nil, "OVERLAY")
     dividerIcon:SetSize(32, 32)
     dividerIcon:SetPoint("CENTER", container, "CENTER", 0, 0)
-    dividerIcon:SetPoint("TOP", desc, "BOTTOM", 0, -5)
+    dividerIcon:SetPoint("TOP", desc, "BOTTOM", 0, -8)
     dividerIcon:SetTexture("Interface\\AddOns\\Deathless\\textures\\deathless-icon-transparent")
     -- dividerIcon:SetAlpha(0.5)
 
@@ -57,13 +63,13 @@ Deathless.UI.Views:Register("home", function(container)
     dividerRight:SetHeight(1)
     dividerRight:SetWidth(dividerWidth)
     dividerRight:SetPoint("LEFT", container, "CENTER", 22, 0)
-    dividerRight:SetPoint("TOP", desc, "BOTTOM", 0, -20)
+    dividerRight:SetPoint("TOP", desc, "BOTTOM", 0, -23)
     dividerRight:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.3)
 
     -- Quote carousel
     local quoteFrame = CreateFrame("Frame", nil, container)
     quoteFrame:SetSize(container:GetWidth() - 80, 60)
-    quoteFrame:SetPoint("TOP", desc, "BOTTOM", 0, -48)
+    quoteFrame:SetPoint("TOP", desc, "BOTTOM", 0, -51)
 
     local quoteText = quoteFrame:CreateFontString(nil, "OVERLAY")
     quoteText:SetFont(Fonts.family, Fonts.header, "")

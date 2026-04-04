@@ -3,45 +3,9 @@ local Deathless = Deathless
 Deathless.Utils = Deathless.Utils or {}
 Deathless.Utils.Warnings = {}
 local Icons = Deathless.Utils.Icons
-local ClassIds = (Deathless.Constants and Deathless.Constants.ClassIds) or {
-    HUNTER = "HUNTER",
-    MAGE = "MAGE",
-    PALADIN = "PALADIN",
-    PRIEST = "PRIEST",
-    ROGUE = "ROGUE",
-    WARLOCK = "WARLOCK",
-    WARRIOR = "WARRIOR",
-}
-local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
-    AMMO = "ammo",
-    BANDAGES = "bandages",
-    CLASS_REAGENTS = "classReagents",
-    ENGINEERING = "engineering",
-    FLASKS = "flasks",
-    HEALTH_POTIONS = "healthPotions",
-    HEARTHSTONE = "hearthstone",
-    LIP = "lip",
-    MAGE_CONJURES = "mageConjures",
-    MANA_POTIONS = "manaPotions",
-    QUESTS = "quests",
-    SWIFTNESS_POTIONS = "swiftnessPotions",
-    TALENTS = "talents",
-}
-local AmmoConstants = (Deathless.Constants and Deathless.Constants.Ammo) or {
-    LOW_THRESHOLD_MELEE = 20,
-    WARNING_MIN_LEVEL = 10,
-    WARNING_MIN_LEVEL_MELEE = 10,
-    SLOT_TOKENS = {
-        LEGACY_RANGED = "RangedSlot",
-        RANGED = "RANGEDSLOT",
-    },
-    SLOT_IDS = {
-        RANGED = 18,
-    },
-    RangedWeaponSubclassIds = {
-        THROWN = 16,
-    },
-}
+local ClassIds = Deathless.Constants.ClassIds
+local WarningCategories = Deathless.Constants.WarningCategories
+local AmmoConstants = Deathless.Constants.Ammo
 local AmmoSlotTokens = AmmoConstants.SLOT_TOKENS
 local AmmoSlotIds = AmmoConstants.SLOT_IDS
 local RangedWeaponSubclassIds = AmmoConstants.RangedWeaponSubclassIds

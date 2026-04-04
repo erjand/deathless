@@ -3,32 +3,9 @@ local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
 local UIUtils = Deathless.Utils.UI
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
-local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
-    AMMO = "ammo",
-    BANDAGES = "bandages",
-    CLASS_REAGENTS = "classReagents",
-    ENGINEERING = "engineering",
-    FLASKS = "flasks",
-    HEALTH_POTIONS = "healthPotions",
-    HEARTHSTONE = "hearthstone",
-    LIP = "lip",
-    MAGE_CONJURES = "mageConjures",
-    MANA_POTIONS = "manaPotions",
-    QUESTS = "quests",
-    SWIFTNESS_POTIONS = "swiftnessPotions",
-    TALENTS = "talents",
-}
-local AmmoConstants = (Deathless.Constants and Deathless.Constants.Ammo) or {
-    LOW_THRESHOLD_MELEE = 20,
-    WARNING_MIN_LEVEL = 10,
-    WARNING_MIN_LEVEL_MELEE = 10,
-}
-local MiniSections = (Deathless.Constants and Deathless.Constants.MiniSections) or {
-    WARNINGS = "warnings",
-    XP_PROGRESS = "xpProgress",
-    AVAILABLE = "available",
-    NEXT_AVAILABLE = "nextAvailable",
-}
+local WarningCategories = Deathless.Constants.WarningCategories
+local AmmoConstants = Deathless.Constants.Ammo
+local MiniSections = Deathless.Constants.MiniSections
 
 --- Options view content
 Deathless.UI.Views:Register("options", function(container)

@@ -1,14 +1,8 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local UIUtils = Deathless.Utils.UI
-local Factions = Deathless.Constants and Deathless.Constants.Factions or {
-    ALLIANCE = "Alliance",
-    HORDE = "Horde",
-    BOTH = "Both",
-}
-local Urls = Deathless.Constants and Deathless.Constants.Urls or {
-    WOWHEAD_CLASSIC_QUEST_BASE = "https://www.wowhead.com/classic/quest=",
-}
+local Factions = Deathless.Constants.Factions
+local Urls = Deathless.Constants.Urls
 local DungeonLayout = Deathless.Constants.Colors.UI.TableLayouts.Dungeons
 local MAIN_COL = DungeonLayout.main
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets

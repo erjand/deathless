@@ -7,12 +7,7 @@ local AbilityUtils = Deathless.Utils.Abilities
 local FormatMoney = AbilityUtils.FormatMoney
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
-local MiniSections = (Deathless.Constants and Deathless.Constants.MiniSections) or {
-    WARNINGS = "warnings",
-    XP_PROGRESS = "xpProgress",
-    AVAILABLE = "available",
-    NEXT_AVAILABLE = "nextAvailable",
-}
+local MiniSections = Deathless.Constants.MiniSections
 
 local MINI_DEFAULT_WIDTH = 300
 local MINI_DEFAULT_HEIGHT = 200

@@ -3,13 +3,7 @@ local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
 local UIUtils = Deathless.Utils.UI
 local ColorizeText = UIUtils.ColorizeText
-local SectionHeaderStyle = (Deathless.Constants and Deathless.Constants.UI and Deathless.Constants.UI.SectionHeader) or {
-    bgAlpha = 0.4,
-    hoverAlpha = 0.6,
-    height = 28,
-    iconOffsetX = 8,
-    labelOffsetX = 6,
-}
+local SectionHeaderStyle = Deathless.Constants.Colors.UI.SectionHeader
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 -- Store template for reuse

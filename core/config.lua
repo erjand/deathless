@@ -1,29 +1,7 @@
 local Deathless = Deathless
-local GearTiers = (Deathless.Constants and Deathless.Constants.GearTiers) or {
-    LEVELING = "Leveling",
-    PRE_BIS = "Pre-BiS",
-}
-local WarningCategories = (Deathless.Constants and Deathless.Constants.WarningCategories) or {
-    AMMO = "ammo",
-    BANDAGES = "bandages",
-    CLASS_REAGENTS = "classReagents",
-    ENGINEERING = "engineering",
-    FLASKS = "flasks",
-    HEALTH_POTIONS = "healthPotions",
-    HEARTHSTONE = "hearthstone",
-    LIP = "lip",
-    MAGE_CONJURES = "mageConjures",
-    MANA_POTIONS = "manaPotions",
-    QUESTS = "quests",
-    SWIFTNESS_POTIONS = "swiftnessPotions",
-    TALENTS = "talents",
-}
-local MiniSections = (Deathless.Constants and Deathless.Constants.MiniSections) or {
-    WARNINGS = "warnings",
-    XP_PROGRESS = "xpProgress",
-    AVAILABLE = "available",
-    NEXT_AVAILABLE = "nextAvailable",
-}
+local GearTiers = Deathless.Constants.GearTiers
+local WarningCategories = Deathless.Constants.WarningCategories
+local MiniSections = Deathless.Constants.MiniSections
 
 Deathless.config = Deathless.config or {
     -- UI settings

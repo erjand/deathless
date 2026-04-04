@@ -29,20 +29,8 @@ function Deathless.Utils.UI.CreateFontString(parent, font, size, outline)
 end
 
 local function GetUIStyle()
-    local ui = Deathless.Constants and Deathless.Constants.Colors and Deathless.Constants.Colors.UI
-    local row = (ui and ui.Row) or { stripeAlpha = 0.2, expandedAlpha = 0.4 }
-    local icon = (ui and ui.Icon) or {
-        alphaNormal = 1,
-        alphaMuted = 0.8,
-        alphaDimmed = 0.6,
-        alphaFaded = 0.5,
-        alphaDisabled = 0.55,
-        sizeTiny = 14,
-        sizeSmall = 16,
-        sizeMedium = 18,
-        sizeLarge = 20,
-    }
-    return row, icon
+    local ui = Deathless.Constants.Colors.UI
+    return ui.Row, ui.Icon
 end
 
 local RowBackgroundCache = setmetatable({}, { __mode = "k" })

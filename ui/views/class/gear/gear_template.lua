@@ -43,10 +43,7 @@ local ICON_SIZE = TableLayout.iconSize
 local ICON_PAD = TableLayout.iconPad
 local COL = TableLayout.columns
 
-local GEAR_TIER = (Deathless.Constants and Deathless.Constants.GearTiers) or {
-    LEVELING = "Leveling",
-    PRE_BIS = "Pre-BiS",
-}
+local GEAR_TIER = Deathless.Constants.GearTiers
 local TIER_ORDER = { GEAR_TIER.LEVELING, GEAR_TIER.PRE_BIS }
 
 --- Add a slot icon texture to a frame, repositioning the arrow and label

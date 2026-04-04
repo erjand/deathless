@@ -9,13 +9,7 @@ Deathless.UI.Views.Utils = {}
 -- Expose Fonts globally for easier access
 Deathless.UI.Fonts = Deathless.Constants.Fonts
 Deathless.UI.Views.Utils.Fonts = Deathless.UI.Fonts
-local SectionHeaderStyle = (Deathless.Constants and Deathless.Constants.UI and Deathless.Constants.UI.SectionHeader) or {
-    bgAlpha = 0.4,
-    hoverAlpha = 0.6,
-    height = 28,
-    iconOffsetX = 8,
-    labelOffsetX = 6,
-}
+local SectionHeaderStyle = Deathless.Constants.Colors.UI.SectionHeader
 
 Deathless.UI.Views.Utils.Layout = {
     rowHeight = 26,

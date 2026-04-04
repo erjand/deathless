@@ -40,6 +40,8 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 <img width="1347" height="918" alt="image" src="https://github.com/user-attachments/assets/26622d3e-bc28-4df2-8dbb-8fe9f3b15124" />
 
+<img width="1349" height="1010" alt="image" src="https://github.com/user-attachments/assets/f589db21-add4-4e69-b7d2-7fb8b880cf30" />
+
 #### Macros
 
 - Commonly used macros and macro-patterns for each class.

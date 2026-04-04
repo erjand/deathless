@@ -66,7 +66,7 @@ ui\views\class\stats\stats_template.lua
 ui\content.lua
 ui\frame.lua
 ui\mini.lua
-ui\minimap.lua
+ui\minimap_button.lua
 ui\blizz_tab.lua
 ui\blizz_spellbook.lua
 ui\blizz_talents.lua

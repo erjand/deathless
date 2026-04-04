@@ -1,9 +1,11 @@
+-- Minimap button
+
 local Deathless = Deathless
 local Strings = Deathless.Constants.Strings
 
 local ICON_TEXTURE = "Interface\\AddOns\\Deathless\\textures\\deathless-icon-transparent"
 
-function Deathless.UI:InitializeMinimap()
+function Deathless.UI:InitializeMinimapButton()
     local LDB = LibStub("LibDataBroker-1.1")
     local LDBIcon = LibStub("LibDBIcon-1.0")
 

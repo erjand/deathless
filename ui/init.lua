@@ -15,8 +15,8 @@ function Deathless.UI:Initialize()
     end
 
     -- Register minimap button via LibDBIcon
-    if Deathless.UI.InitializeMinimap then
-        Deathless.UI:InitializeMinimap()
+    if Deathless.UI.InitializeMinimapButton then
+        Deathless.UI:InitializeMinimapButton()
     end
 end
 

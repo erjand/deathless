@@ -17,10 +17,20 @@ function Levels:FormatTimeHMS(seconds)
     if not seconds or seconds < 0 then
         return "--"
     end
-    local h = math.floor(seconds / 3600)
+    local d = math.floor(seconds / 86400)
+    local h = math.floor((seconds % 86400) / 3600)
     local m = math.floor((seconds % 3600) / 60)
     local s = math.floor(seconds % 60)
-    return string.format("%02d:%02d:%02d", h, m, s)
+    local parts = {}
+    if d > 0 then
+        parts[#parts + 1] = d .. "d"
+        parts[#parts + 1] = h .. "h"
+    elseif h > 0 then
+        parts[#parts + 1] = h .. "h"
+    end
+    parts[#parts + 1] = m .. "m"
+    parts[#parts + 1] = s .. "s"
+    return table.concat(parts, ", ")
 end
 
 local function EnsureDefaults()

@@ -186,6 +186,7 @@ Deathless.Constants.Colors = {
             },
             Levels = {
                 rowHeight = 24,
+                bracketSize = 10,
                 columns = {
                     level = { x = 0, w = 60 },
                     timeForLevel = { x = 90, w = 140 },

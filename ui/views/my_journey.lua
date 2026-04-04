@@ -12,6 +12,7 @@ local LevelsModule = Deathless.Utils.Levels
 local LevelLayout = Deathless.Constants.Colors.UI.TableLayouts.Levels
 local LevelCols = LevelLayout.columns
 local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
+local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
 
     Deathless.UI.Views:Register(NavIds.MY_JOURNEY, function(container)
         local Colors = Utils:GetColors()
@@ -81,8 +82,9 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
     
     -- Forward declare Refresh for section click handlers
     local Refresh
-    local levelSortHeaders = {}
-    local totalTimeLabel = nil  -- reference for live ticker
+    local levelColumnHeaders = {}
+    local totalTimeValue = nil
+    local currentLevelTimeValue = nil
     
     local function GetFrame(frameType)
         poolIndexes[frameType] = (poolIndexes[frameType] or 0) + 1
@@ -247,40 +249,21 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
             end
             poolIndexes[type] = 0
         end
-        for _, h in pairs(levelSortHeaders) do
+        for _, h in pairs(levelColumnHeaders) do
             h:Hide()
         end
     end
     
-    -- Level sort headers (persistent, repositioned each Refresh)
-    local levelSortState = { sortKey = "level", sortAsc = true }
-
-    local function OnLevelSort()
-        for _, h in pairs(levelSortHeaders) do
-            if levelSortState.sortKey == h.sortKey then
-                h.label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
-            else
-                h.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-            end
-            h.UpdateLabel()
-        end
-        if Refresh then Refresh() end
+    -- Level column headers (static, repositioned each Refresh)
+    local levelColumnLabels = { level = "LEVEL", timeForLevel = "TIME FOR LEVEL", totalTime = "TOTAL TIME" }
+    for key, label in pairs(levelColumnLabels) do
+        local fs = scrollChild:CreateFontString(nil, "OVERLAY")
+        fs:SetFont(Fonts.icons, Fonts.small, "")
+        fs:SetText(label)
+        fs:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        fs:Hide()
+        levelColumnHeaders[key] = fs
     end
-
-    levelSortHeaders.level = Utils:CreateSortableHeader(
-        scrollChild, "LEVEL", "level", levelSortState, OnLevelSort,
-        { x = SECTION_LEFT + LevelCols.level.x, width = LevelCols.level.w, y = 0 }
-    )
-    levelSortHeaders.timeForLevel = Utils:CreateSortableHeader(
-        scrollChild, "TIME FOR LEVEL", "timeForLevel", levelSortState, OnLevelSort,
-        { x = SECTION_LEFT + LevelCols.timeForLevel.x, width = LevelCols.timeForLevel.w, y = 0 }
-    )
-    levelSortHeaders.totalTime = Utils:CreateSortableHeader(
-        scrollChild, "TOTAL TIME", "totalTime", levelSortState, OnLevelSort,
-        { x = SECTION_LEFT + LevelCols.totalTime.x, width = LevelCols.totalTime.w, y = 0 }
-    )
-    OnLevelSort()
-    for _, h in pairs(levelSortHeaders) do h:Hide() end
 
     Refresh = function()
         UpdateJourneyTitle()
@@ -330,72 +313,109 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
         yOffset = CreateSectionHeader("levels", "Levels", nil, yOffset, Colors.accent)
 
         if sectionState.levels then
-            totalTimeLabel = GetFrame("text")
-            totalTimeLabel:SetFont(Fonts.code, Fonts.subtitle, "")
-            totalTimeLabel:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset - 2)
-            totalTimeLabel:SetText("Total Time: " .. LevelsModule:FormatTimeHMS(totalPlayed))
-            totalTimeLabel:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            local summaryValueX = SECTION_LEFT + LevelCols.timeForLevel.x
+
+            local totalTimeLbl = GetFrame("text")
+            totalTimeLbl:SetFont(Fonts.family, Fonts.subtitle, "")
+            totalTimeLbl:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset - 2)
+            totalTimeLbl:SetText("Total Time:")
+            totalTimeLbl:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+
+            totalTimeValue = GetFrame("text")
+            totalTimeValue:SetFont(Fonts.code, Fonts.subtitle, "")
+            totalTimeValue:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", summaryValueX, yOffset - 2)
+            totalTimeValue:SetText(LevelsModule:FormatTimeHMS(totalPlayed))
+            totalTimeValue:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             yOffset = yOffset - 22
 
-            for key, h in pairs(levelSortHeaders) do
+            local currentLevelLbl = GetFrame("text")
+            currentLevelLbl:SetFont(Fonts.family, Fonts.subtitle, "")
+            currentLevelLbl:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset - 2)
+            currentLevelLbl:SetText("Current Level:")
+            currentLevelLbl:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+
+            currentLevelTimeValue = GetFrame("text")
+            currentLevelTimeValue:SetFont(Fonts.code, Fonts.subtitle, "")
+            currentLevelTimeValue:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", summaryValueX, yOffset - 2)
+            local currentLevelEntry = levelsData[playerLevel]
+            local currentLevelTime = (totalPlayed and currentLevelEntry) and (totalPlayed - currentLevelEntry.played) or nil
+            currentLevelTimeValue:SetText(LevelsModule:FormatTimeHMS(currentLevelTime))
+            currentLevelTimeValue:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            yOffset = yOffset - 22
+
+            for key, h in pairs(levelColumnHeaders) do
                 h:ClearAllPoints()
                 h:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT + LevelCols[key].x, yOffset)
                 h:Show()
             end
             yOffset = yOffset - 20
 
-            local levelRows = {}
+            local allLevelRows = {}
             for lvl = 1, playerLevel do
                 local entry = levelsData[lvl]
                 local prevEntry = lvl > 1 and levelsData[lvl - 1] or nil
 
-                local rowTotalTime = entry and entry.played or nil
+                local rowTotalTime = (lvl > 1 and entry) and entry.played or nil
                 local timeForLevel = nil
                 if lvl == 1 then
-                    timeForLevel = 0
+                    timeForLevel = nil
                 elseif entry and prevEntry then
                     timeForLevel = entry.played - prevEntry.played
                 end
 
-                table.insert(levelRows, {
+                table.insert(allLevelRows, {
                     level = lvl,
                     timeForLevel = timeForLevel,
                     totalTime = rowTotalTime,
                 })
             end
 
-            table.sort(levelRows, function(a, b)
-                local sk = levelSortState.sortKey
-                local asc = levelSortState.sortAsc
-                local valA, valB
-                if sk == "level" then
-                    valA, valB = a.level, b.level
-                elseif sk == "timeForLevel" then
-                    valA, valB = a.timeForLevel, b.timeForLevel
-                else
-                    valA, valB = a.totalTime, b.totalTime
+            -- Render level rows grouped into collapsible brackets
+            local currentBracketIdx = math.floor((playerLevel - 1) / LEVEL_BRACKET_SIZE)
+            for bracketIdx = currentBracketIdx, 0, -1 do
+                local bracketStart = bracketIdx * LEVEL_BRACKET_SIZE + 1
+                local bracketEnd = math.min(bracketStart + LEVEL_BRACKET_SIZE - 1, 60)
+                local bracketKey = "levels_" .. bracketStart .. "_" .. bracketEnd
+
+                if sectionState[bracketKey] == nil then
+                    sectionState[bracketKey] = false
                 end
-                if valA == nil and valB == nil then return false end
-                if valA == nil then return false end
-                if valB == nil then return true end
-                if asc then return valA < valB else return valA > valB end
-            end)
 
-            for _, rowData in ipairs(levelRows) do
-                local row = GetFrame("levelRow")
-                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
-                row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, 0)
+                local bracketRows = {}
+                for _, r in ipairs(allLevelRows) do
+                    if r.level >= bracketStart and r.level <= bracketEnd then
+                        table.insert(bracketRows, r)
+                    end
+                end
 
-                row.level:SetText(tostring(rowData.level))
-                row.level:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                yOffset = CreateSubSectionHeader(
+                    bracketKey,
+                    "Levels " .. bracketStart .. " - " .. bracketEnd,
+                    yOffset, Colors.text
+                )
 
-                row.timeForLevel:SetText(LevelsModule:FormatTimeHMS(rowData.timeForLevel))
-                row.timeForLevel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                if sectionState[bracketKey] then
+                    local rowNum = 0
+                    for i = #bracketRows, 1, -1 do
+                        local rowData = bracketRows[i]
+                        rowNum = rowNum + 1
+                        local row = GetFrame("levelRow")
+                        row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
+                        row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, 0)
+                        UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
 
-                row.totalTime:SetText(LevelsModule:FormatTimeHMS(rowData.totalTime))
-                row.totalTime:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                        row.level:SetText(tostring(rowData.level))
+                        row.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
 
-                yOffset = yOffset - LEVEL_ROW_HEIGHT
+                        row.timeForLevel:SetText(LevelsModule:FormatTimeHMS(rowData.timeForLevel))
+                        row.timeForLevel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
+                        row.totalTime:SetText(LevelsModule:FormatTimeHMS(rowData.totalTime))
+                        row.totalTime:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
+                        yOffset = yOffset - LEVEL_ROW_HEIGHT
+                    end
+                end
             end
         end
 
@@ -652,9 +672,15 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
         tickerElapsed = tickerElapsed + dt
         if tickerElapsed < 1 then return end
         tickerElapsed = 0
-        if totalTimeLabel and totalTimeLabel:IsShown() then
-            local played = LevelsModule:GetTotalPlayed()
-            totalTimeLabel:SetText("Total Time: " .. LevelsModule:FormatTimeHMS(played))
+        local played = LevelsModule:GetTotalPlayed()
+        if totalTimeValue and totalTimeValue:IsShown() then
+            totalTimeValue:SetText(LevelsModule:FormatTimeHMS(played))
+        end
+        if currentLevelTimeValue and currentLevelTimeValue:IsShown() then
+            local lvl = UnitLevel("player") or 1
+            local entry = LevelsModule:GetData()[lvl]
+            local currentTime = (played and entry) and (played - entry.played) or nil
+            currentLevelTimeValue:SetText(LevelsModule:FormatTimeHMS(currentTime))
         end
     end)
 

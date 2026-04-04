@@ -519,7 +519,7 @@ Deathless.Data.Dungeons = {
         bossLevel = 34,
         levelMin = 24,
         levelMax = 34,
-        warnings = {  -- TODO: Verify these (I never do Gnomer)
+        warnings = {
             "After killing [[Grubbis]], the cave over his corpse will collapse, killing players underneath it.",
             "Low-level players or pets can body pull huge numbers of mobs in the two-tiered tunnel leading up to [[Mekgineer Thermaplugg]].",
         },

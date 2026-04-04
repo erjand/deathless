@@ -97,7 +97,7 @@ Deathless.Data.Abilities["Hunter"] = {
 
     -- TODO: Verify the training cost
     -- Dual Wield
-    { name = "Dual Wield", level = 20, rank = 1, base_cost = 2200, icon = "Ability_DualWield", source = "trainer", train = "yes", spellId = 674 },
+    { name = "Dual Wield", level = 20, rank = 1, base_cost = 2200, icon = "Ability_DualWield", source = "trainer", train = "wait", spellId = 674 },
 
     -- Eagle Eye
     { name = "Eagle Eye", level = 14, rank = 1, base_cost = 1200, icon = "Ability_Hunter_EagleEye", source = "trainer", train = "maybe", spellId = 6197 },

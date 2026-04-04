@@ -55,7 +55,7 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 <img width="1348" height="1107" alt="image" src="https://github.com/user-attachments/assets/93df1c6b-a758-4b8b-ba5b-2bcd54fe7035" />
 
-<img width="1346" height="1192" alt="image" src="https://github.com/user-attachments/assets/daf8b80c-a87c-413b-bac7-30a17ff1d69d" />
+<img width="1350" height="1193" alt="image" src="https://github.com/user-attachments/assets/8cb4022c-52b5-42a1-866d-02a96327eb81" />
 
 #### Stats
 

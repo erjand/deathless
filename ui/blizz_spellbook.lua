@@ -1,4 +1,6 @@
 local Deathless = Deathless
+local NavIds = Deathless.Constants.NavigationIds
+local Strings = Deathless.Constants.Strings
 
 Deathless.UI.Spellbook = Deathless.UI.Spellbook or {}
 
@@ -56,7 +58,7 @@ function Deathless.UI.Spellbook:UpdateTab()
     tabButton:SetNormalTexture(Deathless.Utils.Icons.ADDON)
     
     -- Set tooltip
-    tabButton.tooltip = "Deathless - Ability Guide"
+    tabButton.tooltip = Strings.BLIZZ_TAB_TOOLTIP_ABILITY
     
     -- Position after the last real tab
     local lastRealTab = nil
@@ -96,9 +98,9 @@ function Deathless.UI.Spellbook:ToggleClassAbilities()
     end
     
     if Deathless.UI.Navigation and Deathless.UI.Navigation.OpenPlayerClassTab then
-        Deathless.UI.Navigation:OpenPlayerClassTab("abilities", { notifyMissingTab = true })
+        Deathless.UI.Navigation:OpenPlayerClassTab(NavIds.ABILITIES, { notifyMissingTab = true })
     else
-        Deathless.Utils.Chat.Print("UI not initialized.")
+        Deathless.Utils.Chat.Print(Strings.UI_NOT_INITIALIZED)
     end
 end
 

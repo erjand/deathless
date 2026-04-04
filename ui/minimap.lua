@@ -1,4 +1,5 @@
 local Deathless = Deathless
+local Strings = Deathless.Constants.Strings
 
 local ICON_TEXTURE = "Interface\\AddOns\\Deathless\\textures\\deathless-icon-transparent"
 
@@ -25,10 +26,10 @@ function Deathless.UI:InitializeMinimap()
             end
         end,
         OnTooltipShow = function(tooltip)
-            tooltip:AddLine("Deathless", 0.4, 0.8, 0.4)
+            tooltip:AddLine(Deathless.Constants.Metadata.ADDON_NAME, 0.4, 0.8, 0.4)
             tooltip:AddLine(" ")
-            tooltip:AddLine("|cffffffffLeft-click|r to toggle main window")
-            tooltip:AddLine("|cffffffffRight-click|r to toggle mini summary")
+            tooltip:AddLine(Strings.MINIMAP_TOOLTIP_LINE_LEFT)
+            tooltip:AddLine(Strings.MINIMAP_TOOLTIP_LINE_RIGHT)
         end,
     })
 

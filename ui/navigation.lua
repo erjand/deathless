@@ -5,6 +5,8 @@ Deathless.UI.Navigation = Deathless.UI.Navigation or {}
 local Colors = nil -- Set after frame.lua loads
 local CreatePixelBorder = nil
 local Icons = Deathless.Utils.Icons
+local NavIds = Deathless.Constants.NavigationIds
+local Strings = Deathless.Constants.Strings
 
 -- Classes are leaf items; abilities/talents/gear are shown via tabs inside each class view
 local CLASS_ITEMS = {
@@ -30,7 +32,7 @@ local NAV_ITEMS_BOTTOM = {
     { id = "dungeons", label = "Dungeons" },
     { divider = true },
     { id = "commands", label = "Commands" },
-    { id = "macros", label = "Macros" },
+    { id = NavIds.MACROS, label = "Macros" },
     { id = "options", label = "Options" },
 }
 
@@ -481,7 +483,7 @@ end
 
 --- Open a class view and optionally select a tab.
 ---@param classFile string Class token from UnitClass (e.g. "WARRIOR")
----@param tabSuffix string|nil Optional class tab suffix (e.g. "abilities")
+---@param tabSuffix string|nil Optional class tab suffix (`Deathless.Constants.NavigationIds.*`)
 ---@param opts table|nil Optional behavior flags
 ---@return boolean success True when class view opened and requested tab (if any) selected
 function Deathless.UI.Navigation:OpenClassTab(classFile, tabSuffix, opts)
@@ -499,12 +501,12 @@ function Deathless.UI.Navigation:OpenClassTab(classFile, tabSuffix, opts)
     if Deathless.UI and Deathless.UI.Frame then
         Deathless.UI.Frame:Show()
     else
-        Deathless.Utils.Chat.Print("UI not initialized.")
+        Deathless.Utils.Chat.Print(Strings.UI_NOT_INITIALIZED)
         return false
     end
 
     if not self.frame then
-        Deathless.Utils.Chat.Print("Navigation not initialized.")
+        Deathless.Utils.Chat.Print(Strings.NAVIGATION_NOT_INITIALIZED)
         return false
     end
 
@@ -534,7 +536,7 @@ function Deathless.UI.Navigation:OpenClassTab(classFile, tabSuffix, opts)
 end
 
 --- Open the player's class view and optionally select a tab.
----@param tabSuffix string|nil Optional class tab suffix (e.g. "abilities")
+---@param tabSuffix string|nil Optional class tab suffix (`Deathless.Constants.NavigationIds.*`)
 ---@param opts table|nil Optional behavior flags
 ---@return boolean success
 function Deathless.UI.Navigation:OpenPlayerClassTab(tabSuffix, opts)

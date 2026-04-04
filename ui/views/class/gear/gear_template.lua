@@ -675,7 +675,7 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         headers.lvl    = Utils:CreateSortableHeader(container, "LVL",    "lvl",    sortState, OnSort, gearHeaderLayout(hLvl))
         headers.source = Utils:CreateSortableHeader(container, "SOURCE", "source", sortState, OnSort, gearHeaderLayout(hSource))
         headers.prebis = Utils:CreateSortableHeader(container, "PRE-BIS (?)", "prebis", sortState, OnSort, gearHeaderLayout(hPreBis), {
-            title = "Pre-BiS",
+            title = GEAR_TIER.PRE_BIS,
             "Best-in-Slot gear at level 60 prior to raid content",
         })
 

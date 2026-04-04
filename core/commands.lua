@@ -1,16 +1,18 @@
 local Deathless = Deathless
+local NavIds = Deathless.Constants.NavigationIds
+local Strings = Deathless.Constants.Strings
 
 -- Slash command handler
 local function SlashCommandHandler(msg)
     local cmd = msg and strtrim(msg:lower()) or ""
 
     --- Open the player's class view and select a class tab.
-    ---@param suffix string Tab suffix (e.g., "abilities", "talents", "stats")
+    ---@param suffix string Tab suffix (`NavigationIds.ABILITIES`, `.TALENTS`, `.STATS`, …)
     local function OpenCurrentClassTab(suffix)
         if Deathless.UI and Deathless.UI.Navigation and Deathless.UI.Navigation.OpenPlayerClassTab then
             Deathless.UI.Navigation:OpenPlayerClassTab(suffix, { notifyMissingTab = true })
         else
-            Deathless.Utils.Chat.Print("UI not initialized.")
+            Deathless.Utils.Chat.Print(Strings.UI_NOT_INITIALIZED)
         end
     end
 
@@ -32,7 +34,7 @@ local function SlashCommandHandler(msg)
         if Deathless.UI and Deathless.UI.MiniSummary then
             Deathless.UI.MiniSummary:Toggle()
         else
-            Deathless.Utils.Chat.Print("Mini summary not initialized.")
+            Deathless.Utils.Chat.Print(Strings.MINI_SUMMARY_NOT_INITIALIZED)
         end
         return
     end
@@ -51,7 +53,7 @@ local function SlashCommandHandler(msg)
                 Deathless.UI.Navigation:Select("options")
             end
         else
-            Deathless.Utils.Chat.Print("UI not initialized.")
+            Deathless.Utils.Chat.Print(Strings.UI_NOT_INITIALIZED)
         end
         return
     end
@@ -78,26 +80,26 @@ local function SlashCommandHandler(msg)
                 Deathless.UI.Navigation:Select(navId)
             end
         else
-            Deathless.Utils.Chat.Print("UI not initialized.")
+            Deathless.Utils.Chat.Print(Strings.UI_NOT_INITIALIZED)
         end
         return
     end
 
     -- /deathless abilities - open main UI to the player's class abilities tab
     if cmd == "abilities" or cmd == "ability" or cmd == "a" then
-        OpenCurrentClassTab("abilities")
+        OpenCurrentClassTab(NavIds.ABILITIES)
         return
     end
 
     -- /deathless stats - open main UI to the player's class stats tab
     if cmd == "stats" or cmd == "stat" or cmd == "s" then
-        OpenCurrentClassTab("stats")
+        OpenCurrentClassTab(NavIds.STATS)
         return
     end
 
     -- /deathless talents - open main UI to the player's class talents tab
     if cmd == "talents" or cmd == "talent" or cmd == "t" then
-        OpenCurrentClassTab("talents")
+        OpenCurrentClassTab(NavIds.TALENTS)
         return
     end
 
@@ -109,7 +111,7 @@ local function SlashCommandHandler(msg)
                 Deathless.UI.Navigation:Select("dungeons")
             end
         else
-            Deathless.Utils.Chat.Print("UI not initialized.")
+            Deathless.Utils.Chat.Print(Strings.UI_NOT_INITIALIZED)
         end
         return
     end
@@ -122,7 +124,7 @@ local function SlashCommandHandler(msg)
             Deathless.UI.Frame:Show()
         end
     else
-        Deathless.Utils.Chat.Print("UI not initialized.")
+        Deathless.Utils.Chat.Print(Strings.UI_NOT_INITIALIZED)
     end
 end
 

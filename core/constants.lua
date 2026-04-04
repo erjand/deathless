@@ -260,6 +260,26 @@ Deathless.Constants.GearTiers = {
     PRE_BIS = "Pre-BiS",
 }
 
+--- Class tab suffixes (tab id = `classKey .. "_" .. suffix`) and shared top-level nav ids.
+Deathless.Constants.NavigationIds = {
+    ABILITIES = "abilities",
+    MACROS = "macros",
+    STATS = "stats",
+    TALENTS = "talents",
+}
+
+--- User-facing strings reused across UI (errors, Blizzard tab tooltips, minimap broker).
+Deathless.Constants.Strings = {
+    BLIZZ_TAB_TOOLTIP_ABILITY = "Deathless - Ability Guide",
+    BLIZZ_TAB_TOOLTIP_MACRO = "Deathless - Macro Guide",
+    BLIZZ_TAB_TOOLTIP_TALENT = "Deathless - Talent Guide",
+    MINIMAP_TOOLTIP_LINE_LEFT = "|cffffffffLeft-click|r to toggle main window",
+    MINIMAP_TOOLTIP_LINE_RIGHT = "|cffffffffRight-click|r to toggle mini summary",
+    MINI_SUMMARY_NOT_INITIALIZED = "Mini summary not initialized.",
+    NAVIGATION_NOT_INITIALIZED = "Navigation not initialized.",
+    UI_NOT_INITIALIZED = "UI not initialized.",
+}
+
 Deathless.Constants.WarningCategories = {
     AMMO = "ammo",
     BANDAGES = "bandages",

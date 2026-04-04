@@ -2,6 +2,7 @@ local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 
 local CLASS_COLORS = Deathless.Constants.Colors.Class
+local NavIds = Deathless.Constants.NavigationIds
 
 --- Classes overview view (multi-class parent)
 Deathless.UI.Views:Register("classes", function(container)
@@ -27,10 +28,10 @@ end)
 ---@return table Array of { id, label } tab definitions
 local function GetClassTabs(className, displayName)
     local tabs = {
-        { id = className .. "_abilities", label = "Abilities" },
-        { id = className .. "_macros", label = "Macros" },
-        { id = className .. "_stats", label = "Stats" },
-        { id = className .. "_talents", label = "Talents" },
+        { id = className .. "_" .. NavIds.ABILITIES, label = "Abilities" },
+        { id = className .. "_" .. NavIds.MACROS, label = "Macros" },
+        { id = className .. "_" .. NavIds.STATS, label = "Stats" },
+        { id = className .. "_" .. NavIds.TALENTS, label = "Talents" },
     }
     return tabs
 end

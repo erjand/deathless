@@ -1,4 +1,5 @@
 local Deathless = Deathless
+local Strings = Deathless.Constants.Strings
 
 --- Factory for Blizzard frame tab integrations (talents, macros, etc.).
 --- Creates a module at Deathless.UI[config.key] with Initialize, SetupTab,
@@ -81,7 +82,7 @@ function Deathless.UI.CreateBlizzardTabIntegration(config)
         if Deathless.UI.Navigation and Deathless.UI.Navigation.OpenPlayerClassTab then
             Deathless.UI.Navigation:OpenPlayerClassTab(config.tabId)
         else
-            Deathless.Utils.Chat.Print("UI not initialized.")
+            Deathless.Utils.Chat.Print(Strings.UI_NOT_INITIALIZED)
         end
     end
 

@@ -4,6 +4,7 @@ Deathless.Constants = Deathless.Constants or {}
 
 Deathless.Constants.Metadata = {
     ADDON_NAME = "Deathless",
+    MINI_WINDOW_TITLE = "DEATHLESS MINI",
     VERSION = "@project-version@",
 }
 

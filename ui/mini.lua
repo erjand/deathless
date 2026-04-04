@@ -93,7 +93,7 @@ function Deathless.UI.MiniSummary:Create()
     local title = titleBar:CreateFontString(nil, "OVERLAY")
     title:SetFont(Fonts.family, Fonts.body, "")
     title:SetPoint("LEFT", titleIcon, "RIGHT", 3, 0)
-    title:SetText("DEATHLESS")
+    title:SetText(Deathless.Constants.Metadata.MINI_WINDOW_TITLE)
     title:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
     
     -- Pin button (using shared utility)

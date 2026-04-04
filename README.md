@@ -43,10 +43,13 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 - Shows Abilities for each class: Learned, Available, Next Available, and Unavailable.
 - Includes level available, cost to train, source, and a recommendation as to train, wait to train, or not train each ability.
 - Abilities are searchable, and filters can be toggled.
+- Default Blizz Spellbook and Talent frames link to corresponding Deathless pages for easy reference.
 
 <img width="1347" height="918" alt="image" src="https://github.com/user-attachments/assets/26622d3e-bc28-4df2-8dbb-8fe9f3b15124" />
 
 <img width="1349" height="1010" alt="image" src="https://github.com/user-attachments/assets/f589db21-add4-4e69-b7d2-7fb8b880cf30" />
+
+<img width="1561" height="735" alt="image" src="https://github.com/user-attachments/assets/2b2ca521-8778-4a4a-b3b4-cab76b574225" />
 
 #### Macros
 

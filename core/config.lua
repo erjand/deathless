@@ -107,6 +107,12 @@ local function LoadConfig()
     -- Remove deprecated raid tier filter from older saved variables.
     Deathless.config.gear.tierFilters.Raid = nil
 
+    -- Ensure levels defaults exist for older saved variables
+    Deathless.config.levels = Deathless.config.levels or {}
+    if not Deathless.config.levels[1] then
+        Deathless.config.levels[1] = { played = 0 }
+    end
+
     -- Ensure screenshot defaults exist for older saved variables
     Deathless.config.screenshots = Deathless.config.screenshots or {}
     if Deathless.config.screenshots.levelUp == nil then

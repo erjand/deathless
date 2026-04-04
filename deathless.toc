@@ -16,6 +16,7 @@ deathless.lua
 core\init.lua
 core\constants.lua
 core\config.lua
+core\levels.lua
 core\events.lua
 core\screenshots.lua
 core\commands.lua

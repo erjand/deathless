@@ -8,6 +8,10 @@ local NavIds = Deathless.Constants.NavigationIds
 local AbilityUtils = Deathless.Utils.Abilities
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
+local LevelsModule = Deathless.Utils.Levels
+local LevelLayout = Deathless.Constants.Colors.UI.TableLayouts.Levels
+local LevelCols = LevelLayout.columns
+local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
 
     Deathless.UI.Views:Register(NavIds.MY_JOURNEY, function(container)
         local Colors = Utils:GetColors()
@@ -18,6 +22,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     local Colorize = UIUtils.ColorizeText
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
+        local SECTION_LEFT = CONTENT_LEFT + 12
     
     local title, subtitle, headerSeparator = Utils:CreateHeader(container, "", "", { 1, 1, 1 })
     subtitle:Hide()
@@ -38,26 +43,30 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.simple.scrollTop, ViewOffsets.defaultScrollBottom)
     
     -- Section collapse state
-    local sectionState = { warnings = true, available = true, nextAvailable = true }
+    local sectionState = { levels = true, warnings = true, available = true, nextAvailable = true }
     
     -- Element pooling
     local pools = {
+        levelRow = {},
         section = {},
         subsection = {},
         subheader = {},
         row = {},
-        text = {}
+        text = {},
     }
     local poolIndexes = {
+        levelRow = 0,
         section = 0,
         subsection = 0,
         subheader = 0,
         row = 0,
-        text = 0
+        text = 0,
     }
     
     -- Forward declare Refresh for section click handlers
     local Refresh
+    local levelSortHeaders = {}
+    local totalTimeLabel = nil  -- reference for live ticker
     
     local function GetFrame(frameType)
         poolIndexes[frameType] = (poolIndexes[frameType] or 0) + 1
@@ -100,6 +109,21 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
                 frame:SetFont(Fonts.family, Fonts.subtitle, "")
                 frame:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            elseif frameType == "levelRow" then
+                frame = CreateFrame("Frame", nil, scrollChild)
+                frame:SetHeight(LEVEL_ROW_HEIGHT)
+
+                frame.level = frame:CreateFontString(nil, "OVERLAY")
+                frame.level:SetFont(Fonts.family, Fonts.body, "")
+                frame.level:SetPoint("LEFT", frame, "LEFT", LevelCols.level.x, 0)
+
+                frame.timeForLevel = frame:CreateFontString(nil, "OVERLAY")
+                frame.timeForLevel:SetFont(Fonts.code, Fonts.body, "")
+                frame.timeForLevel:SetPoint("LEFT", frame, "LEFT", LevelCols.timeForLevel.x, 0)
+
+                frame.totalTime = frame:CreateFontString(nil, "OVERLAY")
+                frame.totalTime:SetFont(Fonts.code, Fonts.body, "")
+                frame.totalTime:SetPoint("LEFT", frame, "LEFT", LevelCols.totalTime.x, 0)
             end
             pool[index] = frame
         end
@@ -171,8 +195,41 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
             end
             poolIndexes[type] = 0
         end
+        for _, h in pairs(levelSortHeaders) do
+            h:Hide()
+        end
     end
     
+    -- Level sort headers (persistent, repositioned each Refresh)
+    local levelSortState = { sortKey = "level", sortAsc = true }
+
+    local function OnLevelSort()
+        for _, h in pairs(levelSortHeaders) do
+            if levelSortState.sortKey == h.sortKey then
+                h.label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+            else
+                h.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            end
+            h.UpdateLabel()
+        end
+        if Refresh then Refresh() end
+    end
+
+    levelSortHeaders.level = Utils:CreateSortableHeader(
+        scrollChild, "LEVEL", "level", levelSortState, OnLevelSort,
+        { x = SECTION_LEFT + LevelCols.level.x, width = LevelCols.level.w, y = 0 }
+    )
+    levelSortHeaders.timeForLevel = Utils:CreateSortableHeader(
+        scrollChild, "TIME FOR LEVEL", "timeForLevel", levelSortState, OnLevelSort,
+        { x = SECTION_LEFT + LevelCols.timeForLevel.x, width = LevelCols.timeForLevel.w, y = 0 }
+    )
+    levelSortHeaders.totalTime = Utils:CreateSortableHeader(
+        scrollChild, "TOTAL TIME", "totalTime", levelSortState, OnLevelSort,
+        { x = SECTION_LEFT + LevelCols.totalTime.x, width = LevelCols.totalTime.w, y = 0 }
+    )
+    OnLevelSort()
+    for _, h in pairs(levelSortHeaders) do h:Hide() end
+
     Refresh = function()
         UpdateJourneyTitle()
         ClearFrames()
@@ -213,7 +270,85 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         AbilityUtils.Sort(nextAvailable)
         
         local yOffset = -10
-        
+
+        -- Levels Section
+        local levelsData = LevelsModule:GetData()
+        local totalPlayed = LevelsModule:GetTotalPlayed()
+
+        yOffset = CreateSectionHeader("levels", "Levels", nil, yOffset, Colors.accent)
+
+        if sectionState.levels then
+            totalTimeLabel = GetFrame("text")
+            totalTimeLabel:SetFont(Fonts.code, Fonts.subtitle, "")
+            totalTimeLabel:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset - 2)
+            totalTimeLabel:SetText("Total Time: " .. LevelsModule:FormatTimeHMS(totalPlayed))
+            totalTimeLabel:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            yOffset = yOffset - 22
+
+            for key, h in pairs(levelSortHeaders) do
+                h:ClearAllPoints()
+                h:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT + LevelCols[key].x, yOffset)
+                h:Show()
+            end
+            yOffset = yOffset - 20
+
+            local levelRows = {}
+            for lvl = 1, playerLevel do
+                local entry = levelsData[lvl]
+                local prevEntry = lvl > 1 and levelsData[lvl - 1] or nil
+
+                local rowTotalTime = entry and entry.played or nil
+                local timeForLevel = nil
+                if lvl == 1 then
+                    timeForLevel = 0
+                elseif entry and prevEntry then
+                    timeForLevel = entry.played - prevEntry.played
+                end
+
+                table.insert(levelRows, {
+                    level = lvl,
+                    timeForLevel = timeForLevel,
+                    totalTime = rowTotalTime,
+                })
+            end
+
+            table.sort(levelRows, function(a, b)
+                local sk = levelSortState.sortKey
+                local asc = levelSortState.sortAsc
+                local valA, valB
+                if sk == "level" then
+                    valA, valB = a.level, b.level
+                elseif sk == "timeForLevel" then
+                    valA, valB = a.timeForLevel, b.timeForLevel
+                else
+                    valA, valB = a.totalTime, b.totalTime
+                end
+                if valA == nil and valB == nil then return false end
+                if valA == nil then return false end
+                if valB == nil then return true end
+                if asc then return valA < valB else return valA > valB end
+            end)
+
+            for _, rowData in ipairs(levelRows) do
+                local row = GetFrame("levelRow")
+                row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
+                row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, 0)
+
+                row.level:SetText(tostring(rowData.level))
+                row.level:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+
+                row.timeForLevel:SetText(LevelsModule:FormatTimeHMS(rowData.timeForLevel))
+                row.timeForLevel:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
+                row.totalTime:SetText(LevelsModule:FormatTimeHMS(rowData.totalTime))
+                row.totalTime:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
+                yOffset = yOffset - LEVEL_ROW_HEIGHT
+            end
+        end
+
+        yOffset = yOffset - 10
+
         -- Warnings Section (from shared module)
         local activeWarnings = Deathless.Utils.Warnings:GetActive()
         
@@ -401,16 +536,36 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
         end)
     end
     
+    -- Live ticker for Total Time label (updates every second without full Refresh)
+    local tickerElapsed = 0
+    container:SetScript("OnUpdate", function(_, dt)
+        tickerElapsed = tickerElapsed + dt
+        if tickerElapsed < 1 then return end
+        tickerElapsed = 0
+        if totalTimeLabel and totalTimeLabel:IsShown() then
+            local played = LevelsModule:GetTotalPlayed()
+            totalTimeLabel:SetText("Total Time: " .. LevelsModule:FormatTimeHMS(played))
+        end
+    end)
+
     -- Refresh when shown
     container:SetScript("OnShow", function()
         if scrollFrame.ResetScroll then
             scrollFrame.ResetScroll()
         end
+        LevelsModule:RequestPlayed()
         Refresh()
     end)
     
     -- Register for automatic refresh when warnings/state changes
     Deathless.Utils.Warnings:RegisterRefresh(NavIds.MY_JOURNEY, function()
+        if container:IsVisible() then
+            Refresh()
+        end
+    end)
+
+    -- Register for level data refresh (TIME_PLAYED_MSG response)
+    LevelsModule:RegisterRefresh(NavIds.MY_JOURNEY, function()
         if container:IsVisible() then
             Refresh()
         end

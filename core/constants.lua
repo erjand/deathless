@@ -174,6 +174,14 @@ Deathless.Constants.Colors = {
                     note = { x = 380, w = 168 },
                 },
             },
+            Levels = {
+                rowHeight = 24,
+                columns = {
+                    level = { x = 0, w = 60 },
+                    timeForLevel = { x = 90, w = 140 },
+                    totalTime = { x = 250, w = 120 },
+                },
+            },
             Dungeons = {
                 rowHeight = 26,
                 main = {

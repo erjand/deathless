@@ -1,6 +1,7 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local UIUtils = Deathless.Utils.UI
+local ColorizeText = UIUtils.ColorizeText
 
 Deathless.UI.Views.StatsTemplate = {}
 
@@ -9,13 +10,6 @@ local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 local STATS_COL = StatsLayout.primary
 local HEADER_X_SHIFT = StatsLayout.headerXShift
 local STAT_ROW_HEIGHT = StatsLayout.statRowHeight
-
-local function ColorizeText(color, text)
-    local r = math.floor((color[1] or 1) * 255 + 0.5)
-    local g = math.floor((color[2] or 1) * 255 + 0.5)
-    local b = math.floor((color[3] or 1) * 255 + 0.5)
-    return string.format("|cff%02x%02x%02x%s|r", r, g, b, text)
-end
 
 local function SortByStat(rows)
     local sorted = {}

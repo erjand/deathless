@@ -1,15 +1,9 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
+local ColorizeText = Deathless.Utils.UI.ColorizeText
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 Deathless.UI.Views.MacrosTemplate = {}
-
-local function ColorizeText(color, text)
-    local r = math.floor((color[1] or 1) * 255 + 0.5)
-    local g = math.floor((color[2] or 1) * 255 + 0.5)
-    local b = math.floor((color[3] or 1) * 255 + 0.5)
-    return string.format("|cff%02x%02x%02x%s|r", r, g, b, text)
-end
 
 local function SortMacrosCopy(macros)
     local sorted = {}

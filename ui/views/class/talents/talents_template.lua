@@ -2,6 +2,7 @@ local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
 local UIUtils = Deathless.Utils.UI
+local ColorizeText = UIUtils.ColorizeText
 local SectionHeaderStyle = (Deathless.Constants and Deathless.Constants.UI and Deathless.Constants.UI.SectionHeader) or {
     bgAlpha = 0.4,
     hoverAlpha = 0.6,
@@ -13,13 +14,6 @@ local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
 -- Store template for reuse
 Deathless.UI.Views.TalentsTemplate = {}
-
-local function ColorizeText(color, text)
-    local r = math.floor((color[1] or 1) * 255 + 0.5)
-    local g = math.floor((color[2] or 1) * 255 + 0.5)
-    local b = math.floor((color[3] or 1) * 255 + 0.5)
-    return string.format("|cff%02x%02x%02x%s|r", r, g, b, text)
-end
 
 --- Create a talents view for a specific class
 ---@param config table Configuration: { viewName, className, classColor }

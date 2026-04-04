@@ -3,6 +3,17 @@ local Deathless = Deathless
 Deathless.Utils = Deathless.Utils or {}
 Deathless.Utils.UI = {}
 
+--- Wrap text in a WoW color escape sequence.
+---@param color table {r, g, b} floats 0–1
+---@param text string
+---@return string
+function Deathless.Utils.UI.ColorizeText(color, text)
+    local r = math.floor((color[1] or 1) * 255 + 0.5)
+    local g = math.floor((color[2] or 1) * 255 + 0.5)
+    local b = math.floor((color[3] or 1) * 255 + 0.5)
+    return string.format("|cff%02x%02x%02x%s|r", r, g, b, text)
+end
+
 -- Create a simple frame
 function Deathless.Utils.UI.CreateFrame(name, parent, template)
     local frame = CreateFrame("Frame", name, parent, template)

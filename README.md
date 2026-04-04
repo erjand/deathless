@@ -2,11 +2,16 @@
 
 ## Overview
 
-A Hardcore Classic WoW addon.
+A multi-purpose / all-in-one companion addon for the Hardcore Classic WoW player on their 1-60 journey. 
 
-`deathless` is a multi-purpose / all-in-one companion addon for the HC player on their 1-60 journey. 
+## Philosophy
 
-It tries to provide recommendations and guidance to the player by being opinionated but not obnoxious or unnecessarily prescriptive.
+The following statements guide the development of this addon:
+
+1. Deathless should provide a diverse set of quality features that add significant value for the HC player.
+2. Deathless should provide information to the player so that they can spend more time in game and less time looking at 3rd-party resources.
+3. Deathless should give the player the tools they need to be successful rather than holding their hand step-by-step.
+4. Deathless should be prescriptive about commonly-held truths in the HC community without being overly opinionated.
 
 <img width="1345" height="1192" alt="image" src="https://github.com/user-attachments/assets/bdd697e5-cb6c-4edc-9cbb-36e08d0bf749" />
 
@@ -36,7 +41,8 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 #### Abilities
 
 - Shows Abilities for each class: Learned, Available, Next Available, and Unavailable.
-- Includes level available, price, source, and a recommendation as to train, wait to train, or not train each ability.
+- Includes level available, cost to train, source, and a recommendation as to train, wait to train, or not train each ability.
+- Abilities are searchable, and filters can be toggled.
 
 <img width="1347" height="918" alt="image" src="https://github.com/user-attachments/assets/26622d3e-bc28-4df2-8dbb-8fe9f3b15124" />
 
@@ -45,12 +51,13 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 #### Macros
 
 - Commonly used macros and macro-patterns for each class.
+- Macros can be clicked to copy to clipboard.
 
 <img width="1348" height="1107" alt="image" src="https://github.com/user-attachments/assets/93df1c6b-a758-4b8b-ba5b-2bcd54fe7035" />
 
 #### Stats
 
-- Displays any bonuses provided per point of primary stat for each class.
+- Displays any bonuses provided by each primary stat for each class.
 - Shows relevant information for secondary stats for each class.
 - Gives recommended stat priority guidance for each class.
 

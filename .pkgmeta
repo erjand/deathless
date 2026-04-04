@@ -13,7 +13,6 @@ ignore:
   - .vscode
   - CONTRIBUTING.md
   - data/source
-  - docs
   - LICENSE
   - README.md
   - scripts

@@ -55,6 +55,8 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 <img width="1348" height="1107" alt="image" src="https://github.com/user-attachments/assets/93df1c6b-a758-4b8b-ba5b-2bcd54fe7035" />
 
+<img width="1346" height="1192" alt="image" src="https://github.com/user-attachments/assets/daf8b80c-a87c-413b-bac7-30a17ff1d69d" />
+
 #### Stats
 
 - Displays any bonuses provided by each primary stat for each class.

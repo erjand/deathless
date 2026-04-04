@@ -42,4 +42,5 @@ SavedVariables/
 libs/*/
 
 # Personal dev files
+CHANGELOG.md
 TODO.md

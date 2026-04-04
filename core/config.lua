@@ -52,6 +52,10 @@ Deathless.config = Deathless.config or {
         hide = false,
         minimapPos = 195,
     },
+    -- Screenshot settings
+    screenshots = {
+        levelUp = true,
+    },
     -- Gear view filter settings
     gear = {
         tierFilters = {
@@ -102,6 +106,12 @@ local function LoadConfig()
     end
     -- Remove deprecated raid tier filter from older saved variables.
     Deathless.config.gear.tierFilters.Raid = nil
+
+    -- Ensure screenshot defaults exist for older saved variables
+    Deathless.config.screenshots = Deathless.config.screenshots or {}
+    if Deathless.config.screenshots.levelUp == nil then
+        Deathless.config.screenshots.levelUp = true
+    end
 
     -- Ensure minimap button defaults exist for older saved variables
     Deathless.config.minimap = Deathless.config.minimap or {}

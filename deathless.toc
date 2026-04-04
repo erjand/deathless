@@ -17,6 +17,7 @@ core\init.lua
 core\constants.lua
 core\config.lua
 core\events.lua
+core\screenshots.lua
 core\commands.lua
 
 utils\table.lua

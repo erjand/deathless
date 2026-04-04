@@ -15,12 +15,13 @@ The following statements guide the development of this addon:
 
 <img width="1348" height="1194" alt="image" src="https://github.com/user-attachments/assets/540989f4-a811-4039-a500-701e14eb3c93" />
 
-### Key Capabilities
+### Feature Overview
 
 - Class guides, ability lists, talent builds, and class-specific macros.
 - Dungeon guides and quest rewards.
 - Warnings for missing important items, unspent talent points, uncompleted important HC quests, under-leveled consumables, and more.
 - General-purpose Hardcore macros.
+- Take a screenshot every time your character levels up.
 
 ## Feedback
 

@@ -317,8 +317,16 @@ Deathless.UI.Views:Register("options", function(container)
             end, "Show or hide the Deathless minimap button")
             minimapCheckbox:SetPoint("TOPLEFT", generalSection, "BOTTOMLEFT", 8, -8)
             minimapCheckbox:SetChecked(not (Deathless.config.minimap and Deathless.config.minimap.hide))
+
+            local screenshotCheckbox = GetCheckbox("Screenshot on Level Up", nil, function(checked)
+                Deathless.config.screenshots = Deathless.config.screenshots or {}
+                Deathless.config.screenshots.levelUp = checked
+                Deathless:SaveConfig()
+            end, "Automatically take a screenshot when your character levels up")
+            screenshotCheckbox:SetPoint("TOPLEFT", minimapCheckbox, "BOTTOMLEFT", 0, -4)
+            screenshotCheckbox:SetChecked(Deathless.config.screenshots and Deathless.config.screenshots.levelUp ~= false)
             
-            yOffset = yOffset - ROW_HEIGHT - 16
+            yOffset = yOffset - (ROW_HEIGHT * 2) - 16
         end
         
         -- === Classes Section ===

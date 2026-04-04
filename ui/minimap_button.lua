@@ -9,7 +9,7 @@ function Deathless.UI:InitializeMinimapButton()
     local LDB = LibStub("LibDataBroker-1.1")
     local LDBIcon = LibStub("LibDBIcon-1.0")
 
-    local dataObj = LDB:NewDataObject(Deathless.Constants.Metadata.ADDON_NAME, {
+    local dataObj = LDB:GetDataObjectByName(Deathless.Constants.Metadata.ADDON_NAME) or LDB:NewDataObject(Deathless.Constants.Metadata.ADDON_NAME, {
         type = "launcher",
         icon = ICON_TEXTURE,
         OnClick = function(_, button)
@@ -34,6 +34,8 @@ function Deathless.UI:InitializeMinimapButton()
             tooltip:AddLine(Strings.MINIMAP_TOOLTIP_LINE_RIGHT)
         end,
     })
+
+    if not dataObj then return end
 
     Deathless.config.minimap = Deathless.config.minimap or {}
     LDBIcon:Register(Deathless.Constants.Metadata.ADDON_NAME, dataObj, Deathless.config.minimap)

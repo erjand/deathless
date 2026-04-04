@@ -24,7 +24,7 @@ local CLASS_ITEMS = {
 -- Base navigation items (classes section is inserted dynamically)
 local NAV_ITEMS_TOP = {
     { id = "home", label = "Home" },
-    { id = "summary", label = "Summary" },
+    { id = NavIds.MY_JOURNEY, label = Strings.VIEW_MY_JOURNEY },
     { divider = true },
 }
 

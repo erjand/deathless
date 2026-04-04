@@ -52,7 +52,6 @@ Deathless.Data.Quotes = {
     { text = "big sadge lmao", author = "Last Words, Vol. VI" },
     { text = "this guy fears right?", author = "Last Words, Vol. VI" },
     { text = "wait for totems", author = "Last Words, Vol. VI" },
-    { text = "trash group", author = "Last Words, Vol. VI" },
     { text = "gg ss", author = "Last Words, Vol. VII" },
     { text = "I can heal", author = "Last Words, Vol. VII" },
     { text = "lemme just get out of this cave", author = "Last Words, Vol. VII" },

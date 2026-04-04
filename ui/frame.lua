@@ -9,6 +9,7 @@ local MAIN_MIN_HEIGHT = 400
 local MAIN_MAX_HEIGHT = 800
 
 local Colors = Deathless.Constants.Colors.UI
+local NavIds = Deathless.Constants.NavigationIds
 
 -- Helper: Create a pixel border around a frame
 local function CreatePixelBorder(parent, thickness, r, g, b, a)
@@ -206,9 +207,9 @@ function Deathless.UI.Frame:Create()
     local navWidth = Deathless.UI.Navigation:GetWidth()
     local content = Deathless.UI.Content:Create(frame, navWidth)
     
-    -- Select summary by default
+    -- Select My Journey by default
     C_Timer.After(0, function()
-        Deathless.UI.Navigation:Select("summary")
+        Deathless.UI.Navigation:Select(NavIds.MY_JOURNEY)
     end)
     
     -- Resize grip (using shared component)

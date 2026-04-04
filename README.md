@@ -84,10 +84,10 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 <img width="1349" height="1106" alt="image" src="https://github.com/user-attachments/assets/fbed0dd3-7085-4fb9-a7c9-ab9759c350e1" />
 
-### Summary Tab / Mini Viewer
+### My Journey tab / Mini Viewer
 
 - Displays dynamic Warnings to the player for things like: missing consumables, unspent Talent points, or under-leveled First Aid.
-- Available in the `Summary` tab in the main addon, or as a mini viewer.
+- Available in the `My Journey` tab in the main addon, or as a mini viewer.
 
 <img width="1347" height="1011" alt="image" src="https://github.com/user-attachments/assets/0b2e8c35-bf21-4b6f-bb09-7643efb3e5c3" />
 

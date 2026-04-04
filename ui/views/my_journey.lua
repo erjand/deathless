@@ -3,20 +3,36 @@ local Utils = Deathless.UI.Views.Utils
 local Icons = Deathless.Utils.Icons
 local UIUtils = Deathless.Utils.UI
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
+local NavIds = Deathless.Constants.NavigationIds
 
 local AbilityUtils = Deathless.Utils.Abilities
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
 
-    Deathless.UI.Views:Register("summary", function(container)
+    Deathless.UI.Views:Register(NavIds.MY_JOURNEY, function(container)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
     local Layout = Utils.Layout
     local IconStyle = Deathless.Constants.Colors.UI.Icon
+    local ClassColors = Deathless.Constants.Colors.Class
+    local Colorize = UIUtils.ColorizeText
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
     
-    local title, subtitle = Utils:CreateHeader(container, "Summary", "")
+    local title, subtitle, headerSeparator = Utils:CreateHeader(container, "", "", { 1, 1, 1 })
+    subtitle:Hide()
+    headerSeparator:ClearAllPoints()
+    headerSeparator:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -10)
+    headerSeparator:SetPoint("RIGHT", container, "RIGHT", -20, 0)
+    
+    local function UpdateJourneyTitle()
+        local playerName = UnitName("player") or ""
+        local _, classFile = UnitClass("player")
+        local classKey = (classFile and classFile:lower()) or "warrior"
+        local classColor = ClassColors[classKey] or Colors.accent
+        title:SetText(Colorize(classColor, playerName .. "'s Journey"))
+    end
+    UpdateJourneyTitle()
     
     -- Enhanced scroll frame with auto-hiding scrollbar
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.simple.scrollTop, ViewOffsets.defaultScrollBottom)
@@ -158,6 +174,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     end
     
     Refresh = function()
+        UpdateJourneyTitle()
         ClearFrames()
         
         local _, classId = UnitClass("player")
@@ -393,7 +410,7 @@ local IsSpellKnown = AbilityUtils.IsSpellKnown
     end)
     
     -- Register for automatic refresh when warnings/state changes
-    Deathless.Utils.Warnings:RegisterRefresh("summary", function()
+    Deathless.Utils.Warnings:RegisterRefresh(NavIds.MY_JOURNEY, function()
         if container:IsVisible() then
             Refresh()
         end

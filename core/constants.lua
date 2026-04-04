@@ -264,6 +264,7 @@ Deathless.Constants.GearTiers = {
 Deathless.Constants.NavigationIds = {
     ABILITIES = "abilities",
     MACROS = "macros",
+    MY_JOURNEY = "my_journey",
     STATS = "stats",
     TALENTS = "talents",
 }
@@ -278,6 +279,7 @@ Deathless.Constants.Strings = {
     MINI_SUMMARY_NOT_INITIALIZED = "Mini summary not initialized.",
     NAVIGATION_NOT_INITIALIZED = "Navigation not initialized.",
     UI_NOT_INITIALIZED = "UI not initialized.",
+    VIEW_MY_JOURNEY = "My Journey",
 }
 
 Deathless.Constants.WarningCategories = {

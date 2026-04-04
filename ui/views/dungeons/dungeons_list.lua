@@ -10,40 +10,7 @@ local DungeonLayout = Deathless.Constants.Colors.UI.TableLayouts.Dungeons
 local MAIN_COL = DungeonLayout.main
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
---- Get the gray level threshold for a given player level
----@param playerLevel number
----@return number The level at or below which mobs are gray
-local function GetGrayLevel(playerLevel)
-    if playerLevel <= 5 then
-        return 0
-    elseif playerLevel <= 39 then
-        return playerLevel - math.floor(playerLevel / 10) - 5
-    elseif playerLevel <= 59 then
-        return playerLevel - math.floor(playerLevel / 5) - 1
-    else
-        return playerLevel - 9
-    end
-end
-
---- Get difficulty color for a mob level relative to player level
----@param mobLevel number
----@param playerLevel number
----@return table RGB color {r, g, b} from Colors.diff* palette
-local function GetDifficultyColor(mobLevel, playerLevel)
-    local Colors = Utils:GetColors()
-    local diff = mobLevel - playerLevel
-    if diff >= 5 then
-        return Colors.diffRed
-    elseif diff >= 3 then
-        return Colors.diffOrange
-    elseif diff >= -2 then
-        return Colors.diffYellow
-    elseif mobLevel > GetGrayLevel(playerLevel) then
-        return Colors.diffGreen
-    else
-        return Colors.diffGray
-    end
-end
+local GetDifficultyColor = Deathless.Utils.UI.GetDifficultyColor
 
 --- Check whether any alias matches the search term (case-insensitive substring).
 ---@param aliases table|nil
@@ -832,6 +799,16 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
     OnSort()
 
+    --- Expand a specific dungeon by id (used by external callers like My Journey).
+    ---@param dungeonId string
+    local function ExpandDungeon(dungeonId)
+        for k in pairs(expandedState) do
+            expandedState[k] = nil
+        end
+        expandedState[dungeonId] = true
+        PopulateRows()
+    end
+
     return {
         title = title,
         subtitle = subtitle,
@@ -841,5 +818,6 @@ Deathless.UI.Views:Register("dungeons", function(container)
         searchBox = searchBox,
         inLevelRangeCheckbox = inLevelRangeCheckbox,
         Refresh = PopulateRows,
+        ExpandDungeon = ExpandDungeon,
     }
 end)

@@ -569,3 +569,39 @@ function Deathless.Utils.UI.CreateGripAlphaUpdater(frame, resizeGrip, getIsHover
     return UpdateGripAlpha, function() return gripTargetAlpha end
 end
 
+--- Get the gray level threshold for a given player level.
+--- Mobs at or below this level are "gray" and give no XP.
+---@param playerLevel number
+---@return number
+function Deathless.Utils.UI.GetGrayLevel(playerLevel)
+    if playerLevel <= 5 then
+        return 0
+    elseif playerLevel <= 39 then
+        return playerLevel - math.floor(playerLevel / 10) - 5
+    elseif playerLevel <= 59 then
+        return playerLevel - math.floor(playerLevel / 5) - 1
+    else
+        return playerLevel - 9
+    end
+end
+
+--- Get difficulty color for a mob/boss level relative to the player level.
+---@param mobLevel number
+---@param playerLevel number
+---@return table RGB color {r, g, b} from the diff* palette
+function Deathless.Utils.UI.GetDifficultyColor(mobLevel, playerLevel)
+    local Colors = Deathless.UI.Views.Utils:GetColors()
+    local diff = mobLevel - playerLevel
+    if diff >= 5 then
+        return Colors.diffRed
+    elseif diff >= 3 then
+        return Colors.diffOrange
+    elseif diff >= -2 then
+        return Colors.diffYellow
+    elseif mobLevel > Deathless.Utils.UI.GetGrayLevel(playerLevel) then
+        return Colors.diffGreen
+    else
+        return Colors.diffGray
+    end
+end
+

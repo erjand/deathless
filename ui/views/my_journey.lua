@@ -19,6 +19,7 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
     local Layout = Utils.Layout
     local IconStyle = Deathless.Constants.Colors.UI.Icon
     local ClassColors = Deathless.Constants.Colors.Class
+    local ItemQuality = Deathless.Constants.Colors.ItemQuality
     local Colorize = UIUtils.ColorizeText
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
@@ -30,12 +31,25 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
     headerSeparator:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -10)
     headerSeparator:SetPoint("RIGHT", container, "RIGHT", -20, 0)
     
+    local function LevelToItemQualityColor(level)
+        if level >= 60 then return ItemQuality.legendary end
+        if level >= 50 then return ItemQuality.epic end
+        if level >= 35 then return ItemQuality.rare end
+        if level >= 20 then return ItemQuality.uncommon end
+        if level >= 10 then return ItemQuality.common end
+        return ItemQuality.trash
+    end
+
     local function UpdateJourneyTitle()
         local playerName = UnitName("player") or ""
         local _, classFile = UnitClass("player")
         local classKey = (classFile and classFile:lower()) or "warrior"
         local classColor = ClassColors[classKey] or Colors.accent
-        title:SetText(Colorize(classColor, playerName .. "'s Journey"))
+        local level = UnitLevel("player") or 1
+        if level < 1 then level = 1 end
+        local journey = Colorize(classColor, playerName .. "'s Journey")
+        local levelStr = Colorize(LevelToItemQualityColor(level), "(" .. tostring(level) .. ")")
+        title:SetText(journey .. " " .. levelStr)
     end
     UpdateJourneyTitle()
     
@@ -43,10 +57,11 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.simple.scrollTop, ViewOffsets.defaultScrollBottom)
     
     -- Section collapse state
-    local sectionState = { levels = true, warnings = true, available = true, nextAvailable = true }
+    local sectionState = { levels = true, recommendedDungeons = true, warnings = true, available = true, nextAvailable = true }
     
     -- Element pooling
     local pools = {
+        dungeonRow = {},
         levelRow = {},
         section = {},
         subsection = {},
@@ -55,6 +70,7 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
         text = {},
     }
     local poolIndexes = {
+        dungeonRow = 0,
         levelRow = 0,
         section = 0,
         subsection = 0,
@@ -109,6 +125,28 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
                 frame = scrollChild:CreateFontString(nil, "OVERLAY")
                 frame:SetFont(Fonts.family, Fonts.subtitle, "")
                 frame:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+            elseif frameType == "dungeonRow" then
+                frame = CreateFrame("Button", nil, scrollChild)
+                frame:SetHeight(22)
+
+                frame.name = frame:CreateFontString(nil, "OVERLAY")
+                frame.name:SetFont(Fonts.family, Fonts.body, "")
+                frame.name:SetPoint("LEFT", frame, "LEFT", 0, 0)
+                frame.name:SetJustifyH("LEFT")
+
+                frame.boss = frame:CreateFontString(nil, "OVERLAY")
+                frame.boss:SetFont(Fonts.family, Fonts.body, "")
+                frame.boss:SetPoint("RIGHT", frame, "RIGHT", -4, 0)
+                frame.boss:SetJustifyH("RIGHT")
+
+                frame.name:SetPoint("RIGHT", frame.boss, "LEFT", -12, 0)
+
+                frame:SetScript("OnEnter", function(self)
+                    self.name:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+                end)
+                frame:SetScript("OnLeave", function(self)
+                    self.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                end)
             elseif frameType == "levelRow" then
                 frame = CreateFrame("Frame", nil, scrollChild)
                 frame:SetHeight(LEVEL_ROW_HEIGHT)
@@ -136,20 +174,34 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
     end
     
     --- Create a collapsible section header
-    local function CreateSectionHeader(sectionKey, label, count, yOffset, color, costText)
+    --- @param tooltip table|nil Optional { title = "...", "line1", "line2", ... }
+    local function CreateSectionHeader(sectionKey, label, count, yOffset, color, costText, tooltip)
         local section = GetFrame("section")
         local SECTION_HEIGHT = Layout.sectionHeight
         
         section:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT, yOffset)
         section:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
         
-        Utils:ConfigureSection(section, sectionState[sectionKey], label, color, count, costText)
+        local displayLabel = tooltip and (label .. " (?)") or label
+        Utils:ConfigureSection(section, sectionState[sectionKey], displayLabel, color, count, costText)
         
         section.sectionKey = sectionKey
         section:SetScript("OnClick", function(self)
             sectionState[self.sectionKey] = not sectionState[self.sectionKey]
             Refresh()
         end)
+
+        if tooltip then
+            local SectionStyle = Deathless.Constants.Colors.UI.SectionHeader
+            section:SetScript("OnEnter", function(self)
+                self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, SectionStyle.hoverAlpha)
+                Deathless.UI.Tooltip:Show(self, "ANCHOR_TOP", tooltip.title or label, tooltip)
+            end)
+            section:SetScript("OnLeave", function(self)
+                self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], SectionStyle.bgAlpha)
+                Deathless.UI.Tooltip:Hide()
+            end)
+        end
         
         return yOffset - SECTION_HEIGHT
     end
@@ -344,6 +396,64 @@ local LEVEL_ROW_HEIGHT = LevelLayout.rowHeight
                 row.totalTime:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
 
                 yOffset = yOffset - LEVEL_ROW_HEIGHT
+            end
+        end
+
+        yOffset = yOffset - 10
+
+        -- Recommended Dungeons Section
+        local rawDungeons = Deathless.Data.Dungeons or {}
+        local endgameIds = Deathless.Constants.EndgameDungeonIds
+        local recommendedDungeons = {}
+        for _, dungeon in ipairs(rawDungeons) do
+            local inBossRange = math.abs(playerLevel - dungeon.bossLevel) <= 3
+            local gatedAtMax = endgameIds[dungeon.id] and playerLevel < 60
+            if inBossRange and not gatedAtMax then
+                table.insert(recommendedDungeons, dungeon)
+            end
+        end
+        table.sort(recommendedDungeons, function(a, b) return a.bossLevel < b.bossLevel end)
+
+        local recCount = #recommendedDungeons > 0 and #recommendedDungeons or nil
+        yOffset = CreateSectionHeader("recommendedDungeons", "Recommended Dungeons", recCount, yOffset, Colors.accent, nil, {
+            title = "Recommended Dungeons",
+            "Dungeons where the end boss is within",
+            "3 levels of your character.",
+        })
+
+        if sectionState.recommendedDungeons then
+            if #recommendedDungeons > 0 then
+                local GetDifficultyColor = UIUtils.GetDifficultyColor
+                for _, dungeon in ipairs(recommendedDungeons) do
+                    local row = GetFrame("dungeonRow")
+                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
+                    row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, 0)
+
+                    row.name:SetText(dungeon.name)
+                    row.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+
+                    local bossColor = GetDifficultyColor(dungeon.bossLevel, playerLevel)
+                    row.boss:SetText(dungeon.endBoss .. " (" .. dungeon.bossLevel .. ")")
+                    row.boss:SetTextColor(bossColor[1], bossColor[2], bossColor[3], 1)
+
+                    local dungeonId = dungeon.id
+                    row:SetScript("OnClick", function()
+                        Deathless.UI.Navigation:Select("dungeons")
+                        local view = Deathless.UI.Content.frame
+                            and Deathless.UI.Content.frame.views["dungeons"]
+                        if view and view.elements and view.elements.ExpandDungeon then
+                            view.elements.ExpandDungeon(dungeonId)
+                        end
+                    end)
+
+                    yOffset = yOffset - 22
+                end
+            else
+                local msg = GetFrame("text")
+                msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset - 2)
+                msg:SetText("No dungeons recommended for your level.")
+                msg:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                yOffset = yOffset - 20
             end
         end
 

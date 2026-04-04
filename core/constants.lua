@@ -42,6 +42,15 @@ Deathless.Constants.Colors = {
         shields = { 0.72, 0.72, 0.78 },
         weapons = { 0.90, 0.65, 0.35 },
     },
+    --- WoW item quality (ITEM_QUALITY_COLORS); `trash` is poor/gray.
+    ItemQuality = {
+        common = { 1.00, 1.00, 1.00 },
+        epic = { 0.64, 0.21, 0.93 },
+        legendary = { 1.00, 0.50, 0.00 },
+        rare = { 0.00, 0.44, 0.87 },
+        trash = { 0.62, 0.62, 0.62 },
+        uncommon = { 0.12, 1.00, 0.00 },
+    },
     ItemRarity = {
         common = { 1.00, 1.00, 1.00 },
         epic = { 0.64, 0.21, 0.93 },
@@ -266,6 +275,18 @@ Deathless.Constants.Fonts = {
 Deathless.Constants.GearTiers = {
     LEVELING = "Leveling",
     PRE_BIS = "Pre-BiS",
+}
+
+--- Dungeons that should only appear as "Recommended" once the player reaches level 60.
+Deathless.Constants.EndgameDungeonIds = {
+    dire_maul_east = true,
+    dire_maul_north = true,
+    dire_maul_west = true,
+    lower_blackrock_spire = true,
+    scholomance = true,
+    stratholme_living = true,
+    stratholme_undead = true,
+    upper_blackrock_spire = true,
 }
 
 --- Class tab suffixes (tab id = `classKey .. "_" .. suffix`) and shared top-level nav ids.

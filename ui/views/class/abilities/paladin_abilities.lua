@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
--- Paladin Abilities view using shared template
+--- Paladin abilities view (shared template).
 Deathless.UI.Views.AbilitiesTemplate:Create({
     viewName = "paladin_abilities",
     className = "Paladin",

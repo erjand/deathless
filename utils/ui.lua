@@ -3,6 +3,8 @@ local Deathless = Deathless
 Deathless.Utils = Deathless.Utils or {}
 Deathless.Utils.UI = {}
 
+--- Shared UI helpers: colorized text, striped rows, scroll indicator, frame chrome (pin, drag, resize).
+
 --- Wrap text in a WoW color escape sequence.
 ---@param color table {r, g, b} floats 0–1
 ---@param text string
@@ -257,16 +259,14 @@ function Deathless.Utils.UI.CreateAutoHideScrollIndicator(scrollFrame, scrollChi
     }
 end
 
----
--- Pin system for locking frame position/size
----
+--- Pin system for locking frame position/size
 
 --- Create a pin button for a frame
--- @param frame The frame to add pin functionality to
--- @param titleBar The title bar to place the pin button in
--- @param configKey The key in Deathless.config to store pin state (e.g. "miniPinned")
--- @param options Optional table: { offsetX, Colors }
--- @return pinBtn The created pin button
+---@param frame Frame
+---@param titleBar Frame
+---@param configKey string
+---@param options table|nil { offsetX, Colors }
+---@return Frame pinBtn
 function Deathless.Utils.UI.CreatePinButton(frame, titleBar, configKey, options)
     options = options or {}
     local Colors = options.Colors or Deathless.UI.Colors
@@ -348,10 +348,9 @@ function Deathless.Utils.UI.CreatePinButton(frame, titleBar, configKey, options)
     return pinBtn
 end
 
---- Setup drag handlers that respect pinned state
---- Uses custom drag handling for instant response (no dead zone lag)
--- @param frame The frame to setup drag handlers for
--- @param layoutKey Optional key in config.layout to save position (e.g. "mini" or "main")
+--- Setup drag handlers that respect pinned state (instant response, no dead zone lag).
+---@param frame Frame
+---@param layoutKey string|nil Key in `config.layout` for saved position (e.g. `"mini"`, `"main"`).
 function Deathless.Utils.UI.SetupPinnableDrag(frame, layoutKey)
     local isDragging = false
     local dragOffsetX, dragOffsetY = 0, 0
@@ -423,12 +422,12 @@ function Deathless.Utils.UI.SetupPinnableDrag(frame, layoutKey)
 end
 
 --- Setup resize grip that respects pinned state
--- @param frame The frame with resize grip
--- @param resizeGrip The resize grip button
--- @param gripTexture The grip texture for hover effects
--- @param Colors Color palette
--- @param layoutKey Optional key in config.layout to save size (e.g. "mini" or "main")
--- @param resizePoint Optional resize anchor point for StartSizing (default "BOTTOMRIGHT")
+---@param frame Frame
+---@param resizeGrip Button
+---@param gripTexture Texture
+---@param Colors table
+---@param layoutKey string|nil
+---@param resizePoint string|nil Resize anchor for `StartSizing` (default `"BOTTOMRIGHT"`).
 function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, layoutKey, resizePoint)
     local startSizingPoint = resizePoint or "BOTTOMRIGHT"
 
@@ -469,10 +468,10 @@ function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, 
 end
 
 --- Create a resize grip for a frame
--- @param frame The parent frame
--- @param Colors Color palette
--- @param options Optional table: { point, relativePoint, offsetX, offsetY, style }
--- @return resizeGrip button, gripTexture texture
+---@param frame Frame
+---@param Colors table
+---@param options table|nil { point, relativePoint, offsetX, offsetY, style }
+---@return Button resizeGrip, Texture gripTexture
 function Deathless.Utils.UI.CreateResizeGrip(frame, Colors, options)
     options = options or {}
     local point = options.point or "BOTTOMRIGHT"
@@ -537,12 +536,12 @@ function Deathless.Utils.UI.CreateResizeGrip(frame, Colors, options)
     return resizeGrip, gripTexture
 end
 
---- Create UpdateGripAlpha function that respects pinned state
--- @param frame The frame
--- @param resizeGrip The resize grip
--- @param getIsHovered Function to check if frame is hovered
--- @param getIsGripHovered Function to check if grip is hovered
--- @return UpdateGripAlpha function, gripTargetAlpha getter
+--- Create a grip alpha updater that respects pinned state
+---@param frame Frame
+---@param resizeGrip Button
+---@param getIsHovered fun(): boolean
+---@param getIsGripHovered fun(): boolean
+---@return function UpdateGripAlpha, function gripTargetAlphaGetter
 function Deathless.Utils.UI.CreateGripAlphaUpdater(frame, resizeGrip, getIsHovered, getIsGripHovered)
     local gripTargetAlpha = 0
     local gripHideTimer = nil

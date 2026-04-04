@@ -2,7 +2,7 @@ local Deathless = Deathless
 
 local CLASS_COLOR = Deathless.Constants.Colors.Class.warlock
 
---- Create Warlock Talents view using the template
+--- Warlock talents view (shared template).
 Deathless.UI.Views.TalentsTemplate:Create({
     viewName = "warlock_talents",
     className = "Warlock",

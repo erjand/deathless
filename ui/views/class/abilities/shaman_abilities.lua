@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
--- Shaman Abilities view using shared template
+--- Shaman abilities view (shared template).
 Deathless.UI.Views.AbilitiesTemplate:Create({
     viewName = "shaman_abilities",
     className = "Shaman",

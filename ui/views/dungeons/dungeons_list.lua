@@ -1,3 +1,5 @@
+--- Dungeons list view: search, rows per zone, level/difficulty colors, quest reward icons and money.
+--- Scroll layout uses `Deathless.Utils.UI`; dungeon data comes from `data/dungeons.lua`.
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local UIUtils = Deathless.Utils.UI

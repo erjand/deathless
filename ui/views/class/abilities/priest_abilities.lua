@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
--- Priest Abilities view using shared template
+--- Priest abilities view (shared template).
 Deathless.UI.Views.AbilitiesTemplate:Create({
     viewName = "priest_abilities",
     className = "Priest",

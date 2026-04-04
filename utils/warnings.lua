@@ -1,3 +1,5 @@
+--- Warnings for things like: quest and item gates, buffs, consumables, ammo/ranged checks.
+--- Subscribes to bag/talent/level/equipment events and drives UI refresh via callbacks.
 local Deathless = Deathless
 
 Deathless.Utils = Deathless.Utils or {}

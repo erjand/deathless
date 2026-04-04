@@ -1,6 +1,6 @@
 local Deathless = Deathless
 
--- Druid Abilities view using shared template
+--- Druid abilities view (shared template).
 Deathless.UI.Views.AbilitiesTemplate:Create({
     viewName = "druid_abilities",
     className = "Druid",

@@ -4,7 +4,6 @@ Deathless.UI.MiniSummary = Deathless.UI.MiniSummary or {}
 local Icons = Deathless.Utils.Icons
 
 local AbilityUtils = Deathless.Utils.Abilities
-local FormatMoney = AbilityUtils.FormatMoney
 local FormatMoneyColored = AbilityUtils.FormatMoneyColored
 local IsSpellKnown = AbilityUtils.IsSpellKnown
 local MiniSections = Deathless.Constants.MiniSections

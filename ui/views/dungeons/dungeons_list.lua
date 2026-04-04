@@ -1,6 +1,7 @@
 local Deathless = Deathless
 local Utils = Deathless.UI.Views.Utils
 local UIUtils = Deathless.Utils.UI
+local FormatMoneyColored = Deathless.Utils.Abilities.FormatMoneyColored
 local Factions = Deathless.Constants.Factions
 local Urls = Deathless.Constants.Urls
 local DungeonLayout = Deathless.Constants.Colors.UI.TableLayouts.Dungeons
@@ -628,14 +629,13 @@ Deathless.UI.Views:Register("dungeons", function(container)
                     end
 
                     if q.money and q.money > 0 then
-                        local FormatMoney = Deathless.Utils.Abilities.FormatMoneyColored
                         local moneyX = QC.rewX
                         if rewardIconCount > 0 then
                             moneyX = QC.rewX + (rewardIconCount * (ICON_SIZE + ICON_SPACING)) + 4
                         end
                         qr.moneyText:ClearAllPoints()
                         qr.moneyText:SetPoint("LEFT", qr, "LEFT", moneyX, 0)
-                        qr.moneyText:SetText(FormatMoney(q.money))
+                        qr.moneyText:SetText(FormatMoneyColored(q.money))
                         qr.moneyText:SetTextColor(moneyTextColor[1], moneyTextColor[2], moneyTextColor[3], 1)
                         qr.moneyText:Show()
                     end

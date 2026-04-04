@@ -114,6 +114,9 @@ Deathless.Constants.Colors = {
         Row = {
             stripeAlpha = 0.2,
             expandedAlpha = 0.4,
+            hoverAlpha = 0.35,
+            headerBorderAlpha = 0.3,
+            columnDividerAlpha = 0.15,
         },
         Icon = {
             alphaNormal = 1,
@@ -188,9 +191,9 @@ Deathless.Constants.Colors = {
                 rowHeight = 24,
                 bracketSize = 10,
                 columns = {
-                    level = { x = 0, w = 60 },
-                    timeForLevel = { x = 90, w = 140 },
-                    totalTime = { x = 250, w = 120 },
+                    level = { x = 8, w = 60 },
+                    timeForLevel = { x = 130, w = 140 },
+                    totalTime = { x = 290, w = 120 },
                 },
             },
             Dungeons = {

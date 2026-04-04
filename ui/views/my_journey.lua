@@ -82,7 +82,8 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
     
     -- Forward declare Refresh for section click handlers
     local Refresh
-    local levelColumnHeaders = {}
+    local levelHeaders, levelHeaderBorder, levelHeaderBg, levelDividers, levelHeaderDefs
+    local levelBorderTop, levelBorderLeft, levelBorderRight, levelBorderBottom
     local totalTimeValue = nil
     local currentLevelTimeValue = nil
     
@@ -150,7 +151,7 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
                     self.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
                 end)
             elseif frameType == "levelRow" then
-                frame = CreateFrame("Frame", nil, scrollChild)
+                frame = CreateFrame("Button", nil, scrollChild)
                 frame:SetHeight(LEVEL_ROW_HEIGHT)
 
                 frame.level = frame:CreateFontString(nil, "OVERLAY")
@@ -213,7 +214,7 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
         local subsection = GetFrame("subsection")
         local SUBSECTION_HEIGHT = 22
         
-        subsection:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset)
+        subsection:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 20, yOffset)
         subsection:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, yOffset)
         
         Utils:ConfigureSubSection(subsection, sectionState[sectionKey], label, color)
@@ -249,21 +250,57 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
             end
             poolIndexes[type] = 0
         end
-        for _, h in pairs(levelColumnHeaders) do
-            h:Hide()
-        end
+        for _, h in ipairs(levelHeaders) do h:Hide() end
+        levelHeaderBg:Hide()
+        levelHeaderBorder:Hide()
+        for _, d in ipairs(levelDividers) do d:Hide() end
+        levelBorderTop:Hide()
+        levelBorderLeft:Hide()
+        levelBorderRight:Hide()
+        levelBorderBottom:Hide()
     end
     
-    -- Level column headers (static, repositioned each Refresh)
-    local levelColumnLabels = { level = "LEVEL", timeForLevel = "TIME FOR LEVEL", totalTime = "TOTAL TIME" }
-    for key, label in pairs(levelColumnLabels) do
-        local fs = scrollChild:CreateFontString(nil, "OVERLAY")
-        fs:SetFont(Fonts.icons, Fonts.small, "")
-        fs:SetText(label)
-        fs:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        fs:Hide()
-        levelColumnHeaders[key] = fs
+    -- Level column headers, border, and dividers (persistent, repositioned each Refresh)
+    local TableComp = Deathless.UI.Components.Table
+    levelHeaderDefs = {
+        { label = "LEVEL",          x = LevelCols.level.x },
+        { label = "TIME FOR LEVEL", x = LevelCols.timeForLevel.x },
+        { label = "TOTAL TIME",     x = LevelCols.totalTime.x },
+    }
+    levelHeaders = TableComp:CreateStaticHeaders(scrollChild, levelHeaderDefs, { xBase = SECTION_LEFT })
+    for _, h in ipairs(levelHeaders) do h:Hide() end
+
+    levelHeaderBg = TableComp:CreateHeaderBackground(scrollChild, {
+        xLeft = SECTION_LEFT, xRight = CONTENT_RIGHT - 12,
+    })
+    levelHeaderBg:Hide()
+
+    levelHeaderBorder = TableComp:CreateHeaderBorder(scrollChild, {
+        xLeft = SECTION_LEFT, xRight = CONTENT_RIGHT - 12,
+    })
+    levelHeaderBorder:Hide()
+
+    levelDividers = TableComp:CreateColumnDividers(scrollChild,
+        { LevelCols.timeForLevel.x - 10, LevelCols.totalTime.x - 10 },
+        { xBase = SECTION_LEFT, height = 14 }
+    )
+    for _, d in ipairs(levelDividers) do d:Hide() end
+
+    local RowStyle = Deathless.Constants.Colors.UI.Row
+    local function MakeBorderLine()
+        local t = scrollChild:CreateTexture(nil, "ARTWORK")
+        t:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], RowStyle.headerBorderAlpha)
+        t:Hide()
+        return t
     end
+    levelBorderTop = MakeBorderLine()
+    levelBorderTop:SetHeight(1)
+    levelBorderLeft = MakeBorderLine()
+    levelBorderLeft:SetWidth(1)
+    levelBorderRight = MakeBorderLine()
+    levelBorderRight:SetWidth(1)
+    levelBorderBottom = MakeBorderLine()
+    levelBorderBottom:SetHeight(1)
 
     Refresh = function()
         UpdateJourneyTitle()
@@ -341,14 +378,36 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
             local currentLevelTime = (totalPlayed and currentLevelEntry) and (totalPlayed - currentLevelEntry.played) or nil
             currentLevelTimeValue:SetText(LevelsModule:FormatTimeHMS(currentLevelTime))
             currentLevelTimeValue:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-            yOffset = yOffset - 22
+            yOffset = yOffset - 30
 
-            for key, h in pairs(levelColumnHeaders) do
+            local levelTableTop = yOffset
+
+            -- Header background bar
+            levelHeaderBg:ClearAllPoints()
+            levelHeaderBg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
+            levelHeaderBg:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, yOffset)
+            levelHeaderBg:Show()
+
+            -- Header labels (vertically centered in the 20px bar)
+            for i, h in ipairs(levelHeaders) do
                 h:ClearAllPoints()
-                h:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT + LevelCols[key].x, yOffset)
+                h:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT + levelHeaderDefs[i].x, yOffset - 5)
                 h:Show()
             end
+            for _, d in ipairs(levelDividers) do
+                d:ClearAllPoints()
+                d:SetPoint("TOPLEFT", scrollChild, "TOPLEFT",
+                    d._tableDivX, yOffset - 3)
+                d:Show()
+            end
             yOffset = yOffset - 20
+
+            -- Border line under header bar
+            levelHeaderBorder:ClearAllPoints()
+            levelHeaderBorder:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
+            levelHeaderBorder:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, yOffset)
+            levelHeaderBorder:Show()
+            yOffset = yOffset - 2
 
             local allLevelRows = {}
             for lvl = 1, playerLevel do
@@ -403,6 +462,7 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
                         row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
                         row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, 0)
                         UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
+                        TableComp:ApplyRowHover(row)
 
                         row.level:SetText(tostring(rowData.level))
                         row.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
@@ -417,6 +477,27 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
                     end
                 end
             end
+
+            -- Outer border around table body
+            levelBorderTop:ClearAllPoints()
+            levelBorderTop:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, levelTableTop)
+            levelBorderTop:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, levelTableTop)
+            levelBorderTop:Show()
+
+            levelBorderLeft:ClearAllPoints()
+            levelBorderLeft:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, levelTableTop)
+            levelBorderLeft:SetPoint("BOTTOMLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
+            levelBorderLeft:Show()
+
+            levelBorderRight:ClearAllPoints()
+            levelBorderRight:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, levelTableTop)
+            levelBorderRight:SetPoint("BOTTOMRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, yOffset)
+            levelBorderRight:Show()
+
+            levelBorderBottom:ClearAllPoints()
+            levelBorderBottom:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", SECTION_LEFT, yOffset)
+            levelBorderBottom:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT - 12, yOffset)
+            levelBorderBottom:Show()
         end
 
         yOffset = yOffset - 10

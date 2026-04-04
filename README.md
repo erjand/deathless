@@ -17,6 +17,7 @@ The following statements guide the development of this addon:
 
 ### Feature Overview
 
+- "My Journey" showing your leveling metrics, recommended dungeons, any warnings, and skills available or upcoming to train
 - Class guides, ability lists, talent builds, and class-specific macros.
 - Dungeon guides and quest rewards.
 - Warnings for missing important items, unspent talent points, uncompleted important HC quests, under-leveled consumables, and more.
@@ -84,10 +85,11 @@ Open the addon in-game with `/deathless` or `/dls`. Run `/dls h` for all availab
 
 <img width="1349" height="1106" alt="image" src="https://github.com/user-attachments/assets/fbed0dd3-7085-4fb9-a7c9-ab9759c350e1" />
 
-### My Journey tab / Mini Viewer
+### Mini Viewer
 
 - Displays dynamic Warnings to the player for things like: missing consumables, unspent Talent points, or under-leveled First Aid.
-- Available in the `My Journey` tab in the main addon, or as a mini viewer.
+- Displays an XP Progress bar
+- Abilities currently available to train, and which will be available next
 
 <img width="1347" height="1011" alt="image" src="https://github.com/user-attachments/assets/0b2e8c35-bf21-4b6f-bb09-7643efb3e5c3" />
 

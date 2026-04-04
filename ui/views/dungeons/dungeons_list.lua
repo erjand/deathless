@@ -13,71 +13,6 @@ local DungeonLayout = Deathless.Constants.Colors.UI.TableLayouts.Dungeons
 local MAIN_COL = DungeonLayout.main
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
---- Create a sortable column header button
----@param parent Frame Parent frame
----@param label string Header text
----@param xOffset number X position offset
----@param width number Button width
----@param sortKey string The key to sort by
----@param state table Shared sort state
----@param onSort function Callback when sort changes
----@param tooltip table|nil Optional tooltip lines {title, line1, ...}
----@return Button The header button
-local function CreateSortableHeader(parent, label, xOffset, width, sortKey, state, onSort, tooltip)
-    local Colors = Utils:GetColors()
-
-    local btn = CreateFrame("Button", nil, parent)
-    btn:SetSize(width, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, ViewOffsets.dungeons.sortHeaderY)
-
-    local Fonts = Deathless.UI.Fonts
-    btn.label = btn:CreateFontString(nil, "OVERLAY")
-    btn.label:SetFont(Fonts.icons, Fonts.small, "")
-    btn.label:SetPoint("LEFT", btn, "LEFT", 0, 0)
-    btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-
-    btn.sortKey = sortKey
-
-    local function UpdateLabel()
-        local indicator = ""
-        if state.sortKey == sortKey then
-            indicator = state.sortAsc and " ▲" or " ▼"
-        end
-        btn.label:SetText(label .. indicator)
-    end
-
-    UpdateLabel()
-    btn.UpdateLabel = UpdateLabel
-
-    btn:SetScript("OnEnter", function(self)
-        self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-        if tooltip then
-            Deathless.UI.Tooltip:Show(self, "ANCHOR_TOP", tooltip.title or label, tooltip)
-        end
-    end)
-
-    btn:SetScript("OnLeave", function(self)
-        if state.sortKey == sortKey then
-            self.label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
-        else
-            self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        end
-        Deathless.UI.Tooltip:Hide()
-    end)
-
-    btn:SetScript("OnClick", function()
-        if state.sortKey == sortKey then
-            state.sortAsc = not state.sortAsc
-        else
-            state.sortKey = sortKey
-            state.sortAsc = true
-        end
-        onSort()
-    end)
-
-    return btn
-end
-
 --- Get the gray level threshold for a given player level
 ---@param playerLevel number
 ---@return number The level at or below which mobs are gray
@@ -878,14 +813,22 @@ Deathless.UI.Views:Register("dungeons", function(container)
         PopulateRows()
     end
 
-    headers.level = CreateSortableHeader(container, "LEVEL (?)",        MAIN_COL.level.x + CONTENT_LEFT,  MAIN_COL.level.w,  "level", sortState, OnSort, {
+    local sortHeaderLayout = function(col)
+        return {
+            x = col.x + CONTENT_LEFT,
+            width = col.w,
+            y = ViewOffsets.dungeons.sortHeaderY,
+        }
+    end
+
+    headers.level = Utils:CreateSortableHeader(container, "LEVEL (?)", "level", sortState, OnSort, sortHeaderLayout(MAIN_COL.level), {
         title = "Dungeon Level Range",
         "Level range where a player can",
         "receive XP from some of the mobs.",
     })
-    headers.name  = CreateSortableHeader(container, "NAME",         MAIN_COL.name.x + CONTENT_LEFT,  MAIN_COL.name.w, "name",  sortState, OnSort)
-    headers.zone  = CreateSortableHeader(container, "ZONE",         MAIN_COL.zone.x + CONTENT_LEFT, MAIN_COL.zone.w, "zone",  sortState, OnSort)
-    headers.boss  = CreateSortableHeader(container, "END BOSS (?)", MAIN_COL.boss.x + CONTENT_LEFT, MAIN_COL.boss.w, "boss",  sortState, OnSort, {
+    headers.name  = Utils:CreateSortableHeader(container, "NAME", "name", sortState, OnSort, sortHeaderLayout(MAIN_COL.name))
+    headers.zone  = Utils:CreateSortableHeader(container, "ZONE", "zone", sortState, OnSort, sortHeaderLayout(MAIN_COL.zone))
+    headers.boss  = Utils:CreateSortableHeader(container, "END BOSS (?)", "boss", sortState, OnSort, sortHeaderLayout(MAIN_COL.boss), {
         title = "End Boss Level",
         "Recommend all players be within",
         "3 levels of the end boss.",

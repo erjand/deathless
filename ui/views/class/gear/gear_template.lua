@@ -49,60 +49,6 @@ local GEAR_TIER = (Deathless.Constants and Deathless.Constants.GearTiers) or {
 }
 local TIER_ORDER = { GEAR_TIER.LEVELING, GEAR_TIER.PRE_BIS }
 
---- Create a sortable column header button
-local function CreateSortableHeader(parent, label, col, sortKey, state, onSort, headerY, tooltip)
-    local Colors = Utils:GetColors()
-    local Fonts = Deathless.UI.Fonts
-
-    local btn = CreateFrame("Button", nil, parent)
-    btn:SetSize(col.w, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", col.x, headerY)
-
-    btn.label = btn:CreateFontString(nil, "OVERLAY")
-    btn.label:SetFont(Fonts.icons, Fonts.small, "")
-    btn.label:SetPoint("LEFT", btn, "LEFT", 0, 0)
-    btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-
-    btn.sortKey = sortKey
-
-    local function UpdateLabel()
-        local indicator = ""
-        if state.sortKey == sortKey then
-            indicator = state.sortAsc and " ▲" or " ▼"
-        end
-        btn.label:SetText(label .. indicator)
-    end
-
-    UpdateLabel()
-    btn.UpdateLabel = UpdateLabel
-
-    btn:SetScript("OnEnter", function(self)
-        self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-        if tooltip then
-            Deathless.UI.Tooltip:Show(self, "ANCHOR_TOP", tooltip.title or label, tooltip)
-        end
-    end)
-    btn:SetScript("OnLeave", function(self)
-        if state.sortKey == sortKey then
-            self.label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
-        else
-            self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        end
-        Deathless.UI.Tooltip:Hide()
-    end)
-    btn:SetScript("OnClick", function()
-        if state.sortKey == sortKey then
-            state.sortAsc = not state.sortAsc
-        else
-            state.sortKey = sortKey
-            state.sortAsc = true
-        end
-        onSort()
-    end)
-
-    return btn
-end
-
 --- Add a slot icon texture to a frame, repositioning the arrow and label
 local function AttachSlotIcon(frame, iconKey)
     if not frame.slotIcon then
@@ -723,11 +669,15 @@ function Deathless.UI.Views.GearTemplate:Create(config)
         local hLvl    = { x = COL.lvl.x    + SCROLL_INSET + CONTENT_LEFT, w = COL.lvl.w }
         local hSource = { x = COL.source.x + SCROLL_INSET + CONTENT_LEFT, w = COL.source.w }
         local hPreBis = { x = COL.prebis.x + SCROLL_INSET + CONTENT_LEFT, w = COL.prebis.w }
-        headers.name   = CreateSortableHeader(container, "NAME",   hName,   "name",   sortState, OnSort, sortHeaderY)
-        headers.type   = CreateSortableHeader(container, "TYPE",   hType,   "type",   sortState, OnSort, sortHeaderY)
-        headers.lvl    = CreateSortableHeader(container, "LVL",    hLvl,    "lvl",    sortState, OnSort, sortHeaderY)
-        headers.source = CreateSortableHeader(container, "SOURCE", hSource, "source", sortState, OnSort, sortHeaderY)
-        headers.prebis = CreateSortableHeader(container, "PRE-BIS (?)", hPreBis, "prebis", sortState, OnSort, sortHeaderY, {
+        local function gearHeaderLayout(col)
+            return { x = col.x, width = col.w, y = sortHeaderY }
+        end
+
+        headers.name   = Utils:CreateSortableHeader(container, "NAME",   "name",   sortState, OnSort, gearHeaderLayout(hName))
+        headers.type   = Utils:CreateSortableHeader(container, "TYPE",   "type",   sortState, OnSort, gearHeaderLayout(hType))
+        headers.lvl    = Utils:CreateSortableHeader(container, "LVL",    "lvl",    sortState, OnSort, gearHeaderLayout(hLvl))
+        headers.source = Utils:CreateSortableHeader(container, "SOURCE", "source", sortState, OnSort, gearHeaderLayout(hSource))
+        headers.prebis = Utils:CreateSortableHeader(container, "PRE-BIS (?)", "prebis", sortState, OnSort, gearHeaderLayout(hPreBis), {
             title = "Pre-BiS",
             "Best-in-Slot gear at level 60 prior to raid content",
         })

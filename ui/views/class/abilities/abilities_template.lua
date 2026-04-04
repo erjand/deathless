@@ -31,71 +31,6 @@ local ColorCodes = Deathless.Constants.Colors.Codes
 local TableLayout = Deathless.Constants.Colors.UI.TableLayouts.Abilities
 local ViewOffsets = Deathless.Constants.Colors.UI.ViewOffsets
 
---- Create a sortable column header button
----@param parent Frame Parent frame
----@param label string Header text
----@param xOffset number X position offset
----@param width number Button width
----@param sortKey string The key to sort by
----@param state table Shared sort state
----@param onSort function Callback when sort changes
----@param tooltip table|nil Optional tooltip lines {title, line1, line2, ...}
----@return Button The header button
-local function CreateSortableHeader(parent, label, xOffset, width, sortKey, state, onSort, tooltip, headerY)
-    local Colors = Utils:GetColors()
-    
-    local btn = CreateFrame("Button", nil, parent)
-    btn:SetSize(width, 18)
-    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", xOffset, headerY or ViewOffsets.classSearch.sortHeaderYFull)
-    
-    local Fonts = Deathless.UI.Fonts
-    btn.label = btn:CreateFontString(nil, "OVERLAY")
-    btn.label:SetFont(Fonts.icons, Fonts.small, "")  -- ARIALN for Unicode arrow support
-    btn.label:SetPoint("LEFT", btn, "LEFT", 0, 0)
-    btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-    
-    btn.sortKey = sortKey
-    
-    local function UpdateLabel()
-        local indicator = ""
-        if state.sortKey == sortKey then
-            indicator = state.sortAsc and " ▲" or " ▼"
-        end
-        btn.label:SetText(label .. indicator)
-    end
-    
-    UpdateLabel()
-    btn.UpdateLabel = UpdateLabel
-    
-    btn:SetScript("OnEnter", function(self)
-        self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-        if tooltip then
-            Deathless.UI.Tooltip:Show(self, "ANCHOR_TOP", tooltip.title or label, tooltip)
-        end
-    end)
-    
-    btn:SetScript("OnLeave", function(self)
-        if state.sortKey == sortKey then
-            self.label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
-        else
-            self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        end
-        Deathless.UI.Tooltip:Hide()
-    end)
-    
-    btn:SetScript("OnClick", function(self)
-        if state.sortKey == sortKey then
-            state.sortAsc = not state.sortAsc
-        else
-            state.sortKey = sortKey
-            state.sortAsc = true
-        end
-        onSort()
-    end)
-    
-    return btn
-end
-
 --- Create an abilities view for a specific class
 ---@param config table Configuration: { viewName, className, classId, classColor }
 function Deathless.UI.Views.AbilitiesTemplate:Create(config)
@@ -622,16 +557,20 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             PopulateRows()
         end
         
-        headers.name = CreateSortableHeader(container, "ABILITY", Col.name.x + CONTENT_LEFT, Col.name.w, "name", sortState, OnSort, nil, sortHeaderY)
-        headers.level = CreateSortableHeader(container, "LEVEL", Col.level.x + CONTENT_LEFT, Col.level.w, "level", sortState, OnSort, nil, sortHeaderY)
-        headers.cost = CreateSortableHeader(container, "COST", Col.cost.x + CONTENT_LEFT, Col.cost.w, "cost", sortState, OnSort, nil, sortHeaderY)
-        headers.source = CreateSortableHeader(container, "SOURCE", Col.source.x + CONTENT_LEFT, Col.source.w, "source", sortState, OnSort, nil, sortHeaderY)
-        headers.train = CreateSortableHeader(container, "TRAIN (?)", Col.train.x + CONTENT_LEFT, Col.train.w, "train", sortState, OnSort, {
+        local function abilitiesHeaderLayout(col)
+            return { x = col.x + CONTENT_LEFT, width = col.w, y = sortHeaderY }
+        end
+
+        headers.name = Utils:CreateSortableHeader(container, "ABILITY", "name", sortState, OnSort, abilitiesHeaderLayout(Col.name))
+        headers.level = Utils:CreateSortableHeader(container, "LEVEL", "level", sortState, OnSort, abilitiesHeaderLayout(Col.level))
+        headers.cost = Utils:CreateSortableHeader(container, "COST", "cost", sortState, OnSort, abilitiesHeaderLayout(Col.cost))
+        headers.source = Utils:CreateSortableHeader(container, "SOURCE", "source", sortState, OnSort, abilitiesHeaderLayout(Col.source))
+        headers.train = Utils:CreateSortableHeader(container, "TRAIN (?)", "train", sortState, OnSort, abilitiesHeaderLayout(Col.train), {
             title = "Training Priority",
             ColorCodes.safe .. "Yes|r - Train when available",
             ColorCodes.warning .. "Wait|r - Marginal upgrade",
             ColorCodes.enemy .. "No|r - Not useful for Hardcore",
-        }, sortHeaderY)
+        })
         
         OnSort()
         

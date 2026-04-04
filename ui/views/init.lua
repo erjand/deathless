@@ -34,6 +34,74 @@ function Deathless.UI.Views.Utils:GetColors()
     return Deathless.UI.Colors
 end
 
+-- ========================================
+-- SORTABLE TABLE COLUMN HEADERS
+-- ========================================
+
+--- Create a sortable column header button (sort arrows, accent on active column, tooltip hooks).
+---@param parent Frame
+---@param label string
+---@param sortKey string
+---@param state table Shared sort state { sortKey, sortAsc }
+---@param onSort function Callback when sort changes
+---@param layout table { x: number, width: number, y: number } TOPLEFT offsets from parent
+---@param tooltip table|nil Optional tooltip lines { title?, line1, ... }
+---@return Button Button with .sortKey, .label, .UpdateLabel
+function Deathless.UI.Views.Utils:CreateSortableHeader(parent, label, sortKey, state, onSort, layout, tooltip)
+    local Colors = self:GetColors()
+    local Fonts = Deathless.UI.Fonts
+
+    local btn = CreateFrame("Button", nil, parent)
+    btn:SetSize(layout.width, 18)
+    btn:SetPoint("TOPLEFT", parent, "TOPLEFT", layout.x, layout.y)
+
+    btn.label = btn:CreateFontString(nil, "OVERLAY")
+    btn.label:SetFont(Fonts.icons, Fonts.small, "")
+    btn.label:SetPoint("LEFT", btn, "LEFT", 0, 0)
+    btn.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+
+    btn.sortKey = sortKey
+
+    local function UpdateLabel()
+        local indicator = ""
+        if state.sortKey == sortKey then
+            indicator = state.sortAsc and " ▲" or " ▼"
+        end
+        btn.label:SetText(label .. indicator)
+    end
+
+    UpdateLabel()
+    btn.UpdateLabel = UpdateLabel
+
+    btn:SetScript("OnEnter", function(self)
+        self.label:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+        if tooltip then
+            Deathless.UI.Tooltip:Show(self, "ANCHOR_TOP", tooltip.title or label, tooltip)
+        end
+    end)
+
+    btn:SetScript("OnLeave", function(self)
+        if state.sortKey == sortKey then
+            self.label:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+        else
+            self.label:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+        end
+        Deathless.UI.Tooltip:Hide()
+    end)
+
+    btn:SetScript("OnClick", function()
+        if state.sortKey == sortKey then
+            state.sortAsc = not state.sortAsc
+        else
+            state.sortKey = sortKey
+            state.sortAsc = true
+        end
+        onSort()
+    end)
+
+    return btn
+end
+
 --- Create a standard search input with label and clear button.
 ---@param parent Frame
 ---@param opts table { x, y, width, maxLetters, label, onClear }

@@ -20,6 +20,8 @@ local MINI_MIN_WIDTH = 300
 local MINI_MAX_WIDTH = 300
 local MINI_MIN_HEIGHT = 120
 local MINI_MAX_HEIGHT = 500
+-- Extra pixels after each collapsible section before the next toggle header
+local MINI_TOGGLE_HEADER_GAP = 3
 
 local function RefreshOptionsViewIfVisible()
     if not (Deathless.UI and Deathless.UI.Content and Deathless.UI.Content.frame) then
@@ -328,7 +330,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                 end
             end
             
-            yOffset = yOffset - 4
+            yOffset = yOffset - 4 - MINI_TOGGLE_HEADER_GAP
         end
         
         -- XP Progress Section (compact for mini view)
@@ -430,7 +432,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                 yOffset = yOffset - 18
             end
             
-            yOffset = yOffset - 4
+            yOffset = yOffset - 4 - MINI_TOGGLE_HEADER_GAP
         end
         
         -- Available abilities (collapsible)
@@ -529,7 +531,7 @@ function Deathless.UI.MiniSummary:SetupContent()
                     yOffset = yOffset - 18
                 end
             end
-            yOffset = yOffset - 4
+            yOffset = yOffset - 4 - MINI_TOGGLE_HEADER_GAP
         end
         
         -- Next available abilities (collapsible)

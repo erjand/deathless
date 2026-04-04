@@ -54,7 +54,7 @@ Deathless.UI.Views:Register("options", function(container)
     local CLASS_ROWS = 3
     
     -- Section collapse state
-    local sectionState = { classes = true, mini = true, warnings = true }
+    local sectionState = { general = true, classes = true, mini = true, warnings = true }
     
     -- Element pools
     local pools = { section = {}, checkbox = {} }
@@ -318,6 +318,31 @@ Deathless.UI.Views:Register("options", function(container)
         ClearPools()
         
         local yOffset = -16
+        
+        -- === General Section ===
+        local generalSection
+        generalSection, yOffset = GetSectionHeader("general", "General", yOffset)
+        
+        if sectionState.general then
+            local LDBIcon = LibStub and LibStub("LibDBIcon-1.0", true)
+
+            local minimapCheckbox = GetCheckbox("Show Minimap button", nil, function(checked)
+                Deathless.config.minimap = Deathless.config.minimap or {}
+                Deathless.config.minimap.hide = not checked
+                Deathless:SaveConfig()
+                if LDBIcon then
+                    if checked then
+                        LDBIcon:Show(Deathless.Constants.Metadata.ADDON_NAME)
+                    else
+                        LDBIcon:Hide(Deathless.Constants.Metadata.ADDON_NAME)
+                    end
+                end
+            end, "Show or hide the Deathless minimap button")
+            minimapCheckbox:SetPoint("TOPLEFT", generalSection, "BOTTOMLEFT", 8, -8)
+            minimapCheckbox:SetChecked(not (Deathless.config.minimap and Deathless.config.minimap.hide))
+            
+            yOffset = yOffset - ROW_HEIGHT - 16
+        end
         
         -- === Classes Section ===
         local classSection

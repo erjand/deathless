@@ -11,6 +11,21 @@
 3. Run the addon in game with the command `/deathless` or `/dls`. Run `/dls h` in-game for all available commands.
 4. When making changes, run `scripts\deploy.bat` again, then `/reload` in game.
 
+### Embedded libraries (minimap button)
+
+Deathless uses these libraries for the LibDataBroker minimap icon:
+
+- **LibStub** — library versioning stub
+- **CallbackHandler-1.0** — used by LibDataBroker
+- **LibDataBroker-1.1** — data object API for the minimap launcher
+- **LibDBIcon-1.0** — minimap button UI
+
+**Releases:** The [BigWigs packager](https://github.com/BigWigsMods/packager) pulls them from CurseForge SVN via `.pkgmeta` `externals` into `libs/` when building a release zip. You do not commit the downloaded library files.
+
+**Local development:** Run `scripts\fetch-libs.bat` (or `scripts\fetch-libs.ps1`) once after cloning, and again when you want to refresh those files. That downloads the same sources the packager uses into `libs/`. Only `libs/libs.xml` is tracked in git; the `libs/*/` folders are ignored so each machine keeps its own copies.
+
+`scripts\deploy.ps1` copies the `libs` folder into the dev addon install, so fetch libs before deploying if you need the minimap button locally.
+
 ### Data Source Workflow
 
 Data should be maintained in CSV and generated into Lua:

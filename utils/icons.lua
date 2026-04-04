@@ -105,7 +105,7 @@ Deathless.Utils.Icons.ITEM_RUNE_01 = INTERFACE_ICONS .. "INV_Misc_Rune_01"
 Deathless.Utils.Icons.ITEM_JEWELRY_TRINKETPVP_01 = INTERFACE_ICONS .. "INV_Jewelry_TrinketPVP_01"
 
 -- Addon icon (single source of truth for branding)
-Deathless.Utils.Icons.ADDON = INTERFACE_ICONS .. "INV_Misc_Bone_Skull_01"
+Deathless.Utils.Icons.ADDON = "Interface\\AddOns\\Deathless\\textures\\deathless-icon-transparent"
 
 -- Helper function to get full icon path (for spell icons that may not have Interface\\Icons\\ prefix)
 ---@param iconName string Icon name (with or without Interface\\Icons\\ prefix)

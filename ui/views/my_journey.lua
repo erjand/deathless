@@ -58,7 +58,7 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
     local scrollFrame, scrollChild = Utils:CreateScrollFrame(container, ViewOffsets.simple.scrollTop, ViewOffsets.defaultScrollBottom)
     
     -- Section collapse state
-    local sectionState = { levels = true, recommendedDungeons = true, warnings = true, available = true, nextAvailable = true }
+    local sectionState = { available = false, levels = false, nextAvailable = false, recommendedDungeons = false, warnings = true }
     
     -- Element pooling
     local pools = {
@@ -327,6 +327,53 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
         
         local yOffset = -10
 
+        -- Warnings Section
+        local activeWarnings = Deathless.Utils.Warnings:GetActive()
+        local hasWarnings = #activeWarnings > 0
+        local warningsColor = hasWarnings and Colors.yellow or Colors.accent
+        yOffset = CreateSectionHeader("warnings", "Warnings", hasWarnings and #activeWarnings or nil, yOffset, warningsColor)
+        
+        if sectionState.warnings then
+            if hasWarnings then
+                for _, warning in ipairs(activeWarnings) do
+                    local row = GetFrame("row")
+                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset)
+                    row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, yOffset)
+                    
+                    if row.icon then
+                        row.icon:SetTexture(warning.icon or Icons.DEFAULT)
+                        UIUtils.ApplyIconStyle(row.icon, "normal")
+                    end
+                    
+                    row.name:SetText(warning.text)
+                    row.name:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], 1)
+                    row.level:SetText("")
+                    row.cost:SetText("")
+                    
+                    local itemId = warning.itemId
+                    if itemId then
+                        row:SetScript("OnEnter", function(self)
+                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 20, 0)
+                            GameTooltip:SetItemByID(itemId)
+                            GameTooltip:Show()
+                        end)
+                    else
+                        row:SetScript("OnEnter", nil)
+                    end
+                    
+                    yOffset = yOffset - 26
+                end
+            else
+                local msg = GetFrame("text")
+                msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset - 5)
+                msg:SetText("No warnings - go adventure!")
+                msg:SetTextColor(Colors.success[1], Colors.success[2], Colors.success[3], Colors.success[4])
+                yOffset = yOffset - 24
+            end
+        end
+
+        yOffset = yOffset - 10
+
         -- Levels Section
         local levelsData = LevelsModule:GetData()
         local totalPlayed = LevelsModule:GetTotalPlayed()
@@ -525,55 +572,6 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
 
         yOffset = yOffset - 10
 
-        -- Warnings Section (from shared module)
-        local activeWarnings = Deathless.Utils.Warnings:GetActive()
-        
-        -- Display Warnings Section
-        local hasWarnings = #activeWarnings > 0
-        local warningsColor = hasWarnings and Colors.yellow or Colors.accent
-        yOffset = CreateSectionHeader("warnings", "Warnings", hasWarnings and #activeWarnings or nil, yOffset, warningsColor)
-        
-        if sectionState.warnings then
-            if hasWarnings then
-                for _, warning in ipairs(activeWarnings) do
-                    local row = GetFrame("row")
-                    row:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset)
-                    row:SetPoint("RIGHT", scrollChild, "RIGHT", CONTENT_RIGHT - 12, yOffset)
-                    
-                    if row.icon then
-                        row.icon:SetTexture(warning.icon or Icons.DEFAULT)
-                        UIUtils.ApplyIconStyle(row.icon, "normal")
-                    end
-                    
-                    row.name:SetText(warning.text)
-                    row.name:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], 1)
-                    row.level:SetText("")
-                    row.cost:SetText("")
-                    
-                    local itemId = warning.itemId
-                    if itemId then
-                        row:SetScript("OnEnter", function(self)
-                            GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 20, 0)
-                            GameTooltip:SetItemByID(itemId)
-                            GameTooltip:Show()
-                        end)
-                    else
-                        row:SetScript("OnEnter", nil)
-                    end
-                    
-                    yOffset = yOffset - 26
-                end
-            else
-                local msg = GetFrame("text")
-                msg:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 12, yOffset - 5)
-                msg:SetText("No warnings - go adventure!")
-                msg:SetTextColor(Colors.success[1], Colors.success[2], Colors.success[3], Colors.success[4])
-                yOffset = yOffset - 24
-            end
-        end
-        
-        yOffset = yOffset - 10  -- Spacing between sections
-        
         -- Abilities sections
         if #available > 0 then
             local availableCost = 0
@@ -633,6 +631,8 @@ local LEVEL_BRACKET_SIZE = LevelLayout.bracketSize
                     yOffset = yOffset - 24
                 end
             end
+
+            yOffset = yOffset - 10
         end
         
         if #nextAvailable > 0 then

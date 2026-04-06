@@ -223,7 +223,7 @@ function Deathless.UI.Frame:Create()
     local isFrameHovered = false
     
     -- Setup pinnable resize behavior (with layout saving)
-    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "main", "BOTTOM")
+    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "main")
     
     -- Setup pinnable drag behavior (with layout saving)
     PinUtils.SetupPinnableDrag(frame, "main")
@@ -237,8 +237,8 @@ function Deathless.UI.Frame:Create()
     
     -- Smooth fade animation via OnUpdate
     frame:SetScript("OnUpdate", function(self, elapsed)
-        -- Custom drag handling (instant, no dead zone)
         if self.UpdateDrag then self:UpdateDrag() end
+        if self.UpdateResize then self:UpdateResize() end
         
         local wasHovered = isFrameHovered
         isFrameHovered = self:IsMouseOver()

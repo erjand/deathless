@@ -3,6 +3,17 @@ local Deathless = Deathless
 Deathless.Utils = Deathless.Utils or {}
 Deathless.Utils.UI = {}
 
+--- Frame extended with fields injected by pin/drag/resize utilities.
+---@class DeathlessFrame : Frame
+---@field pinBtn Frame?
+---@field IsPinned (fun(): boolean)?
+---@field setGripHovered (fun(hovered: boolean))?
+---@field isGripHovered (fun(): boolean)?
+---@field resizeGrip Button?
+---@field UpdateDrag (fun(self: DeathlessFrame))?
+---@field UpdateResize (fun(self: DeathlessFrame))?
+---@field UpdateGripAlpha (fun())?
+
 --- Shared UI helpers: colorized text, striped rows, scroll indicator, frame chrome (pin, drag, resize).
 
 --- Wrap text in a WoW color escape sequence.
@@ -262,7 +273,7 @@ end
 --- Pin system for locking frame position/size
 
 --- Create a pin button for a frame
----@param frame Frame
+---@param frame DeathlessFrame
 ---@param titleBar Frame
 ---@param configKey string
 ---@param options table|nil { offsetX, Colors }
@@ -349,7 +360,7 @@ function Deathless.Utils.UI.CreatePinButton(frame, titleBar, configKey, options)
 end
 
 --- Setup drag handlers that respect pinned state (instant response, no dead zone lag).
----@param frame Frame
+---@param frame DeathlessFrame
 ---@param layoutKey string|nil Key in `config.layout` for saved position (e.g. `"mini"`, `"main"`).
 function Deathless.Utils.UI.SetupPinnableDrag(frame, layoutKey)
     local isDragging = false
@@ -421,54 +432,80 @@ function Deathless.Utils.UI.SetupPinnableDrag(frame, layoutKey)
     end)
 end
 
---- Setup resize grip that respects pinned state
----@param frame Frame
+--- Setup resize grip that respects pinned state.
+--- Uses manual cursor tracking (like drag) instead of StartSizing/StopMovingOrSizing
+--- to avoid intermittent position jumps caused by WoW's anchor mutation after StopMovingOrSizing.
+---@param frame DeathlessFrame
 ---@param resizeGrip Button
 ---@param gripTexture Texture
 ---@param Colors table
 ---@param layoutKey string|nil
----@param resizePoint string|nil Resize anchor for `StartSizing` (default `"BOTTOMRIGHT"`).
-function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, layoutKey, resizePoint)
-    local startSizingPoint = resizePoint or "BOTTOMRIGHT"
+function Deathless.Utils.UI.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, layoutKey)
+    local isResizing = false
+    local resizeOffsetY = 0
 
-    resizeGrip:SetScript("OnMouseDown", function(self, button)
-        if button == "LeftButton" and (not frame.IsPinned or not frame.IsPinned()) then
-            -- Only re-anchor if not already anchored to TOPLEFT to prevent jump
-            local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint(1)
-            if point ~= "TOPLEFT" or relativeTo ~= UIParent or relativePoint ~= "BOTTOMLEFT" then
-                local left, top = frame:GetLeft(), frame:GetTop()
-                frame:ClearAllPoints()
-                frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
-            end
-            frame:StartSizing(startSizingPoint)
-        end
-    end)
-    
-    resizeGrip:SetScript("OnMouseUp", function()
-        frame:StopMovingOrSizing()
-        
-        -- Save size if layout key provided
+    local function SaveSize()
         if layoutKey and Deathless.config.layout then
             Deathless.config.layout[layoutKey] = Deathless.config.layout[layoutKey] or {}
             Deathless.config.layout[layoutKey].width = frame:GetWidth()
             Deathless.config.layout[layoutKey].height = frame:GetHeight()
             Deathless:SaveConfig()
         end
+    end
+
+    resizeGrip:SetScript("OnMouseDown", function(self, button)
+        if button == "LeftButton" and (not frame.IsPinned or not frame.IsPinned()) then
+            local scale = frame:GetEffectiveScale()
+            local _, cursorY = GetCursorPosition()
+            cursorY = cursorY / scale
+            resizeOffsetY = cursorY - frame:GetBottom()
+            isResizing = true
+        end
     end)
-    
+
+    resizeGrip:SetScript("OnMouseUp", function()
+        if isResizing then
+            isResizing = false
+            SaveSize()
+        end
+    end)
+
+    frame.UpdateResize = function(self)
+        if not isResizing then return end
+        if not IsMouseButtonDown("LeftButton") then
+            isResizing = false
+            SaveSize()
+            return
+        end
+
+        local scale = self:GetEffectiveScale()
+        local _, cursorY = GetCursorPosition()
+        cursorY = cursorY / scale
+
+        local newBottom = cursorY - resizeOffsetY
+        local newHeight = self:GetTop() - newBottom
+        local _, minH, _, maxH = self:GetResizeBounds()
+        newHeight = math.max(minH or 0, math.min(newHeight, maxH or 9999))
+        self:SetHeight(newHeight)
+    end
+
     resizeGrip:SetScript("OnEnter", function(self)
         if frame.setGripHovered then frame.setGripHovered(true) end
         gripTexture:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], 0.5)
     end)
-    
+
     resizeGrip:SetScript("OnLeave", function(self)
         if frame.setGripHovered then frame.setGripHovered(false) end
         gripTexture:SetColorTexture(Colors.border[1], Colors.border[2], Colors.border[3], 0.5)
     end)
+
+    frame:HookScript("OnHide", function()
+        isResizing = false
+    end)
 end
 
 --- Create a resize grip for a frame
----@param frame Frame
+---@param frame DeathlessFrame
 ---@param Colors table
 ---@param options table|nil { point, relativePoint, offsetX, offsetY, style }
 ---@return Button resizeGrip, Texture gripTexture
@@ -537,7 +574,7 @@ function Deathless.Utils.UI.CreateResizeGrip(frame, Colors, options)
 end
 
 --- Create a grip alpha updater that respects pinned state
----@param frame Frame
+---@param frame DeathlessFrame
 ---@param resizeGrip Button
 ---@param getIsHovered fun(): boolean
 ---@param getIsGripHovered fun(): boolean

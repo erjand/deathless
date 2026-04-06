@@ -115,7 +115,7 @@ function Deathless.UI.MiniSummary:Create()
     })
     
     -- Setup pinnable resize behavior (with layout saving)
-    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "mini", "BOTTOM")
+    PinUtils.SetupPinnableResize(frame, resizeGrip, gripTexture, Colors, "mini")
     
     -- Setup pinnable drag behavior (with layout saving)
     PinUtils.SetupPinnableDrag(frame, "mini")
@@ -150,8 +150,8 @@ function Deathless.UI.MiniSummary:Create()
     )
     
     frame:SetScript("OnUpdate", function(self, elapsed)
-        -- Custom drag handling (instant, no dead zone)
         if self.UpdateDrag then self:UpdateDrag() end
+        if self.UpdateResize then self:UpdateResize() end
         
         -- Check hover state
         local wasHovered = isFrameHovered

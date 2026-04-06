@@ -30,6 +30,7 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
         local embedded = options and options.embedded
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
+        local TableComp = Deathless.UI.Components.Table
         
         local title, subtitle
         if not embedded then
@@ -165,16 +166,46 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             poolIndex = poolIndex + 1
             local row = rowPool[poolIndex]
             if not row then
-                row = CreateFrame("Frame", nil, scrollChild)
+                row = CreateFrame("Button", nil, scrollChild)
+                
+                row.icon = row:CreateTexture(nil, "ARTWORK")
+                row.icon:SetSize(Row.iconSize, Row.iconSize)
+                row.icon:SetPoint("LEFT", row, "LEFT", Row.iconX, 0)
+                row.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+                
+                row.name = row:CreateFontString(nil, "OVERLAY")
+                row.name:SetFont(Fonts.family, Fonts.body, "")
+                row.name:SetPoint("LEFT", row.icon, "RIGHT", 8, 0)
+                row.name:SetWidth(Row.nameWidth)
+                row.name:SetJustifyH("LEFT")
+                
+                row.level = row:CreateFontString(nil, "OVERLAY")
+                row.level:SetFont(Fonts.family, Fonts.body, "")
+                row.level:SetPoint("LEFT", row, "LEFT", Col.level.x, 0)
+                row.level:SetWidth(Col.level.w)
+                row.level:SetJustifyH("CENTER")
+                
+                row.cost = row:CreateFontString(nil, "OVERLAY")
+                row.cost:SetFont(Fonts.family, Fonts.body, "")
+                row.cost:SetPoint("LEFT", row, "LEFT", Col.cost.x, 0)
+                row.cost:SetWidth(Col.cost.w)
+                row.cost:SetJustifyH("RIGHT")
+                
+                row.source = row:CreateFontString(nil, "OVERLAY")
+                row.source:SetFont(Fonts.family, Fonts.body, "")
+                row.source:SetPoint("LEFT", row, "LEFT", Col.source.x, 0)
+                row.source:SetWidth(Col.source.w)
+                row.source:SetJustifyH("LEFT")
+                
+                row.train = row:CreateFontString(nil, "OVERLAY")
+                row.train:SetFont(Fonts.family, Fonts.body, "")
+                row.train:SetPoint("LEFT", row, "LEFT", Col.train.x, 0)
+                row.train:SetWidth(Col.train.w)
+                row.train:SetJustifyH("CENTER")
+                
+                TableComp:ApplyRowHover(row)
                 rowPool[poolIndex] = row
             end
-            
-            if row.elements then
-                for _, element in pairs(row.elements) do
-                    if element.Hide then element:Hide() end
-                end
-            end
-            row.elements = {}
             return row
         end
         
@@ -230,8 +261,6 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
             row:SetHeight(ROW_HEIGHT)
             row:Show()
             
-            -- Tooltip on hover
-            row:EnableMouse(true)
             row:SetScript("OnEnter", function(self)
                 if ability.spellId then
                     GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 8, 0)
@@ -239,97 +268,56 @@ function Deathless.UI.Views.AbilitiesTemplate:Create(config)
                     GameTooltip:Show()
                 end
             end)
-            row:SetScript("OnLeave", function(self)
+            row:SetScript("OnLeave", function()
                 GameTooltip:Hide()
             end)
             
             UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
             
-            local icon = row:CreateTexture(nil, "ARTWORK")
-            icon:SetSize(Row.iconSize, Row.iconSize)
-            icon:SetPoint("LEFT", row, "LEFT", Row.iconX, 0)
-            icon:SetTexture(Icons:GetIconPath(ability.icon))
-            icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-            if dimmed then
-                UIUtils.ApplyIconStyle(icon, "faded")
-            else
-                UIUtils.ApplyIconStyle(icon, "normal")
-            end
-            row.elements.icon = icon
+            row.icon:SetTexture(Icons:GetIconPath(ability.icon))
+            UIUtils.ApplyIconStyle(row.icon, dimmed and "faded" or "normal")
             
             local nameText = ability.name
             if ability.rank and ability.rank > 1 then
                 nameText = nameText .. " (Rank " .. ability.rank .. ")"
             end
-            
-            local name = row:CreateFontString(nil, "OVERLAY")
-            name:SetFont(Fonts.family, Fonts.body, "")
-            name:SetPoint("LEFT", icon, "RIGHT", 8, 0)
-            name:SetWidth(Row.nameWidth)
-            name:SetJustifyH("LEFT")
-            name:SetText(nameText)
+            row.name:SetText(nameText)
             if dimmed then
-                name:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.6)
+                row.name:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.6)
             else
-                name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+                row.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
             end
-            row.elements.name = name
             
-            local level = row:CreateFontString(nil, "OVERLAY")
-            level:SetFont(Fonts.family, Fonts.body, "")
-            level:SetPoint("LEFT", row, "LEFT", Col.level.x, 0)
-            level:SetWidth(Col.level.w)
-            level:SetJustifyH("CENTER")
-            level:SetText("Lv " .. ability.level)
+            row.level:SetText("Lv " .. ability.level)
             if dimmed then
-                level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.6)
+                row.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.6)
             else
-                level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
+                row.level:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
             end
-            row.elements.level = level
             
-            local cost = row:CreateFontString(nil, "OVERLAY")
-            cost:SetFont(Fonts.family, Fonts.body, "")
-            cost:SetPoint("LEFT", row, "LEFT", Col.cost.x, 0)
-            cost:SetWidth(Col.cost.w)
-            cost:SetJustifyH("RIGHT")
             if ability.base_cost == 0 then
-                cost:SetText("Free")
-                cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], dimmed and 0.6 or 1)
+                row.cost:SetText("Free")
+                row.cost:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], dimmed and 0.6 or 1)
             else
-                cost:SetText(FormatMoneyColored(ability.base_cost))
-                cost:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], dimmed and 0.6 or 1)
+                row.cost:SetText(FormatMoneyColored(ability.base_cost))
+                row.cost:SetTextColor(Colors.white[1], Colors.white[2], Colors.white[3], dimmed and 0.6 or 1)
             end
-            row.elements.cost = cost
             
-            local source = row:CreateFontString(nil, "OVERLAY")
-            source:SetFont(Fonts.family, Fonts.body, "")
-            source:SetPoint("LEFT", row, "LEFT", Col.source.x, 0)
-            source:SetWidth(Col.source.w)
-            source:SetJustifyH("LEFT")
             local sourceText = ability.source:sub(1, 1):upper() .. ability.source:sub(2)
-            source:SetText(sourceText)
-            source:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], dimmed and 0.6 or 1)
-            row.elements.source = source
+            row.source:SetText(sourceText)
+            row.source:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], dimmed and 0.6 or 1)
             
-            -- Train column
-            local train = row:CreateFontString(nil, "OVERLAY")
-            train:SetFont(Fonts.family, Fonts.body, "")
-            train:SetPoint("LEFT", row, "LEFT", Col.train.x, 0)
-            train:SetWidth(Col.train.w)
-            train:SetJustifyH("CENTER")
             local trainValue = ability.train or "yes"
             local trainText = trainValue:sub(1, 1):upper() .. trainValue:sub(2)
-            train:SetText(trainText)
+            row.train:SetText(trainText)
             local alpha = dimmed and 0.6 or 1
             if trainValue == "yes" then
-                train:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], alpha)
+                row.train:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], alpha)
             elseif trainValue == "no" then
-                train:SetTextColor(Colors.red[1], Colors.red[2], Colors.red[3], alpha)
-            else  -- maybe
-                train:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], alpha)
+                row.train:SetTextColor(Colors.red[1], Colors.red[2], Colors.red[3], alpha)
+            else
+                row.train:SetTextColor(Colors.yellow[1], Colors.yellow[2], Colors.yellow[3], alpha)
             end
-            row.elements.train = train
             
             return yOffset - ROW_HEIGHT
         end

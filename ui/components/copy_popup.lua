@@ -86,9 +86,6 @@ function CopyPopup:Create()
     frame.hint:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
 
     CreateCloseButton(titleBar, {
-        size = 14,
-        fontSize = Fonts.small,
-        offsetX = -3,
         onClick = function()
             frame:Hide()
         end

@@ -8,6 +8,12 @@ Deathless.Constants.Metadata = {
     VERSION = "@project-version@",
 }
 
+--- Shared title-bar chrome: pin ("p"/"P") and close ("x") hit boxes and hover shading.
+Deathless.Constants.TitleBar = {
+    buttonHitSize = 14,
+    closeOffsetX = -3,
+}
+
 Deathless.Constants.Colors = {
     Codes = {
         enemy = "|cffcc4d4d",

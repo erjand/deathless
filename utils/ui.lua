@@ -276,19 +276,20 @@ end
 ---@param frame DeathlessFrame
 ---@param titleBar Frame
 ---@param configKey string
----@param options table|nil { offsetX, Colors }
+---@param options table|nil { offsetX, size, Colors }
 ---@return Frame pinBtn
 function Deathless.Utils.UI.CreatePinButton(frame, titleBar, configKey, options)
     options = options or {}
     local Colors = options.Colors or Deathless.UI.Colors
     local offsetX = options.offsetX or -20
+    local hitSize = options.size or Deathless.Constants.TitleBar.buttonHitSize
     
     -- Track pinned state
     local isPinned = Deathless.config[configKey] or false
     
     -- Create pin button
     local pinBtn = CreateFrame("Button", nil, titleBar)
-    pinBtn:SetSize(14, 14)
+    pinBtn:SetSize(hitSize, hitSize)
     pinBtn:SetPoint("RIGHT", titleBar, "RIGHT", offsetX, 0)
     
     pinBtn.bg = pinBtn:CreateTexture(nil, "BACKGROUND")

@@ -10,6 +10,7 @@ local MAIN_MAX_HEIGHT = 800
 
 local Colors = Deathless.Constants.Colors.UI
 local NavIds = Deathless.Constants.NavigationIds
+local TitleBarChrome = Deathless.Constants.TitleBar
 
 -- Helper: Create a pixel border around a frame
 local function CreatePixelBorder(parent, thickness, r, g, b, a)
@@ -55,9 +56,9 @@ end
 -- Helper: Create a simple close button (borderless 'x')
 local function CreateCloseButton(parent, options)
     options = options or {}
-    local size = options.size or 14
+    local size = options.size or TitleBarChrome.buttonHitSize
     local fontSize = options.fontSize or Deathless.UI.Fonts.small
-    local offsetX = options.offsetX or -3
+    local offsetX = options.offsetX or TitleBarChrome.closeOffsetX
     
     local btn = CreateFrame("Button", nil, parent)
     btn:SetSize(size, size)
@@ -194,8 +195,6 @@ function Deathless.UI.Frame:Create()
     
     -- Close button
     local closeBtn = CreateCloseButton(titleBar, {
-        size = 18,
-        fontSize = Fonts.body,
         offsetX = -4,
         onClick = function() self:Hide() end
     })

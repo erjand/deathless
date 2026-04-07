@@ -20,10 +20,10 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
         local Colors = Utils:GetColors()
         local Fonts = Deathless.UI.Fonts
         local Layout = Utils.Layout
-        local RowStyle = Deathless.Constants.Colors.UI.Row
         local embedded = options and options.embedded
         local CONTENT_LEFT = 12
         local CONTENT_RIGHT = -12
+        local TableComp = Deathless.UI.Components.Table
         
         local title, subtitle
         if not embedded then
@@ -110,10 +110,6 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             if not row then
                 row = CreateFrame("Button", nil, scrollChild)
                 row:SetHeight(Layout.rowHeight)
-                row:EnableMouse(true)
-                
-                row.bg = row:CreateTexture(nil, "BACKGROUND")
-                row.bg:SetAllPoints()
                 
                 row.expandIcon = row:CreateFontString(nil, "OVERLAY")
                 row.expandIcon:SetFont(Fonts.icons, Fonts.small, "")
@@ -137,6 +133,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 row.talentText:SetPoint("RIGHT", row, "RIGHT", -12, 0)
                 row.talentText:SetJustifyH("LEFT")
                 
+                TableComp:ApplyRowHover(row)
                 rowPool[rowIndex] = row
             end
             return row
@@ -146,9 +143,8 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
             subRowIndex = subRowIndex + 1
             local row = subRowPool[subRowIndex]
             if not row then
-                row = CreateFrame("Frame", nil, scrollChild)
+                row = CreateFrame("Button", nil, scrollChild)
                 row:SetHeight(Layout.subRowHeight)
-                row:EnableMouse(true)
                 
                 row.bg = row:CreateTexture(nil, "BACKGROUND")
                 row.bg:SetAllPoints()
@@ -170,6 +166,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 row.rankText:SetPoint("RIGHT", row, "RIGHT", -12, 0)
                 row.rankText:SetJustifyH("LEFT")
                 
+                TableComp:ApplyRowHover(row)
                 subRowPool[subRowIndex] = row
             end
             return row
@@ -202,7 +199,7 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
         local function CreateBuildSection(build, yOffset)
             local buildKey = build.name
             if sectionState[buildKey] == nil then
-                sectionState[buildKey] = true  -- Default expanded
+                sectionState[buildKey] = false
             end
             local isExpanded = sectionState[buildKey]
             
@@ -306,8 +303,6 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 row:SetPoint("TOPRIGHT", scrollChild, "TOPRIGHT", CONTENT_RIGHT, yOffset)
                 row:Show()
                 
-                -- Alternating row background (matching abilities template)
-                local isEvenRow = rowNum % 2 == 0
                 UIUtils.ApplyStripedRowBackground(row, Colors, rowNum)
                 
                 -- Handle both old string format and new table format
@@ -366,7 +361,6 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 row.rowKey = rowKey
                 row.hasRanks = hasRanks
                 row.spellId = spellId
-                row.isEvenRow = isEvenRow
                 
                 row:SetScript("OnClick", function(self)
                     if self.hasRanks then
@@ -376,20 +370,13 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                 end)
                 
                 row:SetScript("OnEnter", function(self)
-                    self.bg:SetColorTexture(Colors.bgLight[1] + 0.05, Colors.bgLight[2] + 0.05, Colors.bgLight[3] + 0.05, 0.4)
-                    self.bg:Show()
                     if self.spellId then
                         GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 8, 0)
                         GameTooltip:SetSpellByID(self.spellId)
                         GameTooltip:Show()
                     end
                 end)
-                row:SetScript("OnLeave", function(self)
-                    if self.isEvenRow then
-                        self.bg:SetColorTexture(Colors.bgLight[1], Colors.bgLight[2], Colors.bgLight[3], RowStyle.stripeAlpha)
-                    else
-                        self.bg:Hide()
-                    end
+                row:SetScript("OnLeave", function()
                     GameTooltip:Hide()
                 end)
                 
@@ -436,18 +423,15 @@ function Deathless.UI.Views.TalentsTemplate:Create(config)
                         subRow.rankText:SetText(talentName .. " " .. actualRank .. "/" .. maxRanks)
                         subRow.rankText:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 0.8)
                         
-                        -- Tooltip for sub-row
                         subRow.spellId = rankData.spellId
                         subRow:SetScript("OnEnter", function(self)
-                            self.bg:SetColorTexture(Colors.bgLight[1] + 0.03, Colors.bgLight[2] + 0.03, Colors.bgLight[3] + 0.03, 0.4)
                             if self.spellId then
                                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT", 8, 0)
                                 GameTooltip:SetSpellByID(self.spellId)
                                 GameTooltip:Show()
                             end
                         end)
-                        subRow:SetScript("OnLeave", function(self)
-                            self.bg:SetColorTexture(Colors.bgLight[1] - 0.02, Colors.bgLight[2] - 0.02, Colors.bgLight[3] - 0.02, 0.3)
+                        subRow:SetScript("OnLeave", function()
                             GameTooltip:Hide()
                         end)
                         

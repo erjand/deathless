@@ -30,9 +30,9 @@ local NAV_ITEMS_TOP = {
 
 local NAV_ITEMS_BOTTOM = {
     { id = "dungeons", label = "Dungeons" },
+    { id = NavIds.MACROS, label = "Macros" },
     { divider = true },
     { id = "commands", label = "Commands" },
-    { id = NavIds.MACROS, label = "Macros" },
     { id = "options", label = "Options" },
 }
 

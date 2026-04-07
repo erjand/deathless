@@ -58,9 +58,9 @@ Deathless.UI.Views:Register("dungeons", function(container)
     local Colors = Utils:GetColors()
     local Fonts = Deathless.UI.Fonts
     local Layout = Utils.Layout
-    local RowStyle = Deathless.Constants.Colors.UI.Row
     local CONTENT_LEFT = 12
     local CONTENT_RIGHT = -12
+    local TableComp = Deathless.UI.Components.Table
 
     local title, subtitle = Utils:CreateHeader(container, "Dungeons")
 
@@ -179,14 +179,38 @@ Deathless.UI.Views:Register("dungeons", function(container)
         local row = rowPool[poolIndex]
         if not row then
             row = CreateFrame("Button", nil, scrollChild)
+
+            row.expandIcon = row:CreateFontString(nil, "OVERLAY")
+            row.expandIcon:SetFont(Fonts.icons, Fonts.small, "")
+            row.expandIcon:SetPoint("LEFT", row, "LEFT", MAIN_COL.expand.x, 0)
+
+            row.level = row:CreateFontString(nil, "OVERLAY")
+            row.level:SetFont(Fonts.family, Fonts.body, "")
+            row.level:SetPoint("LEFT", row, "LEFT", MAIN_COL.level.x, 0)
+            row.level:SetWidth(MAIN_COL.level.w)
+            row.level:SetJustifyH("CENTER")
+
+            row.name = row:CreateFontString(nil, "OVERLAY")
+            row.name:SetFont(Fonts.family, Fonts.body, "")
+            row.name:SetPoint("LEFT", row, "LEFT", MAIN_COL.name.x, 0)
+            row.name:SetWidth(MAIN_COL.name.w)
+            row.name:SetJustifyH("LEFT")
+
+            row.zone = row:CreateFontString(nil, "OVERLAY")
+            row.zone:SetFont(Fonts.family, Fonts.body, "")
+            row.zone:SetPoint("LEFT", row, "LEFT", MAIN_COL.zone.x, 0)
+            row.zone:SetWidth(MAIN_COL.zone.w)
+            row.zone:SetJustifyH("LEFT")
+
+            row.boss = row:CreateFontString(nil, "OVERLAY")
+            row.boss:SetFont(Fonts.family, Fonts.body, "")
+            row.boss:SetPoint("LEFT", row, "LEFT", MAIN_COL.boss.x, 0)
+            row.boss:SetWidth(MAIN_COL.boss.w)
+            row.boss:SetJustifyH("LEFT")
+
+            TableComp:ApplyRowHover(row)
             rowPool[poolIndex] = row
         end
-        if row.elements then
-            for _, el in pairs(row.elements) do
-                if el.Hide then el:Hide() end
-            end
-        end
-        row.elements = {}
         return row
     end
 
@@ -629,73 +653,29 @@ Deathless.UI.Views:Register("dungeons", function(container)
         row:SetHeight(ROW_HEIGHT)
         row:Show()
 
-        -- Alternating row background
         UIUtils.ApplyStripedRowBackground(row, Colors, rowNum, isExpanded)
 
-        -- Hover highlight
-        if not row.highlight then
-            row.highlight = row:CreateTexture(nil, "HIGHLIGHT")
-            row.highlight:SetAllPoints()
-            row.highlight:SetColorTexture(Colors.accent[1], Colors.accent[2], Colors.accent[3], RowStyle.stripeAlpha * 0.4)
-        end
+        row.expandIcon:SetText(isExpanded and "▼" or "►")
+        row.expandIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
 
-        -- Expand indicator
-        local expandIcon = row:CreateFontString(nil, "OVERLAY")
-        expandIcon:SetFont(Fonts.icons, Fonts.small, "")
-        expandIcon:SetPoint("LEFT", row, "LEFT", MAIN_COL.expand.x, 0)
-        expandIcon:SetText(isExpanded and "▼" or "►")
-        expandIcon:SetTextColor(Colors.textDim[1], Colors.textDim[2], Colors.textDim[3], 1)
-        row.elements.expandIcon = expandIcon
-
-        -- Level Range
         local playerLevel = UnitLevel("player") or 60
-        local levelText = dungeon.levelMin .. "-" .. dungeon.levelMax
+        row.level:SetText(dungeon.levelMin .. "-" .. dungeon.levelMax)
+        row.level:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
 
-        local level = row:CreateFontString(nil, "OVERLAY")
-        level:SetFont(Fonts.family, Fonts.body, "")
-        level:SetPoint("LEFT", row, "LEFT", MAIN_COL.level.x, 0)
-        level:SetWidth(MAIN_COL.level.w)
-        level:SetJustifyH("CENTER")
-        level:SetText(levelText)
-        level:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-        row.elements.level = level
-
-        -- Name
-        local name = row:CreateFontString(nil, "OVERLAY")
-        name:SetFont(Fonts.family, Fonts.body, "")
-        name:SetPoint("LEFT", row, "LEFT", MAIN_COL.name.x, 0)
-        name:SetWidth(MAIN_COL.name.w)
-        name:SetJustifyH("LEFT")
-        name:SetText(dungeon.name)
+        row.name:SetText(dungeon.name)
         if isExpanded then
-            name:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
+            row.name:SetTextColor(Colors.accent[1], Colors.accent[2], Colors.accent[3], 1)
         else
-            name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
+            row.name:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
         end
-        row.elements.name = name
 
-        -- Zone
-        local zone = row:CreateFontString(nil, "OVERLAY")
-        zone:SetFont(Fonts.family, Fonts.body, "")
-        zone:SetPoint("LEFT", row, "LEFT", MAIN_COL.zone.x, 0)
-        zone:SetWidth(MAIN_COL.zone.w)
-        zone:SetJustifyH("LEFT")
-        zone:SetText(dungeon.zone)
-        zone:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-        row.elements.zone = zone
+        row.zone:SetText(dungeon.zone)
+        row.zone:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
 
-        -- End Boss (Name + level), colored by difficulty
         local bossC = GetDifficultyColor(dungeon.bossLevel, playerLevel)
-        local boss = row:CreateFontString(nil, "OVERLAY")
-        boss:SetFont(Fonts.family, Fonts.body, "")
-        boss:SetPoint("LEFT", row, "LEFT", MAIN_COL.boss.x, 0)
-        boss:SetWidth(MAIN_COL.boss.w)
-        boss:SetJustifyH("LEFT")
-        boss:SetText(dungeon.endBoss .. " (" .. dungeon.bossLevel .. ")")
-        boss:SetTextColor(bossC[1], bossC[2], bossC[3], 1)
-        row.elements.boss = boss
+        row.boss:SetText(dungeon.endBoss .. " (" .. dungeon.bossLevel .. ")")
+        row.boss:SetTextColor(bossC[1], bossC[2], bossC[3], 1)
 
-        -- Click toggles expand
         row:SetScript("OnClick", function()
             expandedState[dungeon.id] = not expandedState[dungeon.id]
             PopulateRows()
@@ -703,7 +683,6 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
         yOffset = yOffset - ROW_HEIGHT
 
-        -- Render detail sections if expanded (with padding before content)
         if isExpanded then
             yOffset = yOffset - 6
             yOffset = RenderDetail(dungeon, yOffset)

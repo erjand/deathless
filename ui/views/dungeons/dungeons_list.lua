@@ -134,6 +134,7 @@ Deathless.UI.Views:Register("dungeons", function(container)
 
     -- Raw data
     local rawDungeons = Deathless.Data.Dungeons or {}
+    local WarningNpcs = Deathless.Data.WarningNpcs or {}
 
     -- Expand state per dungeon id (supports multiple expanded rows)
     local expandedState = {}
@@ -146,10 +147,12 @@ Deathless.UI.Views:Register("dungeons", function(container)
     local textPool = {}
     local questRowPool = {}
     local sectionPool = {}
+    local warningFramePool = {}
     local poolIndex = 0
     local textIndex = 0
     local questRowIndex = 0
     local sectionIndex = 0
+    local warningFrameIndex = 0
 
     local function ClearAll()
         for _, row in ipairs(rowPool) do
@@ -168,10 +171,15 @@ Deathless.UI.Views:Register("dungeons", function(container)
             s:Hide()
             s:ClearAllPoints()
         end
+        for _, wf in ipairs(warningFramePool) do
+            wf:Hide()
+            wf:ClearAllPoints()
+        end
         poolIndex = 0
         textIndex = 0
         questRowIndex = 0
         sectionIndex = 0
+        warningFrameIndex = 0
     end
 
     local function GetRow()
@@ -232,6 +240,58 @@ Deathless.UI.Views:Register("dungeons", function(container)
         return sectionPool[sectionIndex]
     end
 
+    --- Convert {r,g,b} color table to WoW color code.
+    ---@param color table|nil
+    ---@return string
+    local function ColorCodeFromRGB(color)
+        local r = math.floor(((color and color[1]) or 1) * 255 + 0.5)
+        local g = math.floor(((color and color[2]) or 1) * 255 + 0.5)
+        local b = math.floor(((color and color[3]) or 1) * 255 + 0.5)
+        return string.format("|cff%02x%02x%02x", r, g, b)
+    end
+
+    local warningNameColorCode = ColorCodeFromRGB(Colors.xpHeader)
+    local warningNameHoverCode = ColorCodeFromRGB(Colors.accent)
+
+    -- Hidden FontString used to measure warning line heights for SimpleHTML layout.
+    local warningMeasure = scrollChild:CreateFontString(nil, "BACKGROUND")
+    warningMeasure:SetFont(Fonts.family, Fonts.body, "")
+    warningMeasure:SetJustifyH("LEFT")
+    warningMeasure:SetWordWrap(true)
+    warningMeasure:SetAlpha(0)
+
+    local function GetWarningFrame()
+        warningFrameIndex = warningFrameIndex + 1
+        local frame = warningFramePool[warningFrameIndex]
+        if not frame then
+            frame = CreateFrame("SimpleHTML", nil, scrollChild)
+            frame:SetFont("p", Fonts.family, Fonts.body, "")
+            frame:SetTextColor("p", Colors.text[1], Colors.text[2], Colors.text[3])
+
+            frame:SetScript("OnHyperlinkClick", function(_, link, text)
+                local _, npcId, name = strsplit(":", link, 3)
+                if npcId then
+                    local npcUrl = Urls.WOWHEAD_CLASSIC_NPC_BASE .. npcId
+                    Deathless.UI.Components.CopyPopup:Show(
+                        "Copy NPC URL: " .. (name or text), npcUrl)
+                end
+            end)
+            frame:SetScript("OnHyperlinkEnter", function(self, link)
+                local linkTag = '<a href="' .. link .. '">'
+                local escapedTag = EscapeLuaPattern(linkTag)
+                local escapedColor = EscapeLuaPattern(warningNameColorCode)
+                self:SetText(self.baseHtml:gsub(
+                    escapedTag .. escapedColor, linkTag .. warningNameHoverCode, 1))
+            end)
+            frame:SetScript("OnHyperlinkLeave", function(self)
+                self:SetText(self.baseHtml)
+            end)
+
+            warningFramePool[warningFrameIndex] = frame
+        end
+        return frame
+    end
+
     local function SortDungeons(dungeons)
         local sorted = {}
         for _, d in ipairs(dungeons) do
@@ -276,34 +336,27 @@ Deathless.UI.Views:Register("dungeons", function(container)
     }
     local QUEST_HEADER_HEIGHT = DungeonLayout.quests.headerHeight
 
-    --- Convert {r,g,b} color table to WoW color code.
-    ---@param color table|nil
-    ---@return string
-    local function ColorCodeFromRGB(color)
-        local r = math.floor(((color and color[1]) or 1) * 255 + 0.5)
-        local g = math.floor(((color and color[2]) or 1) * 255 + 0.5)
-        local b = math.floor(((color and color[3]) or 1) * 255 + 0.5)
-        return string.format("|cff%02x%02x%02x", r, g, b)
-    end
-
-    local warningNameColorCode = ColorCodeFromRGB(Colors.xpHeader)
-
-    --- Highlight warning names in XP blue.
-    --- Supports explicit name tags in data text via [[Name Here]].
-    --- Also highlights the current dungeon end boss name when present.
+    --- Format warning text, resolving [[Name]] tags to colored text or interactive hyperlinks.
+    --- Names found in `Deathless.Data.WarningNpcs` become clickable hyperlinks with Wowhead NPC URLs.
     ---@param dungeon table
     ---@param warning string
     ---@return string
     local function FormatWarningText(dungeon, warning)
         local result = warning or ""
+        local npcLookup = WarningNpcs[dungeon and dungeon.id]
+        local hasNameTags = false
 
-        -- Explicit tagging for names authored in data/dungeons.lua.
         result = result:gsub("%[%[(.-)%]%]", function(name)
+            hasNameTags = true
+            local npcId = npcLookup and npcLookup[name]
+            if npcId then
+                return '<a href="deathlessnpc:' .. npcId .. ':' .. name .. '">'
+                    .. warningNameColorCode .. name .. "|r</a>"
+            end
             return warningNameColorCode .. name .. "|r"
         end)
 
-        -- Automatic boss-name highlight so this works immediately.
-        if dungeon and dungeon.endBoss and dungeon.endBoss ~= "" then
+        if not hasNameTags and dungeon and dungeon.endBoss and dungeon.endBoss ~= "" then
             local bossPattern = EscapeLuaPattern(dungeon.endBoss)
             result = result:gsub(bossPattern, warningNameColorCode .. dungeon.endBoss .. "|r")
         end
@@ -416,18 +469,23 @@ Deathless.UI.Views:Register("dungeons", function(container)
             yOffset = yOffset - SECTION_HEIGHT - 4
 
             if state.warnings then
-                for _, text in ipairs(warningLines) do
-                    local fs = GetText()
-                    fs:ClearAllPoints()
-                    fs:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 32, yOffset)
-                    fs:SetWidth(contentWidth)
-                    fs:SetJustifyH("LEFT")
-                    fs:SetWordWrap(true)
-                    fs:SetText(text)
-                    fs:SetTextColor(Colors.text[1], Colors.text[2], Colors.text[3], 1)
-                    fs:Show()
+                for _, line in ipairs(warningLines) do
+                    local wf = GetWarningFrame()
+                    wf:ClearAllPoints()
+                    wf:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", CONTENT_LEFT + 32, yOffset)
+                    wf:SetWidth(contentWidth)
 
-                    local textHeight = fs:GetStringHeight() or 14
+                    local html = "<html><body><p>" .. line .. "</p></body></html>"
+                    wf.baseHtml = html
+                    wf:SetText(html)
+
+                    local plain = line:gsub("<.->", ""):gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
+                    warningMeasure:SetWidth(contentWidth)
+                    warningMeasure:SetText(plain)
+                    local textHeight = warningMeasure:GetStringHeight() or 14
+                    wf:SetHeight(textHeight)
+                    wf:Show()
+
                     yOffset = yOffset - textHeight - LINE_PADDING
                 end
             end

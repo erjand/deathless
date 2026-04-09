@@ -1481,7 +1481,7 @@ Deathless.Data.Dungeons = {
             "[[Shade of Eranikus]] will summon any unkilled dragonkin when the fight begins.",
             "[[Shade of Eranikus]] will cast a 15 second sleep on the target with the highest threat.",
             "Set party loot rules to Free-for-all for the [[Avatar of Hakkar]] fight - adds will drop Hakkari Blood, which must be used to extinguish the braziers.",
-            "[[Avatar of Hakker]] will cast a 6 second mind control on a random party member, causing them to enrage and attack a nearby ally.",
+            "[[Avatar of Hakkar]] will cast a 6 second mind control on a random party member, causing them to enrage and attack a nearby ally.",
         },
         quests = {
             {
@@ -1603,10 +1603,10 @@ Deathless.Data.Dungeons = {
             "BRD represents a significant step up in difficulty from previous dungeons!",
             "Later parts of BRD are more challenging than the earlier portions.",
             "[[Golem Lord Argelmach]] will pull any unkilled golems outside his room when engaged.",
-            "The [[Grim Guzzler]] bar area can chain-pull and easily wipe groups.",
-            "The [[Lyceum]] has fast-respawning non-elite dwarves. Stick together, use AoE, and move quickly.",
+            "The Grim Guzzler bar area can chain-pull and easily wipe groups.",
+            "The Lyceum has fast-respawning non-elite dwarves. Stick together, use AoE, and move quickly.",
             "Any totems or dummies left in the hallway when [[Ambassador Flamelash]] is engaged will aggro multiple elites.",
-            "[[Emperor Thaurissan]] hits very hard, and the fight is much more difficult when attempting to keep [[Princess Moira]] alive.",
+            "[[Emperor Thaurissan]] hits hard, and the fight is more difficult when attempting to keep [[Princess Moira]] alive.",
         },
         quests = {
             {
@@ -2387,7 +2387,7 @@ Deathless.Data.Dungeons = {
             "Scarlet Crusade mobs in the Living wing call for help. Pull carefully to avoid chain-pulling entire rooms.",
             "[[Timmy the Cruel]] enrages at low HP - save defensive cooldowns for the burn phase.",
             "[[Cannon Master Willey]] continuously spawns Crimson Rifleman. Use the cannons in the room against them, or they will overwhelm the group.",
-            "[[Archivist Galford]] casts Burning Winds, which can cause him to swap targets. Loot quest items from the library BEFORE burning the archive.",
+            "[[Archivist Galford]] casts Burning Winds, which can cause him to swap targets. Loot quest items from the library before burning the archive.",
             "[[Balnazzar]] (disguised as [[Grand Crusader Dathrohan]]) transforms into demon form at 40% HP. He casts Psychic Scream - ranged stay at max range to outrange it.",
             "[[Balnazzar]] casts Deep Sleep on random players - dispel it immediately.",
         },
@@ -2478,7 +2478,7 @@ Deathless.Data.Dungeons = {
             "[[Magistrate Barthilas]] casts Mighty Blow - tank against a wall to avoid being knocked into other packs.",
             "[[Ramstein the Gorger]] casts Knockout, dropping the tank's threat. Watch threat - the next-highest player will be targeted.",
             "After [[Ramstein the Gorger]] dies, a large wave of Mindless Undead spawns. AoE them down before the Black Guard Sentries emerge.",
-            "The door to [[Baron Rivendare]]'s room closes on engage. Make sure everyone is inside before pulling.",
+            "The door to [[Baron Rivendare]]'s room closes when engaged. Make sure everyone is inside before pulling.",
             "[[Baron Rivendare]] casts Mortal Strike on the tank and summons skeletons. His Unholy Aura damages all nearby players - ranged stay at max range.",
         },
         quests = {
@@ -2699,5 +2699,144 @@ Deathless.Data.Dungeons = {
                 },
             },
         },
+    },
+}
+
+--- NPC IDs for boss names referenced in [[Name]] warning tags.
+--- Enables clickable Wowhead links on boss names in the Dungeons view.
+Deathless.Data.WarningNpcs = {
+    ragefire_chasm = {
+        ["Taragaman the Hungerer"] = 11520,
+    },
+    wailing_caverns = {
+        ["Verdan the Everliving"] = 5775,
+    },
+    deadmines = {
+        ["Edwin VanCleef"] = 639,
+    },
+    shadowfang_keep = {
+        ["Arugal"] = 4275,
+    },
+    the_stockade = {
+        ["Dextren Ward"] = 1663,
+    },
+    blackfathom_deeps = {
+        ["Gelihast"] = 6243,
+        ["Twilight Lord Kelris"] = 4832,
+    },
+    gnomeregan = {
+        ["Grubbis"] = 7361,
+        ["Mekgineer Thermaplugg"] = 7800,
+    },
+    razorfen_kraul = {
+        ["Death Speaker Jargba"] = 4428,
+    },
+    sm_graveyard = {
+        ["Azshir the Sleepless"] = 6490,
+        ["Fallen Champion"] = 6488,
+        ["Ironspine"] = 6489,
+    },
+    sm_library = {
+        ["Arcanist Doan"] = 6487,
+    },
+    sm_armory = {
+        ["Herod"] = 3975,
+    },
+    sm_cathedral = {
+        ["Whitemane"] = 3977,
+    },
+    razorfen_downs = {
+        ["Amnennar"] = 7358,
+    },
+    uldaman = {
+        ["Archaedas"] = 2748,
+        ["Galgann Firehammer"] = 7291,
+        ["Grimlok"] = 4854,
+    },
+    zul_farrak = {
+        ["Gahz'rilla"] = 7273,
+        ["Hydromancer Velratha"] = 7795,
+    },
+    maraudon = {
+        ["Princess Theradras"] = 12201,
+    },
+    sunken_temple = {
+        ["Atal'alarion"] = 8580,
+        ["Avatar of Hakkar"] = 8443,
+        ["Dreamscythe"] = 5721,
+        ["Hazzas"] = 5722,
+        ["Jammal'an"] = 5710,
+        ["Jammal'an the Prophet"] = 5710,
+        ["Morphaz"] = 5719,
+        ["Ogom the Wretched"] = 5711,
+        ["Shade of Eranikus"] = 5709,
+        ["Weaver"] = 5720,
+    },
+    blackrock_depths = {
+        ["Ambassador Flamelash"] = 9156,
+        ["Emperor Thaurissan"] = 9019,
+        ["Golem Lord Argelmach"] = 8983,
+        ["Princess Moira"] = 8929,
+    },
+    lower_blackrock_spire = {
+        ["Gizrul the Slavener"] = 10268,
+        ["Halycon"] = 10220,
+        ["Highlord Omokk"] = 9196,
+        ["Mother Smolderweb"] = 10596,
+        ["Overlord Wyrmthalak"] = 9568,
+        ["Shadow Hunter Vosh'gajin"] = 9236,
+        ["Urok Doomhowl"] = 10584,
+        ["War Master Voone"] = 9237,
+    },
+    upper_blackrock_spire = {
+        ["General Drakkisath"] = 10363,
+        ["Gyth"] = 10339,
+        ["The Beast"] = 10430,
+        ["Warchief Rend Blackhand"] = 10429,
+    },
+    dire_maul_east = {
+        ["Alzzin the Wildshaper"] = 11492,
+        ["Hydrospawn"] = 13280,
+        ["Lethtendris"] = 14327,
+        ["Pusillin"] = 14354,
+        ["Zevrim Thornhoof"] = 11490,
+    },
+    dire_maul_west = {
+        ["Illyanna Ravenoak"] = 11488,
+        ["Immol'thar"] = 11496,
+        ["Magister Kalendris"] = 11487,
+        ["Prince Tortheldrin"] = 11486,
+        ["Tendris Warpwood"] = 11489,
+    },
+    dire_maul_north = {
+        ["Captain Kromcrush"] = 14325,
+        ["Cho'Rush the Observer"] = 14324,
+        ["King Gordok"] = 11501,
+        ["Stomper Kreeg"] = 14322,
+    },
+    stratholme_living = {
+        ["Archivist Galford"] = 10811,
+        ["Balnazzar"] = 10813,
+        ["Cannon Master Willey"] = 10997,
+        ["Grand Crusader Dathrohan"] = 10812,
+        ["Timmy the Cruel"] = 10808,
+    },
+    stratholme_undead = {
+        ["Baron Rivendare"] = 10440,
+        ["Baroness Anastari"] = 10436,
+        ["Magistrate Barthilas"] = 10435,
+        ["Maleki the Pallid"] = 10438,
+        ["Ramstein the Gorger"] = 10439,
+    },
+    scholomance = {
+        ["Darkmaster Gandling"] = 1853,
+        ["Doctor Theolen Krastinov"] = 11261,
+        ["Jandice Barov"] = 10503,
+        ["Kirtonos the Herald"] = 10506,
+        ["Lady Illucia Barov"] = 10502,
+        ["Lord Alexei Barov"] = 10504,
+        ["Ras Frostwhisper"] = 10508,
+        ["Rattlegore"] = 11622,
+        ["The Ravenian"] = 10507,
     },
 }
